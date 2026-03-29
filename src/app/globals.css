@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+  --page-bg: #f6f4f1;
+  --page-fg: #1c1917;
+  --accent: #4f46e5;
+  --accent-muted: rgba(79, 70, 229, 0.12);
+}
+
+.dark {
+  --page-bg: #0c0a09;
+  --page-fg: #fafaf9;
+  --accent: #818cf8;
+  --accent-muted: rgba(129, 140, 248, 0.15);
+}
+
+body {
+  @apply min-h-screen bg-[var(--page-bg)] text-stone-900 antialiased dark:bg-[var(--page-bg)] dark:text-stone-100;
+}
