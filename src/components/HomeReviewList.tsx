@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
+  POSTED_REVIEWS_CHANGED_EVENT,
   POSTED_REVIEWS_STORAGE_KEY,
   effectivePostKind,
   isStarRatedReview,
@@ -55,20 +56,31 @@ function LocalPostedCard({ review }: { review: PostedReview }) {
   const kind = effectivePostKind(review);
   const label = postedKindLabel(kind);
   const badgeClass =
-    kind === "author_article"
-      ? "text-sky-800 dark:text-sky-200/90"
-      : kind === "mechanism"
-        ? "text-violet-800 dark:text-violet-200/90"
-        : "text-amber-800 dark:text-amber-200/90";
+    kind === "article"
+      ? "text-emerald-400/95"
+      : kind === "author_article"
+        ? "text-sky-400/95"
+        : kind === "mechanism"
+          ? "text-violet-400/95"
+          : "text-amber-300/95";
 
   return (
     <article>
       <Link
         href={`/reviews/local/${review.id}`}
-        className="group block min-w-0 max-w-full overflow-hidden rounded-3xl border border-stone-200/80 bg-white shadow-sm ring-1 ring-stone-950/[0.04] transition hover:-translate-y-0.5 hover:border-indigo-200/80 hover:shadow-lg hover:shadow-indigo-950/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:border-stone-800 dark:bg-stone-900 dark:ring-white/[0.06] dark:hover:border-indigo-500/40 dark:hover:shadow-indigo-950/30"
+        className="group block min-w-0 max-w-full overflow-hidden rounded-3xl border border-slate-600/40 bg-slate-800/50 shadow-md shadow-slate-950/20 ring-1 ring-slate-700/30 transition hover:-translate-y-0.5 hover:border-sky-500/35 hover:shadow-lg hover:shadow-sky-950/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400/45"
       >
-        <div className="relative aspect-[16/9] min-h-0 min-w-0 w-full max-w-full overflow-hidden bg-stone-100 dark:bg-stone-800 sm:aspect-[2/1]">
-          <ReviewCoverPlaceholder slug={slug} />
+        <div className="relative aspect-[16/9] min-h-0 min-w-0 w-full max-w-full overflow-hidden bg-slate-900 sm:aspect-[2/1]">
+          {review.thumbnailUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element -- 外部URL任意のため
+            <img
+              src={review.thumbnailUrl}
+              alt={review.title}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <ReviewCoverPlaceholder slug={slug} />
+          )}
         </div>
         <div className="p-5 sm:p-6">
           <p
@@ -76,7 +88,7 @@ function LocalPostedCard({ review }: { review: PostedReview }) {
           >
             ブラウザ保存 · {label}
           </p>
-          <h2 className="mt-1 text-lg font-semibold leading-snug tracking-tight text-stone-900 line-clamp-2 group-hover:text-indigo-800 dark:text-stone-50 dark:group-hover:text-indigo-200">
+          <h2 className="mt-1 text-lg font-semibold leading-snug tracking-tight text-slate-50 line-clamp-2 group-hover:text-sky-200">
             {review.title}
           </h2>
           {isStarRatedReview(review) && (
@@ -88,7 +100,7 @@ function LocalPostedCard({ review }: { review: PostedReview }) {
             {review.tags.map((tag) => (
               <li
                 key={tag}
-                className="rounded-lg bg-stone-100 px-2.5 py-1 text-xs font-medium text-stone-700 dark:bg-stone-800 dark:text-stone-300"
+                className="rounded-lg border border-slate-600/45 bg-slate-900/40 px-2.5 py-1 text-xs font-medium text-slate-400"
               >
                 {tag}
               </li>
@@ -109,7 +121,7 @@ function ArticleGrid({
 }) {
   if (items.length === 0) {
     return (
-      <p className="rounded-2xl border border-dashed border-stone-300 bg-stone-50/80 px-4 py-8 text-center text-sm text-stone-600 dark:border-stone-600 dark:bg-stone-900/40 dark:text-stone-400">
+      <p className="rounded-2xl border border-dashed border-slate-600/50 bg-slate-800/40 px-4 py-8 text-center text-sm text-slate-500">
         {emptyText}
       </p>
     );
@@ -148,8 +160,15 @@ export function HomeReviewList({ markdownReviews }: Props) {
         reloadPosted();
       }
     }
+    function onLocalUpdate() {
+      reloadPosted();
+    }
     window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    window.addEventListener(POSTED_REVIEWS_CHANGED_EVENT, onLocalUpdate);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener(POSTED_REVIEWS_CHANGED_EVENT, onLocalUpdate);
+    };
   }, [reloadPosted]);
 
   const mergedReviews = useMemo(
@@ -162,9 +181,12 @@ export function HomeReviewList({ markdownReviews }: Props) {
     return mergedReviews.filter((item) => matchesStarFilter(item, starFilter));
   }, [mergedReviews, starFilter]);
 
-  const authorArticles = useMemo(() => {
+  const articlePosts = useMemo(() => {
     return posted
-      .filter((p) => effectivePostKind(p) === "author_article")
+      .filter((p) => {
+        const k = effectivePostKind(p);
+        return k === "article" || k === "author_article";
+      })
       .sort(
         (a, b) =>
           Date.parse(b.publishedAt) - Date.parse(a.publishedAt)
@@ -182,17 +204,21 @@ export function HomeReviewList({ markdownReviews }: Props) {
 
   const hasAnyContent =
     mergedReviews.length > 0 ||
-    authorArticles.length > 0 ||
+    articlePosts.length > 0 ||
     mechanismArticles.length > 0;
 
   if (!hasAnyContent) {
     return (
-      <p className="mx-auto mt-16 max-w-xl rounded-3xl border border-dashed border-stone-300 bg-white/80 p-8 text-center text-sm leading-relaxed text-stone-600 shadow-inner dark:border-stone-600 dark:bg-stone-900/50 dark:text-stone-400">
+      <p className="mx-auto mt-16 max-w-xl rounded-3xl border border-dashed border-slate-600/50 bg-slate-800/45 p-8 text-center text-sm leading-relaxed text-slate-400 shadow-inner shadow-slate-950/20">
         まだ表示できる投稿がありません。Markdown の記事を{" "}
-        <code className="rounded-md bg-stone-200 px-2 py-0.5 font-mono text-xs text-stone-800 dark:bg-stone-800 dark:text-stone-200">
+        <code className="rounded-md border border-slate-600/60 bg-slate-900 px-2 py-0.5 font-mono text-xs text-sky-200/90">
           src/content/
         </code>{" "}
-        に置くか、管理人用ページから追加してください。
+        に置くか、同一ブラウザで{" "}
+        <code className="rounded-md border border-slate-600/60 bg-slate-900 px-2 py-0.5 font-mono text-xs text-sky-200/90">
+          /admin
+        </code>{" "}
+        （パスワード保護）から投稿すると一覧に表示されます。
       </p>
     );
   }
@@ -204,17 +230,17 @@ export function HomeReviewList({ markdownReviews }: Props) {
           <div className="mb-8 sm:mb-10">
             <h2
               id="reviews-heading"
-              className="scroll-mt-24 text-xl font-bold tracking-tight text-stone-900 dark:text-stone-50 sm:scroll-mt-28 sm:text-2xl"
+              className="scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 sm:scroll-mt-28 sm:text-2xl"
             >
               レビュー一覧
               {starFilter !== null ? (
-                <span className="text-lg font-semibold text-indigo-700 dark:text-indigo-300">
+                <span className="text-lg font-semibold text-sky-300">
                   {" "}
                   （★{starFilter}）
                 </span>
               ) : null}
             </h2>
-            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+            <p className="mt-1 text-sm text-slate-500">
               {filteredReviews.length} 件
               {starFilter !== null && mergedReviews.length > 0
                 ? ` / 全レビュー ${mergedReviews.length} 件`
@@ -223,7 +249,7 @@ export function HomeReviewList({ markdownReviews }: Props) {
           </div>
 
           {filteredReviews.length === 0 ? (
-            <p className="rounded-2xl border border-dashed border-stone-300 bg-stone-50/80 px-4 py-10 text-center text-sm text-stone-600 dark:border-stone-600 dark:bg-stone-900/40 dark:text-stone-400">
+            <p className="rounded-2xl border border-dashed border-slate-600/50 bg-slate-800/40 px-4 py-10 text-center text-sm text-slate-500">
               {starFilter !== null
                 ? `★${starFilter}のレビューはまだありません。右のメニューで「すべて」を選ぶと全件表示されます。`
                 : "レビューがありません。"}
@@ -250,17 +276,20 @@ export function HomeReviewList({ markdownReviews }: Props) {
           <div className="mb-8 sm:mb-10">
             <h2
               id="author-posts-heading"
-              className="scroll-mt-24 text-xl font-bold tracking-tight text-stone-900 dark:text-stone-50 sm:scroll-mt-28 sm:text-2xl"
+              className="scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 sm:scroll-mt-28 sm:text-2xl"
             >
-              筆者投稿記事
+              記事
             </h2>
-            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
-              {authorArticles.length} 件
+            <p className="mt-1 text-sm text-slate-500">
+              {articlePosts.length} 件
+            </p>
+            <p className="mt-2 max-w-2xl text-sm text-slate-500">
+              フォームで「記事」として保存したもの・筆者投稿記事（旧形式）がここに並びます。
             </p>
           </div>
           <ArticleGrid
-            items={authorArticles}
-            emptyText="筆者投稿記事はまだありません。投稿ページの「投稿の種類」から追加できます。"
+            items={articlePosts}
+            emptyText="記事はまだありません。/admin（パスワード保護）から「記事」として投稿できます。"
           />
         </section>
 
@@ -268,17 +297,17 @@ export function HomeReviewList({ markdownReviews }: Props) {
           <div className="mb-8 sm:mb-10">
             <h2
               id="mechanism-heading"
-              className="scroll-mt-24 text-xl font-bold tracking-tight text-stone-900 dark:text-stone-50 sm:scroll-mt-28 sm:text-2xl"
+              className="scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 sm:scroll-mt-28 sm:text-2xl"
             >
               催眠音声のメカニズム
             </h2>
-            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+            <p className="mt-1 text-sm text-slate-500">
               {mechanismArticles.length} 件
             </p>
           </div>
           <ArticleGrid
             items={mechanismArticles}
-            emptyText="このカテゴリの記事はまだありません。投稿ページの「投稿の種類」から追加できます。"
+            emptyText="このカテゴリの記事はまだありません。"
           />
         </section>
       </div>

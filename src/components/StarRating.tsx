@@ -13,7 +13,7 @@ function Star({ fill }: { fill: number }) {
   return (
     <span className="relative inline-block h-[1em] w-[1em] shrink-0">
       <svg
-        className="absolute inset-0 text-stone-300 dark:text-stone-600"
+        className="absolute inset-0 text-slate-600"
         viewBox="0 0 20 20"
         fill="currentColor"
         aria-hidden
@@ -25,7 +25,7 @@ function Star({ fill }: { fill: number }) {
         style={{ width: `${pct}%` }}
       >
         <svg
-          className="h-[1em] w-[1em] text-amber-500 dark:text-amber-400"
+          className="h-[1em] w-[1em] text-amber-300"
           viewBox="0 0 20 20"
           fill="currentColor"
           aria-hidden
@@ -55,11 +55,11 @@ export function StarRating({ value, best = 5, size = "sm", className = "" }: Pro
         ))}
       </span>
       <span
-        className="text-sm font-semibold tabular-nums text-stone-800 dark:text-stone-200"
+        className="text-sm font-semibold tabular-nums text-slate-200"
         aria-hidden
       >
         {value}
-        <span className="font-normal text-stone-500 dark:text-stone-400">/{best}</span>
+        <span className="font-normal text-slate-500">/{best}</span>
       </span>
     </div>
   );

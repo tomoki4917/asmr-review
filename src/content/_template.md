@@ -2,6 +2,7 @@
 # 先頭が _ のファイルはサイトに出しません。複製後、ファイル名の _ を外してください。
 slug: my-first-review
 title: 作品タイトルと一言
+# 紹介文。プレーンでも Markdown でも可。画像例: ![alt](https://...) または ![alt](/content/foo.png)
 summary: メタディスクリプション・一覧用。120文字前後が目安。
 tags:
   - 癒やし

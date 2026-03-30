@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
-import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 
 const siteName = "催眠音声紹介部屋";
@@ -19,7 +17,7 @@ export const metadata: Metadata = {
     template: `%s | ${siteName}`,
   },
   description:
-    "個人による ASMR・催眠音声レビュー。タグで探したり、気分からおすすめを診断できます。",
+    "催眠・ASMR 音声レビューと心理学的な読み解き。個人ブログ。気分からのおすすめ診断も。",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
   ),
@@ -31,14 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={notoSansJp.variable}>
-      <body className="font-sans">
-        <div className="flex min-h-screen flex-col">
-          <SiteHeader />
-          <div className="flex-1">{children}</div>
-          <SiteFooter />
-        </div>
-      </body>
+    <html lang="ja" className={`dark ${notoSansJp.variable}`}>
+      <body className="font-sans">{children}</body>
     </html>
   );
 }

@@ -1,8 +1,16 @@
-/** 管理人が API 経由で追加した投稿（クライアントは localStorage に保持） */
+/** フォーム投稿など（クライアントは localStorage に保持） */
 
 export const POSTED_REVIEWS_STORAGE_KEY = "asmr-posted-reviews";
 
-export const POST_KINDS = ["review", "author_article", "mechanism"] as const;
+/** 同一タブで一覧を更新するためのカスタムイベント名 */
+export const POSTED_REVIEWS_CHANGED_EVENT = "asmr-posted-reviews-changed";
+
+export const POST_KINDS = [
+  "review",
+  "article",
+  "author_article",
+  "mechanism",
+] as const;
 export type PostedReviewKind = (typeof POST_KINDS)[number];
 
 export type PostedReview = {
@@ -10,22 +18,34 @@ export type PostedReview = {
   /** 未保存の旧データはレビューとして扱う */
   postKind?: PostedReviewKind;
   title: string;
+  /** Markdown 可（紹介文）。`![](url)` の URL は http(s) または / で始まるパス */
   summary: string;
   body: string;
   tags: string[];
   /** レビュー以外は 0 */
   ratingValue: number;
   publishedAt: string;
+  dlsiteUrl?: string;
+  thumbnailUrl?: string;
 };
 
 export function effectivePostKind(r: PostedReview): PostedReviewKind {
   const k = r.postKind;
-  if (k === "author_article" || k === "mechanism" || k === "review") return k;
+  if (
+    k === "article" ||
+    k === "author_article" ||
+    k === "mechanism" ||
+    k === "review"
+  ) {
+    return k;
+  }
   return "review";
 }
 
 export function postedKindLabel(kind: PostedReviewKind): string {
   switch (kind) {
+    case "article":
+      return "記事";
     case "author_article":
       return "筆者投稿記事";
     case "mechanism":
@@ -50,6 +70,12 @@ function parsePostKindField(raw: unknown): PostedReviewKind {
   return POST_KINDS.includes(raw as PostedReviewKind)
     ? (raw as PostedReviewKind)
     : "review";
+}
+
+function optionalUrl(raw: unknown): string | undefined {
+  if (typeof raw !== "string") return undefined;
+  const s = raw.trim();
+  return s || undefined;
 }
 
 export function parsePostedReviewsJson(raw: string | null): PostedReview[] {
@@ -83,6 +109,8 @@ export function parsePostedReviewsJson(raw: string | null): PostedReview[] {
         tags,
         ratingValue,
         publishedAt: o.publishedAt,
+        dlsiteUrl: optionalUrl(o.dlsiteUrl),
+        thumbnailUrl: optionalUrl(o.thumbnailUrl),
       });
     }
     return out;
@@ -106,7 +134,36 @@ export function writePostedReviewsToStorage(reviews: PostedReview[]): void {
   );
 }
 
+function notifyPostedReviewsChanged() {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event(POSTED_REVIEWS_CHANGED_EVENT));
+  }
+}
+
 export function appendPostedReviewToStorage(review: PostedReview): void {
   const prev = readPostedReviewsFromStorage();
   writePostedReviewsToStorage([review, ...prev]);
+  notifyPostedReviewsChanged();
+}
+
+/** 同じ id の投稿を置き換え。見つからなければ false */
+export function replacePostedReviewInStorage(review: PostedReview): boolean {
+  const prev = readPostedReviewsFromStorage();
+  const i = prev.findIndex((r) => r.id === review.id);
+  if (i === -1) return false;
+  const next = [...prev];
+  next[i] = review;
+  writePostedReviewsToStorage(next);
+  notifyPostedReviewsChanged();
+  return true;
+}
+
+/** id で削除。見つからなければ false */
+export function deletePostedReviewFromStorage(id: string): boolean {
+  const prev = readPostedReviewsFromStorage();
+  const next = prev.filter((r) => r.id !== id);
+  if (next.length === prev.length) return false;
+  writePostedReviewsToStorage(next);
+  notifyPostedReviewsChanged();
+  return true;
 }

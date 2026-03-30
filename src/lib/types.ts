@@ -12,7 +12,7 @@ export type AffiliateLink = {
 export type Review = {
   slug: string;
   title: string;
-  /** メタ・OGP 用（未指定なら本文冒頭から生成してもよい） */
+  /** メタ・OGP 用。Markdown 可（画像は `![](url)`、URL は http(s) または / で始まるパス） */
   summary: string;
   /** Markdown フロントマターで自由に定義（一覧のタグフィルタは全記事から自動集約） */
   tags: string[];

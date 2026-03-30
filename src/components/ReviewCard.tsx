@@ -15,7 +15,7 @@ export function ReviewCard({ review, priorityImage = false }: Props) {
     <article>
       <Link
         href={`/reviews/${review.slug}`}
-        className="group block min-w-0 max-w-full overflow-hidden rounded-3xl border border-stone-200/80 bg-white shadow-sm ring-1 ring-stone-950/[0.04] transition hover:-translate-y-0.5 hover:border-indigo-200/80 hover:shadow-lg hover:shadow-indigo-950/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:border-stone-800 dark:bg-stone-900 dark:ring-white/[0.06] dark:hover:border-indigo-500/40 dark:hover:shadow-indigo-950/30"
+        className="group block min-w-0 max-w-full overflow-hidden rounded-3xl border border-slate-600/40 bg-slate-800/50 shadow-md shadow-slate-950/20 ring-1 ring-slate-700/30 transition hover:-translate-y-0.5 hover:border-sky-500/35 hover:shadow-lg hover:shadow-sky-950/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400/45"
       >
         <ReviewCover
           coverImage={review.coverImage}
@@ -25,7 +25,7 @@ export function ReviewCard({ review, priorityImage = false }: Props) {
           className="rounded-t-3xl group-focus-visible:rounded-t-3xl"
         />
         <div className="p-5 sm:p-6">
-          <h2 className="text-lg font-semibold leading-snug tracking-tight text-stone-900 line-clamp-2 group-hover:text-indigo-800 dark:text-stone-50 dark:group-hover:text-indigo-200">
+          <h2 className="text-lg font-semibold leading-snug tracking-tight text-slate-50 line-clamp-2 group-hover:text-sky-200">
             {review.title}
           </h2>
           <div className="mt-3">
@@ -35,7 +35,7 @@ export function ReviewCard({ review, priorityImage = false }: Props) {
             {review.tags.map((tag) => (
               <li
                 key={tag}
-                className="rounded-lg bg-stone-100 px-2.5 py-1 text-xs font-medium text-stone-700 dark:bg-stone-800 dark:text-stone-300"
+                className="rounded-lg border border-slate-600/45 bg-slate-900/40 px-2.5 py-1 text-xs font-medium text-slate-400"
               >
                 {tag}
               </li>

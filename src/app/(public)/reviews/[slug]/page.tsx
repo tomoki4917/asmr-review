@@ -9,8 +9,10 @@ import {
 } from "@/components/ReviewCover";
 import { ReviewJsonLd } from "@/components/ReviewJsonLd";
 import { ReviewMarkdown } from "@/components/ReviewMarkdown";
+import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { StarRating } from "@/components/StarRating";
 import { getAllSlugs, getReviewBySlug } from "@/lib/reviews";
+import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -36,7 +38,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!review) return { title: "見つかりません" };
 
   const title = review.title;
-  const description = review.summary;
+  const description =
+    stripMarkdownForMeta(review.summary) || review.title;
   const url = `${siteUrl()}/reviews/${slug}`;
   const og = ogImageUrl(review);
 
@@ -79,13 +82,13 @@ export default async function ReviewPage({ params }: Props) {
       <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
         <Link
           href="/"
-          className="inline-flex min-h-11 items-center gap-1 text-sm font-medium text-indigo-700 transition hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200"
+          className="inline-flex min-h-11 items-center gap-1 text-sm font-medium text-sky-300 transition hover:text-sky-200"
         >
           <span aria-hidden>←</span> レビュー一覧
         </Link>
 
         <header className="mt-6">
-          <div className="overflow-hidden rounded-3xl border border-stone-200/90 bg-stone-100 shadow-sm dark:border-stone-800 dark:bg-stone-900">
+          <div className="overflow-hidden rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-lg shadow-slate-950/25 backdrop-blur-sm">
             <div className="relative aspect-[16/9] min-h-0 min-w-0 w-full max-w-full overflow-hidden sm:aspect-[2/1]">
               {cover && isLocal && isSvgCoverPath(cover) && (
                 // eslint-disable-next-line @next/next/no-img-element -- SVG 表紙は next/image fill と Grid で枠からはみ出すため
@@ -120,15 +123,15 @@ export default async function ReviewPage({ params }: Props) {
               )}
               {!cover && <ReviewCoverPlaceholder slug={review.slug} />}
             </div>
-            <div className="border-t border-stone-200/80 bg-white px-5 py-6 dark:border-stone-800 dark:bg-stone-950 sm:px-8 sm:py-8">
-              <h1 className="text-balance text-2xl font-bold leading-tight tracking-tight text-stone-900 dark:text-stone-50 sm:text-3xl">
+            <div className="border-t border-slate-600/40 bg-slate-900/50 px-5 py-6 sm:px-8 sm:py-8">
+              <h1 className="text-balance text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl">
                 {review.title}
               </h1>
               <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                 <StarRating value={review.ratingValue} best={best} size="md" />
-                <p className="text-sm text-stone-500 dark:text-stone-400">
+                <p className="text-sm text-slate-500">
                   <time dateTime={review.publishedAt}>{review.publishedAt}</time>
-                  <span className="mx-2 text-stone-300 dark:text-stone-600">·</span>
+                  <span className="mx-2 text-slate-600">·</span>
                   <span>{review.authorName}</span>
                 </p>
               </div>
@@ -136,32 +139,32 @@ export default async function ReviewPage({ params }: Props) {
                 {review.tags.map((tag) => (
                   <li
                     key={tag}
-                    className="rounded-lg bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-900 dark:bg-indigo-950/60 dark:text-indigo-200"
+                    className="rounded-lg border border-sky-800/35 bg-sky-950/30 px-3 py-1 text-xs font-semibold text-sky-200/90"
                   >
                     {tag}
                   </li>
                 ))}
               </ul>
-              <p className="mt-5 text-pretty text-base leading-relaxed text-stone-600 dark:text-stone-400">
-                {review.summary}
-              </p>
+              <div className="mt-5">
+                <SummaryMarkdown markdown={review.summary} />
+              </div>
             </div>
           </div>
         </header>
 
-        <section className="mt-10 rounded-3xl border border-stone-200/90 bg-white px-5 py-8 shadow-sm dark:border-stone-800 dark:bg-stone-900/40 sm:px-8 sm:py-10">
+        <section className="mt-10 rounded-3xl border border-slate-600/45 bg-slate-800/50 px-5 py-8 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:px-8 sm:py-10">
           {review.body ? (
             <ReviewMarkdown markdown={review.body} />
           ) : (
-            <p className="text-stone-500 dark:text-stone-400">本文がまだありません。</p>
+            <p className="text-slate-500">本文がまだありません。</p>
           )}
         </section>
 
-        <section className="mt-10 rounded-3xl border border-stone-200/90 bg-stone-50/80 px-5 py-8 dark:border-stone-800 dark:bg-stone-900/50 sm:px-8">
-          <h2 className="text-lg font-bold text-stone-900 dark:text-stone-50">
+        <section className="mt-10 rounded-3xl border border-slate-600/40 bg-slate-800/40 px-5 py-8 sm:px-8">
+          <h2 className="text-lg font-bold text-slate-50">
             購入・視聴
           </h2>
-          <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
+          <p className="mt-2 text-sm leading-relaxed text-slate-500">
             以下はアフィリエイトリンクを含む場合があります。
           </p>
           <AffiliateButtonGroup links={review.affiliateLinks} className="mt-5" />

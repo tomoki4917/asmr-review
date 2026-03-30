@@ -1,12 +1,15 @@
 import type { Review } from "@/lib/types";
+import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
 
 function buildReviewSchema(review: Review, canonicalUrl: string) {
   const best = review.ratingBest ?? 5;
+  const summaryPlain =
+    stripMarkdownForMeta(review.summary) || review.title;
   return {
     "@context": "https://schema.org",
     "@type": "Review",
     name: review.title,
-    reviewBody: review.summary,
+    reviewBody: summaryPlain,
     datePublished: review.publishedAt,
     url: canonicalUrl,
     author: {
@@ -22,7 +25,7 @@ function buildReviewSchema(review: Review, canonicalUrl: string) {
     itemReviewed: {
       "@type": "CreativeWork",
       name: review.itemName,
-      description: review.itemDescription ?? review.summary,
+      description: review.itemDescription ?? summaryPlain,
     },
   };
 }

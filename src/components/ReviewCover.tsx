@@ -50,7 +50,7 @@ export function ReviewCover({
   priority = false,
   className = "",
 }: Props) {
-  const wrap = `relative aspect-[16/10] min-h-0 min-w-0 w-full max-w-full overflow-hidden bg-stone-200 dark:bg-stone-800 ${className}`;
+  const wrap = `relative aspect-[16/10] min-h-0 min-w-0 w-full max-w-full overflow-hidden bg-slate-900 ${className}`;
 
   if (!coverImage) {
     return (
