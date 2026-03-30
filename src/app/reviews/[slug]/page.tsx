@@ -3,7 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AffiliateButtonGroup } from "@/components/AffiliateButton";
-import { ReviewCoverPlaceholder } from "@/components/ReviewCover";
+import {
+  ReviewCoverPlaceholder,
+  isSvgCoverPath,
+} from "@/components/ReviewCover";
 import { ReviewJsonLd } from "@/components/ReviewJsonLd";
 import { ReviewMarkdown } from "@/components/ReviewMarkdown";
 import { StarRating } from "@/components/StarRating";
@@ -83,8 +86,18 @@ export default async function ReviewPage({ params }: Props) {
 
         <header className="mt-6">
           <div className="overflow-hidden rounded-3xl border border-stone-200/90 bg-stone-100 shadow-sm dark:border-stone-800 dark:bg-stone-900">
-            <div className="relative aspect-[16/9] w-full sm:aspect-[2/1]">
-              {cover && isLocal && (
+            <div className="relative aspect-[16/9] min-h-0 min-w-0 w-full max-w-full overflow-hidden sm:aspect-[2/1]">
+              {cover && isLocal && isSvgCoverPath(cover) && (
+                // eslint-disable-next-line @next/next/no-img-element -- SVG 表紙は next/image fill と Grid で枠からはみ出すため
+                <img
+                  src={cover}
+                  alt={review.title}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  loading="eager"
+                  decoding="async"
+                />
+              )}
+              {cover && isLocal && !isSvgCoverPath(cover) && (
                 <Image
                   src={cover}
                   alt={review.title}

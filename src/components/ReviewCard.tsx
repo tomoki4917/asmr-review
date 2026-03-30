@@ -15,7 +15,7 @@ export function ReviewCard({ review, priorityImage = false }: Props) {
     <article>
       <Link
         href={`/reviews/${review.slug}`}
-        className="group block overflow-hidden rounded-3xl border border-stone-200/80 bg-white shadow-sm ring-1 ring-stone-950/[0.04] transition hover:-translate-y-0.5 hover:border-indigo-200/80 hover:shadow-lg hover:shadow-indigo-950/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:border-stone-800 dark:bg-stone-900 dark:ring-white/[0.06] dark:hover:border-indigo-500/40 dark:hover:shadow-indigo-950/30"
+        className="group block min-w-0 max-w-full overflow-hidden rounded-3xl border border-stone-200/80 bg-white shadow-sm ring-1 ring-stone-950/[0.04] transition hover:-translate-y-0.5 hover:border-indigo-200/80 hover:shadow-lg hover:shadow-indigo-950/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:border-stone-800 dark:bg-stone-900 dark:ring-white/[0.06] dark:hover:border-indigo-500/40 dark:hover:shadow-indigo-950/30"
       >
         <ReviewCover
           coverImage={review.coverImage}
