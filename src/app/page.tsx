@@ -12,7 +12,7 @@ export default function HomePage() {
           個人レビューブログ
         </p>
         <h1 className="mt-3 text-balance text-3xl font-bold tracking-tight text-black dark:text-white sm:text-4xl">
-          催眠音声紹介部屋
+          ASMR音声紹介ラボ
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-stone-600 dark:text-stone-400">
           Markdown の記事（

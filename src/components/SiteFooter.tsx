@@ -6,7 +6,7 @@ export function SiteFooter() {
           このサイトは個人によるレビューのみです。読者からの投稿・コメント機能はありません。
         </p>
         <p className="mt-3 text-xs text-slate-500">
-          © {new Date().getFullYear()} 催眠音声紹介部屋
+          © {new Date().getFullYear()} ASMR音声紹介ラボ
         </p>
       </div>
     </footer>

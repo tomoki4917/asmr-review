@@ -12,7 +12,7 @@ export function SiteHeader() {
             personal blog
           </span>
           <span className="block truncate text-base font-bold tracking-tight text-slate-50 sm:text-lg">
-            催眠音声紹介部屋
+            ASMR音声紹介ラボ
           </span>
         </Link>
         <nav className="shrink-0" aria-label="主要ナビゲーション">

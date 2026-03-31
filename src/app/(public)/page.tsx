@@ -14,7 +14,7 @@ export default function HomePage() {
           hypnosis · ASMR · psychology
         </p>
         <h1 className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">
-          催眠音声紹介部屋
+          ASMR音声紹介ラボ
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
           作品レビューと、なぜ心地よく感じるのかの心理学的な視点をまとめています。Markdown（

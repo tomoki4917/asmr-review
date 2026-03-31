@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 
-const siteName = "催眠音声紹介部屋";
+const siteName = "ASMR音声紹介ラボ";
 
 const notoSansJp = Noto_Sans_JP({
   subsets: ["latin"],
