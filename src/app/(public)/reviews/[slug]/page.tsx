@@ -76,15 +76,19 @@ export default async function ReviewPage({ params }: Props) {
   const isRemote =
     cover?.startsWith("http://") || cover?.startsWith("https://");
 
+  const isArticle = review.contentKind === "article";
+
   return (
     <>
-      <ReviewJsonLd review={review} canonicalUrl={canonicalUrl} />
+      {!isArticle && (
+        <ReviewJsonLd review={review} canonicalUrl={canonicalUrl} />
+      )}
       <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
         <Link
           href="/"
           className="inline-flex min-h-11 items-center gap-1 text-sm font-medium text-sky-300 transition hover:text-sky-200"
         >
-          <span aria-hidden>←</span> レビュー一覧
+          <span aria-hidden>←</span> {isArticle ? "トップへ" : "レビュー一覧"}
         </Link>
 
         <header className="mt-6">
@@ -127,9 +131,15 @@ export default async function ReviewPage({ params }: Props) {
               <h1 className="text-balance text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl">
                 {review.title}
               </h1>
-              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-                <StarRating value={review.ratingValue} best={best} size="md" />
-                <p className="text-sm text-slate-500">
+              <div
+                className={`mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 ${!isArticle ? "sm:justify-between" : ""}`}
+              >
+                {!isArticle && (
+                  <StarRating value={review.ratingValue} best={best} size="md" />
+                )}
+                <p
+                  className={`text-sm text-slate-500 ${isArticle ? "sm:ml-auto" : ""}`}
+                >
                   <time dateTime={review.publishedAt}>{review.publishedAt}</time>
                   <span className="mx-2 text-slate-600">·</span>
                   <span>{review.authorName}</span>
@@ -160,15 +170,17 @@ export default async function ReviewPage({ params }: Props) {
           )}
         </section>
 
-        <section className="mt-10 rounded-3xl border border-slate-600/40 bg-slate-800/40 px-5 py-8 sm:px-8">
-          <h2 className="text-lg font-bold text-slate-50">
-            購入・視聴
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-slate-500">
-            以下はアフィリエイトリンクを含む場合があります。
-          </p>
-          <AffiliateButtonGroup links={review.affiliateLinks} className="mt-5" />
-        </section>
+        {review.affiliateLinks.length > 0 && (
+          <section className="mt-10 rounded-3xl border border-slate-600/40 bg-slate-800/40 px-5 py-8 sm:px-8">
+            <h2 className="text-lg font-bold text-slate-50">
+              購入・視聴
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-slate-500">
+              以下はアフィリエイトリンクを含む場合があります。
+            </p>
+            <AffiliateButtonGroup links={review.affiliateLinks} className="mt-5" />
+          </section>
+        )}
       </article>
     </>
   );

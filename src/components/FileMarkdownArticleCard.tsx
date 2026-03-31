@@ -1,16 +1,17 @@
 import Link from "next/link";
 import type { Review } from "@/lib/types";
 import { ReviewCover } from "./ReviewCover";
-import { StarRating } from "./StarRating";
 
 type Props = {
   review: Review;
   priorityImage?: boolean;
 };
 
-export function ReviewCard({ review, priorityImage = false }: Props) {
-  const best = review.ratingBest ?? 5;
-
+/** `contentKind: article` の Markdown 記事用カード（星なし） */
+export function FileMarkdownArticleCard({
+  review,
+  priorityImage = false,
+}: Props) {
   return (
     <article>
       <Link
@@ -25,14 +26,12 @@ export function ReviewCard({ review, priorityImage = false }: Props) {
           className="rounded-t-3xl group-focus-visible:rounded-t-3xl"
         />
         <div className="p-5 sm:p-6">
-          <h2 className="text-lg font-semibold leading-snug tracking-tight text-slate-50 line-clamp-2 group-hover:text-sky-200">
+          <p className="text-xs font-medium uppercase tracking-wider text-emerald-400/95">
+            Markdown · 記事
+          </p>
+          <h2 className="mt-1 text-lg font-semibold leading-snug tracking-tight text-slate-50 line-clamp-2 group-hover:text-sky-200">
             {review.title}
           </h2>
-          {review.contentKind === "review" && (
-            <div className="mt-3">
-              <StarRating value={review.ratingValue} best={best} size="sm" />
-            </div>
-          )}
           <ul className="mt-4 flex flex-wrap gap-2">
             {review.tags.map((tag) => (
               <li

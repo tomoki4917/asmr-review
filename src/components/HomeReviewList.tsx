@@ -15,6 +15,7 @@ import {
 } from "@/lib/posted-review";
 import type { Review } from "@/lib/types";
 import { RatingStarsSidebar } from "@/components/RatingStarsSidebar";
+import { FileMarkdownArticleCard } from "@/components/FileMarkdownArticleCard";
 import { ReviewCard } from "@/components/ReviewCard";
 import { ReviewCoverPlaceholder } from "@/components/ReviewCover";
 import { StarRating } from "@/components/StarRating";
@@ -27,9 +28,10 @@ function mergeReviews(
   markdownReviews: Review[],
   posted: PostedReview[]
 ): MergedReviewItem[] {
+  const mdReviews = markdownReviews.filter((r) => r.contentKind === "review");
   const reviewPosted = posted.filter((p) => effectivePostKind(p) === "review");
   const items: MergedReviewItem[] = [
-    ...markdownReviews.map((review) => ({ kind: "file" as const, review })),
+    ...mdReviews.map((review) => ({ kind: "file" as const, review })),
     ...reviewPosted.map((review) => ({ kind: "local" as const, review })),
   ];
   items.sort((a, b) => {
@@ -171,6 +173,11 @@ export function HomeReviewList({ markdownReviews }: Props) {
     };
   }, [reloadPosted]);
 
+  const markdownArticles = useMemo(
+    () => markdownReviews.filter((r) => r.contentKind === "article"),
+    [markdownReviews]
+  );
+
   const mergedReviews = useMemo(
     () => mergeReviews(markdownReviews, posted),
     [markdownReviews, posted]
@@ -193,6 +200,25 @@ export function HomeReviewList({ markdownReviews }: Props) {
       );
   }, [posted]);
 
+  const combinedArticleEntries = useMemo(() => {
+    type Entry =
+      | { source: "file"; review: Review; t: number }
+      | { source: "local"; post: PostedReview; t: number };
+    const fromFile: Entry[] = markdownArticles.map((review) => ({
+      source: "file",
+      review,
+      t: Date.parse(review.publishedAt),
+    }));
+    const fromLocal: Entry[] = articlePosts.map((post) => ({
+      source: "local",
+      post,
+      t: Date.parse(post.publishedAt),
+    }));
+    return [...fromFile, ...fromLocal].sort(
+      (a, b) => (Number.isNaN(b.t) ? 0 : b.t) - (Number.isNaN(a.t) ? 0 : a.t)
+    );
+  }, [markdownArticles, articlePosts]);
+
   const mechanismArticles = useMemo(() => {
     return posted
       .filter((p) => effectivePostKind(p) === "mechanism")
@@ -204,6 +230,7 @@ export function HomeReviewList({ markdownReviews }: Props) {
 
   const hasAnyContent =
     mergedReviews.length > 0 ||
+    markdownArticles.length > 0 ||
     articlePosts.length > 0 ||
     mechanismArticles.length > 0;
 
@@ -281,16 +308,40 @@ export function HomeReviewList({ markdownReviews }: Props) {
               記事
             </h2>
             <p className="mt-1 text-sm text-slate-500">
-              {articlePosts.length} 件
+              {combinedArticleEntries.length} 件
             </p>
             <p className="mt-2 max-w-2xl text-sm text-slate-500">
-              フォームで「記事」として保存したもの・筆者投稿記事（旧形式）がここに並びます。
+              Markdown で{" "}
+              <code className="rounded bg-slate-800 px-1 py-0.5 font-mono text-xs text-sky-200/90">
+                contentKind: article
+              </code>{" "}
+              の記事、および /admin から保存した「記事」・筆者投稿がここに並びます。
             </p>
           </div>
-          <ArticleGrid
-            items={articlePosts}
-            emptyText="記事はまだありません。/admin（パスワード保護）から「記事」として投稿できます。"
-          />
+          {combinedArticleEntries.length === 0 ? (
+            <p className="rounded-2xl border border-dashed border-slate-600/50 bg-slate-800/40 px-4 py-8 text-center text-sm text-slate-500">
+              記事はまだありません。Markdown のフロントマターに{" "}
+              <code className="rounded bg-slate-800 px-1 font-mono text-xs">
+                contentKind: article
+              </code>{" "}
+              を付けるか、/admin から「記事」として投稿できます。
+            </p>
+          ) : (
+            <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:gap-10">
+              {combinedArticleEntries.map((entry, index) => (
+                <li key={entry.source === "file" ? entry.review.slug : entry.post.id} className="min-w-0">
+                  {entry.source === "file" ? (
+                    <FileMarkdownArticleCard
+                      review={entry.review}
+                      priorityImage={index < 2}
+                    />
+                  ) : (
+                    <LocalPostedCard review={entry.post} />
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
 
         <section aria-labelledby="mechanism-heading">

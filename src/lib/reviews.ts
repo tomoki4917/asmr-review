@@ -2,8 +2,14 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { cache } from "react";
-import type { AffiliateLink, AffiliateVendor, Review } from "./types";
+import type {
+  AffiliateLink,
+  AffiliateVendor,
+  Review,
+  ReviewContentKind,
+} from "./types";
 
+/** レビュー用 Markdown を置くルート（直下でも `reviews/` などサブフォルダでも可） */
 const CONTENT_DIR = path.join(process.cwd(), "src", "content");
 
 function isAffiliateVendor(v: unknown): v is AffiliateVendor {
@@ -75,24 +81,44 @@ function parseOptionalCoverImage(raw: unknown): string | undefined {
   );
 }
 
+function parseContentKind(raw: unknown): ReviewContentKind {
+  if (raw === "article") return "article";
+  return "review";
+}
+
 function parseReviewFile(source: string, fallbackSlug: string): Review {
   const { data, content } = matter(source);
   const d = data as Record<string, unknown>;
 
   const slug =
     typeof d.slug === "string" && d.slug.trim() ? d.slug.trim() : fallbackSlug;
+  const contentKind = parseContentKind(d.contentKind ?? d.kind);
+  const titleStr = asString(d.title, "title");
+
+  let ratingValue = 0;
+  let ratingBest: number | undefined;
+  if (contentKind === "review") {
+    ratingValue = asNumber(d.ratingValue, "ratingValue");
+    ratingBest =
+      d.ratingBest != null ? asNumber(d.ratingBest, "ratingBest") : undefined;
+  }
+
+  const itemName =
+    typeof d.itemName === "string" && d.itemName.trim()
+      ? d.itemName.trim()
+      : titleStr;
 
   const review: Review = {
     slug,
-    title: asString(d.title, "title"),
+    contentKind,
+    title: titleStr,
     summary: asString(d.summary, "summary"),
     tags: asStringArray(d.tags, "tags"),
     body: typeof content === "string" ? content.replace(/\r\n/g, "\n").trim() : "",
     coverImage: parseOptionalCoverImage(d.coverImage),
-    ratingValue: asNumber(d.ratingValue, "ratingValue"),
-    ratingBest:
-      d.ratingBest != null ? asNumber(d.ratingBest, "ratingBest") : undefined,
-    itemName: asString(d.itemName, "itemName"),
+    ratingValue,
+    ratingBest,
+    itemName,
     itemDescription:
       typeof d.itemDescription === "string" && d.itemDescription.trim()
         ? d.itemDescription.trim()
@@ -111,29 +137,60 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
   return review;
 }
 
-function readReviewFiles(): Review[] {
-  if (!fs.existsSync(CONTENT_DIR)) {
-    return [];
-  }
+/** レビューではなくフォルダ説明用の Markdown（README など） */
+const DOC_MARKDOWN_NAMES = new Set([
+  "readme.md",
+  "changelog.md",
+  "contributing.md",
+  "license.md",
+]);
 
-  const names = fs.readdirSync(CONTENT_DIR);
+function isReviewMarkdownFile(filePath: string): boolean {
+  const base = path.basename(filePath).toLowerCase();
+  if (!base.endsWith(".md") || base.startsWith("_")) return false;
+  if (DOC_MARKDOWN_NAMES.has(base)) return false;
+  return true;
+}
+
+/** `src/content` 以下の .md を再帰収集（`_` 始まり・README 等は除外） */
+function listReviewMarkdownFiles(dir: string): string[] {
+  const out: string[] = [];
+  if (!fs.existsSync(dir)) return out;
+
+  for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
+    const name = ent.name;
+    if (name === "." || name === "..") continue;
+    const full = path.join(dir, name);
+    if (ent.isDirectory()) {
+      out.push(...listReviewMarkdownFiles(full));
+    } else if (ent.isFile() && isReviewMarkdownFile(full)) {
+      out.push(full);
+    }
+  }
+  return out;
+}
+
+/** フロントに slug 未指定のときの既定値（例: reviews/foo.md → reviews-foo） */
+function fallbackSlugFromPath(filePath: string): string {
+  const rel = path.relative(CONTENT_DIR, filePath);
+  const normalized = rel.replace(/\\/g, "/").replace(/\.md$/i, "");
+  return normalized.replace(/\//g, "-");
+}
+
+function readReviewFiles(): Review[] {
+  const paths = listReviewMarkdownFiles(CONTENT_DIR);
   const reviews: Review[] = [];
 
-  for (const name of names) {
-    if (!name.endsWith(".md") || name.startsWith("_")) continue;
-
-    const filePath = path.join(CONTENT_DIR, name);
-    const stat = fs.statSync(filePath);
-    if (!stat.isFile()) continue;
-
+  for (const filePath of paths) {
     const raw = fs.readFileSync(filePath, "utf8");
-    const fallbackSlug = path.basename(name, ".md");
+    const fallbackSlug = fallbackSlugFromPath(filePath);
 
     try {
       reviews.push(parseReviewFile(raw, fallbackSlug));
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
-      throw new Error(`レビューの読み込みに失敗しました: ${name}\n${msg}`);
+      const rel = path.relative(CONTENT_DIR, filePath);
+      throw new Error(`レビューの読み込みに失敗しました: ${rel}\n${msg}`);
     }
   }
 
@@ -167,10 +224,12 @@ export function getReviewsForRecommendation(): {
   summary: string;
   tags: string[];
 }[] {
-  return getAllReviews().map((r) => ({
-    slug: r.slug,
-    title: r.title,
-    summary: r.summary,
-    tags: r.tags,
-  }));
+  return getAllReviews()
+    .filter((r) => r.contentKind === "review")
+    .map((r) => ({
+      slug: r.slug,
+      title: r.title,
+      summary: r.summary,
+      tags: r.tags,
+    }));
 }

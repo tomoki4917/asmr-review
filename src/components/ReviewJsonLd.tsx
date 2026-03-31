@@ -36,6 +36,7 @@ type Props = {
 };
 
 export function ReviewJsonLd({ review, canonicalUrl }: Props) {
+  if (review.contentKind === "article") return null;
   const json = buildReviewSchema(review, canonicalUrl);
   return (
     <script
