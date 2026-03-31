@@ -3,6 +3,8 @@ import path from "path";
 
 const nextConfig: NextConfig = {
   output: "export",
+  // true: reviews/foo/index.html になり、拡張子なしURLが LiteSpeed/Apache と相性よい
+  trailingSlash: true,
   // 上位ディレクトリに別の package-lock があるとルート推定がずれることがあるため明示
   outputFileTracingRoot: path.join(__dirname),
   // 静的ホスティングでは Image Optimization API が使えないため必須（next/image 利用時）
