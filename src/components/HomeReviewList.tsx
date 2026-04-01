@@ -114,31 +114,6 @@ function LocalPostedCard({ review }: { review: PostedReview }) {
   );
 }
 
-function ArticleGrid({
-  items,
-  emptyText,
-}: {
-  items: PostedReview[];
-  emptyText: string;
-}) {
-  if (items.length === 0) {
-    return (
-      <p className="rounded-2xl border border-dashed border-slate-600/50 bg-slate-800/40 px-4 py-8 text-center text-sm text-slate-500">
-        {emptyText}
-      </p>
-    );
-  }
-  return (
-    <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:gap-10">
-      {items.map((review) => (
-        <li key={review.id} className="min-w-0">
-          <LocalPostedCard review={review} />
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 type Props = {
   markdownReviews: Review[];
 };
@@ -219,20 +194,10 @@ export function HomeReviewList({ markdownReviews }: Props) {
     );
   }, [markdownArticles, articlePosts]);
 
-  const mechanismArticles = useMemo(() => {
-    return posted
-      .filter((p) => effectivePostKind(p) === "mechanism")
-      .sort(
-        (a, b) =>
-          Date.parse(b.publishedAt) - Date.parse(a.publishedAt)
-      );
-  }, [posted]);
-
   const hasAnyContent =
     mergedReviews.length > 0 ||
     markdownArticles.length > 0 ||
-    articlePosts.length > 0 ||
-    mechanismArticles.length > 0;
+    articlePosts.length > 0;
 
   if (!hasAnyContent) {
     return (
@@ -342,24 +307,6 @@ export function HomeReviewList({ markdownReviews }: Props) {
               ))}
             </ul>
           )}
-        </section>
-
-        <section aria-labelledby="mechanism-heading">
-          <div className="mb-8 sm:mb-10">
-            <h2
-              id="mechanism-heading"
-              className="scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 sm:scroll-mt-28 sm:text-2xl"
-            >
-              催眠音声のメカニズム
-            </h2>
-            <p className="mt-1 text-sm text-slate-500">
-              {mechanismArticles.length} 件
-            </p>
-          </div>
-          <ArticleGrid
-            items={mechanismArticles}
-            emptyText="このカテゴリの記事はまだありません。"
-          />
         </section>
       </div>
 

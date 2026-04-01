@@ -7,6 +7,8 @@ type Props = {
   slug: string;
   priority?: boolean;
   className?: string;
+  /** fill 画像・img に付与（object-fit / object-position など） */
+  imageClassName?: string;
 };
 
 function hueFromString(s: string): number {
@@ -49,6 +51,7 @@ export function ReviewCover({
   slug,
   priority = false,
   className = "",
+  imageClassName = "object-cover object-center",
 }: Props) {
   const wrap = `relative aspect-[16/10] min-h-0 min-w-0 w-full max-w-full overflow-hidden bg-slate-900 ${className}`;
 
@@ -73,7 +76,7 @@ export function ReviewCover({
           <img
             src={coverImage}
             alt={alt}
-            className="absolute inset-0 h-full w-full object-cover"
+            className={`absolute inset-0 h-full w-full ${imageClassName}`}
             loading={priority ? "eager" : "lazy"}
             decoding="async"
           />
@@ -86,7 +89,7 @@ export function ReviewCover({
           src={coverImage}
           alt={alt}
           fill
-          className="object-cover"
+          className={imageClassName}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority={priority}
         />
@@ -102,7 +105,7 @@ export function ReviewCover({
           alt={alt}
           fill
           unoptimized
-          className="object-cover"
+          className={imageClassName}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority={priority}
         />

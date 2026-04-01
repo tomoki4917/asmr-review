@@ -8,7 +8,6 @@ const STARS = [5, 4, 3, 2, 1] as const;
 
 const SECTION_PSYCHOLOGY = "psychology-insights";
 const SECTION_AUTHOR = "author-posts-heading";
-const SECTION_MECHANISM = "mechanism-heading";
 
 function linkClass(active: boolean) {
   return [
@@ -87,7 +86,7 @@ export function RatingStarsSidebar() {
               className={linkClass(hash === SECTION_PSYCHOLOGY)}
               scroll={true}
             >
-              心理学的に読み解く
+              ビギナー向けおすすめ記事
             </Link>
           </li>
           <li>
@@ -97,15 +96,6 @@ export function RatingStarsSidebar() {
               scroll={true}
             >
               記事
-            </Link>
-          </li>
-          <li>
-            <Link
-              href={`/#${SECTION_MECHANISM}`}
-              className={linkClass(hash === SECTION_MECHANISM)}
-              scroll={true}
-            >
-              催眠音声のメカニズム
             </Link>
           </li>
         </ul>

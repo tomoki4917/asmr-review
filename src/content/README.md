@@ -3,6 +3,7 @@
 ## 1. 保存するフォルダ
 
 - **ルート:** `src/content/`
+- **記事＋画像をまとめたいとき:** 例 `src/content/reviews/記事名.md` と、画像は `public/content/reviews/英語スラッグ/`（`coverImage` は `/content/reviews/英語スラッグ/cover.jpg` など）。
 - **サブフォルダ可:** 例 `src/content/reviews/あなたの記事.md`  
   - 階層に応じて、フロントマターに **`slug` を書かない場合** の URL 用スラッグは、パスを `-` つなぎにしたものになります（例: `reviews/my-post.md` → 既定スラッグ `reviews-my-post`）。
   - **おすすめ:** フロントマターで **`slug: 英数字ハイフン`** を必ず指定し、URL を自分で決める。

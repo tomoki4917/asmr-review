@@ -1,54 +1,114 @@
-const INSIGHTS = [
-  {
-    title: "副交感神経と「落ち着き」",
-    body: "穏やかな声や一定のリズムは、身体の副交感神経優位を助けやすく、心拍や呼吸がゆるむ感覚と結びつきやすいと言われます。個人差は大きいですが、「安心して委ねられる」体験の土台になります。",
-  },
-  {
-    title: "注意の配分と没入",
-    body: "囁きや耳元の定位は注意を狭く引きつけ、雑念が減る状態（いわゆる没入）を招きやすいです。作品ごとの作り手の意図と、自分の好みが噛み合うと「はまる」感覚が強まります。",
-  },
-  {
-    title: "期待と placebo 様の効き方",
-    body: "「これで眠れる」「気持ちよくなる」という期待そのものが、体験の質を底上げすることがあります。レビューや紹介文は、その期待を適切に整える手がかりにもなります。",
-  },
-  {
-    title: "心理的距離と安全",
-    body: "フィクションとしての距離感があると、現実の人間関係よりリスクを感じにくく、リラックスしやすい場合があります。自分の境界線と相性を見ながら作品を選ぶのがおすすめです。",
-  },
-] as const;
+import Link from "next/link";
+import type { Review } from "@/lib/types";
+import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
+import { ReviewCover } from "./ReviewCover";
 
-export function PsychologyInsightsSection() {
+const GUIDE_META: Record<
+  string,
+  { step: string; shortTitle: string; accent: string }
+> = {
+  "hypnosis-mechanism-01": {
+    step: "STEP 1",
+    shortTitle: "催眠音声とは",
+    accent: "from-emerald-500/25 to-sky-500/10",
+  },
+  "nou-iki-toha": {
+    step: "STEP 2",
+    shortTitle: "脳イキとは",
+    accent: "from-violet-500/25 to-sky-500/10",
+  },
+  "dry-orgasm-what-is": {
+    step: "STEP 3",
+    shortTitle: "ドライオーガズムとは",
+    accent: "from-amber-500/20 to-rose-500/10",
+  },
+};
+
+type Props = {
+  beginnerGuides: Review[];
+};
+
+export function PsychologyInsightsSection({ beginnerGuides }: Props) {
   return (
     <section
       id="psychology-insights"
       aria-labelledby="psychology-insights-heading"
       className="mx-auto mt-16 max-w-5xl scroll-mt-28"
     >
-      <div className="rounded-3xl border border-slate-600/45 bg-slate-800/45 p-6 shadow-lg shadow-slate-950/20 backdrop-blur-md sm:p-10">
+      <div className="rounded-3xl border border-slate-600/45 bg-slate-800/45 px-3 py-5 shadow-lg shadow-slate-950/20 backdrop-blur-md sm:px-6 sm:py-8 md:p-10">
         <h2
           id="psychology-insights-heading"
-          className="text-center text-xl font-bold tracking-tight text-sky-200 sm:text-2xl"
+          className="text-center text-lg font-bold tracking-tight text-sky-200 sm:text-xl md:text-2xl"
         >
-          心理学的に読み解く
+          催眠音声ビギナーにおすすめの記事
         </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-slate-400">
-          医学的効果を保証するものではありません。音声体験を楽しむための、一般的な心理メカニズムのメモです。
+        <p className="mx-auto mt-2 max-w-2xl text-center text-[11px] leading-relaxed text-slate-400 sm:mt-3 sm:text-sm">
+          入門 → 脳イキ → ドライの順でつながる{" "}
+          <strong className="font-medium text-slate-300">3 本立て</strong>
+          です。気になるタイトルから読み始めても OK です。
         </p>
-        <ul className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2">
-          {INSIGHTS.map((item) => (
-            <li
-              key={item.title}
-              className="rounded-2xl border border-slate-600/40 bg-slate-800/50 p-5 sm:p-6"
-            >
-              <h3 className="text-base font-semibold text-sky-200/95">
-                {item.title}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate-400">
-                {item.body}
-              </p>
-            </li>
-          ))}
-        </ul>
+
+        {beginnerGuides.length > 0 ? (
+          <ul
+            id="beginner-guide-cards"
+            className="mt-6 grid grid-cols-3 gap-1.5 sm:mt-8 sm:gap-3 md:mt-10 md:gap-5"
+          >
+            {beginnerGuides.map((review, i) => {
+              const meta = GUIDE_META[review.slug] ?? {
+                step: `STEP ${i + 1}`,
+                shortTitle: review.title,
+                accent: "from-slate-600/30 to-slate-800/20",
+              };
+              const teaser = stripMarkdownForMeta(review.summary);
+              const plain =
+                teaser.length > 140 ? `${teaser.slice(0, 137)}…` : teaser;
+
+              return (
+                <li key={review.slug} className="min-w-0">
+                  <article
+                    className={`group flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-slate-600/45 bg-gradient-to-b ${meta.accent} shadow-md shadow-slate-950/25 ring-1 ring-slate-700/25 transition hover:-translate-y-0.5 hover:border-sky-500/40 hover:ring-sky-500/20 sm:rounded-2xl`}
+                  >
+                    <Link
+                      href={`/reviews/${review.slug}/`}
+                      className="flex min-h-0 min-w-0 flex-1 flex-col focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400/50"
+                    >
+                      <div className="flex w-full min-w-0 shrink-0 items-center justify-center overflow-hidden border-b border-slate-600/35 bg-slate-900">
+                        <ReviewCover
+                          coverImage={review.coverImage}
+                          alt={review.title}
+                          slug={review.slug}
+                          priority={i < 2}
+                          className="!aspect-[3/4] w-full rounded-none sm:!aspect-[16/10]"
+                          imageClassName="h-full w-full object-center max-sm:object-contain sm:object-cover"
+                        />
+                      </div>
+                      <div className="flex min-h-0 min-w-0 flex-1 flex-col px-1 pb-2 pt-1 sm:px-2 sm:pb-3 sm:pt-1.5 md:px-5 md:pb-6 md:pt-3">
+                        <p className="text-[8px] font-bold uppercase tracking-[0.12em] text-emerald-300/90 sm:text-[10px] sm:tracking-[0.18em] md:text-[11px] md:tracking-[0.2em]">
+                          {meta.step}
+                        </p>
+                        <h3 className="mt-0.5 text-[11px] font-bold leading-tight tracking-tight text-slate-50 group-hover:text-sky-100 sm:mt-1 sm:text-sm md:text-lg md:leading-snug">
+                          {meta.shortTitle}
+                        </h3>
+                        <p className="mt-0.5 line-clamp-2 text-[9px] font-medium leading-tight text-slate-500 sm:text-[11px] sm:leading-snug md:text-xs">
+                          {review.title}
+                        </p>
+                        <p className="mt-1.5 line-clamp-2 flex-1 text-[9px] leading-snug text-slate-400 sm:mt-2 sm:line-clamp-3 sm:text-xs sm:leading-relaxed md:mt-3 md:text-sm">
+                          {plain}
+                        </p>
+                        <p className="mt-2 text-[9px] font-semibold leading-tight text-sky-300 transition group-hover:text-sky-200 sm:mt-3 sm:text-xs sm:leading-none md:mt-4 md:text-sm">
+                          記事を読む
+                          <span aria-hidden className="ml-0.5 inline-block transition group-hover:translate-x-0.5 sm:ml-1">
+                            →
+                          </span>
+                        </p>
+                      </div>
+                    </Link>
+                  </article>
+                </li>
+              );
+            })}
+          </ul>
+        ) : null}
       </div>
     </section>
   );
