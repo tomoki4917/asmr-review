@@ -12,15 +12,24 @@ export function SiteHeader() {
             personal blog
           </span>
           <span className="block truncate text-base font-bold tracking-tight text-slate-50 sm:text-lg">
-            ASMR音声紹介ラボ
+            ASMRレビューラボ
           </span>
         </Link>
-        <nav className="shrink-0" aria-label="主要ナビゲーション">
+        <nav
+          className="flex shrink-0 items-center gap-2 sm:gap-3"
+          aria-label="主要ナビゲーション"
+        >
           <Link
             href="/"
-            className="inline-flex min-h-11 items-center rounded-full border border-slate-600/70 bg-slate-800/60 px-4 text-sm font-medium text-slate-100 shadow-sm transition hover:border-sky-500/40 hover:bg-slate-700/70"
+            className="inline-flex min-h-11 items-center rounded-full border border-slate-600/70 bg-slate-800/60 px-3 text-sm font-medium text-slate-100 shadow-sm transition hover:border-sky-500/40 hover:bg-slate-700/70 sm:px-4"
           >
             一覧
+          </Link>
+          <Link
+            href="/contact/"
+            className="inline-flex min-h-11 items-center rounded-full border border-slate-600/70 bg-slate-800/60 px-3 text-sm font-medium text-slate-100 shadow-sm transition hover:border-sky-500/40 hover:bg-slate-700/70 sm:px-4"
+          >
+            お問い合わせ
           </Link>
         </nav>
       </div>

@@ -3,6 +3,8 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { AdMaxUnit } from "@/components/AdMaxUnit";
+import { GiscusComments } from "@/components/GiscusComments";
 import { ReviewMarkdown } from "@/components/ReviewMarkdown";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { ReviewCoverPlaceholder } from "@/components/ReviewCover";
@@ -40,7 +42,7 @@ export default function LocalReviewPageClient() {
 
   if (review === undefined) {
     return (
-      <main className="mx-auto max-w-3xl px-4 py-16 text-center text-sm text-slate-500">
+      <main className="mx-auto w-full max-w-3xl py-16 text-center text-sm text-slate-500">
         読み込み中…
       </main>
     );
@@ -48,7 +50,7 @@ export default function LocalReviewPageClient() {
 
   if (review === null) {
     return (
-      <main className="mx-auto max-w-3xl px-4 py-16 text-center">
+      <main className="mx-auto w-full max-w-3xl py-16 text-center">
         <p className="text-slate-400">
           このブラウザの localStorage に該当する記事がありません。
         </p>
@@ -76,13 +78,15 @@ export default function LocalReviewPageClient() {
           : "text-amber-300/95";
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
+    <article className="mx-auto w-full max-w-3xl py-8 sm:py-12">
       <Link
         href="/"
         className="inline-flex min-h-11 items-center gap-1 text-sm font-medium text-sky-300 transition hover:text-sky-200"
       >
         <span aria-hidden>←</span> トップへ
       </Link>
+
+      <AdMaxUnit placement="article-top" className="mt-8" />
 
       <header className="mt-6">
         <div className="overflow-hidden rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-lg shadow-slate-950/25 backdrop-blur-sm">
@@ -157,6 +161,7 @@ export default function LocalReviewPageClient() {
           <p className="text-slate-500">本文がありません。</p>
         )}
       </section>
+      <GiscusComments term={`local-${id}`} />
     </article>
   );
 }

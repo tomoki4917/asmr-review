@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { AdMaxUnit } from "@/components/AdMaxUnit";
 import { HomeReviewList } from "@/components/HomeReviewList";
 import { MoodDiagnosticModal } from "@/components/MoodDiagnosticModal";
 import { PsychologyInsightsSection } from "@/components/PsychologyInsightsSection";
@@ -22,13 +23,13 @@ export default function HomePage() {
   const beginnerGuides = pickBeginnerGuides(reviews);
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+    <main className="mx-auto w-full max-w-6xl py-10 sm:py-14">
       <header className="mx-auto max-w-3xl text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-400/90">
           hypnosis · ASMR · psychology
         </p>
         <h1 className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">
-          ASMR音声紹介ラボ
+          ASMRレビューラボ
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
           作品レビューと、<strong className="font-semibold text-slate-200">催眠音声がはじめての方</strong>
@@ -39,6 +40,10 @@ export default function HomePage() {
           <MoodDiagnosticModal />
         </div>
       </header>
+
+      <div className="mx-auto mt-10 flex justify-center overflow-x-hidden">
+        <AdMaxUnit placement="home-top" />
+      </div>
 
       <PsychologyInsightsSection beginnerGuides={beginnerGuides} />
 

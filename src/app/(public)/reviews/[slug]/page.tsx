@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AdMaxUnit } from "@/components/AdMaxUnit";
 import { AffiliateButtonGroup } from "@/components/AffiliateButton";
+import { GiscusComments } from "@/components/GiscusComments";
 import {
   ReviewCoverPlaceholder,
   isSvgCoverPath,
@@ -83,13 +85,15 @@ export default async function ReviewPage({ params }: Props) {
       {!isArticle && (
         <ReviewJsonLd review={review} canonicalUrl={canonicalUrl} />
       )}
-      <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
+      <article className="mx-auto w-full max-w-3xl py-8 sm:py-12">
         <Link
           href="/"
           className="inline-flex min-h-11 items-center gap-1 text-sm font-medium text-sky-300 transition hover:text-sky-200"
         >
           <span aria-hidden>←</span> {isArticle ? "トップへ" : "レビュー一覧"}
         </Link>
+
+        <AdMaxUnit placement="article-top" className="mt-8" />
 
         <header className="mt-6">
           <div className="overflow-hidden rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-lg shadow-slate-950/25 backdrop-blur-sm">
@@ -181,6 +185,7 @@ export default async function ReviewPage({ params }: Props) {
             <AffiliateButtonGroup links={review.affiliateLinks} className="mt-5" />
           </section>
         )}
+        <GiscusComments term={slug} />
       </article>
     </>
   );
