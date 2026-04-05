@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 
@@ -23,6 +24,8 @@ export const metadata: Metadata = {
   ),
 };
 
+const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim() ?? "";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,7 +33,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className={`dark ${notoSansJp.variable}`}>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        {children}
+        {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
+      </body>
     </html>
   );
 }

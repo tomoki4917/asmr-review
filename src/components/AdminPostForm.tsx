@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { AdminGiscusPanel } from "@/components/AdminGiscusPanel";
 import {
   POSTED_REVIEWS_CHANGED_EVENT,
   appendPostedReviewToStorage,
@@ -106,8 +105,6 @@ export default function AdminPostForm() {
   const [unlocked, setUnlocked] = useState(false);
   const [gatePassword, setGatePassword] = useState("");
   const [gateError, setGateError] = useState<string | null>(null);
-
-  const [adminTab, setAdminTab] = useState<"posts" | "comments">("posts");
 
   const [savedList, setSavedList] = useState<PostedReview[]>([]);
 
@@ -381,46 +378,7 @@ export default function AdminPostForm() {
           </section>
         ) : (
           <div className="mt-10 space-y-10">
-            <div
-              className="flex flex-wrap gap-2 border-b border-slate-700/50 pb-4"
-              role="tablist"
-              aria-label="管理メニュー"
-            >
-              <button
-                type="button"
-                role="tab"
-                aria-selected={adminTab === "posts"}
-                onClick={() => setAdminTab("posts")}
-                className={[
-                  "min-h-11 rounded-lg px-4 text-sm font-semibold transition",
-                  adminTab === "posts"
-                    ? "bg-sky-600 text-white"
-                    : "border border-slate-600/70 text-slate-300 hover:bg-slate-800",
-                ].join(" ")}
-              >
-                投稿（localStorage）
-              </button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={adminTab === "comments"}
-                onClick={() => setAdminTab("comments")}
-                className={[
-                  "min-h-11 rounded-lg px-4 text-sm font-semibold transition",
-                  adminTab === "comments"
-                    ? "bg-sky-600 text-white"
-                    : "border border-slate-600/70 text-slate-300 hover:bg-slate-800",
-                ].join(" ")}
-              >
-                コメント（Giscus）
-              </button>
-            </div>
-
-            {adminTab === "comments" ? (
-              <AdminGiscusPanel />
-            ) : null}
-
-            {adminTab === "posts" && saveNotice && (
+            {saveNotice && (
               <div
                 className="rounded-xl border border-emerald-700/50 bg-emerald-950/50 px-4 py-3 text-center text-sm font-medium text-emerald-200"
                 role="status"
@@ -429,8 +387,7 @@ export default function AdminPostForm() {
               </div>
             )}
 
-            {adminTab === "posts" ? (
-              <>
+            <>
             <section className="rounded-2xl border border-slate-600/60 bg-slate-800/50 p-5 shadow-lg sm:p-6">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                 <div>
@@ -663,8 +620,7 @@ export default function AdminPostForm() {
                 </button>
               </div>
             </form>
-              </>
-            ) : null}
+            </>
           </div>
         )}
       </div>

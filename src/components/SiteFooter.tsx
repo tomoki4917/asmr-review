@@ -19,7 +19,7 @@ export function SiteFooter() {
           </Link>
         </nav>
         <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-slate-400">
-          このサイトは個人によるレビュー・解説です。記事末尾のコメントは外部サービス（設定時）を利用します。
+          このサイトは個人によるレビュー・解説です。
         </p>
         <p className="mt-3 text-xs text-slate-500">
           © {new Date().getFullYear()} ASMRレビューラボ

@@ -30,10 +30,6 @@ export function PrivacyPolicyContent() {
             <strong className="text-slate-200">お問い合わせ</strong>
             ：フォーム経由で、お名前・メールアドレス・お問い合わせ内容をご入力いただく場合があります。内容は返信および不正利用防止のために利用し、目的外利用はしません。
           </li>
-          <li>
-            <strong className="text-slate-200">コメント機能</strong>
-            ：外部サービス（Giscus 等）を利用する場合、当該サービスの規約に従い、表示名やアカウント情報が処理されます。
-          </li>
         </ul>
       </section>
 

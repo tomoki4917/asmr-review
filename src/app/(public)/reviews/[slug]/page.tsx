@@ -4,7 +4,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdMaxUnit } from "@/components/AdMaxUnit";
 import { AffiliateButtonGroup } from "@/components/AffiliateButton";
-import { GiscusComments } from "@/components/GiscusComments";
 import {
   ReviewCoverPlaceholder,
   isSvgCoverPath,
@@ -185,7 +184,6 @@ export default async function ReviewPage({ params }: Props) {
             <AffiliateButtonGroup links={review.affiliateLinks} className="mt-5" />
           </section>
         )}
-        <GiscusComments term={slug} />
       </article>
     </>
   );
