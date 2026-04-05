@@ -117,7 +117,13 @@ export function AdMaxUnit({ placement, className = "" }: Props) {
   const frameH = cfg?.height;
 
   useLayoutEffect(() => {
-    if (viewport === "unknown" || scriptSrc == null || frameW == null || frameH == null) {
+    if (
+      viewport === "unknown" ||
+      scriptSrc == null ||
+      !String(scriptSrc).trim() ||
+      frameW == null ||
+      frameH == null
+    ) {
       return;
     }
 
@@ -159,6 +165,15 @@ export function AdMaxUnit({ placement, className = "" }: Props) {
       host.innerHTML = "";
     };
   }, [viewport, placement, narrow, scriptSrc, frameW, frameH]);
+
+  const missingAdConfig =
+    viewport !== "unknown" &&
+    cfg != null &&
+    !cfg.scriptSrc.trim();
+
+  if (missingAdConfig) {
+    return null;
+  }
 
   const maxWrap = cfg
     ? `min(100%,${cfg.maxWrapPx}px)`

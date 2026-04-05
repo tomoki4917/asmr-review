@@ -1,17 +1,23 @@
-/** 記事上・記事下・インライン枠用（MPU 等） */
-export const ADMAX_SCRIPT_SRC =
-  "https://adm.shinobi.jp/s/63004686f9ce616d0deca54601447538";
+/**
+ * 忍者AdMax の script URL はすべて環境変数から読み込み（リポジトリに ID を直書きしない）。
+ * ビルド前に .env に設定してください。
+ */
 
-/** トップページ用（PC はリーダーボード等の大きめ枠向けタグ） */
-export const ADMAX_SCRIPT_SRC_HOME_TOP =
-  "https://adm.shinobi.jp/s/bb60bb7ee64a03afc45de9007debad57";
+function env(name: string): string {
+  if (typeof process === "undefined") return "";
+  return process.env[name]?.trim() ?? "";
+}
+
+/** 記事上・記事下などインライン枠 — NEXT_PUBLIC_ADMAX_SCRIPT_INLINE */
+export const ADMAX_SCRIPT_SRC = env("NEXT_PUBLIC_ADMAX_SCRIPT_INLINE");
+
+/** トップ枠 — NEXT_PUBLIC_ADMAX_SCRIPT_HOME_TOP */
+export const ADMAX_SCRIPT_SRC_HOME_TOP = env("NEXT_PUBLIC_ADMAX_SCRIPT_HOME_TOP");
+
+const mobileOverride = env("NEXT_PUBLIC_ADMAX_SCRIPT_MOBILE");
 
 /**
- * 幅 768px 未満で使う MPU（300×250）用。
- * 忍者AdMax でスマホ専用タグを発行したら `NEXT_PUBLIC_ADMAX_SCRIPT_MOBILE` に設定。
- * 未設定時は `ADMAX_SCRIPT_SRC` と同じ。
+ * スマホ用 MPU。未設定時はインラインと同じ URL を使う。
+ * NEXT_PUBLIC_ADMAX_SCRIPT_MOBILE
  */
-export const ADMAX_SCRIPT_SRC_MOBILE =
-  (typeof process !== "undefined" &&
-    process.env.NEXT_PUBLIC_ADMAX_SCRIPT_MOBILE?.trim()) ||
-  ADMAX_SCRIPT_SRC;
+export const ADMAX_SCRIPT_SRC_MOBILE = mobileOverride || ADMAX_SCRIPT_SRC;

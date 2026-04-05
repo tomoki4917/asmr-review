@@ -16,7 +16,7 @@ import {
   type PostedReviewKind,
 } from "@/lib/posted-review";
 
-const ADMIN_PASSWORD = "2000";
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD?.trim() ?? "";
 
 type ContentMode = "review" | "article";
 
@@ -191,6 +191,12 @@ export default function AdminPostForm() {
   function handleUnlock(e: React.FormEvent) {
     e.preventDefault();
     setGateError(null);
+    if (!ADMIN_PASSWORD) {
+      setGateError(
+        "NEXT_PUBLIC_ADMIN_PASSWORD が未設定です。.env に設定してからビルドし直してください。"
+      );
+      return;
+    }
     if (gatePassword === ADMIN_PASSWORD) {
       setUnlocked(true);
       setGatePassword("");
@@ -337,6 +343,15 @@ export default function AdminPostForm() {
             <p className="mt-2 text-sm text-slate-400">
               続行するにはパスワードを入力してください。
             </p>
+            {!ADMIN_PASSWORD && (
+              <p className="mt-3 text-sm text-amber-300/90" role="status">
+                公開リポジトリ用にパスワードはコードに含めていません。デプロイ時は{" "}
+                <code className="rounded border border-amber-600/40 bg-slate-900/80 px-1 font-mono text-xs">
+                  NEXT_PUBLIC_ADMIN_PASSWORD
+                </code>{" "}
+                を設定してください。
+              </p>
+            )}
             <form className="mt-6 space-y-4" onSubmit={handleUnlock}>
               <label className="block">
                 <span className="mb-2 block text-sm font-medium text-slate-200">

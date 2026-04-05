@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ContactForm } from "@/components/ContactForm";
+import { ContactForm, ContactFormEnvNote } from "@/components/ContactForm";
 
 export const metadata: Metadata = {
   title: "お問い合わせ",
@@ -19,11 +19,7 @@ export default function ContactPage() {
       <div className="mt-10 rounded-3xl border border-slate-600/45 bg-slate-800/45 p-6 shadow-lg shadow-slate-950/20 backdrop-blur-sm sm:p-8">
         <ContactForm />
       </div>
-      <p className="mt-8 text-center text-xs text-slate-600">
-        送信は FormSubmit 経由で{" "}
-        <span className="text-slate-500">vca.reviewlabo@gmail.com</span>{" "}
-        に届きます。初回利用時は同アドレスに届く有効化メールの案内に従ってください。
-      </p>
+      <ContactFormEnvNote />
     </main>
   );
 }

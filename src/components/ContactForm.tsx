@@ -2,17 +2,15 @@
 
 import { useState } from "react";
 
-/** 既定の送信先（FormSubmit）。環境変数で上書き可。 */
-const DEFAULT_CONTACT_EMAIL = "vca.reviewlabo@gmail.com";
-
 /**
  * FormSubmit（https://formsubmit.co）の AJAX エンドポイントへ送信します。
- * 初回のみ、送信先メールに有効化リンクが届く場合があります。
+ * 送信先は NEXT_PUBLIC_CONTACT_TO_EMAIL のみ（未設定時はフォームを出しません）。
  */
 export function ContactForm() {
-  const to =
-    process.env.NEXT_PUBLIC_CONTACT_TO_EMAIL?.trim() || DEFAULT_CONTACT_EMAIL;
-  const ajaxUrl = `https://formsubmit.co/ajax/${encodeURIComponent(to)}`;
+  const to = process.env.NEXT_PUBLIC_CONTACT_TO_EMAIL?.trim() ?? "";
+  const ajaxUrl = to
+    ? `https://formsubmit.co/ajax/${encodeURIComponent(to)}`
+    : "";
 
   const [status, setStatus] = useState<"idle" | "sending" | "ok" | "err">(
     "idle"
@@ -47,6 +45,13 @@ export function ContactForm() {
       return;
     }
 
+    if (!to || !ajaxUrl) {
+      setValidationHint(
+        "送信先が未設定です。NEXT_PUBLIC_CONTACT_TO_EMAIL を .env に設定してください。"
+      );
+      return;
+    }
+
     setStatus("sending");
     const payload = {
       name,
@@ -72,6 +77,24 @@ export function ContactForm() {
     } catch {
       setStatus("err");
     }
+  }
+
+  if (!to) {
+    return (
+      <div
+        className="rounded-2xl border border-amber-600/40 bg-amber-950/20 px-5 py-6 text-sm text-amber-100/95"
+        role="status"
+      >
+        <p className="font-medium">お問い合わせフォームは未設定です</p>
+        <p className="mt-2 text-amber-200/80">
+          デプロイ時に{" "}
+          <code className="rounded border border-amber-600/50 bg-slate-900/60 px-1.5 py-0.5 font-mono text-xs">
+            NEXT_PUBLIC_CONTACT_TO_EMAIL
+          </code>{" "}
+          に送信先メールを設定してください（リポジトリにメールアドレスを直書きしません）。
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -176,5 +199,26 @@ export function ContactForm() {
         </p>
       )}
     </form>
+  );
+}
+
+/** お問い合わせページ下部の注記（送信先は env のみ参照） */
+export function ContactFormEnvNote() {
+  const email = process.env.NEXT_PUBLIC_CONTACT_TO_EMAIL?.trim() ?? "";
+  if (!email) {
+    return (
+      <p className="mt-8 text-center text-xs text-slate-600">
+        送信先メールは環境変数{" "}
+        <code className="text-slate-500">NEXT_PUBLIC_CONTACT_TO_EMAIL</code>{" "}
+        で設定します。
+      </p>
+    );
+  }
+  return (
+    <p className="mt-8 text-center text-xs text-slate-600">
+      送信は FormSubmit 経由で{" "}
+      <span className="text-slate-500">{email}</span>{" "}
+      に届きます。初回利用時は同アドレスに届く有効化メールの案内に従ってください。
+    </p>
   );
 }
