@@ -12,22 +12,11 @@ import { ReviewJsonLd } from "@/components/ReviewJsonLd";
 import { ReviewMarkdown } from "@/components/ReviewMarkdown";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { StarRating } from "@/components/StarRating";
+import { resolveSocialPreviewImage, siteUrl } from "@/lib/og-metadata";
 import { getAllSlugs, getReviewBySlug } from "@/lib/reviews";
 import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
 
 type Props = { params: Promise<{ slug: string }> };
-
-function siteUrl() {
-  return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-}
-
-function ogImageUrl(review: NonNullable<ReturnType<typeof getReviewBySlug>>) {
-  if (!review.coverImage) return undefined;
-  if (review.coverImage.startsWith("/")) {
-    return new URL(review.coverImage, siteUrl()).toString();
-  }
-  return review.coverImage;
-}
 
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -41,8 +30,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = review.title;
   const description =
     stripMarkdownForMeta(review.summary) || review.title;
-  const url = `${siteUrl()}/reviews/${slug}`;
-  const og = ogImageUrl(review);
+  const url = `${siteUrl()}/reviews/${slug}/`;
+  const { url: imageUrl, alt: imageAlt } = resolveSocialPreviewImage(review);
 
   return {
     title,
@@ -53,13 +42,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url,
       type: "article",
       publishedTime: review.publishedAt,
-      ...(og ? { images: [{ url: og, alt: review.title }] } : {}),
+      images: [{ url: imageUrl, alt: imageAlt }],
     },
     twitter: {
-      card: og ? "summary_large_image" : "summary",
+      card: "summary_large_image",
       title,
       description,
-      ...(og ? { images: [og] } : {}),
+      images: [imageUrl],
     },
     alternates: { canonical: url },
   };
@@ -70,7 +59,7 @@ export default async function ReviewPage({ params }: Props) {
   const review = getReviewBySlug(slug);
   if (!review) notFound();
 
-  const canonicalUrl = `${siteUrl()}/reviews/${review.slug}`;
+  const canonicalUrl = `${siteUrl()}/reviews/${review.slug}/`;
   const best = review.ratingBest ?? 5;
   const cover = review.coverImage;
   const isLocal = cover?.startsWith("/");
