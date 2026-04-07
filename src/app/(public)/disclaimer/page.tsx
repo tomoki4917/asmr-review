@@ -5,7 +5,7 @@ import { DisclaimerContent } from "@/components/DisclaimerContent";
 export const metadata: Metadata = {
   title: "免責事項",
   description:
-    "同人音声レビュー分析拠点のレビュー内容、効果保証、外部リンク、アフィリエイトに関する免責です。",
+    "同人音声紹介ラボのレビュー内容、効果保証、外部リンク、アフィリエイトに関する免責です。",
 };
 
 export default function DisclaimerPage() {

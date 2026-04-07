@@ -29,7 +29,7 @@ export default function HomePage() {
           hypnosis · ASMR · psychology
         </p>
         <h1 className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">
-          同人音声レビュー分析拠点
+          同人音声紹介ラボ
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
           主に同人音声を主観と客観的なデータに基づいてレビューさせていただいております。色んな作品が溢れている昨今、「少しでも読者様の参考になれば」という思いで投稿しています。

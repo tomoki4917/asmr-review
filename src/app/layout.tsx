@@ -3,7 +3,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 
-const siteName = "同人音声レビュー分析拠点";
+const siteName = "同人音声紹介ラボ";
 
 const notoSansJp = Noto_Sans_JP({
   subsets: ["latin"],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: `%s | ${siteName}`,
   },
   description:
-    "同人音声・催眠音声のレビューと心理学的な読み解き。個人ブログ。",
+    "同人音声・催眠音声の紹介とレビュー、心理学的な読み解き。個人ブログ。",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
   ),
