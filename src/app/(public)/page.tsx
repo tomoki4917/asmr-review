@@ -1,7 +1,7 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import { AdMaxUnit } from "@/components/AdMaxUnit";
 import { HomeReviewList } from "@/components/HomeReviewList";
-import { MoodDiagnosticModal } from "@/components/MoodDiagnosticModal";
 import { PsychologyInsightsSection } from "@/components/PsychologyInsightsSection";
 import { getAllReviews } from "@/lib/reviews";
 import type { Review } from "@/lib/types";
@@ -29,16 +29,24 @@ export default function HomePage() {
           hypnosis · ASMR · psychology
         </p>
         <h1 className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">
-          ASMRレビューラボ
+          同人音声レビュー分析拠点
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
-          作品レビューと、<strong className="font-semibold text-slate-200">催眠音声がはじめての方</strong>
-          向けの解説をまとめています。「怪しい」「自分には無理」という先入観のまえに、
-          <span className="text-slate-300">仕組みから順に読むだけで全体像がつかめます。</span>
+          主に同人音声を主観と客観的なデータに基づいてレビューさせていただいております。色んな作品が溢れている昨今、「少しでも読者様の参考になれば」という思いで投稿しています。
         </p>
-        <div className="mt-8 flex justify-center">
-          <MoodDiagnosticModal />
-        </div>
+        <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
+          忖度無しのガチレビューです。
+        </p>
+        <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
+          質問などあれば
+          <Link
+            href="/contact/"
+            className="font-medium text-sky-300 underline-offset-2 hover:text-sky-200 hover:underline"
+          >
+            問い合わせフォーム
+          </Link>
+          にてお待ちしております。
+        </p>
       </header>
 
       <div className="mx-auto mt-10 flex justify-center overflow-x-hidden">

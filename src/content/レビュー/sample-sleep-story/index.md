@@ -6,9 +6,9 @@ tags:
   - 寝落ち
   - 癒やし
   - ASMR
-coverImage: /content/cover-sleep.svg
-ratingValue: 4
-ratingBest: 5
+coverImage: /content/レビュー/sample-sleep-story/cover.svg
+ratingValue: 8
+ratingBest: 10
 itemName: 寝落ちストーリー環境音セット（サンプル）
 authorName: レビュアー名（サンプル）
 publishedAt: "2026-03-10"

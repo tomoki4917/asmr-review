@@ -1,9 +1,13 @@
 ---
+# 複製して「タイトル用フォルダ/index.md」として置く。
+# ・レビュー → src/content/レビュー/あなたのフォルダ/index.md
+# ・記事 → src/content/記事/あなたのフォルダ/index.md（下の contentKind: article を有効化）
+#
 # --- 必須・推奨フィールド -----------------------------------------------
 # レビュー（星あり・「レビュー一覧」）か 記事（星なし・「記事」欄）か。省略時は review
 # contentKind: article
 
-# 記事の URL 末尾になります（英小文字・数字・ハイフン推奨）。未指定時はファイルパスから自動生成されます。
+# 記事の URL 末尾になります（英小文字・数字・ハイフン推奨）。未指定時は index.md の親フォルダ名が使われます。
 slug: my-first-review
 
 # 一覧カード・ブラウザタブに出るタイトル
@@ -18,9 +22,9 @@ tags:
   - ASMR
 
 # レビュー（contentKind が review または省略）のとき必須。記事では不要。
-ratingValue: 4.5
-# 省略時は 5 扱い
-ratingBest: 5
+ratingValue: 9
+# 省略時は 10 点満点として表示・絞り込み換算されます
+ratingBest: 10
 
 # Schema.org（構造化データ）用。作品名として使われます。
 itemName: 作品名（itemReviewed）
@@ -43,8 +47,10 @@ affiliateLinks:
   #   label: Amazonで見る
 
 # --- 任意フィールド -----------------------------------------------------
-# 表紙。public 配下なら / から。外部 URL も可。
-# coverImage: /content/my-cover.jpg
+# 表紙。画像はこの index と同じフォルダに置き、同期後の URL を書く。
+# 例（フォルダ名が my-first-review のとき）: coverImage: /content/レビュー/my-first-review/cover.jpg
+# 記事なら: /content/記事/<フォルダ名>/cover.jpg
+# coverImage: /content/レビュー/my-first-review/cover.jpg
 ---
 
 ここから **Markdown** で本文を書けます。

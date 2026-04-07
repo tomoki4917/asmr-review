@@ -40,7 +40,7 @@ export function PsychologyInsightsSection({ beginnerGuides }: Props) {
           id="psychology-insights-heading"
           className="text-center text-lg font-bold tracking-tight text-sky-200 sm:text-xl md:text-2xl"
         >
-          催眠音声ビギナーにおすすめの記事
+          催眠音声入門におすすめの記事
         </h2>
         <p className="mx-auto mt-2 max-w-2xl text-center text-[11px] leading-relaxed text-slate-400 sm:mt-3 sm:text-sm">
           入門 → 脳イキ → ドライの順でつながる{" "}

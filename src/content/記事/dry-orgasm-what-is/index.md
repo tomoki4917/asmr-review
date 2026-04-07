@@ -8,7 +8,6 @@ itemName: "ドライオーガズムのメカニズム"
 authorName: "ASMR研究所 所長"
 publishedAt: "2026-04-01"
 affiliateLinks: []
-# 画像: ドライオーガズムとは.png をリサイズ・JPEG 化（public/content/reviews/dry-orgasm-what-is/cover.jpg）
 coverImage: "/content/reviews/dry-orgasm-what-is/cover.jpg"
 ---
 

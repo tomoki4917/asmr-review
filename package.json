@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "dev:lan": "next dev -H 0.0.0.0",
+    "sync:content-assets": "node scripts/sync-content-assets.mjs",
+    "prebuild": "npm run sync:content-assets",
+    "dev": "npm run sync:content-assets && next dev",
+    "dev:lan": "npm run sync:content-assets && next dev -H 0.0.0.0",
     "build": "next build",
     "out": "next build",
     "start": "next start",
@@ -12,7 +14,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
     "@next/third-parties": "^16.2.2",
     "gray-matter": "^4.0.3",
     "next": "^15.1.0",

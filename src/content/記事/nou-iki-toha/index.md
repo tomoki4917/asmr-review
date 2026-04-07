@@ -8,7 +8,6 @@ itemName: "脳イキのメカニズム（中級編）"
 authorName: "ASMR研究所 所長"
 publishedAt: "2026-04-01"
 affiliateLinks: []
-# 画像: public/content/reviews/nou-iki-toha/cover.jpg（元 PNG をリサイズ・JPEG 化）
 coverImage: "/content/reviews/nou-iki-toha/cover.jpg"
 ---
 

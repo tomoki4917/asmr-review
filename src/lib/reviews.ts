@@ -9,8 +9,11 @@ import type {
   ReviewContentKind,
 } from "./types";
 
-/** レビュー用 Markdown を置くルート（直下でも `reviews/` などサブフォルダでも可） */
+/** Markdown のルート（直下の .md は走査しない。`レビュー/` と `記事/` のみ対象） */
 const CONTENT_DIR = path.join(process.cwd(), "src", "content");
+
+/** 走査対象: 各フォルダ内に「タイトル用サブフォルダ/index.md」または .md を配置 */
+const CONTENT_MARKDOWN_ROOTS = ["レビュー", "記事"] as const;
 
 function isAffiliateVendor(v: unknown): v is AffiliateVendor {
   return v === "dlsite" || v === "amazon";
@@ -152,8 +155,8 @@ function isReviewMarkdownFile(filePath: string): boolean {
   return true;
 }
 
-/** `src/content` 以下の .md を再帰収集（`_` 始まり・README 等は除外） */
-function listReviewMarkdownFiles(dir: string): string[] {
+/** 1 ディレクトリ以下の .md を再帰収集（`_` 始まり・README 等は除外） */
+function collectMarkdownUnder(dir: string): string[] {
   const out: string[] = [];
   if (!fs.existsSync(dir)) return out;
 
@@ -162,7 +165,7 @@ function listReviewMarkdownFiles(dir: string): string[] {
     if (name === "." || name === "..") continue;
     const full = path.join(dir, name);
     if (ent.isDirectory()) {
-      out.push(...listReviewMarkdownFiles(full));
+      out.push(...collectMarkdownUnder(full));
     } else if (ent.isFile() && isReviewMarkdownFile(full)) {
       out.push(full);
     }
@@ -170,15 +173,32 @@ function listReviewMarkdownFiles(dir: string): string[] {
   return out;
 }
 
-/** フロントに slug 未指定のときの既定値（例: reviews/foo.md → reviews-foo） */
+/** `レビュー/` と `記事/` 以下のみ走査（ルート直下の .md は対象外） */
+function listAllReviewMarkdownFiles(): string[] {
+  const out: string[] = [];
+  for (const sub of CONTENT_MARKDOWN_ROOTS) {
+    out.push(...collectMarkdownUnder(path.join(CONTENT_DIR, sub)));
+  }
+  return out;
+}
+
+/**
+ * フロントに slug 未指定のときの既定値。
+ * `記事/foo/index.md` → `foo`、それ以外はパスを `-` つなぎ。
+ */
 function fallbackSlugFromPath(filePath: string): string {
   const rel = path.relative(CONTENT_DIR, filePath);
   const normalized = rel.replace(/\\/g, "/").replace(/\.md$/i, "");
+  const parts = normalized.split("/").filter(Boolean);
+  const last = parts[parts.length - 1];
+  if (last.toLowerCase() === "index" && parts.length >= 2) {
+    return parts[parts.length - 2]!;
+  }
   return normalized.replace(/\//g, "-");
 }
 
 function readReviewFiles(): Review[] {
-  const paths = listReviewMarkdownFiles(CONTENT_DIR);
+  const paths = listAllReviewMarkdownFiles();
   const reviews: Review[] = [];
 
   for (const filePath of paths) {

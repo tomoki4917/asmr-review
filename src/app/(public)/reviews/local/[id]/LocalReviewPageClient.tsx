@@ -13,6 +13,7 @@ import {
   effectivePostKind,
   isStarRatedReview,
   postedKindLabel,
+  postedReviewRatingBest,
   readPostedReviewsFromStorage,
   type PostedReview,
 } from "@/lib/posted-review";
@@ -63,7 +64,7 @@ export default function LocalReviewPageClient() {
     );
   }
 
-  const best = 5;
+  const best = postedReviewRatingBest(review);
   const slug = `local-${review.id}`;
   const kind = effectivePostKind(review);
   const kindLabel = postedKindLabel(kind);

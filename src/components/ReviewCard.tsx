@@ -9,7 +9,7 @@ type Props = {
 };
 
 export function ReviewCard({ review, priorityImage = false }: Props) {
-  const best = review.ratingBest ?? 5;
+  const best = review.ratingBest ?? 10;
 
   return (
     <article>

@@ -37,7 +37,7 @@ function Star({ fill }: { fill: number }) {
   );
 }
 
-export function StarRating({ value, best = 5, size = "sm", className = "" }: Props) {
+export function StarRating({ value, best = 10, size = "sm", className = "" }: Props) {
   const stars = 5;
   const normalized = (value / best) * stars;
   const em = size === "md" ? "1.125rem" : "0.95rem";

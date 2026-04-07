@@ -9,10 +9,11 @@ import {
   effectivePostKind,
   isStarRatedReview,
   postedKindLabel,
+  postedReviewRatingBest,
   readPostedReviewsFromStorage,
-  starBucket,
   type PostedReview,
 } from "@/lib/posted-review";
+import { ratingFilterBucket } from "@/lib/rating-scale";
 import type { Review } from "@/lib/types";
 import { RatingStarsSidebar } from "@/components/RatingStarsSidebar";
 import { FileMarkdownArticleCard } from "@/components/FileMarkdownArticleCard";
@@ -46,14 +47,30 @@ function mergeReviews(
   return items;
 }
 
-function matchesStarFilter(item: MergedReviewItem, stars: number): boolean {
+function mergedReviewRatingBest(item: MergedReviewItem): number {
+  if (item.kind === "file") {
+    return item.review.ratingBest ?? 10;
+  }
+  return postedReviewRatingBest(item.review);
+}
+
+function mergedFilterBucket(item: MergedReviewItem): number {
   const v =
     item.kind === "file" ? item.review.ratingValue : item.review.ratingValue;
-  return starBucket(v) === stars;
+  return ratingFilterBucket(v, mergedReviewRatingBest(item));
+}
+
+function matchesStarFilter(
+  item: MergedReviewItem,
+  filter: number | "lte5"
+): boolean {
+  const b = mergedFilterBucket(item);
+  if (filter === "lte5") return b <= 5;
+  return b === filter;
 }
 
 function LocalPostedCard({ review }: { review: PostedReview }) {
-  const best = 5;
+  const best = postedReviewRatingBest(review);
   const slug = `local-${review.id}`;
   const kind = effectivePostKind(review);
   const label = postedKindLabel(kind);
@@ -121,8 +138,12 @@ type Props = {
 export function HomeReviewList({ markdownReviews }: Props) {
   const searchParams = useSearchParams();
   const starsRaw = searchParams.get("stars");
-  const starFilter =
-    starsRaw != null && /^[1-5]$/.test(starsRaw) ? Number(starsRaw) : null;
+  const starFilter: number | "lte5" | null =
+    starsRaw === "lte5"
+      ? "lte5"
+      : starsRaw != null && /^([1-9]|10)$/.test(starsRaw)
+        ? Number(starsRaw)
+        : null;
 
   const [posted, setPosted] = useState<PostedReview[]>([]);
 
@@ -202,11 +223,19 @@ export function HomeReviewList({ markdownReviews }: Props) {
   if (!hasAnyContent) {
     return (
       <p className="mx-auto mt-16 max-w-xl rounded-3xl border border-dashed border-slate-600/50 bg-slate-800/45 p-8 text-center text-sm leading-relaxed text-slate-400 shadow-inner shadow-slate-950/20">
-        まだ表示できる投稿がありません。Markdown の記事を{" "}
+        まだ表示できる投稿がありません。Markdown を{" "}
         <code className="rounded-md border border-slate-600/60 bg-slate-900 px-2 py-0.5 font-mono text-xs text-sky-200/90">
-          src/content/
+          src/content/レビュー/
         </code>{" "}
-        に置くか、同一ブラウザで{" "}
+        または{" "}
+        <code className="rounded-md border border-slate-600/60 bg-slate-900 px-2 py-0.5 font-mono text-xs text-sky-200/90">
+          src/content/記事/
+        </code>{" "}
+        のフォルダ内に{" "}
+        <code className="rounded-md border border-slate-600/60 bg-slate-900 px-2 py-0.5 font-mono text-xs text-sky-200/90">
+          index.md
+        </code>{" "}
+        として置くか、同一ブラウザで{" "}
         <code className="rounded-md border border-slate-600/60 bg-slate-900 px-2 py-0.5 font-mono text-xs text-sky-200/90">
           /admin
         </code>{" "}
@@ -228,7 +257,7 @@ export function HomeReviewList({ markdownReviews }: Props) {
               {starFilter !== null ? (
                 <span className="text-lg font-semibold text-sky-300">
                   {" "}
-                  （★{starFilter}）
+                  （{starFilter === "lte5" ? "★5〜" : `★${starFilter}`}）
                 </span>
               ) : null}
             </h2>
@@ -243,7 +272,9 @@ export function HomeReviewList({ markdownReviews }: Props) {
           {filteredReviews.length === 0 ? (
             <p className="rounded-2xl border border-dashed border-slate-600/50 bg-slate-800/40 px-4 py-10 text-center text-sm text-slate-500">
               {starFilter !== null
-                ? `★${starFilter}のレビューはまだありません。右のメニューで「すべて」を選ぶと全件表示されます。`
+                ? `${
+                    starFilter === "lte5" ? "★5〜" : `★${starFilter}`
+                  }のレビューはまだありません。右のメニューで「すべて」を選ぶと全件表示されます。`
                 : "レビューがありません。"}
             </p>
           ) : (
@@ -285,7 +316,15 @@ export function HomeReviewList({ markdownReviews }: Props) {
           </div>
           {combinedArticleEntries.length === 0 ? (
             <p className="rounded-2xl border border-dashed border-slate-600/50 bg-slate-800/40 px-4 py-8 text-center text-sm text-slate-500">
-              記事はまだありません。Markdown のフロントマターに{" "}
+              記事はまだありません。{" "}
+              <code className="rounded bg-slate-800 px-1 font-mono text-xs">
+                src/content/記事/
+              </code>{" "}
+              のフォルダに{" "}
+              <code className="rounded bg-slate-800 px-1 font-mono text-xs">
+                index.md
+              </code>{" "}
+              を置き、フロントマターに{" "}
               <code className="rounded bg-slate-800 px-1 font-mono text-xs">
                 contentKind: article
               </code>{" "}

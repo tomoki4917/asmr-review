@@ -1,39 +1,81 @@
-# レビュー記事（Markdown）の置き場所
+# レビュー・記事（Markdown）の置き場所
 
-## 1. 保存するフォルダ
+## 1. フォルダ構成
 
-- **ルート:** `src/content/`
-- **記事＋画像をまとめたいとき:** 例 `src/content/reviews/記事名.md` と、画像は `public/content/reviews/英語スラッグ/`（`coverImage` は `/content/reviews/英語スラッグ/cover.jpg` など）。
-- **サブフォルダ可:** 例 `src/content/reviews/あなたの記事.md`  
-  - 階層に応じて、フロントマターに **`slug` を書かない場合** の URL 用スラッグは、パスを `-` つなぎにしたものになります（例: `reviews/my-post.md` → 既定スラッグ `reviews-my-post`）。
-  - **おすすめ:** フロントマターで **`slug: 英数字ハイフン`** を必ず指定し、URL を自分で決める。
+ビルドで読み込まれるのは次の **2 つのフォルダだけ**です（`src/content/` 直下の `.md` は一覧に出ません）。
 
-## 2. 下書き・テンプレだけ公開したくないとき
+| フォルダ | 用途 |
+|----------|------|
+| `src/content/レビュー/` | 星ありの**作品レビュー**（`contentKind` 省略または `review`） |
+| `src/content/記事/` | 星なしの**解説記事**（`contentKind: article`） |
 
-- ファイル名を **`_` で始める**（例: `_draft.md`、`_template.md`）と一覧・ビルド対象外になります。
+それぞれの中に、**1 本につき 1 フォルダ**を作り、本文は **`index.md`** に書きます。
 
-## 3. フロントマターのテンプレート
+例:
 
-このフォルダの **`_template.md`** を複製し、先頭の `_` を外して使ってください。フィールドの意味は `_template.md` 内のコメントを参照してください。
+```text
+src/content/
+  レビュー/
+    作品名やスラッグのフォルダ名/
+      index.md
+      cover.jpg          ← 表紙など（index と同じフォルダにまとめる）
+      図1.png             ← 本文用・素材も同様
+  記事/
+    記事タイトルに合わせたフォルダ名/
+      index.md
+      cover.jpg
+  README.md          ← この説明（ビルド対象外）
+```
 
-- **星なしの解説記事**にしたいときは `contentKind: article` を付けます。トップの「**記事**」欄に出ます（「レビュー一覧」と星フィルタの対象外）。`ratingValue` / `ratingBest` は不要です。
+- **フォルダ名**は管理しやすい名前なら日本語でも英数字でも構いません（URL はフロントマターの **`slug`** で決まります）。
+- **`index.md` を置いたフォルダ名**が、フロントマターで `slug` を省略したときの既定スラッグになります（例: `記事/hypnosis-mechanism-01/index.md` → 既定 `hypnosis-mechanism-01`）。
+- フォルダ直下に `other.md` のように別名の `.md` を置いても読み込まれますが、**運用は `index.md` に統一**することを推奨します。
 
-## 4. 記事に画像を入れる場所
+## 2. テンプレート
 
-次のいずれか（併用可）です。
+`src/content/レビュー/_template.md` を複製し、適切なフォルダに `index.md` として置いてください（`_` で始まるファイルはビルド対象外です）。
 
-1. **一覧・詳細のヒーロー画像** … フロントマターの `coverImage`（例: `coverImage: /content/foo.jpg`）。`public` 配下なら `/` から始める。外部 URL も可。
-2. **紹介文エリア** … `summary` 内に Markdown で `![説明](https://...)` または `![説明](/content/bar.png)`。
-3. **本文** … `---` より下の Markdown 本文に、同じく `![](URL)` を書く（段落の途中・見出しの前後どちらでも可）。
+- **星なしの解説記事**にする場合は `contentKind: article` を付け、`記事/` 側のフォルダに置きます。トップの「**記事**」欄に出ます（「レビュー一覧」と評価フィルタの対象外）。`ratingValue` / `ratingBest` は不要です。
+- レビューの**満点**は `ratingBest`（省略時は **10**）。一覧の絞り込みは 10 段階に換算した点数で一致します。
 
-URL は `http(s)://` または `/` で始まるパスにしてください。
+## 3. 下書き・テンプレだけ公開したくないとき
+
+- ファイル名を **`_` で始める**（例: `_draft.md`）と一覧・ビルド対象外になります。
+- `README.md` などのドキュメントも対象外です。
+
+## 4. 画像・素材（index と同じフォルダにまとめる）
+
+**推奨:** `index.md` と**同じフォルダ**に、表紙・本文用画像・下書きメモ以外の素材を置きます（`.md` 以外。`_` で始まるファイル名は同期対象外）。
+
+静的サイトではブラウザから見えるのは `public/` だけのため、次の仕組みがあります。
+
+1. **原本** … `src/content/レビュー/...` または `src/content/記事/...` の各フォルダ内。
+2. **同期** … `npm run dev` の起動時・`npm run build` の前に、`scripts/sync-content-assets.mjs` が上記フォルダ内の **`.md` 以外**を `public/content/レビュー/`・`public/content/記事/` にコピーします（`.gitignore` 済み。リポジトリに載るのは `src` 側だけでよいです）。
+3. **パスの書き方** … フォルダ名を揃えて `/` から始める URL で参照します。
+
+例（フォルダ名が `dry-orgasm-what-is` のとき）:
+
+- フロントマター: `coverImage: /content/記事/dry-orgasm-what-is/cover.jpg`
+- 本文・summary 内: `![図](/content/記事/dry-orgasm-what-is/fig1.png)`
+
+**開発中に画像だけ追加したとき**は、同期をかけ直してください（`npm run sync:content-assets`、または dev サーバーを一度止めて `npm run dev` し直し）。
+
+**サムネイル（一覧・カード・詳細）:** フロントマターの `coverImage` で指定します。次の3記事は、フォルダ内の **日本語名 JPG**（`催眠音声とは.jpg` 等）を同期スクリプトが **ASCII の URL** に複製するため、`coverImage` は次のように書けます。
+
+- `/content/hypnosis-what-is.jpg` ← `記事/hypnosis-mechanism-01/催眠音声とは.jpg`
+- `/content/reviews/nou-iki-toha/cover.jpg` ← `記事/nou-iki-toha/脳イキとは.jpg`
+- `/content/reviews/dry-orgasm-what-is/cover.jpg` ← `記事/dry-orgasm-what-is/ドライオーガズムとは.jpg`
+
+他の記事は `cover.jpg` を置き、必要なら `scripts/sync-content-assets.mjs` の `LEGACY_ARTICLE_COVERS` に行を追加してください。
+
+外部ホストの画像は従来どおり `https://...` で指定可能です。
 
 ## 5. トップ一覧への反映（静的エクスポート）
 
 このプロジェクトは **`next.config` の `output: "export"`** により、**ビルド時**に Markdown を読み込みます。
 
-- **開発中（`npm run dev`）** … ファイルを保存したあとブラウザを更新すると、通常は新しい記事が読み込まれます。
-- **本番の静的ファイル（GitHub Pages 等）** … 記事を追加・変更したら **必ず `npm run build` を実行し、生成物をデプロイ**してください。ビルドし直さないと一覧に出ません。
+- **開発中（`npm run dev`）** … 起動時にアセット同期のあとサーバーが立ちます。`index.md` を保存したあとブラウザを更新すると本文は反映されます。
+- **本番の静的ファイル（GitHub Pages 等）** … 記事を追加・変更したら **必ず `npm run build` を実行し、生成物をデプロイ**してください。`prebuild` でアセット同期が走ります。
 
 ---
 

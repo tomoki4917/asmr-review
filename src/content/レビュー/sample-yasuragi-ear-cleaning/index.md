@@ -7,9 +7,9 @@ tags:
   - ASMR
   - バイノーラル
   - 耳かき
-coverImage: /content/cover-yasuragi.svg
-ratingValue: 4.5
-ratingBest: 5
+coverImage: /content/レビュー/sample-yasuragi-ear-cleaning/cover.svg
+ratingValue: 9
+ratingBest: 10
 itemName: 静かな耳かきと囁き（サンプル）
 itemDescription: バイノーラル収録の癒やし系ASMR音声（ダミー）
 authorName: レビュアー名（サンプル）

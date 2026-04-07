@@ -22,7 +22,7 @@ export function SiteFooter() {
           このサイトは個人によるレビュー・解説です。
         </p>
         <p className="mt-3 text-xs text-slate-500">
-          © {new Date().getFullYear()} ASMRレビューラボ
+          © {new Date().getFullYear()} 同人音声レビュー分析拠点
         </p>
       </div>
     </footer>

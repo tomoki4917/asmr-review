@@ -87,6 +87,13 @@ web_modules/
 .next
 out
 
+# src/content/{レビュー,記事} から同期（原本は src 側のみコミット）
+/public/content/レビュー/
+/public/content/記事/
+# 記事表紙の従来 URL 用コピー（sync-content-assets で src から生成）
+/public/content/reviews/
+/public/content/hypnosis-what-is.*
+
 # Nuxt.js build / generate output
 .nuxt
 dist

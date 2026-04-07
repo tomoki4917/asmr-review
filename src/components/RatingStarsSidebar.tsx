@@ -4,7 +4,14 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const STARS = [5, 4, 3, 2, 1] as const;
+const STAR_FILTERS = [
+  { param: "10", label: "★10", sr: "10点" },
+  { param: "9", label: "★9", sr: "9点" },
+  { param: "8", label: "★8", sr: "8点" },
+  { param: "7", label: "★7", sr: "7点" },
+  { param: "6", label: "★6", sr: "6点" },
+  { param: "lte5", label: "★5〜", sr: "5点以下" },
+] as const;
 
 const SECTION_PSYCHOLOGY = "psychology-insights";
 const SECTION_AUTHOR = "author-posts-heading";
@@ -47,7 +54,7 @@ export function RatingStarsSidebar() {
           レビュー評価
         </p>
         <p className="mt-1 text-xs leading-relaxed text-slate-500">
-          星の数でレビュー済み作品を絞り込みます。
+          10 段階に換算した点数でレビュー済み作品を絞り込みます。
         </p>
         <ul className="mt-4 space-y-1">
           <li>
@@ -55,17 +62,17 @@ export function RatingStarsSidebar() {
               すべて
             </Link>
           </li>
-          {STARS.map((s) => (
-            <li key={s}>
+          {STAR_FILTERS.map((f) => (
+            <li key={f.param}>
               <Link
-                href={`/?stars=${s}`}
-                className={linkClass(current === String(s))}
+                href={`/?stars=${f.param}`}
+                className={linkClass(current === f.param)}
                 scroll={false}
               >
                 <span aria-hidden className="tracking-tight">
-                  ★{s}
+                  {f.label}
                 </span>
-                <span className="sr-only">{s}つ星のレビュー</span>
+                <span className="sr-only">{f.sr}のレビュー</span>
               </Link>
             </li>
           ))}

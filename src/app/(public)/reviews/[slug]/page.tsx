@@ -60,7 +60,7 @@ export default async function ReviewPage({ params }: Props) {
   if (!review) notFound();
 
   const canonicalUrl = `${siteUrl()}/reviews/${review.slug}/`;
-  const best = review.ratingBest ?? 5;
+  const best = review.ratingBest ?? 10;
   const cover = review.coverImage;
   const isLocal = cover?.startsWith("/");
   const isRemote =

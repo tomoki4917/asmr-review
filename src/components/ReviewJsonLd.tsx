@@ -2,7 +2,7 @@ import type { Review } from "@/lib/types";
 import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
 
 function buildReviewSchema(review: Review, canonicalUrl: string) {
-  const best = review.ratingBest ?? 5;
+  const best = review.ratingBest ?? 10;
   const summaryPlain =
     stripMarkdownForMeta(review.summary) || review.title;
   return {

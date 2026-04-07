@@ -6,9 +6,9 @@ tags:
   - ロールプレイ
   - バイノーラル
   - ASMR
-coverImage: /content/cover-roleplay.svg
-ratingValue: 4.2
-ratingBest: 5
+coverImage: /content/レビュー/sample-roleplay-binaural/cover.svg
+ratingValue: 8.4
+ratingBest: 10
 itemName: ロールプレイバイノーラル（サンプル）
 authorName: レビュアー名（サンプル）
 publishedAt: "2026-03-20"

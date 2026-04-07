@@ -74,13 +74,17 @@ function StarRatingRow({
           role="group"
           aria-label={`${label}の評価`}
         >
-          {([1, 2, 3, 4, 5] as const).map((n) => (
+          {(
+            [
+              1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+            ] as const
+          ).map((n) => (
             <button
               key={n}
               type="button"
               onClick={() => onChange(n)}
               className={[
-                "min-h-11 min-w-11 rounded-lg text-xl leading-none transition",
+                "min-h-9 min-w-8 rounded-lg text-base leading-none transition sm:min-h-10 sm:min-w-9 sm:text-lg",
                 n <= value
                   ? "text-sky-300 drop-shadow-[0_0_8px_rgba(56,189,248,0.28)]"
                   : "text-slate-500 hover:text-slate-400",
@@ -94,7 +98,7 @@ function StarRatingRow({
         </div>
       </div>
       <p className="mt-2 text-right text-xs font-medium tabular-nums text-slate-400">
-        選択中: <span className="text-sky-200">{value}</span> / 5
+        選択中: <span className="text-sky-200">{value}</span> / 10
       </p>
     </div>
   );
@@ -115,7 +119,7 @@ export default function AdminPostForm() {
   const [contentMode, setContentMode] = useState<ContentMode>("review");
   const [title, setTitle] = useState("");
   const [dlsiteUrl, setDlsiteUrl] = useState("");
-  const [ratingValue, setRatingValue] = useState(3);
+  const [ratingValue, setRatingValue] = useState(5);
   const [body, setBody] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
 
@@ -145,7 +149,7 @@ export default function AdminPostForm() {
     setDlsiteUrl("");
     setThumbnailUrl("");
     setBody("");
-    setRatingValue(3);
+    setRatingValue(5);
     setSubmitError(null);
   }
 
@@ -160,8 +164,16 @@ export default function AdminPostForm() {
     setThumbnailUrl(p.thumbnailUrl ?? "");
     setRatingValue(
       k === "review"
-        ? Math.min(5, Math.max(1, Math.round(p.ratingValue || 3)))
-        : 3
+        ? Math.min(
+            10,
+            Math.max(
+              1,
+              Math.round(
+                ((p.ratingValue || 5) / (p.ratingBest ?? 5)) * 10
+              )
+            )
+          )
+        : 5
     );
     setSubmitError(null);
     setSaveNotice(null);
@@ -250,6 +262,10 @@ export default function AdminPostForm() {
         ratingValue: postKind === "review" ? ratingValue : 0,
         publishedAt: existing?.publishedAt ?? new Date().toISOString(),
       };
+
+      if (postKind === "review") {
+        row.ratingBest = 10;
+      }
 
       if (dlsiteUrl.trim()) row.dlsiteUrl = dlsiteUrl.trim();
       else delete row.dlsiteUrl;
@@ -557,7 +573,7 @@ export default function AdminPostForm() {
               {contentMode === "review" && (
                 <section className="space-y-4">
                   <h2 className="text-lg font-semibold tracking-tight text-sky-100">
-                    総合評価（1〜5）
+                    総合評価（1〜10）
                   </h2>
                   <StarRatingRow
                     label="総合評価"

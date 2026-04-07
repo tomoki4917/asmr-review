@@ -24,6 +24,8 @@ export type PostedReview = {
   tags: string[];
   /** レビュー以外は 0 */
   ratingValue: number;
+  /** 省略時は従来どおり 5 点満点として解釈。新規保存は 10 */
+  ratingBest?: number;
   publishedAt: string;
   dlsiteUrl?: string;
   thumbnailUrl?: string;
@@ -60,9 +62,9 @@ export function isStarRatedReview(r: PostedReview): boolean {
   return effectivePostKind(r) === "review";
 }
 
-/** 1〜5 に丸めた星（レビュー一覧の絞り込み用） */
-export function starBucket(rating: number): number {
-  return Math.min(5, Math.max(1, Math.round(rating)));
+/** ローカル投稿の満点（キーなしは従来の 5 点満点） */
+export function postedReviewRatingBest(r: PostedReview): number {
+  return r.ratingBest ?? 5;
 }
 
 function parsePostKindField(raw: unknown): PostedReviewKind {
@@ -94,13 +96,20 @@ export function parsePostedReviewsJson(raw: string | null): PostedReview[] {
       if (!Array.isArray(o.tags)) continue;
       const tags = o.tags.filter((t): t is string => typeof t === "string");
       const postKind = parsePostKindField(o.postKind);
+      let ratingBest: number | undefined =
+        typeof o.ratingBest === "number" && !Number.isNaN(o.ratingBest)
+          ? Math.min(20, Math.max(1, Math.round(o.ratingBest)))
+          : undefined;
       let ratingValue = 0;
       if (postKind === "review") {
         if (typeof o.ratingValue !== "number" || Number.isNaN(o.ratingValue)) continue;
-        ratingValue = Math.min(5, Math.max(1, Math.round(o.ratingValue)));
+        const best = ratingBest ?? 5;
+        ratingValue = Math.min(best, Math.max(1, Math.round(o.ratingValue)));
+      } else {
+        ratingBest = undefined;
       }
       if (typeof o.publishedAt !== "string") continue;
-      out.push({
+      const row: PostedReview = {
         id: o.id,
         postKind,
         title: o.title,
@@ -111,7 +120,11 @@ export function parsePostedReviewsJson(raw: string | null): PostedReview[] {
         publishedAt: o.publishedAt,
         dlsiteUrl: optionalUrl(o.dlsiteUrl),
         thumbnailUrl: optionalUrl(o.thumbnailUrl),
-      });
+      };
+      if (postKind === "review" && ratingBest != null) {
+        row.ratingBest = ratingBest;
+      }
+      out.push(row);
     }
     return out;
   } catch {
