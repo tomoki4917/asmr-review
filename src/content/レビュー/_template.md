@@ -51,6 +51,9 @@ affiliateLinks:
 # 例（フォルダ名が my-first-review のとき）: coverImage: /content/レビュー/my-first-review/cover.jpg
 # 記事なら: /content/記事/<フォルダ名>/cover.jpg
 # coverImage: /content/レビュー/my-first-review/cover.jpg
+
+# 任意。詳細ページ本文の直後に「次の記事」へリンク（値は相手の slug）
+# nextSlug: another-post-slug
 ---
 
 ここから **Markdown** で本文を書けます。

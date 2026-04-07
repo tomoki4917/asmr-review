@@ -84,6 +84,11 @@ function parseOptionalCoverImage(raw: unknown): string | undefined {
   );
 }
 
+function parseOptionalNextSlug(raw: unknown): string | undefined {
+  if (typeof raw !== "string" || !raw.trim()) return undefined;
+  return raw.trim();
+}
+
 function parseContentKind(raw: unknown): ReviewContentKind {
   if (raw === "article") return "article";
   return "review";
@@ -129,6 +134,7 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
     authorName: asString(d.authorName, "authorName"),
     publishedAt: asString(d.publishedAt, "publishedAt"),
     affiliateLinks: parseAffiliateLinks(d.affiliateLinks),
+    nextSlug: parseOptionalNextSlug(d.nextSlug),
   };
 
   if (Number.isNaN(Date.parse(review.publishedAt))) {

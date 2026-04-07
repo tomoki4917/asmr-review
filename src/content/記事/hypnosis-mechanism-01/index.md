@@ -4,14 +4,16 @@ slug: "hypnosis-mechanism-01"
 contentKind: article
 title: "催眠音声のメカニズムを解剖：なぜ『声』だけで脳は反応するのか？"
 summary: "「怪しい」「自分には無理」そんな先入観で損をしていませんか？脳が音に反応し、深いリラックスへ導かれる仕組みを、実体験を交えて解説します。"
-tags: ["催眠音声", "メカニズム", "初心者向け", "脳科学"]
+tags: ["催眠音声", "メカニズム", "記事"]
 # 記事では ratingValue / ratingBest は不要（書かなくてOK）
-itemName: "催眠音声の仕組み（初級編）"
+itemName: "催眠音声の仕組み"
 authorName: "ASMR研究所 所長"
 publishedAt: "2026-03-31"
 affiliateLinks: []
 # サムネ: フォルダ内の JPG（催眠音声とは.jpg）を同期で /content/hypnosis-what-is.jpg にも複製
 coverImage: "/content/hypnosis-what-is.jpg"
+# 詳細ページ末尾に「次の記事」リンク（任意）
+nextSlug: "nou-iki-toha"
 ---
 
 **『催眠音声』。**

@@ -32,4 +32,6 @@ export type Review = {
   authorName: string;
   publishedAt: string;
   affiliateLinks: AffiliateLink[];
+  /** 詳細ページ末尾の「次の記事」用（フロントマター `nextSlug`） */
+  nextSlug?: string;
 };

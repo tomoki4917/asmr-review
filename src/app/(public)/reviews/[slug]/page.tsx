@@ -9,6 +9,7 @@ import {
   isSvgCoverPath,
 } from "@/components/ReviewCover";
 import { ReviewJsonLd } from "@/components/ReviewJsonLd";
+import { ArticleNextNav } from "@/components/ArticleNextNav";
 import { ReviewMarkdown } from "@/components/ReviewMarkdown";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { StarRating } from "@/components/StarRating";
@@ -67,6 +68,9 @@ export default async function ReviewPage({ params }: Props) {
     cover?.startsWith("http://") || cover?.startsWith("https://");
 
   const isArticle = review.contentKind === "article";
+  const nextReview = review.nextSlug
+    ? getReviewBySlug(review.nextSlug)
+    : undefined;
 
   return (
     <>
@@ -161,6 +165,8 @@ export default async function ReviewPage({ params }: Props) {
             <p className="text-slate-500">本文がまだありません。</p>
           )}
         </section>
+
+        {nextReview ? <ArticleNextNav next={nextReview} /> : null}
 
         {review.affiliateLinks.length > 0 && (
           <section className="mt-10 rounded-3xl border border-slate-600/40 bg-slate-800/40 px-5 py-8 sm:px-8">
