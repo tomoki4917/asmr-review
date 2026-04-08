@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdMaxUnit } from "@/components/AdMaxUnit";
 import { AffiliateButtonGroup } from "@/components/AffiliateButton";
-import {
-  ReviewCoverPlaceholder,
-  isSvgCoverPath,
-} from "@/components/ReviewCover";
+import { ReviewCover } from "@/components/ReviewCover";
 import { ReviewJsonLd } from "@/components/ReviewJsonLd";
 import { ArticleNextNav } from "@/components/ArticleNextNav";
 import { ReviewMarkdown } from "@/components/ReviewMarkdown";
@@ -62,10 +58,6 @@ export default async function ReviewPage({ params }: Props) {
 
   const canonicalUrl = `${siteUrl()}/reviews/${review.slug}/`;
   const best = review.ratingBest ?? 10;
-  const cover = review.coverImage;
-  const isLocal = cover?.startsWith("/");
-  const isRemote =
-    cover?.startsWith("http://") || cover?.startsWith("https://");
 
   const isArticle = review.contentKind === "article";
   const nextReview = review.nextSlug
@@ -89,40 +81,14 @@ export default async function ReviewPage({ params }: Props) {
 
         <header className="mt-6">
           <div className="overflow-hidden rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-lg shadow-slate-950/25 backdrop-blur-sm">
-            <div className="relative aspect-[16/9] min-h-0 min-w-0 w-full max-w-full overflow-hidden sm:aspect-[2/1]">
-              {cover && isLocal && isSvgCoverPath(cover) && (
-                // eslint-disable-next-line @next/next/no-img-element -- SVG 表紙は next/image fill と Grid で枠からはみ出すため
-                <img
-                  src={cover}
-                  alt={review.title}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  loading="eager"
-                  decoding="async"
-                />
-              )}
-              {cover && isLocal && !isSvgCoverPath(cover) && (
-                <Image
-                  src={cover}
-                  alt={review.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 48rem"
-                  priority
-                />
-              )}
-              {cover && isRemote && (
-                <Image
-                  src={cover}
-                  alt={review.title}
-                  fill
-                  unoptimized
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 48rem"
-                  priority
-                />
-              )}
-              {!cover && <ReviewCoverPlaceholder slug={review.slug} />}
-            </div>
+            <ReviewCover
+              coverImage={review.coverImage}
+              alt={review.title}
+              slug={review.slug}
+              priority
+              variant="hero"
+              className="rounded-none"
+            />
             <div className="border-t border-slate-600/40 bg-slate-900/50 px-5 py-6 sm:px-8 sm:py-8">
               <h1 className="text-balance text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl">
                 {review.title}

@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import type { Review } from "@/lib/types";
+import { useState } from "react";
 
 type Props = {
   coverImage: string | undefined;
@@ -7,6 +9,8 @@ type Props = {
   slug: string;
   priority?: boolean;
   className?: string;
+  /** 一覧カードは 16:10、記事ヘッダーは hero */
+  variant?: "card" | "hero";
   /** fill 画像・img に付与（object-fit / object-position など） */
   imageClassName?: string;
 };
@@ -51,11 +55,18 @@ export function ReviewCover({
   slug,
   priority = false,
   className = "",
-  imageClassName = "object-cover object-center",
+  variant = "card",
+  /** 表紙のトリミングを減らす（上下に余白が付く場合は背景色で埋まる） */
+  imageClassName = "object-contain object-center",
 }: Props) {
-  const wrap = `relative aspect-[16/10] min-h-0 min-w-0 w-full max-w-full overflow-hidden bg-slate-900 ${className}`;
+  const [loadFailed, setLoadFailed] = useState(false);
+  const aspect =
+    variant === "hero"
+      ? "aspect-[16/9] min-h-0 sm:aspect-[2/1]"
+      : "aspect-[16/10] min-h-0";
+  const wrap = `relative ${aspect} min-w-0 w-full max-w-full overflow-hidden bg-slate-900 ${className}`;
 
-  if (!coverImage) {
+  if (!coverImage || loadFailed) {
     return (
       <div className={wrap}>
         <ReviewCoverPlaceholder slug={slug} />
@@ -79,19 +90,22 @@ export function ReviewCover({
             className={`absolute inset-0 h-full w-full ${imageClassName}`}
             loading={priority ? "eager" : "lazy"}
             decoding="async"
+            onError={() => setLoadFailed(true)}
           />
         </div>
       );
     }
     return (
       <div className={wrap}>
-        <Image
+        {/* 静的 export・未配置ファイル時の 404 でもプレースホルダに落とすため img + onError */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={coverImage}
           alt={alt}
-          fill
-          className={imageClassName}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          priority={priority}
+          className={`absolute inset-0 h-full w-full ${imageClassName}`}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          onError={() => setLoadFailed(true)}
         />
       </div>
     );
@@ -108,6 +122,7 @@ export function ReviewCover({
           className={imageClassName}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority={priority}
+          onError={() => setLoadFailed(true)}
         />
       </div>
     );

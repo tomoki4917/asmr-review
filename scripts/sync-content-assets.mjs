@@ -97,6 +97,49 @@ function copyLegacyArticleCovers() {
 
 copyLegacyArticleCovers();
 
+/**
+ * レビューフォルダに cover.* が無いが別名の画像がある場合、public 側に cover.<元拡張子> として複製する。
+ * フロントマターの coverImage を /content/レビュー/<slug>/cover.jpg 等と揃えやすくする。
+ */
+function ensureReviewCoverAliases() {
+  const reviewRoot = path.join(contentRoot, "レビュー");
+  if (!fs.existsSync(reviewRoot)) return;
+
+  for (const ent of fs.readdirSync(reviewRoot, { withFileTypes: true })) {
+    if (!ent.isDirectory() || ent.name.startsWith("_")) continue;
+    const slug = ent.name;
+    const srcDir = path.join(reviewRoot, slug);
+    const pubDir = path.join(publicContent, "レビュー", slug);
+    if (!fs.existsSync(pubDir)) continue;
+
+    const hasCoverInSrc = COVER_BASENAMES.some((n) => {
+      const p = path.join(srcDir, n);
+      return fs.existsSync(p) && fs.statSync(p).isFile();
+    });
+    if (hasCoverInSrc) continue;
+
+    const images = fs
+      .readdirSync(srcDir)
+      .filter(
+        (f) =>
+          /\.(jpe?g|png|webp|gif)$/i.test(f) &&
+          !f.startsWith("_")
+      )
+      .sort();
+    if (images.length === 0) continue;
+
+    const first = images[0];
+    const ext = path.extname(first).toLowerCase();
+    const outExt = ext === ".jpeg" ? ".jpg" : ext;
+    const from = path.join(pubDir, first);
+    const finalDest = path.join(pubDir, `cover${outExt}`);
+    if (!fs.existsSync(from)) continue;
+    fs.copyFileSync(from, finalDest);
+  }
+}
+
+ensureReviewCoverAliases();
+
 console.log(
   "sync-content-assets: mirrored non-.md files from src/content/{レビュー,記事} → public/content/"
 );
