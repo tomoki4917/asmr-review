@@ -78,7 +78,7 @@ export default function LocalReviewPageClient() {
           : "text-amber-300/95";
 
   return (
-    <article className="mx-auto w-full max-w-3xl py-8 sm:py-12">
+    <article className="mx-auto w-full max-w-3xl py-8 sm:py-10 lg:max-w-4xl xl:max-w-5xl xl:py-11">
       <Link
         href="/"
         className="inline-flex min-h-11 items-center gap-1 text-sm font-medium text-sky-300 transition hover:text-sky-200"
@@ -86,9 +86,9 @@ export default function LocalReviewPageClient() {
         <span aria-hidden>←</span> トップへ
       </Link>
 
-      <AdMaxUnit placement="article-top" className="mt-8" />
+      <AdMaxUnit placement="article-top" className="mt-6 sm:mt-7" />
 
-      <header className="mt-6">
+      <header className="mt-5 sm:mt-6">
         <div className="overflow-hidden rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-lg shadow-slate-950/25 backdrop-blur-sm">
           <div className="relative aspect-[16/9] min-h-0 min-w-0 w-full max-w-full overflow-hidden sm:aspect-[2/1]">
             {review.thumbnailUrl ? (
@@ -154,7 +154,7 @@ export default function LocalReviewPageClient() {
         </div>
       </header>
 
-      <section className="mt-10 rounded-3xl border border-slate-600/45 bg-slate-800/50 px-5 py-8 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:px-8 sm:py-10">
+      <section className="mt-8 rounded-3xl border border-slate-600/45 bg-slate-800/50 px-5 py-7 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9">
         {review.body ? (
           <ReviewMarkdown markdown={review.body} />
         ) : (

@@ -69,7 +69,7 @@ export default async function ReviewPage({ params }: Props) {
       {!isArticle && (
         <ReviewJsonLd review={review} canonicalUrl={canonicalUrl} />
       )}
-      <article className="mx-auto w-full max-w-3xl py-8 sm:py-12">
+      <article className="mx-auto w-full max-w-3xl py-8 sm:py-10 lg:max-w-4xl xl:max-w-5xl xl:py-11">
         <Link
           href="/"
           className="inline-flex min-h-11 items-center gap-1 text-sm font-medium text-sky-300 transition hover:text-sky-200"
@@ -77,9 +77,9 @@ export default async function ReviewPage({ params }: Props) {
           <span aria-hidden>←</span> {isArticle ? "トップへ" : "レビュー一覧"}
         </Link>
 
-        <AdMaxUnit placement="article-top" className="mt-8" />
+        <AdMaxUnit placement="article-top" className="mt-6 sm:mt-7" />
 
-        <header className="mt-6">
+        <header className="mt-5 sm:mt-6">
           <div className="overflow-hidden rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-lg shadow-slate-950/25 backdrop-blur-sm">
             <ReviewCover
               coverImage={review.coverImage}
@@ -124,7 +124,7 @@ export default async function ReviewPage({ params }: Props) {
           </div>
         </header>
 
-        <section className="mt-10 rounded-3xl border border-slate-600/45 bg-slate-800/50 px-5 py-8 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:px-8 sm:py-10">
+        <section className="mt-8 rounded-3xl border border-slate-600/45 bg-slate-800/50 px-5 py-7 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9">
           {review.body ? (
             <ReviewMarkdown markdown={review.body} />
           ) : (
@@ -135,7 +135,7 @@ export default async function ReviewPage({ params }: Props) {
         {nextReview ? <ArticleNextNav next={nextReview} /> : null}
 
         {review.affiliateLinks.length > 0 && (
-          <section className="mt-10 rounded-3xl border border-slate-600/40 bg-slate-800/40 px-5 py-8 sm:px-8">
+          <section className="mt-8 rounded-3xl border border-slate-600/40 bg-slate-800/40 px-5 py-7 sm:mt-9 sm:px-8 sm:py-8">
             <h2 className="text-lg font-bold text-slate-50">
               購入・視聴
             </h2>
