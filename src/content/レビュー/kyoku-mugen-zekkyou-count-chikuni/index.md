@@ -54,7 +54,9 @@ affiliateLinks:
 
 ### 作品評価グラフ
 
-![作品評価グラフ（トランス度・快楽度・ストーリー性）](/content/reviews/kyoku-mugen-zekkyou-count-chikuni/review_triangle.png)
+第三軸の **満足度** は、聴き終わったあとの満足を主観で10点満点にしたものです。
+
+![作品評価グラフ（トランス度・快楽度・満足度）](/content/reviews/kyoku-mugen-zekkyou-count-chikuni/review_triangle.png)
 
 ---
 

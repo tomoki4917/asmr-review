@@ -3,15 +3,20 @@
 _分析データ.txt を読み、review_triangle.png を出力する。
 各軸は 10.0 満点。
 
-軸配置（上から時計回り）: 12時=トランス度, 4時=快楽度, 8時=ストーリー性
+軸配置（上から時計回り）: 12時=トランス度, 4時=快楽度, 8時=第三軸
+第三軸のキー例: ストーリー性（従来） / 満足度（聴き終わりの満足） など
 """
 from __future__ import annotations
 
 import re
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+
+# 第三軸は作品ごとにキー名を変えられる（先頭から最初に見つかったものを採用）
+THIRD_AXIS_KEYS = ("ストーリー性", "満足度", "充実度")
 
 BG = "#121212"
 NEON = "#00f2ff"
@@ -25,7 +30,7 @@ LABEL_COLOR = "#ffffff"
 THETA_CCW = np.array([np.pi / 2, 7 * np.pi / 6, 11 * np.pi / 6, np.pi / 2])
 
 
-def load_scores(txt_path: Path) -> tuple[str, float, float, float]:
+def load_scores(txt_path: Path) -> tuple[str, float, float, float, str]:
     text = txt_path.read_text(encoding="utf-8")
     name_m = re.search(r"作品名:\s*(.+)", text)
     work_name = name_m.group(1).strip() if name_m else ""
@@ -36,34 +41,38 @@ def load_scores(txt_path: Path) -> tuple[str, float, float, float]:
             raise ValueError(f"missing key: {key}")
         return float(m.group(1))
 
-    return (
-        work_name,
-        one("トランス度"),
-        one("快楽度"),
-        one("ストーリー性"),
-    )
+    trans = one("トランス度")
+    body = one("快楽度")
+    third_label: str | None = None
+    third_val: float | None = None
+    for key in THIRD_AXIS_KEYS:
+        m = re.search(rf"^{re.escape(key)}:\s*([0-9]+(?:\.[0-9]+)?)\s*$", text, re.MULTILINE)
+        if m:
+            third_label = key
+            third_val = float(m.group(1))
+            break
+    if third_label is None or third_val is None:
+        raise ValueError(
+            f"第三軸が見つかりません（いずれか1行を書いてください）: {', '.join(THIRD_AXIS_KEYS)}"
+        )
+
+    return (work_name, trans, body, third_val, third_label)
 
 
 def main() -> None:
     root = Path(__file__).resolve().parents[1]
-    data_path = (
-        root
-        / "src"
-        / "content"
-        / "レビュー"
-        / "kyoku-mugen-zekkyou-count-chikuni"
-        / "_分析データ.txt"
-    )
+    slug = sys.argv[1] if len(sys.argv) > 1 else "kyoku-mugen-zekkyou-count-chikuni"
+    data_path = root / "src" / "content" / "レビュー" / slug / "_分析データ.txt"
     out_path = data_path.parent / "review_triangle.png"
 
-    _, trans, body, story = load_scores(data_path)
+    _, trans, body, third, third_label = load_scores(data_path)
     r_max = 10.0
     trans = float(np.clip(trans, 0.0, r_max))
     body = float(np.clip(body, 0.0, r_max))
-    story = float(np.clip(story, 0.0, r_max))
+    third = float(np.clip(third, 0.0, r_max))
 
-    # 12→8→4 の反時計回りで閉じる
-    r_ccw = np.array([trans, story, body, trans])
+    # 12→8→4 の反時計回りで閉じる（第三軸は 8 時位置）
+    r_ccw = np.array([trans, third, body, trans])
 
     plt.rcParams.update(
         {
@@ -107,7 +116,7 @@ def main() -> None:
     label_specs = [
         (np.pi / 2, "トランス度", trans),
         (11 * np.pi / 6, "快楽度", body),
-        (7 * np.pi / 6, "ストーリー性", story),
+        (7 * np.pi / 6, third_label, third),
     ]
     for ang, lab, val in label_specs:
         ax.text(
