@@ -61,7 +61,7 @@ function desktopUnitConfig(placement: AdMaxPlacement): UnitCfg {
   }
 }
 
-/** 768px 未満: 大枠は使わず MPU + モバイル用 script（トップのみ差し替え）。 */
+/** 768px 未満: MPU 固定 + モバイル用 script（全枠で統一。PC 用タグが空振りし暗く見えるのを防ぐ） */
 function resolveUnitConfig(
   placement: AdMaxPlacement,
   narrow: boolean
@@ -74,10 +74,7 @@ function resolveUnitConfig(
     width: 300,
     height: 250,
     maxWrapPx: 300,
-    scriptSrc:
-      placement === "home-top"
-        ? ADMAX_SCRIPT_SRC_MOBILE
-        : d.scriptSrc,
+    scriptSrc: ADMAX_SCRIPT_SRC_MOBILE,
   };
 }
 
@@ -151,8 +148,8 @@ export function AdMaxUnit({ placement, className = "" }: Props) {
 
     const srcEsc = escapeAttr(scriptSrc);
     const overflowY = narrow ? "auto" : "hidden";
-    /* サイト背景に近い色。透明だと iframe 既定の白が広告まわりに見える */
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;padding:0;overflow-x:hidden;overflow-y:${overflowY};background:#0f172a;}body{display:flex;justify-content:center;align-items:flex-start;min-height:${frameH}px;}</style></head><body><script src="${srcEsc}"><\/script></body></html>`;
+    /* 広告未配信時も「枠」がわかるよう slate-800 + 内側の線。真っ暗に見えないよう #0f172a より一段明るく */
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;padding:0;overflow-x:hidden;overflow-y:${overflowY};background:#1e293b;box-shadow:inset 0 0 0 1px rgba(148,163,184,0.14);}body{display:flex;justify-content:center;align-items:flex-start;min-height:${frameH}px;}</style></head><body><script src="${srcEsc}"><\/script></body></html>`;
 
     const doc = iframe.contentDocument;
     if (doc) {
@@ -210,7 +207,7 @@ export function AdMaxUnit({ placement, className = "" }: Props) {
       </span>
       <div
         ref={wrapRef}
-        className="m-0 block w-full max-w-full shrink-0 overflow-hidden p-0"
+        className="m-0 block w-full max-w-full shrink-0 overflow-hidden rounded-md p-0 ring-1 ring-slate-500/25"
         style={{
           maxWidth: maxWrap,
           lineHeight: 0,

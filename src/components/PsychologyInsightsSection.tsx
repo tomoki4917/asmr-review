@@ -31,16 +31,16 @@ type Props = {
 export function PsychologyInsightsSection({ beginnerGuides }: Props) {
   return (
     <section
-      id="psychology-insights"
-      aria-labelledby="psychology-insights-heading"
-      className="mx-auto mt-16 max-w-5xl scroll-mt-28"
+      id="hypnosis-intro"
+      aria-labelledby="hypnosis-intro-heading"
+      className="mx-auto mt-16 max-w-5xl scroll-mt-28 max-sm:-mx-4 max-sm:px-2 sm:mx-auto"
     >
-      <div className="rounded-3xl border border-slate-600/45 bg-slate-800/45 px-3 py-5 shadow-lg shadow-slate-950/20 backdrop-blur-md sm:px-6 sm:py-8 md:p-10">
+      <div className="rounded-2xl border border-slate-600/45 bg-slate-800/45 px-2 py-4 shadow-lg shadow-slate-950/20 backdrop-blur-md sm:rounded-3xl sm:px-6 sm:py-8 md:p-10">
         <h2
-          id="psychology-insights-heading"
+          id="hypnosis-intro-heading"
           className="text-center text-lg font-bold tracking-tight text-sky-200 sm:text-xl md:text-2xl"
         >
-          催眠音声入門におすすめの記事
+          催眠音声入門
         </h2>
         <p className="mx-auto mt-2 max-w-2xl text-center text-[11px] leading-relaxed text-slate-400 sm:mt-3 sm:text-sm">
           入門 → 脳イキ → ドライの順でつながる{" "}
@@ -51,7 +51,7 @@ export function PsychologyInsightsSection({ beginnerGuides }: Props) {
         {beginnerGuides.length > 0 ? (
           <ul
             id="beginner-guide-cards"
-            className="mt-6 grid grid-cols-3 gap-1.5 sm:mt-8 sm:gap-3 md:mt-10 md:gap-5"
+            className="mt-5 grid grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-3 sm:gap-3 md:mt-10 md:gap-5"
           >
             {beginnerGuides.map((review, i) => {
               const meta = GUIDE_META[review.slug] ?? {
@@ -78,11 +78,11 @@ export function PsychologyInsightsSection({ beginnerGuides }: Props) {
                           alt={review.title}
                           slug={review.slug}
                           priority={i < 2}
-                          className="!aspect-[3/4] w-full rounded-none sm:!aspect-[16/10]"
-                          imageClassName="h-full w-full object-center max-sm:object-contain sm:object-cover"
+                          className="!aspect-[16/10] w-full rounded-none"
+                          imageClassName="h-full w-full object-cover object-center"
                         />
                       </div>
-                      <div className="flex min-h-0 min-w-0 flex-1 flex-col px-1 pb-2 pt-1 sm:px-2 sm:pb-3 sm:pt-1.5 md:px-5 md:pb-6 md:pt-3">
+                      <div className="flex min-h-0 min-w-0 flex-1 flex-col px-3 pb-3 pt-2 sm:px-2 sm:pb-3 sm:pt-1.5 md:px-5 md:pb-6 md:pt-3">
                         <p className="text-[8px] font-bold uppercase tracking-[0.12em] text-emerald-300/90 sm:text-[10px] sm:tracking-[0.18em] md:text-[11px] md:tracking-[0.2em]">
                           {meta.step}
                         </p>

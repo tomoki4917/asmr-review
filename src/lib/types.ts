@@ -24,6 +24,8 @@ export type Review = {
   body: string;
   /** 一覧・記事ヘッダー用。`public` なら先頭 `/`（例 `/content/cover.jpg`）。外部 URL も可 */
   coverImage?: string;
+  /** 任意。指定時は記事ヘッダーの表紙画像をこの URL へリンク（アフィリエイト用） */
+  coverAffiliateHref?: string;
   /** レビューのみ意味あり。記事は 0 */
   ratingValue: number;
   ratingBest?: number;

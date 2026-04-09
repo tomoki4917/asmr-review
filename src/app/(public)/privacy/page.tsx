@@ -5,7 +5,7 @@ import { PrivacyPolicyContent } from "@/components/PrivacyPolicyContent";
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
   description:
-    "同人音声紹介ラボの個人情報・Cookie・広告・アナリティクスに関する取り扱いです。",
+    "催眠音声レビュー室の個人情報・Cookie・広告・アナリティクスに関する取り扱いです。",
 };
 
 export default function PrivacyPage() {

@@ -89,6 +89,18 @@ function parseOptionalNextSlug(raw: unknown): string | undefined {
   return raw.trim();
 }
 
+function parseOptionalCoverAffiliateHref(raw: unknown): string | undefined {
+  if (raw == null) return undefined;
+  if (typeof raw !== "string" || !raw.trim()) return undefined;
+  const s = raw.trim();
+  if (s.startsWith("http://") || s.startsWith("https://")) {
+    return s;
+  }
+  throw new Error(
+    'coverAffiliateHref は http(s) の URL を指定してください。'
+  );
+}
+
 function parseContentKind(raw: unknown): ReviewContentKind {
   if (raw === "article") return "article";
   return "review";
@@ -124,6 +136,7 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
     tags: asStringArray(d.tags, "tags"),
     body: typeof content === "string" ? content.replace(/\r\n/g, "\n").trim() : "",
     coverImage: parseOptionalCoverImage(d.coverImage),
+    coverAffiliateHref: parseOptionalCoverAffiliateHref(d.coverAffiliateHref),
     ratingValue,
     ratingBest,
     itemName,

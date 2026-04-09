@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import { MarkdownSafeImage } from "@/components/MarkdownSafeImage";
 
@@ -5,9 +6,26 @@ type Props = {
   markdown: string;
 };
 
+/** `**★10／10**` など満点行を検出（総合評価の強調色用） */
+function nodeToPlainText(node: ReactNode): string {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(nodeToPlainText).join("");
+  if (typeof node === "object" && node !== null && "props" in node) {
+    const props = (node as { props?: { children?: ReactNode } }).props;
+    if (props?.children != null) return nodeToPlainText(props.children);
+  }
+  return "";
+}
+
+function isTenOutOfTenRating(text: string): boolean {
+  const t = text.replace(/\u00a0/g, " ").trim();
+  return /^★\s*10\s*[／/]\s*10\s*$/.test(t);
+}
+
 export function ReviewMarkdown({ markdown }: Props) {
   return (
-    <div className="review-md">
+    <div className="review-md min-w-0 max-w-full">
       <ReactMarkdown
         components={{
           h2: ({ children }) => (
@@ -36,9 +54,21 @@ export function ReviewMarkdown({ markdown }: Props) {
             </ol>
           ),
           li: ({ children }) => <li className="leading-relaxed">{children}</li>,
-          strong: ({ children }) => (
-            <strong className="font-semibold text-slate-100">{children}</strong>
-          ),
+          strong: ({ children }) => {
+            const plain = nodeToPlainText(children);
+            const perfect = isTenOutOfTenRating(plain);
+            return (
+              <strong
+                className={
+                  perfect
+                    ? "font-semibold text-red-400 drop-shadow-[0_0_14px_rgba(248,113,113,0.4)]"
+                    : "font-semibold text-slate-100"
+                }
+              >
+                {children}
+              </strong>
+            );
+          },
           em: ({ children }) => <em className="italic text-slate-200">{children}</em>,
           a: ({ href, children }) => {
             const h = typeof href === "string" ? href.trim() : "";
@@ -62,7 +92,7 @@ export function ReviewMarkdown({ markdown }: Props) {
             <MarkdownSafeImage src={src} alt={alt ?? ""} variant="body" />
           ),
           blockquote: ({ children }) => (
-            <blockquote className="mb-5 rounded-r-xl border-l-4 border-sky-500/45 bg-sky-950/20 py-3 pl-4 pr-3 text-slate-400">
+            <blockquote className="relative my-6 rounded-xl border border-slate-600/40 border-l-4 border-l-sky-500/50 bg-slate-800/95 py-4 pl-5 pr-4 text-[1.05rem] leading-[1.8] text-slate-400 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] ring-1 ring-slate-700/45 [&_p]:mb-3 [&_p:last-child]:mb-0">
               {children}
             </blockquote>
           ),

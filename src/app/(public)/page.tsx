@@ -30,7 +30,7 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
         ピックアップレビュー
       </h2>
       <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-slate-500">
-        解析データを交えた作品レビューを掲載しています。
+        直近に投稿したレビューから、★9以上と評価した作品をピックアップしています。
       </p>
       <ul className="mt-6 space-y-4">
         {items.map((r) => {
@@ -102,7 +102,7 @@ export default function HomePage() {
           hypnosis · ASMR · psychology
         </p>
         <h1 className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">
-          同人音声紹介ラボ
+          催眠音声レビュー室
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
           主に同人音声を主観と客観的なデータに基づいてレビューさせていただいております。色んな作品が溢れている昨今、「少しでも読者様の参考になれば」という思いで投稿しています。
@@ -126,8 +126,6 @@ export default function HomePage() {
         <AdMaxUnit placement="home-top" />
       </div>
 
-      <PsychologyInsightsSection beginnerGuides={beginnerGuides} />
-
       <SpotlightReviews reviews={reviews} />
 
       <Suspense
@@ -139,6 +137,8 @@ export default function HomePage() {
       >
         <HomeReviewList markdownReviews={reviews} />
       </Suspense>
+
+      <PsychologyInsightsSection beginnerGuides={beginnerGuides} />
     </main>
   );
 }

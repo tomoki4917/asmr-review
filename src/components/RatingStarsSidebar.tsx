@@ -13,8 +13,29 @@ const STAR_FILTERS = [
   { param: "lte5", label: "★5〜", sr: "5点以下" },
 ] as const;
 
-const SECTION_PSYCHOLOGY = "psychology-insights";
+export type ReviewStarFilterCounts = Record<
+  (typeof STAR_FILTERS)[number]["param"],
+  number
+>;
+
+const SECTION_HYPNOSIS_INTRO = "hypnosis-intro";
 const SECTION_AUTHOR = "author-posts-heading";
+
+function buildHomeHref(opts: {
+  genre?: string | null;
+  stars?: string | null;
+  clearStars?: boolean;
+}) {
+  const p = new URLSearchParams();
+  if (opts.genre) p.set("genre", opts.genre);
+  if (opts.clearStars) {
+    // stars omitted
+  } else if (opts.stars != null && opts.stars !== "") {
+    p.set("stars", opts.stars);
+  }
+  const s = p.toString();
+  return s ? `/?${s}` : "/";
+}
 
 function linkClass(active: boolean) {
   return [
@@ -38,10 +59,23 @@ function useHashFragment(): string {
   return hash;
 }
 
-export function RatingStarsSidebar() {
+type Props = {
+  starCounts: ReviewStarFilterCounts;
+};
+
+export function RatingStarsSidebar({ starCounts }: Props) {
   const sp = useSearchParams();
-  const current = sp.get("stars");
-  const allStarsActive = current === null || current === "";
+  const currentStars = sp.get("stars");
+  const genreRaw = sp.get("genre");
+  const genre =
+    genreRaw === "hypnosis" || genreRaw === "doujin" ? genreRaw : null;
+
+  const allStarsActive = currentStars === null || currentStars === "";
+  const allGenreActive = genre === null;
+
+  const showStarFilters =
+    genre === "hypnosis" || genre === "doujin" || currentStars != null;
+
   const hash = useHashFragment();
 
   return (
@@ -51,33 +85,108 @@ export function RatingStarsSidebar() {
     >
       <div>
         <p className="text-xs font-semibold uppercase tracking-wider text-sky-400/85">
-          レビュー評価
+          レビュー項目
         </p>
         <p className="mt-1 text-xs leading-relaxed text-slate-500">
-          10 段階に換算した点数でレビュー済み作品を絞り込みます。
+          ジャンルを選ぶと、その下に評価（★10〜★5〜）で絞り込めます。
         </p>
         <ul className="mt-4 space-y-1">
           <li>
-            <Link href="/" className={linkClass(allStarsActive)} scroll={false}>
+            <Link
+              href={buildHomeHref({ stars: currentStars ?? undefined })}
+              className={linkClass(allGenreActive)}
+              scroll={false}
+            >
               すべて
             </Link>
           </li>
-          {STAR_FILTERS.map((f) => (
-            <li key={f.param}>
-              <Link
-                href={`/?stars=${f.param}`}
-                className={linkClass(current === f.param)}
-                scroll={false}
-              >
-                <span aria-hidden className="tracking-tight">
-                  {f.label}
-                </span>
-                <span className="sr-only">{f.sr}のレビュー</span>
-              </Link>
-            </li>
-          ))}
+          <li>
+            <Link
+              href={buildHomeHref({ genre: "hypnosis" })}
+              className={linkClass(genre === "hypnosis")}
+              scroll={false}
+            >
+              催眠音声
+            </Link>
+          </li>
+          <li>
+            <Link
+              href={buildHomeHref({ genre: "doujin" })}
+              className={linkClass(genre === "doujin")}
+              scroll={false}
+            >
+              同人音声
+            </Link>
+          </li>
         </ul>
       </div>
+
+      {showStarFilters ? (
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-sky-400/85">
+            レビュー評価
+          </p>
+          <p className="mt-1 text-xs leading-relaxed text-slate-500">
+            10 段階に換算した点数でレビュー済み作品を絞り込みます。
+          </p>
+          <ul className="mt-4 space-y-1">
+            <li>
+              <Link
+                href={
+                  genre
+                    ? buildHomeHref({ genre, clearStars: true })
+                    : buildHomeHref({ clearStars: true })
+                }
+                className={linkClass(allStarsActive)}
+                scroll={false}
+              >
+                すべて
+              </Link>
+            </li>
+            {STAR_FILTERS.map((f) => {
+              const active = currentStars === f.param;
+              const n = starCounts[f.param];
+              return (
+                <li key={f.param}>
+                  <Link
+                    href={buildHomeHref({
+                      genre: genre ?? undefined,
+                      stars: f.param,
+                    })}
+                    className={`${linkClass(active)} flex items-stretch`}
+                    scroll={false}
+                  >
+                    <span className="flex min-w-0 flex-1 items-center justify-between gap-2">
+                      <span className="min-w-0">
+                        <span aria-hidden className="tracking-tight">
+                          {f.label}
+                        </span>
+                        <span className="sr-only">
+                          {f.sr}のレビュー、{n}件
+                        </span>
+                      </span>
+                      <span
+                        className={
+                          active
+                            ? "shrink-0 tabular-nums text-xs text-white/90"
+                            : "shrink-0 tabular-nums text-xs text-slate-400"
+                        }
+                        aria-hidden
+                      >
+                        {n}件
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ) : (
+        <p className="rounded-xl border border-dashed border-slate-600/40 bg-slate-900/30 px-3 py-3 text-xs leading-relaxed text-slate-500">
+          「催眠音声」または「同人音声」を選ぶと、評価の一覧が表示されます。
+        </p>
+      )}
 
       <div>
         <p className="text-xs font-semibold uppercase tracking-wider text-sky-400/85">
@@ -89,11 +198,11 @@ export function RatingStarsSidebar() {
         <ul className="mt-4 space-y-1">
           <li>
             <Link
-              href={`/#${SECTION_PSYCHOLOGY}`}
-              className={linkClass(hash === SECTION_PSYCHOLOGY)}
+              href={`/#${SECTION_HYPNOSIS_INTRO}`}
+              className={linkClass(hash === SECTION_HYPNOSIS_INTRO)}
               scroll={true}
             >
-              ビギナー向けおすすめ記事
+              催眠音声入門
             </Link>
           </li>
           <li>
@@ -102,7 +211,7 @@ export function RatingStarsSidebar() {
               className={linkClass(hash === SECTION_AUTHOR)}
               scroll={true}
             >
-              記事
+              記事一覧
             </Link>
           </li>
         </ul>

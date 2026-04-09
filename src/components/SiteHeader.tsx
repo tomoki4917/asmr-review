@@ -12,7 +12,7 @@ export function SiteHeader() {
             personal blog
           </span>
           <span className="block truncate text-base font-bold tracking-tight text-slate-50 sm:text-lg">
-            同人音声紹介ラボ
+            催眠音声レビュー室
           </span>
         </Link>
         <nav

@@ -4,7 +4,7 @@ import { ContactForm, ContactFormEnvNote } from "@/components/ContactForm";
 export const metadata: Metadata = {
   title: "お問い合わせ",
   description:
-    "同人音声紹介ラボへのお問い合わせフォームです。名前・メール・件名・内容をご記入ください。",
+    "催眠音声レビュー室へのお問い合わせフォームです。名前・メール・件名・内容をご記入ください。",
 };
 
 export default function ContactPage() {

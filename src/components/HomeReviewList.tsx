@@ -69,6 +69,36 @@ function matchesStarFilter(
   return b === filter;
 }
 
+function reviewTags(item: MergedReviewItem): string[] {
+  return item.kind === "file" ? item.review.tags : item.review.tags;
+}
+
+function matchesGenreFilter(
+  item: MergedReviewItem,
+  genre: "hypnosis" | "doujin" | null
+): boolean {
+  if (genre == null) return true;
+  const tags = reviewTags(item);
+  if (genre === "hypnosis") return tags.includes("催眠音声");
+  return tags.includes("同人音声");
+}
+
+/** 現在のジャンル（未選択は全件）に対する評価別件数（サイドバー用） */
+function countsByStarFilter(
+  merged: MergedReviewItem[],
+  genre: "hypnosis" | "doujin" | null
+): Record<"10" | "9" | "8" | "7" | "6" | "lte5", number> {
+  const base = merged.filter((i) => matchesGenreFilter(i, genre));
+  return {
+    "10": base.filter((i) => matchesStarFilter(i, 10)).length,
+    "9": base.filter((i) => matchesStarFilter(i, 9)).length,
+    "8": base.filter((i) => matchesStarFilter(i, 8)).length,
+    "7": base.filter((i) => matchesStarFilter(i, 7)).length,
+    "6": base.filter((i) => matchesStarFilter(i, 6)).length,
+    lte5: base.filter((i) => matchesStarFilter(i, "lte5")).length,
+  };
+}
+
 function LocalPostedCard({ review }: { review: PostedReview }) {
   const best = postedReviewRatingBest(review);
   const slug = `local-${review.id}`;
@@ -145,6 +175,10 @@ export function HomeReviewList({ markdownReviews }: Props) {
         ? Number(starsRaw)
         : null;
 
+  const genreRaw = searchParams.get("genre");
+  const genreFilter: "hypnosis" | "doujin" | null =
+    genreRaw === "hypnosis" || genreRaw === "doujin" ? genreRaw : null;
+
   const [posted, setPosted] = useState<PostedReview[]>([]);
 
   const reloadPosted = useCallback(() => {
@@ -180,9 +214,17 @@ export function HomeReviewList({ markdownReviews }: Props) {
   );
 
   const filteredReviews = useMemo(() => {
-    if (starFilter === null) return mergedReviews;
-    return mergedReviews.filter((item) => matchesStarFilter(item, starFilter));
-  }, [mergedReviews, starFilter]);
+    let list = mergedReviews.filter((item) =>
+      matchesGenreFilter(item, genreFilter)
+    );
+    if (starFilter === null) return list;
+    return list.filter((item) => matchesStarFilter(item, starFilter));
+  }, [mergedReviews, genreFilter, starFilter]);
+
+  const starCountsForSidebar = useMemo(
+    () => countsByStarFilter(mergedReviews, genreFilter),
+    [mergedReviews, genreFilter]
+  );
 
   const articlePosts = useMemo(() => {
     return posted
@@ -254,16 +296,28 @@ export function HomeReviewList({ markdownReviews }: Props) {
               className="scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 sm:scroll-mt-28 sm:text-2xl"
             >
               レビュー一覧
-              {starFilter !== null ? (
-                <span className="text-lg font-semibold text-sky-300">
-                  {" "}
-                  （{starFilter === "lte5" ? "★5〜" : `★${starFilter}`}）
-                </span>
-              ) : null}
+              {(() => {
+                const parts: string[] = [];
+                if (genreFilter === "hypnosis") parts.push("催眠音声");
+                if (genreFilter === "doujin") parts.push("同人音声");
+                if (starFilter !== null) {
+                  parts.push(
+                    starFilter === "lte5" ? "★5〜" : `★${starFilter}`
+                  );
+                }
+                if (parts.length === 0) return null;
+                return (
+                  <span className="text-lg font-semibold text-sky-300">
+                    {" "}
+                    （{parts.join(" · ")}）
+                  </span>
+                );
+              })()}
             </h2>
             <p className="mt-1 text-sm text-slate-500">
               {filteredReviews.length} 件
-              {starFilter !== null && mergedReviews.length > 0
+              {(starFilter !== null || genreFilter !== null) &&
+              mergedReviews.length > 0
                 ? ` / 全レビュー ${mergedReviews.length} 件`
                 : null}
             </p>
@@ -301,17 +355,10 @@ export function HomeReviewList({ markdownReviews }: Props) {
               id="author-posts-heading"
               className="scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 sm:scroll-mt-28 sm:text-2xl"
             >
-              記事
+              記事一覧
             </h2>
             <p className="mt-1 text-sm text-slate-500">
               {combinedArticleEntries.length} 件
-            </p>
-            <p className="mt-2 max-w-2xl text-sm text-slate-500">
-              Markdown で{" "}
-              <code className="rounded bg-slate-800 px-1 py-0.5 font-mono text-xs text-sky-200/90">
-                contentKind: article
-              </code>{" "}
-              の記事、および /admin から保存した「記事」・筆者投稿がここに並びます。
             </p>
           </div>
           {combinedArticleEntries.length === 0 ? (
@@ -350,7 +397,7 @@ export function HomeReviewList({ markdownReviews }: Props) {
       </div>
 
       <aside className="shrink-0 lg:sticky lg:top-24 lg:w-52 xl:w-56">
-        <RatingStarsSidebar />
+        <RatingStarsSidebar starCounts={starCountsForSidebar} />
       </aside>
     </div>
   );

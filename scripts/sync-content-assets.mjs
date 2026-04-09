@@ -48,6 +48,18 @@ for (const r of ROOTS) {
 }
 
 /**
+ * レビュー配下を `public/content/reviews/` にも複製する（ASCII のみの URL）。
+ * 本番サーバーで `/content/レビュー/...` の日本語パスが 404 になる場合の対策。
+ * `fs.cpSync` は環境によって日本語パスで不安定なため、src から同じく copyNonMdAssets で書く。
+ */
+const reviewSrcRoot = path.join(contentRoot, "レビュー");
+if (fs.existsSync(reviewSrcRoot)) {
+  const asciiReviewsPub = path.join(publicContent, "reviews");
+  rmrf(asciiReviewsPub);
+  copyNonMdAssets(reviewSrcRoot, asciiReviewsPub);
+}
+
+/**
  * 一覧・詳細のサムネ用: 記事フォルダ内の画像を ASCII の公開 URL に複製する。
  * 第3要素は優先するファイル名（例: 日本語名の JPG）。無ければ cover.jpg 等を順に探す。
  */
@@ -141,5 +153,5 @@ function ensureReviewCoverAliases() {
 ensureReviewCoverAliases();
 
 console.log(
-  "sync-content-assets: mirrored non-.md files from src/content/{レビュー,記事} → public/content/"
+  "sync-content-assets: mirrored non-.md files from src/content/{レビュー,記事} → public/content/ (+ reviews/ ASCII mirror for レビュー)"
 );
