@@ -13,6 +13,7 @@ import { resolveSocialPreviewImage, siteUrl } from "@/lib/og-metadata";
 import { getAllSlugs, getReviewBySlug } from "@/lib/reviews";
 import {
   splitBodyAtFinalRating,
+  splitRatingAtWorkIntroLabel,
   splitRestAfterWorkImpression,
 } from "@/lib/split-review-body";
 import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
@@ -104,6 +105,9 @@ export default async function ReviewPage({ params }: Props) {
     finalRatingSplit?.rest != null
       ? splitRestAfterWorkImpression(finalRatingSplit.rest)
       : null;
+  const ratingParts = finalRatingSplit?.rating
+    ? splitRatingAtWorkIntroLabel(finalRatingSplit.rating)
+    : { core: "", workIntro: "" };
   const showAffiliateBesideRating =
     Boolean(finalRatingSplit) && review.affiliateLinks.length > 0;
 
@@ -112,7 +116,9 @@ export default async function ReviewPage({ params }: Props) {
       {!isArticle && (
         <ReviewJsonLd review={review} canonicalUrl={canonicalUrl} />
       )}
-      <article className="mx-auto w-full min-w-0 max-w-3xl py-8 sm:py-10 lg:max-w-4xl xl:max-w-5xl xl:py-11">
+      <article
+        className={`mx-auto w-full min-w-0 max-w-3xl py-8 sm:py-10 lg:max-w-4xl xl:max-w-5xl xl:py-11 ${isArticle ? "article-reading" : ""}`}
+      >
         <Link
           href="/"
           className="inline-flex min-h-11 items-center gap-1 text-sm font-medium text-sky-300 transition hover:text-sky-200"
@@ -139,8 +145,12 @@ export default async function ReviewPage({ params }: Props) {
             ) : (
               coverEl
             )}
-            <div className="border-t border-slate-600/40 bg-slate-900/50 px-5 py-6 sm:px-8 sm:py-8">
-              <h1 className="text-balance text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl">
+            <div
+              className={`border-t border-slate-600/40 bg-slate-900/50 px-5 py-6 sm:px-8 sm:py-8 ${isArticle ? "max-sm:px-5 max-sm:pb-7 max-sm:pt-6" : ""}`}
+            >
+              <h1
+                className={`text-balance text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl ${isArticle ? "max-sm:text-[1.7rem] max-sm:leading-snug" : ""}`}
+              >
                 {review.title}
               </h1>
               <div
@@ -203,29 +213,47 @@ export default async function ReviewPage({ params }: Props) {
           </div>
         </header>
 
-        <section className="mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 px-4 py-7 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9">
+        <section
+          className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${isArticle ? "px-5 py-8 max-sm:py-8" : "px-4 py-7"}`}
+        >
           {!review.body ? (
             <p className="text-slate-500">本文がまだありません。</p>
           ) : finalRatingSplit ? (
             <>
               {finalRatingSplit.before.trim() ? (
-                <ReviewMarkdown markdown={finalRatingSplit.before} />
+                <ReviewMarkdown
+                  markdown={finalRatingSplit.before}
+                  articleReading={isArticle}
+                />
               ) : null}
-              <div className="mt-10 flex flex-col gap-6 border-t border-slate-700/50 pt-8 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
-                <div className="min-w-0 flex-1">
-                  <h2
-                    id="final-rating-heading"
-                    className="mb-3 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50"
-                  >
-                    総合評価
-                  </h2>
-                  <ReviewMarkdown markdown={finalRatingSplit.rating} />
+              <div className="mt-10 border-t border-slate-700/50 pt-8">
+                <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
+                  <div className="min-w-0 flex-1">
+                    <h2
+                      id="final-rating-heading"
+                      className="mb-3 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50"
+                    >
+                      総合評価
+                    </h2>
+                    <ReviewMarkdown
+                      markdown={ratingParts.core}
+                      articleReading={isArticle}
+                    />
+                  </div>
+                  {review.affiliateLinks.length > 0 ? (
+                    <div className="w-full shrink-0 sm:w-auto sm:max-w-[min(100%,20rem)] sm:pt-1">
+                      <AffiliateButtonGroup
+                        links={affiliateLinksBesideRating(review.affiliateLinks)}
+                        className="w-full sm:w-auto"
+                      />
+                    </div>
+                  ) : null}
                 </div>
-                {review.affiliateLinks.length > 0 ? (
-                  <div className="w-full shrink-0 sm:w-auto sm:max-w-[min(100%,20rem)] sm:pt-1">
-                    <AffiliateButtonGroup
-                      links={affiliateLinksBesideRating(review.affiliateLinks)}
-                      className="w-full sm:w-auto"
+                {ratingParts.workIntro.trim() ? (
+                  <div className="mt-6 min-w-0 sm:mt-8">
+                    <ReviewMarkdown
+                      markdown={ratingParts.workIntro}
+                      articleReading={isArticle}
                     />
                   </div>
                 ) : null}
@@ -234,7 +262,10 @@ export default async function ReviewPage({ params }: Props) {
                 <div className="mt-10 min-w-0 border-t border-slate-700/50 pt-8">
                   {restWorkSplit && review.affiliateLinks.length > 0 ? (
                     <>
-                      <ReviewMarkdown markdown={restWorkSplit.before} />
+                      <ReviewMarkdown
+                        markdown={restWorkSplit.before}
+                        articleReading={isArticle}
+                      />
                       <div className="mt-8 flex justify-center sm:justify-start">
                         <AffiliateButton
                           link={{
@@ -246,18 +277,27 @@ export default async function ReviewPage({ params }: Props) {
                       </div>
                       {restWorkSplit.after.trim() ? (
                         <div className="mt-10 min-w-0">
-                          <ReviewMarkdown markdown={restWorkSplit.after} />
+                          <ReviewMarkdown
+                            markdown={restWorkSplit.after}
+                            articleReading={isArticle}
+                          />
                         </div>
                       ) : null}
                     </>
                   ) : (
-                    <ReviewMarkdown markdown={finalRatingSplit.rest} />
+                    <ReviewMarkdown
+                      markdown={finalRatingSplit.rest}
+                      articleReading={isArticle}
+                    />
                   )}
                 </div>
               ) : null}
             </>
           ) : (
-            <ReviewMarkdown markdown={review.body} />
+            <ReviewMarkdown
+              markdown={review.body}
+              articleReading={isArticle}
+            />
           )}
         </section>
 

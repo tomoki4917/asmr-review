@@ -3,6 +3,29 @@
  * 見出し直後から、次の `## `（h2）手前までを `rating`。それ以降を `rest`（作品像・パート解説など）。
  */
 
+/**
+ * `rating` 文字列内の `### 作品解説と感想` で二分割する。
+ * 星・価格・注記までを `core`、ラベル見出し以降を `workIntro` とし、体験版ボタンを `core` と同列に置く（モバイルでもラベルの下にボタンが来ない）。
+ */
+export function splitRatingAtWorkIntroLabel(rating: string): {
+  core: string;
+  workIntro: string;
+} {
+  const n = rating.replace(/\r\n/g, "\n");
+  const needle = "\n### 作品解説と感想";
+  const i = n.indexOf(needle);
+  if (i === -1) {
+    if (n.startsWith("### 作品解説と感想")) {
+      return { core: "", workIntro: n.trim() };
+    }
+    return { core: n.trim(), workIntro: "" };
+  }
+  return {
+    core: n.slice(0, i).trimEnd(),
+    workIntro: n.slice(i + 1).trimStart(),
+  };
+}
+
 /** `rest` 内の `## 作品感想` または `### 作品感想` ブロック直後で分割（購入ボタン挿入用）。該当見出しが無ければ null。 */
 export function splitRestAfterWorkImpression(rest: string): {
   before: string;

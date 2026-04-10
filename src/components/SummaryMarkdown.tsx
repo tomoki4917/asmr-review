@@ -10,11 +10,11 @@ export function SummaryMarkdown({ markdown, className = "" }: Props) {
   if (!markdown.trim()) return null;
 
   return (
-    <div className={`summary-md text-pretty text-base leading-relaxed text-slate-400 ${className}`}>
+    <div className={`summary-md text-pretty leading-relaxed text-slate-400 ${className}`}>
       <ReactMarkdown
         components={{
           p: ({ children }) => (
-            <p className="mb-4 last:mb-0 [&+p]:mt-4">{children}</p>
+            <p className="mb-3 last:mb-0 [&+p]:mt-0">{children}</p>
           ),
           strong: ({ children }) => (
             <strong className="font-semibold text-slate-200">{children}</strong>

@@ -4,6 +4,8 @@ import { MarkdownSafeImage } from "@/components/MarkdownSafeImage";
 
 type Props = {
   markdown: string;
+  /** 記事（contentKind: article）向け。スマホで字下げ・行間・リスト間隔を読みやすくする */
+  articleReading?: boolean;
 };
 
 /** `**★10／10**` など満点行を検出（総合評価の強調色用） */
@@ -23,13 +25,26 @@ function isTenOutOfTenRating(text: string): boolean {
   return /^★\s*10\s*[／/]\s*10\s*$/.test(t);
 }
 
-export function ReviewMarkdown({ markdown }: Props) {
+export function ReviewMarkdown({ markdown, articleReading = false }: Props) {
+  const listGap = articleReading ? "space-y-2 sm:space-y-1" : "space-y-1";
+  const h2Article = articleReading
+    ? "max-sm:text-[1.3125rem] max-sm:leading-snug"
+    : "";
+  const h3Article = articleReading ? "max-sm:text-[1.08rem]" : "";
+  const pArticle = articleReading
+    ? "max-sm:mb-6 max-sm:leading-[1.88]"
+    : "";
+
   return (
-    <div className="review-md min-w-0 max-w-full">
+    <div
+      className={`review-md min-w-0 max-w-full ${articleReading ? "review-md--article" : ""}`}
+    >
       <ReactMarkdown
         components={{
           h2: ({ children }) => (
-            <h2 className="mb-3 mt-10 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 first:mt-0">
+            <h2
+              className={`mb-3 mt-10 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 first:mt-0 ${h2Article}`}
+            >
               {children}
             </h2>
           ),
@@ -40,8 +55,8 @@ export function ReviewMarkdown({ markdown }: Props) {
               <h3
                 className={
                   isWorkIntroLabel
-                    ? "mb-2 mt-8 scroll-mt-24 text-xl font-semibold tracking-tight text-slate-100"
-                    : "mb-2 mt-8 scroll-mt-24 text-lg font-semibold tracking-tight text-slate-100"
+                    ? `mb-2 mt-8 scroll-mt-24 text-xl font-semibold tracking-tight text-slate-100 ${h3Article}`
+                    : `mb-2 mt-8 scroll-mt-24 text-lg font-semibold tracking-tight text-slate-100 ${h3Article}`
                 }
               >
                 {children}
@@ -49,21 +64,31 @@ export function ReviewMarkdown({ markdown }: Props) {
             );
           },
           p: ({ children }) => (
-            <p className="mb-5 text-[1.05rem] leading-[1.75] text-slate-300 last:mb-0">
+            <p
+              className={`review-md-p mb-5 leading-[1.75] text-slate-300 last:mb-0 ${pArticle}`}
+            >
               {children}
             </p>
           ),
           ul: ({ children }) => (
-            <ul className="mb-4 list-disc space-y-1 pl-5 text-slate-300">
+            <ul className={`mb-4 list-disc pl-5 text-slate-300 ${listGap}`}>
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol className="mb-4 list-decimal space-y-1 pl-5 text-slate-300">
+            <ol className={`mb-4 list-decimal pl-5 text-slate-300 ${listGap}`}>
               {children}
             </ol>
           ),
-          li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+          li: ({ children }) => (
+            <li
+              className={
+                articleReading ? "leading-relaxed max-sm:leading-[1.75]" : "leading-relaxed"
+              }
+            >
+              {children}
+            </li>
+          ),
           strong: ({ children }) => {
             const plain = nodeToPlainText(children);
             const perfect = isTenOutOfTenRating(plain);
@@ -102,11 +127,21 @@ export function ReviewMarkdown({ markdown }: Props) {
             <MarkdownSafeImage src={src} alt={alt ?? ""} variant="body" />
           ),
           blockquote: ({ children }) => (
-            <blockquote className="relative my-6 rounded-xl border border-slate-600/40 border-l-4 border-l-sky-500/50 bg-slate-800/95 py-4 pl-5 pr-4 text-[1.05rem] leading-[1.8] text-slate-400 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] ring-1 ring-slate-700/45 [&_p]:mb-3 [&_p:last-child]:mb-0">
+            <blockquote
+              className={`review-md-bq relative my-6 rounded-xl border border-slate-600/40 border-l-4 border-l-sky-500/50 bg-slate-800/95 py-4 pl-5 pr-4 leading-[1.8] text-slate-400 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] ring-1 ring-slate-700/45 [&_p]:mb-3 [&_p:last-child]:mb-0 ${articleReading ? "max-sm:my-5 max-sm:pl-4 max-sm:pr-3 max-sm:py-[0.95rem]" : ""}`}
+            >
               {children}
             </blockquote>
           ),
-          hr: () => <hr className="my-8 border-slate-700/60" />,
+          hr: () => (
+            <hr
+              className={
+                articleReading
+                  ? "my-8 border-slate-700/60 max-sm:my-9"
+                  : "my-8 border-slate-700/60"
+              }
+            />
+          ),
         }}
       >
         {markdown}

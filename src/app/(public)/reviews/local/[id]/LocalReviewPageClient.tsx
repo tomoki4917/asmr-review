@@ -77,8 +77,12 @@ export default function LocalReviewPageClient() {
           ? "text-violet-400/95"
           : "text-amber-300/95";
 
+  const articleReading = !isStarRatedReview(review);
+
   return (
-    <article className="mx-auto w-full min-w-0 max-w-3xl py-8 sm:py-10 lg:max-w-4xl xl:max-w-5xl xl:py-11">
+    <article
+      className={`mx-auto w-full min-w-0 max-w-3xl py-8 sm:py-10 lg:max-w-4xl xl:max-w-5xl xl:py-11 ${articleReading ? "article-reading" : ""}`}
+    >
       <Link
         href="/"
         className="inline-flex min-h-11 items-center gap-1 text-sm font-medium text-sky-300 transition hover:text-sky-200"
@@ -110,7 +114,9 @@ export default function LocalReviewPageClient() {
             >
               ブラウザ保存の投稿（他端末とは共有されません）· {kindLabel}
             </p>
-            <h1 className="mt-2 text-balance text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl">
+            <h1
+              className={`mt-2 text-balance text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl ${articleReading ? "max-sm:text-[1.7rem] max-sm:leading-snug" : ""}`}
+            >
               {review.title}
             </h1>
             <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
@@ -156,9 +162,11 @@ export default function LocalReviewPageClient() {
         </div>
       </header>
 
-      <section className="mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 px-4 py-7 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9">
+      <section
+        className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${articleReading ? "px-5 py-8 max-sm:py-8" : "px-4 py-7"}`}
+      >
         {review.body ? (
-          <ReviewMarkdown markdown={review.body} />
+          <ReviewMarkdown markdown={review.body} articleReading={articleReading} />
         ) : (
           <p className="text-slate-500">本文がありません。</p>
         )}

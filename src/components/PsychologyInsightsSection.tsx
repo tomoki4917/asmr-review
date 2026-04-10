@@ -92,7 +92,7 @@ export function PsychologyInsightsSection({ beginnerGuides }: Props) {
                         <p className="mt-0.5 line-clamp-2 text-[9px] font-medium leading-tight text-slate-500 sm:text-[11px] sm:leading-snug md:text-xs">
                           {review.title}
                         </p>
-                        <p className="mt-1.5 line-clamp-2 flex-1 text-[9px] leading-snug text-slate-400 sm:mt-2 sm:line-clamp-3 sm:text-xs sm:leading-relaxed md:mt-3 md:text-sm">
+                        <p className="jp-prose-plain mt-1.5 line-clamp-2 flex-1 text-[9px] leading-snug text-slate-400 sm:mt-2 sm:line-clamp-3 sm:text-xs sm:leading-relaxed md:mt-3 md:text-sm">
                           {plain}
                         </p>
                         <p className="mt-2 text-[9px] font-semibold leading-tight text-sky-300 transition group-hover:text-sky-200 sm:mt-3 sm:text-xs sm:leading-none md:mt-4 md:text-sm">

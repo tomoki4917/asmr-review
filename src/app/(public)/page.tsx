@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { HomeReviewList } from "@/components/HomeReviewList";
+import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { MatureContentNotice } from "@/components/MatureContentNotice";
 import { PsychologyInsightsSection } from "@/components/PsychologyInsightsSection";
 import { ReviewCover } from "@/components/ReviewCover";
@@ -71,9 +72,9 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
                     <h3 className="mt-1 text-balance text-lg font-bold leading-snug text-slate-50 group-hover:text-sky-200 sm:text-xl">
                       {r.title}
                     </h3>
-                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-400">
-                      {r.summary}
-                    </p>
+                    <div className="mt-2 line-clamp-3 min-h-0 leading-relaxed text-slate-400">
+                      <SummaryMarkdown markdown={r.summary} className="text-sm" />
+                    </div>
                   </div>
                   <div className="flex shrink-0 flex-col items-start gap-1 sm:items-end">
                     <StarRating value={r.ratingValue} best={best} size="md" />
