@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatPublishedAtForList } from "@/lib/format-published-at";
 import type { Review } from "@/lib/types";
 import { ReviewCover } from "./ReviewCover";
 
@@ -26,9 +27,14 @@ export function FileMarkdownArticleCard({
           className="rounded-t-3xl group-focus-visible:rounded-t-3xl"
         />
         <div className="p-5 sm:p-6">
-          <p className="text-xs font-medium uppercase tracking-wider text-emerald-400/95">
-            Markdown · 記事
-          </p>
+          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+            <p className="text-xs font-medium uppercase tracking-wider text-emerald-400/95">
+              Markdown · 記事
+            </p>
+            <p className="text-xs tabular-nums text-slate-500">
+              投稿 {formatPublishedAtForList(review.publishedAt)}
+            </p>
+          </div>
           <h2 className="mt-1 text-lg font-semibold leading-snug tracking-tight text-slate-50 line-clamp-2 group-hover:text-sky-200">
             {review.title}
           </h2>

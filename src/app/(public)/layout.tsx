@@ -1,4 +1,3 @@
-import { AdMaxUnit } from "@/components/AdMaxUnit";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 
@@ -12,7 +11,6 @@ export default function PublicLayout({
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
           <div className="min-w-0">
             {children}
-            <AdMaxUnit placement="content-bottom" className="mt-10" />
           </div>
         </div>
       </div>

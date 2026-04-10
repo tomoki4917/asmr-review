@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatPublishedAtForList } from "@/lib/format-published-at";
 import type { Review } from "@/lib/types";
 import { ReviewCover } from "./ReviewCover";
 import { StarRating } from "./StarRating";
@@ -25,7 +26,10 @@ export function ReviewCard({ review, priorityImage = false }: Props) {
           className="rounded-t-3xl group-focus-visible:rounded-t-3xl"
         />
         <div className="p-5 sm:p-6">
-          <h2 className="text-lg font-semibold leading-snug tracking-tight text-slate-50 line-clamp-2 group-hover:text-sky-200">
+          <p className="text-xs tabular-nums text-slate-500">
+            投稿 {formatPublishedAtForList(review.publishedAt)}
+          </p>
+          <h2 className="mt-1 text-lg font-semibold leading-snug tracking-tight text-slate-50 line-clamp-2 group-hover:text-sky-200">
             {review.title}
           </h2>
           {review.contentKind === "review" && (

@@ -25,6 +25,7 @@ function buildHomeHref(opts: {
   genre?: string | null;
   stars?: string | null;
   clearStars?: boolean;
+  sort?: "new" | "old";
 }) {
   const p = new URLSearchParams();
   if (opts.genre) p.set("genre", opts.genre);
@@ -33,6 +34,7 @@ function buildHomeHref(opts: {
   } else if (opts.stars != null && opts.stars !== "") {
     p.set("stars", opts.stars);
   }
+  if (opts.sort === "old") p.set("sort", "old");
   const s = p.toString();
   return s ? `/?${s}` : "/";
 }
@@ -61,9 +63,10 @@ function useHashFragment(): string {
 
 type Props = {
   starCounts: ReviewStarFilterCounts;
+  sortOrder: "new" | "old";
 };
 
-export function RatingStarsSidebar({ starCounts }: Props) {
+export function RatingStarsSidebar({ starCounts, sortOrder }: Props) {
   const sp = useSearchParams();
   const currentStars = sp.get("stars");
   const genreRaw = sp.get("genre");
@@ -93,7 +96,10 @@ export function RatingStarsSidebar({ starCounts }: Props) {
         <ul className="mt-4 space-y-1">
           <li>
             <Link
-              href={buildHomeHref({ stars: currentStars ?? undefined })}
+              href={buildHomeHref({
+                stars: currentStars ?? undefined,
+                sort: sortOrder,
+              })}
               className={linkClass(allGenreActive)}
               scroll={false}
             >
@@ -102,7 +108,7 @@ export function RatingStarsSidebar({ starCounts }: Props) {
           </li>
           <li>
             <Link
-              href={buildHomeHref({ genre: "hypnosis" })}
+              href={buildHomeHref({ genre: "hypnosis", sort: sortOrder })}
               className={linkClass(genre === "hypnosis")}
               scroll={false}
             >
@@ -111,11 +117,45 @@ export function RatingStarsSidebar({ starCounts }: Props) {
           </li>
           <li>
             <Link
-              href={buildHomeHref({ genre: "doujin" })}
+              href={buildHomeHref({ genre: "doujin", sort: sortOrder })}
               className={linkClass(genre === "doujin")}
               scroll={false}
             >
               同人音声
+            </Link>
+          </li>
+        </ul>
+        <p className="mt-5 text-xs font-semibold uppercase tracking-wider text-sky-400/85">
+          並び順
+        </p>
+        <p className="mt-1 text-xs leading-relaxed text-slate-500">
+          投稿日（公開日）を基準に一覧を並べます。
+        </p>
+        <ul className="mt-3 space-y-1">
+          <li>
+            <Link
+              href={buildHomeHref({
+                genre: genre ?? undefined,
+                stars: currentStars ?? undefined,
+                sort: "new",
+              })}
+              className={linkClass(sortOrder === "new")}
+              scroll={false}
+            >
+              新しい順
+            </Link>
+          </li>
+          <li>
+            <Link
+              href={buildHomeHref({
+                genre: genre ?? undefined,
+                stars: currentStars ?? undefined,
+                sort: "old",
+              })}
+              className={linkClass(sortOrder === "old")}
+              scroll={false}
+            >
+              古い順
             </Link>
           </li>
         </ul>
@@ -134,8 +174,12 @@ export function RatingStarsSidebar({ starCounts }: Props) {
               <Link
                 href={
                   genre
-                    ? buildHomeHref({ genre, clearStars: true })
-                    : buildHomeHref({ clearStars: true })
+                    ? buildHomeHref({
+                        genre,
+                        clearStars: true,
+                        sort: sortOrder,
+                      })
+                    : buildHomeHref({ clearStars: true, sort: sortOrder })
                 }
                 className={linkClass(allStarsActive)}
                 scroll={false}
@@ -152,6 +196,7 @@ export function RatingStarsSidebar({ starCounts }: Props) {
                     href={buildHomeHref({
                       genre: genre ?? undefined,
                       stars: f.param,
+                      sort: sortOrder,
                     })}
                     className={`${linkClass(active)} flex items-stretch`}
                     scroll={false}

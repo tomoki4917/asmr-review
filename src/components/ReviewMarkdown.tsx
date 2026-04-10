@@ -33,11 +33,21 @@ export function ReviewMarkdown({ markdown }: Props) {
               {children}
             </h2>
           ),
-          h3: ({ children }) => (
-            <h3 className="mb-2 mt-8 scroll-mt-24 text-lg font-semibold tracking-tight text-slate-100">
-              {children}
-            </h3>
-          ),
+          h3: ({ children }) => {
+            const label = nodeToPlainText(children).replace(/\u00a0/g, " ").trim();
+            const isWorkIntroLabel = label === "作品解説と感想";
+            return (
+              <h3
+                className={
+                  isWorkIntroLabel
+                    ? "mb-2 mt-8 scroll-mt-24 text-xl font-semibold tracking-tight text-slate-100"
+                    : "mb-2 mt-8 scroll-mt-24 text-lg font-semibold tracking-tight text-slate-100"
+                }
+              >
+                {children}
+              </h3>
+            );
+          },
           p: ({ children }) => (
             <p className="mb-5 text-[1.05rem] leading-[1.75] text-slate-300 last:mb-0">
               {children}

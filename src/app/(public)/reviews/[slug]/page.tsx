@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AdMaxUnit } from "@/components/AdMaxUnit";
-import { AffiliateButtonGroup } from "@/components/AffiliateButton";
+import { AffiliateButton, AffiliateButtonGroup } from "@/components/AffiliateButton";
+import { MatureContentNotice } from "@/components/MatureContentNotice";
 import { ReviewCover } from "@/components/ReviewCover";
 import { ReviewJsonLd } from "@/components/ReviewJsonLd";
 import { ArticleNextNav } from "@/components/ArticleNextNav";
@@ -11,16 +11,26 @@ import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { StarRating } from "@/components/StarRating";
 import { resolveSocialPreviewImage, siteUrl } from "@/lib/og-metadata";
 import { getAllSlugs, getReviewBySlug } from "@/lib/reviews";
-import { splitBodyAtFinalRating } from "@/lib/split-review-body";
+import {
+  splitBodyAtFinalRating,
+  splitRestAfterWorkImpression,
+} from "@/lib/split-review-body";
 import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
 import type { AffiliateLink } from "@/lib/types";
 
 type Props = { params: Promise<{ slug: string }> };
 
-/** 「総合評価」横ボタン用。先頭リンクのラベルを作品ページ導線に統一 */
-function affiliateLinksBesideRating(links: AffiliateLink[]): AffiliateLink[] {
+/** 文頭サマリー横。先頭リンクのラベルを作品ページ導線に統一 */
+function affiliateLinksHeader(links: AffiliateLink[]): AffiliateLink[] {
   return links.map((l, i) =>
     i === 0 ? { ...l, label: "作品ページはこちら" } : l
+  );
+}
+
+/** 「総合評価」横ボタン用。先頭リンクのラベルを体験版導線に統一 */
+function affiliateLinksBesideRating(links: AffiliateLink[]): AffiliateLink[] {
+  return links.map((l, i) =>
+    i === 0 ? { ...l, label: "体験版はこちら" } : l
   );
 }
 
@@ -90,6 +100,10 @@ export default async function ReviewPage({ params }: Props) {
   const finalRatingSplit = review.body
     ? splitBodyAtFinalRating(review.body)
     : null;
+  const restWorkSplit =
+    finalRatingSplit?.rest != null
+      ? splitRestAfterWorkImpression(finalRatingSplit.rest)
+      : null;
   const showAffiliateBesideRating =
     Boolean(finalRatingSplit) && review.affiliateLinks.length > 0;
 
@@ -106,7 +120,9 @@ export default async function ReviewPage({ params }: Props) {
           <span aria-hidden>←</span> {isArticle ? "トップへ" : "レビュー一覧"}
         </Link>
 
-        <AdMaxUnit placement="article-top" className="mt-6 sm:mt-7" />
+        {!isArticle ? (
+          <MatureContentNotice context="review" className="mt-5 sm:mt-6" />
+        ) : null}
 
         <header className="mt-5 sm:mt-6">
           <div className="overflow-hidden rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-lg shadow-slate-950/25 backdrop-blur-sm">
@@ -151,8 +167,29 @@ export default async function ReviewPage({ params }: Props) {
                   </li>
                 ))}
               </ul>
-              <div className="mt-5">
-                <SummaryMarkdown markdown={review.summary} />
+              <div
+                className={`mt-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6 ${
+                  review.affiliateLinks.length > 0 ? "sm:justify-between" : ""
+                }`}
+              >
+                <div className="min-w-0 flex-1">
+                  <SummaryMarkdown markdown={review.summary} />
+                </div>
+                {review.affiliateLinks.length > 0 ? (
+                  <div className="flex w-full shrink-0 flex-col gap-3 sm:w-auto sm:max-w-[min(100%,18rem)] sm:pt-0.5">
+                    {review.affiliateLinks.length === 1 ? (
+                      <AffiliateButton
+                        link={affiliateLinksHeader(review.affiliateLinks)[0]}
+                        className="min-h-11 w-full px-5 py-2.5 text-sm sm:min-w-[12rem]"
+                      />
+                    ) : (
+                      <AffiliateButtonGroup
+                        links={affiliateLinksHeader(review.affiliateLinks)}
+                        className="w-full flex-col sm:w-auto"
+                      />
+                    )}
+                  </div>
+                ) : null}
               </div>
               {hasAffiliateContent ? (
                 <p
@@ -182,7 +219,7 @@ export default async function ReviewPage({ params }: Props) {
                   >
                     総合評価
                   </h2>
-                  <ReviewMarkdown markdown={finalRatingSplit.after} />
+                  <ReviewMarkdown markdown={finalRatingSplit.rating} />
                 </div>
                 {review.affiliateLinks.length > 0 ? (
                   <div className="w-full shrink-0 sm:w-auto sm:max-w-[min(100%,20rem)] sm:pt-1">
@@ -193,6 +230,31 @@ export default async function ReviewPage({ params }: Props) {
                   </div>
                 ) : null}
               </div>
+              {finalRatingSplit.rest.trim() ? (
+                <div className="mt-10 min-w-0 border-t border-slate-700/50 pt-8">
+                  {restWorkSplit && review.affiliateLinks.length > 0 ? (
+                    <>
+                      <ReviewMarkdown markdown={restWorkSplit.before} />
+                      <div className="mt-8 flex justify-center sm:justify-start">
+                        <AffiliateButton
+                          link={{
+                            ...review.affiliateLinks[0],
+                            label: "購入はこちら",
+                          }}
+                          className="w-full min-h-[3.25rem] sm:w-auto sm:min-w-[14rem]"
+                        />
+                      </div>
+                      {restWorkSplit.after.trim() ? (
+                        <div className="mt-10 min-w-0">
+                          <ReviewMarkdown markdown={restWorkSplit.after} />
+                        </div>
+                      ) : null}
+                    </>
+                  ) : (
+                    <ReviewMarkdown markdown={finalRatingSplit.rest} />
+                  )}
+                </div>
+              ) : null}
             </>
           ) : (
             <ReviewMarkdown markdown={review.body} />
@@ -201,14 +263,16 @@ export default async function ReviewPage({ params }: Props) {
 
         {nextReview ? <ArticleNextNav next={nextReview} /> : null}
 
-        {review.affiliateLinks.length > 0 && !showAffiliateBesideRating && (
-          <section className="mt-8 rounded-3xl border border-slate-600/40 bg-slate-800/40 px-5 py-7 sm:mt-9 sm:px-8 sm:py-8">
-            <h2 className="text-lg font-bold text-slate-50">
-              作品のページへ
-            </h2>
-            <AffiliateButtonGroup links={review.affiliateLinks} className="mt-5" />
-          </section>
-        )}
+        {review.affiliateLinks.length > 0 &&
+          !showAffiliateBesideRating &&
+          review.summary.trim() === "" && (
+            <section className="mt-8 rounded-3xl border border-slate-600/40 bg-slate-800/40 px-5 py-7 sm:mt-9 sm:px-8 sm:py-8">
+              <h2 className="text-lg font-bold text-slate-50">
+                作品のページへ
+              </h2>
+              <AffiliateButtonGroup links={review.affiliateLinks} className="mt-5" />
+            </section>
+          )}
       </article>
     </>
   );

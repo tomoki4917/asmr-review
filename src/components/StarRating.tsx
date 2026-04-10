@@ -8,8 +8,16 @@ type Props = {
   className?: string;
 };
 
-function Star({ fill }: { fill: number }) {
+function Star({
+  fill,
+  variant,
+}: {
+  fill: number;
+  variant: "default" | "perfect";
+}) {
   const pct = Math.round(Math.min(Math.max(fill, 0), 1) * 100);
+  const fillClass =
+    variant === "perfect" ? "text-red-400" : "text-amber-300";
   return (
     <span className="relative inline-block h-[1em] w-[1em] shrink-0">
       <svg
@@ -25,7 +33,7 @@ function Star({ fill }: { fill: number }) {
         style={{ width: `${pct}%` }}
       >
         <svg
-          className="h-[1em] w-[1em] text-amber-300"
+          className={`h-[1em] w-[1em] ${fillClass}`}
           viewBox="0 0 20 20"
           fill="currentColor"
           aria-hidden
@@ -41,25 +49,35 @@ export function StarRating({ value, best = 10, size = "sm", className = "" }: Pr
   const stars = 5;
   const normalized = (value / best) * stars;
   const em = size === "md" ? "1.125rem" : "0.95rem";
+  const isPerfect = best > 0 && value === best;
+  const variant = isPerfect ? "perfect" : "default";
 
   return (
     <div
-      className={`inline-flex items-center gap-1.5 ${className}`}
+      className={`inline-flex items-center gap-1.5 ${
+        isPerfect ? "drop-shadow-[0_0_12px_rgba(248,113,113,0.35)]" : ""
+      } ${className}`}
       style={{ fontSize: em }}
       role="img"
       aria-label={`評価 ${value} / ${best}`}
     >
       <span className="flex gap-0.5" aria-hidden>
         {Array.from({ length: stars }, (_, i) => (
-          <Star key={i} fill={normalized - i} />
+          <Star key={i} fill={normalized - i} variant={variant} />
         ))}
       </span>
       <span
-        className="text-sm font-semibold tabular-nums text-slate-200"
+        className={`text-sm font-semibold tabular-nums ${
+          isPerfect ? "text-red-400" : "text-slate-200"
+        }`}
         aria-hidden
       >
         {value}
-        <span className="font-normal text-slate-500">/{best}</span>
+        <span
+          className={`font-normal ${isPerfect ? "text-red-400/85" : "text-slate-500"}`}
+        >
+          /{best}
+        </span>
       </span>
     </div>
   );

@@ -1,20 +1,35 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { AdMaxUnit } from "@/components/AdMaxUnit";
 import { HomeReviewList } from "@/components/HomeReviewList";
+import { MatureContentNotice } from "@/components/MatureContentNotice";
 import { PsychologyInsightsSection } from "@/components/PsychologyInsightsSection";
 import { ReviewCover } from "@/components/ReviewCover";
 import { StarRating } from "@/components/StarRating";
+import { RATING_BEST_DEFAULT, isStarBucketNineOrAbove } from "@/lib/rating-scale";
 import { getAllReviews } from "@/lib/reviews";
 import type { Review } from "@/lib/types";
 
-/** トップで先に見せたいレビュー（該当 slug の Markdown があれば表示） */
-const SPOTLIGHT_REVIEW_SLUGS = ["kyoku-mugen-zekkyou-count-chikuni"] as const;
+/** ピックアップに並べる最大件数（直近・高評価のうち先頭から） */
+const SPOTLIGHT_MAX = 1;
+
+function pickSpotlightReviews(reviews: Review[]): Review[] {
+  return reviews
+    .filter((r) => r.contentKind === "review")
+    .filter((r) =>
+      isStarBucketNineOrAbove(r.ratingValue, r.ratingBest ?? RATING_BEST_DEFAULT)
+    )
+    .sort((a, b) => {
+      const tb = Date.parse(b.publishedAt);
+      const ta = Date.parse(a.publishedAt);
+      const diff = (Number.isNaN(tb) ? 0 : tb) - (Number.isNaN(ta) ? 0 : ta);
+      if (diff !== 0) return diff;
+      return a.slug.localeCompare(b.slug);
+    })
+    .slice(0, SPOTLIGHT_MAX);
+}
 
 function SpotlightReviews({ reviews }: { reviews: Review[] }) {
-  const items = SPOTLIGHT_REVIEW_SLUGS.map((slug) =>
-    reviews.find((r) => r.slug === slug)
-  ).filter((r): r is Review => r != null);
+  const items = pickSpotlightReviews(reviews);
 
   if (items.length === 0) return null;
 
@@ -105,10 +120,10 @@ export default function HomePage() {
           催眠音声レビュー室
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
-          主に同人音声を主観と客観的なデータに基づいてレビューさせていただいております。色んな作品が溢れている昨今、「少しでも読者様の参考になれば」という思いで投稿しています。
+          同人音声をこれまで1000本以上聴いてきた管理人が、作品を脳科学・心理学の視点からレビューしています。印象や好みだけに頼らず、主観の感想に加えて整理できる客観的なデータや観点も示し、新作が溢れるなかで「どれを選ぶか」迷ったときの按針になればと考えています。
         </p>
         <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
-          忖度無しのガチレビューです。
+          忖度はありません。宣伝やお世辞ではなく、聴き手の時間と買い物の判断に使える本音のレビューです。購入や視聴の決め手に、確かな一助になれば幸いです。
         </p>
         <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
           質問などあれば
@@ -120,11 +135,8 @@ export default function HomePage() {
           </Link>
           にてお待ちしております。
         </p>
+        <MatureContentNotice context="home" className="mx-auto mt-8 max-w-xl text-left" />
       </header>
-
-      <div className="mx-auto mt-10 flex justify-center overflow-x-hidden">
-        <AdMaxUnit placement="home-top" />
-      </div>
 
       <SpotlightReviews reviews={reviews} />
 

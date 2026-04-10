@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { AdMaxUnit } from "@/components/AdMaxUnit";
+import { MatureContentNotice } from "@/components/MatureContentNotice";
 import { ReviewMarkdown } from "@/components/ReviewMarkdown";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { ReviewCoverPlaceholder } from "@/components/ReviewCover";
@@ -86,7 +86,9 @@ export default function LocalReviewPageClient() {
         <span aria-hidden>←</span> トップへ
       </Link>
 
-      <AdMaxUnit placement="article-top" className="mt-6 sm:mt-7" />
+      {isStarRatedReview(review) ? (
+        <MatureContentNotice context="review" className="mt-5 sm:mt-6" />
+      ) : null}
 
       <header className="mt-5 sm:mt-6">
         <div className="overflow-hidden rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-lg shadow-slate-950/25 backdrop-blur-sm">

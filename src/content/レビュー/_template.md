@@ -14,6 +14,11 @@ slug: my-first-review
 title: 作品名　レビュー
 
 # 紹介文（OGP・詳細ページ上部）。プレーンでも Markdown 可。画像: ![alt](https://...) または ![alt](/content/foo.png)
+# 改行して見やすくする場合は YAML の |（リテラルブロック）＋空行で段落分け（本文は変えず改行だけでも可）。
+# summary: |
+#   1段落目の文章。
+#
+#   2段落目の文章。
 summary: メタディスクリプション・一覧用。120文字前後が目安。
 
 # 1つ以上。一覧のタグ表示に使われます。
@@ -29,7 +34,7 @@ ratingBest: 10
 # Schema.org（構造化データ）用。作品名として使われます。
 itemName: 作品名（itemReviewed）
 
-# 任意。未指定時は summary が使われることがあります。
+# 任意。未指定時は summary が使われることがあります。summary と同様、| で複数段落にできる。
 itemDescription: 作品の短い説明
 
 authorName: あなたの名前

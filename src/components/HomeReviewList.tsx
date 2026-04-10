@@ -13,6 +13,7 @@ import {
   readPostedReviewsFromStorage,
   type PostedReview,
 } from "@/lib/posted-review";
+import { formatPublishedAtForList } from "@/lib/format-published-at";
 import { ratingFilterBucket } from "@/lib/rating-scale";
 import type { Review } from "@/lib/types";
 import { RatingStarsSidebar } from "@/components/RatingStarsSidebar";
@@ -25,6 +26,31 @@ type MergedReviewItem =
   | { kind: "file"; review: Review }
   | { kind: "local"; review: PostedReview };
 
+function publishedAtMs(item: MergedReviewItem): number {
+  const s =
+    item.kind === "file" ? item.review.publishedAt : item.review.publishedAt;
+  const t = Date.parse(s);
+  return Number.isNaN(t) ? 0 : t;
+}
+
+function mergeItemKey(item: MergedReviewItem): string {
+  return item.kind === "file" ? item.review.slug : item.review.id;
+}
+
+function sortMergedByPublishedAt(
+  items: MergedReviewItem[],
+  order: "new" | "old"
+): MergedReviewItem[] {
+  return [...items].sort((a, b) => {
+    const ta = publishedAtMs(a);
+    const tb = publishedAtMs(b);
+    let cmp = tb - ta;
+    if (order === "old") cmp = -cmp;
+    if (cmp !== 0) return cmp;
+    return mergeItemKey(a).localeCompare(mergeItemKey(b));
+  });
+}
+
 function mergeReviews(
   markdownReviews: Review[],
   posted: PostedReview[]
@@ -35,16 +61,7 @@ function mergeReviews(
     ...mdReviews.map((review) => ({ kind: "file" as const, review })),
     ...reviewPosted.map((review) => ({ kind: "local" as const, review })),
   ];
-  items.sort((a, b) => {
-    const ta = Date.parse(
-      a.kind === "file" ? a.review.publishedAt : a.review.publishedAt
-    );
-    const tb = Date.parse(
-      b.kind === "file" ? b.review.publishedAt : b.review.publishedAt
-    );
-    return (Number.isNaN(tb) ? 0 : tb) - (Number.isNaN(ta) ? 0 : ta);
-  });
-  return items;
+  return sortMergedByPublishedAt(items, "new");
 }
 
 function mergedReviewRatingBest(item: MergedReviewItem): number {
@@ -132,11 +149,16 @@ function LocalPostedCard({ review }: { review: PostedReview }) {
           )}
         </div>
         <div className="p-5 sm:p-6">
-          <p
-            className={`text-xs font-medium uppercase tracking-wider ${badgeClass}`}
-          >
-            ブラウザ保存 · {label}
-          </p>
+          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+            <p
+              className={`text-xs font-medium uppercase tracking-wider ${badgeClass}`}
+            >
+              ブラウザ保存 · {label}
+            </p>
+            <p className="text-xs tabular-nums text-slate-500">
+              投稿 {formatPublishedAtForList(review.publishedAt)}
+            </p>
+          </div>
           <h2 className="mt-1 text-lg font-semibold leading-snug tracking-tight text-slate-50 line-clamp-2 group-hover:text-sky-200">
             {review.title}
           </h2>
@@ -179,6 +201,9 @@ export function HomeReviewList({ markdownReviews }: Props) {
   const genreFilter: "hypnosis" | "doujin" | null =
     genreRaw === "hypnosis" || genreRaw === "doujin" ? genreRaw : null;
 
+  const sortOrder: "new" | "old" =
+    searchParams.get("sort") === "old" ? "old" : "new";
+
   const [posted, setPosted] = useState<PostedReview[]>([]);
 
   const reloadPosted = useCallback(() => {
@@ -217,9 +242,11 @@ export function HomeReviewList({ markdownReviews }: Props) {
     let list = mergedReviews.filter((item) =>
       matchesGenreFilter(item, genreFilter)
     );
-    if (starFilter === null) return list;
-    return list.filter((item) => matchesStarFilter(item, starFilter));
-  }, [mergedReviews, genreFilter, starFilter]);
+    if (starFilter !== null) {
+      list = list.filter((item) => matchesStarFilter(item, starFilter));
+    }
+    return sortMergedByPublishedAt(list, sortOrder);
+  }, [mergedReviews, genreFilter, starFilter, sortOrder]);
 
   const starCountsForSidebar = useMemo(
     () => countsByStarFilter(mergedReviews, genreFilter),
@@ -397,7 +424,10 @@ export function HomeReviewList({ markdownReviews }: Props) {
       </div>
 
       <aside className="shrink-0 lg:sticky lg:top-24 lg:w-52 xl:w-56">
-        <RatingStarsSidebar starCounts={starCountsForSidebar} />
+        <RatingStarsSidebar
+          starCounts={starCountsForSidebar}
+          sortOrder={sortOrder}
+        />
       </aside>
     </div>
   );

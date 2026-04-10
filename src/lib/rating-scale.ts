@@ -11,3 +11,8 @@ export function ratingFilterBucket(value: number, best: number): number {
   const scaled = Math.round((value / best) * 10);
   return Math.min(10, Math.max(1, scaled));
 }
+
+/** 一覧の★段階（1〜10）で ★9 以上（★9・★10）か。トップのピックアップ条件に使用 */
+export function isStarBucketNineOrAbove(value: number, best: number): boolean {
+  return ratingFilterBucket(value, best) >= 9;
+}
