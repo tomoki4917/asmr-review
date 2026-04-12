@@ -1,0 +1,29 @@
+---
+description: 催眠レビュー向け・解析データ（mp3以外）を該当記事フォルダへ保存する手順
+globs: src/content/レビュー/**/*
+alwaysApply: false
+---
+
+# 解析データを該当レビューに保存する
+
+ユーザーが「投稿完了」などの解析フォルダを渡したとき、**音声ファイル（.mp3）以外**の分析成果物を、対応するレビュー記事のフォルダに保存する。
+
+## 置き場所
+
+- **実体:** `src/content/レビュー/<slug>/analysis/`（`index.md` と並ぶ）
+- **同期後の公開パス:** `npm run sync:content-assets` 実行後、`/content/reviews/<slug>/analysis/`（ASCII のみ URL）
+
+`sync-content-assets.mjs` は `.md` 以外を `public/content/` にミラーするため、上記に置けばビルドで配信対象になる。
+
+## 手順
+
+1. **スラッグ**を `index.md` の `slug:` と一致させる。
+2. 解析フォルダから **mp3 以外**を `analysis/` へコピーする。コマンド例:
+   - `py -3 scripts/import-review-analysis.py "<解析フォルダのパス>" <slug>`
+3. **`npm run sync:content-assets`** を実行する。
+
+## 注意
+
+- **レビュー本文（`index.md` の表示内容）は変えない。**解析データは `analysis/` に置くだけ。本文へ追記・埋め込みが必要なときは、ユーザーが明示した場合のみ行う。
+- `*.json` や `*_waveform.csv` は容量が大きい。**本文には貼らず**ファイルとして `analysis/` に保存する。
+- 「記事に保存」は **`src/content/レビュー/<slug>/` フォルダに同梱する**意味（主に `analysis/`）でよい。
