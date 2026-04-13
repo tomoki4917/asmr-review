@@ -23,6 +23,7 @@ authorName: 催眠音声レビュー室
 publishedAt: "2026-04-12"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ260000/RJ259751_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ259751.html
+workImpressionAvatar: /content/reviews/nouiki-youko-noumimi/review_impression_mascot.png
 affiliateLinks:
   - vendor: dlsite
     href: https://dlaf.jp/maniax/dlaf/=/t/n/link/work/aid/reviewLab/id/RJ259751.html

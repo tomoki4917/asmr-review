@@ -74,6 +74,18 @@ body {
     font-size: clamp(1rem, 0.28vw + 0.955rem, 1.05rem);
   }
 
+  @media (max-width: 420px) {
+    .review-md .review-md-aside-circle {
+      float: none;
+      display: flex;
+      justify-content: center;
+      max-width: 100% !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      margin-bottom: 1rem;
+    }
+  }
+
   /** プレーンテキスト1ブロック用（一覧の抜粋など）。字サイズは呼び出し側の Tailwind で指定 */
   .jp-prose-plain {
     text-align: justify;

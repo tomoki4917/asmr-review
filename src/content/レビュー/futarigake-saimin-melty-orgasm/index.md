@@ -25,6 +25,7 @@ authorName: 催眠音声レビュー室
 publishedAt: "2026-04-10"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ216000/RJ215569_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ215569.html
+workImpressionAvatar: /content/reviews/futarigake-saimin-melty-orgasm/review_impression_mascot.png
 affiliateLinks:
   - vendor: dlsite
     href: https://dlaf.jp/maniax/dlaf/=/t/n/link/work/aid/reviewLab/id/RJ215569.html

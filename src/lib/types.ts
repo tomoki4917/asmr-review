@@ -36,4 +36,9 @@ export type Review = {
   affiliateLinks: AffiliateLink[];
   /** 詳細ページ末尾の「次の記事」用（フロントマター `nextSlug`） */
   nextSlug?: string;
+  /**
+   * 任意。「## 作品感想」見出しの右に、LINE のトプ画のような丸アイコンを並べる。
+   * `coverImage` と同じく `/` 始まりの public パスまたは http(s) URL。
+   */
+  workImpressionAvatar?: string;
 };

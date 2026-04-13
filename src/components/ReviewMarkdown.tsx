@@ -6,6 +6,8 @@ type Props = {
   markdown: string;
   /** 記事（contentKind: article）向け。スマホで字下げ・行間・リスト間隔を読みやすくする */
   articleReading?: boolean;
+  /** フロントマター `workImpressionAvatar`。「作品感想」見出しの右に丸アイコンを並べる */
+  workImpressionAvatar?: string;
 };
 
 /** `**★10／10**` など満点行を検出（総合評価の強調色用） */
@@ -25,7 +27,11 @@ function isTenOutOfTenRating(text: string): boolean {
   return /^★\s*10\s*[／/]\s*10\s*$/.test(t);
 }
 
-export function ReviewMarkdown({ markdown, articleReading = false }: Props) {
+export function ReviewMarkdown({
+  markdown,
+  articleReading = false,
+  workImpressionAvatar,
+}: Props) {
   const listGap = articleReading ? "space-y-2 sm:space-y-1" : "space-y-1";
   const h2Article = articleReading
     ? "max-sm:text-[1.3125rem] max-sm:leading-snug"
@@ -37,17 +43,10 @@ export function ReviewMarkdown({ markdown, articleReading = false }: Props) {
 
   return (
     <div
-      className={`review-md min-w-0 max-w-full ${articleReading ? "review-md--article" : ""}`}
+      className={`review-md flow-root min-w-0 max-w-full ${articleReading ? "review-md--article" : ""}`}
     >
       <ReactMarkdown
         components={{
-          h2: ({ children }) => (
-            <h2
-              className={`mb-3 mt-10 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 first:mt-0 ${h2Article}`}
-            >
-              {children}
-            </h2>
-          ),
           h3: ({ children }) => {
             const label = nodeToPlainText(children).replace(/\u00a0/g, " ").trim();
             const isWorkIntroLabel = label === "作品解説と感想";
@@ -61,6 +60,38 @@ export function ReviewMarkdown({ markdown, articleReading = false }: Props) {
               >
                 {children}
               </h3>
+            );
+          },
+          h2: ({ children }) => {
+            const label = nodeToPlainText(children).replace(/\u00a0/g, " ").trim();
+            const isWorkImpression = label === "作品感想";
+            if (isWorkImpression && workImpressionAvatar) {
+              return (
+                <div className="review-work-impression-head mb-3 mt-10 flex w-full min-w-0 scroll-mt-24 flex-wrap items-center gap-x-2.5 gap-y-2 first:mt-0 sm:gap-x-3">
+                  <h2
+                    className={`mb-0 mt-0 w-auto max-w-full shrink-0 text-xl font-bold leading-tight tracking-tight text-slate-50 ${h2Article}`}
+                  >
+                    {children}
+                  </h2>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- レビュー同梱の相対パス／任意 URL */}
+                  <img
+                    src={workImpressionAvatar}
+                    alt=""
+                    className="h-9 w-9 shrink-0 rounded-full border-2 border-slate-500/55 bg-slate-800/80 object-cover shadow-[0_1px_8px_rgba(0,0,0,0.4)] sm:h-[2.5rem] sm:w-[2.5rem]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              );
+            }
+            return (
+              <h2
+                className={`mb-3 mt-10 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 first:mt-0 ${h2Article} ${
+                  isWorkImpression ? "review-h2--work-impression" : ""
+                }`}
+              >
+                {children}
+              </h2>
             );
           },
           p: ({ children }) => (

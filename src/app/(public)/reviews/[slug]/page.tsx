@@ -224,6 +224,7 @@ export default async function ReviewPage({ params }: Props) {
                 <ReviewMarkdown
                   markdown={finalRatingSplit.before}
                   articleReading={isArticle}
+                  workImpressionAvatar={review.workImpressionAvatar}
                 />
               ) : null}
               <div className="mt-10 border-t border-slate-700/50 pt-8">
@@ -238,6 +239,7 @@ export default async function ReviewPage({ params }: Props) {
                     <ReviewMarkdown
                       markdown={ratingParts.core}
                       articleReading={isArticle}
+                      workImpressionAvatar={review.workImpressionAvatar}
                     />
                   </div>
                   {review.affiliateLinks.length > 0 ? (
@@ -254,6 +256,7 @@ export default async function ReviewPage({ params }: Props) {
                     <ReviewMarkdown
                       markdown={ratingParts.workIntro}
                       articleReading={isArticle}
+                      workImpressionAvatar={review.workImpressionAvatar}
                     />
                   </div>
                 ) : null}
@@ -265,6 +268,7 @@ export default async function ReviewPage({ params }: Props) {
                       <ReviewMarkdown
                         markdown={restWorkSplit.before}
                         articleReading={isArticle}
+                        workImpressionAvatar={review.workImpressionAvatar}
                       />
                       <div className="mt-8 flex justify-center sm:justify-start">
                         <AffiliateButton
@@ -280,6 +284,7 @@ export default async function ReviewPage({ params }: Props) {
                           <ReviewMarkdown
                             markdown={restWorkSplit.after}
                             articleReading={isArticle}
+                            workImpressionAvatar={review.workImpressionAvatar}
                           />
                         </div>
                       ) : null}
@@ -288,6 +293,7 @@ export default async function ReviewPage({ params }: Props) {
                     <ReviewMarkdown
                       markdown={finalRatingSplit.rest}
                       articleReading={isArticle}
+                      workImpressionAvatar={review.workImpressionAvatar}
                     />
                   )}
                 </div>
@@ -297,6 +303,7 @@ export default async function ReviewPage({ params }: Props) {
             <ReviewMarkdown
               markdown={review.body}
               articleReading={isArticle}
+              workImpressionAvatar={review.workImpressionAvatar}
             />
           )}
         </section>

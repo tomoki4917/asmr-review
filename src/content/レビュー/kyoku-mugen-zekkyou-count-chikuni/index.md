@@ -22,6 +22,7 @@ authorName: 催眠音声レビュー室
 publishedAt: "2026-04-09"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01518000/RJ01517030_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ01517030.html
+workImpressionAvatar: /content/reviews/kyoku-mugen-zekkyou-count-chikuni/review_impression_mascot.png
 affiliateLinks:
   - vendor: dlsite
     href: https://dlaf.jp/maniax/dlaf/=/t/n/link/work/aid/reviewLab/id/RJ01517030.html

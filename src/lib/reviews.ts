@@ -148,6 +148,7 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
     publishedAt: asString(d.publishedAt, "publishedAt"),
     affiliateLinks: parseAffiliateLinks(d.affiliateLinks),
     nextSlug: parseOptionalNextSlug(d.nextSlug),
+    workImpressionAvatar: parseOptionalCoverImage(d.workImpressionAvatar),
   };
 
   if (Number.isNaN(Date.parse(review.publishedAt))) {
