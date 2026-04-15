@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatPublishedAtForList } from "@/lib/format-published-at";
+import { reviewTitleSingleLine } from "@/lib/review-title";
 import type { Review } from "@/lib/types";
 import { ReviewCover } from "./ReviewCover";
 
@@ -13,6 +14,8 @@ export function FileMarkdownArticleCard({
   review,
   priorityImage = false,
 }: Props) {
+  const titleOne = reviewTitleSingleLine(review.title);
+
   return (
     <article>
       <Link
@@ -21,7 +24,7 @@ export function FileMarkdownArticleCard({
       >
         <ReviewCover
           coverImage={review.coverImage}
-          alt={review.title}
+          alt={titleOne}
           slug={review.slug}
           priority={priorityImage}
           className="rounded-t-3xl group-focus-visible:rounded-t-3xl"
@@ -36,7 +39,7 @@ export function FileMarkdownArticleCard({
             </p>
           </div>
           <h2 className="mt-1 text-lg font-semibold leading-snug tracking-tight text-slate-50 line-clamp-2 group-hover:text-sky-200">
-            {review.title}
+            {titleOne}
           </h2>
           <ul className="mt-4 flex flex-wrap gap-2">
             {review.tags.map((tag) => (

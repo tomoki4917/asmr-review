@@ -1,3 +1,5 @@
+import { reviewTitleSingleLine } from "@/lib/review-title";
+
 /**
  * OGP / Twitter 用の絶対 URL 解決。
  * フォールバック: `NEXT_PUBLIC_OGP_FALLBACK_IMAGE`（省略時は `/ogp-fallback.png`）
@@ -41,11 +43,12 @@ export function resolveSocialPreviewImage(review: {
   title: string;
 }): { url: string; alt: string } {
   const fromCover = absoluteCoverImageUrl(review.coverImage);
+  const titleAlt = reviewTitleSingleLine(review.title);
   if (fromCover) {
-    return { url: fromCover, alt: review.title };
+    return { url: fromCover, alt: titleAlt };
   }
   return {
     url: absoluteFallbackOgUrl(),
-    alt: review.title,
+    alt: titleAlt,
   };
 }

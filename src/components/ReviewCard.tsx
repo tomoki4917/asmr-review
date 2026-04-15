@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatPublishedAtForList } from "@/lib/format-published-at";
+import { reviewTitleSingleLine } from "@/lib/review-title";
 import type { Review } from "@/lib/types";
 import { ReviewCover } from "./ReviewCover";
 import { StarRating } from "./StarRating";
@@ -11,6 +12,7 @@ type Props = {
 
 export function ReviewCard({ review, priorityImage = false }: Props) {
   const best = review.ratingBest ?? 10;
+  const titleOne = reviewTitleSingleLine(review.title);
 
   return (
     <article>
@@ -20,7 +22,7 @@ export function ReviewCard({ review, priorityImage = false }: Props) {
       >
         <ReviewCover
           coverImage={review.coverImage}
-          alt={review.title}
+          alt={titleOne}
           slug={review.slug}
           priority={priorityImage}
           className="rounded-t-3xl group-focus-visible:rounded-t-3xl"
@@ -30,7 +32,7 @@ export function ReviewCard({ review, priorityImage = false }: Props) {
             投稿 {formatPublishedAtForList(review.publishedAt)}
           </p>
           <h2 className="mt-1 text-lg font-semibold leading-snug tracking-tight text-slate-50 line-clamp-2 group-hover:text-sky-200">
-            {review.title}
+            {titleOne}
           </h2>
           {review.contentKind === "review" && (
             <div className="mt-3">

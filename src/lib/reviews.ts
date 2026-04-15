@@ -113,7 +113,7 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
   const slug =
     typeof d.slug === "string" && d.slug.trim() ? d.slug.trim() : fallbackSlug;
   const contentKind = parseContentKind(d.contentKind ?? d.kind);
-  const titleStr = asString(d.title, "title");
+  const titleStr = asString(d.title, "title").replace(/\r\n/g, "\n").trim();
 
   let ratingValue = 0;
   let ratingBest: number | undefined;

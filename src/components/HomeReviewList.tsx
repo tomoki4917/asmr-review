@@ -14,6 +14,7 @@ import {
   type PostedReview,
 } from "@/lib/posted-review";
 import { formatPublishedAtForList } from "@/lib/format-published-at";
+import { reviewTitleSingleLine } from "@/lib/review-title";
 import { ratingFilterBucket } from "@/lib/rating-scale";
 import type { Review } from "@/lib/types";
 import { RatingStarsSidebar } from "@/components/RatingStarsSidebar";
@@ -118,6 +119,7 @@ function countsByStarFilter(
 
 function LocalPostedCard({ review }: { review: PostedReview }) {
   const best = postedReviewRatingBest(review);
+  const titleOne = reviewTitleSingleLine(review.title);
   const slug = `local-${review.id}`;
   const kind = effectivePostKind(review);
   const label = postedKindLabel(kind);
@@ -141,7 +143,7 @@ function LocalPostedCard({ review }: { review: PostedReview }) {
             // eslint-disable-next-line @next/next/no-img-element -- 外部URL任意のため
             <img
               src={review.thumbnailUrl}
-              alt={review.title}
+              alt={titleOne}
               className="h-full w-full object-cover"
             />
           ) : (
@@ -160,7 +162,7 @@ function LocalPostedCard({ review }: { review: PostedReview }) {
             </p>
           </div>
           <h2 className="mt-1 text-lg font-semibold leading-snug tracking-tight text-slate-50 line-clamp-2 group-hover:text-sky-200">
-            {review.title}
+            {titleOne}
           </h2>
           {isStarRatedReview(review) && (
             <div className="mt-3">

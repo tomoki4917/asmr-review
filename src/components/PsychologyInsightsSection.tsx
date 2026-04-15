@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { reviewTitleSingleLine } from "@/lib/review-title";
 import type { Review } from "@/lib/types";
 import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
 import { ReviewCover } from "./ReviewCover";
@@ -56,7 +57,7 @@ export function PsychologyInsightsSection({ beginnerGuides }: Props) {
             {beginnerGuides.map((review, i) => {
               const meta = GUIDE_META[review.slug] ?? {
                 step: `STEP ${i + 1}`,
-                shortTitle: review.title,
+                shortTitle: reviewTitleSingleLine(review.title),
                 accent: "from-slate-600/30 to-slate-800/20",
               };
               const teaser = stripMarkdownForMeta(review.summary);
@@ -75,7 +76,7 @@ export function PsychologyInsightsSection({ beginnerGuides }: Props) {
                       <div className="flex w-full min-w-0 shrink-0 items-center justify-center overflow-hidden border-b border-slate-600/35 bg-slate-900">
                         <ReviewCover
                           coverImage={review.coverImage}
-                          alt={review.title}
+                          alt={reviewTitleSingleLine(review.title)}
                           slug={review.slug}
                           priority={i < 2}
                           className="!aspect-[16/10] w-full rounded-none"
@@ -90,7 +91,7 @@ export function PsychologyInsightsSection({ beginnerGuides }: Props) {
                           {meta.shortTitle}
                         </h3>
                         <p className="mt-0.5 line-clamp-2 text-[9px] font-medium leading-tight text-slate-500 sm:text-[11px] sm:leading-snug md:text-xs">
-                          {review.title}
+                          {reviewTitleSingleLine(review.title)}
                         </p>
                         <p className="jp-prose-plain mt-1.5 line-clamp-2 flex-1 text-[9px] leading-snug text-slate-400 sm:mt-2 sm:line-clamp-3 sm:text-xs sm:leading-relaxed md:mt-3 md:text-sm">
                           {plain}

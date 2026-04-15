@@ -7,6 +7,7 @@ import { PsychologyInsightsSection } from "@/components/PsychologyInsightsSectio
 import { ReviewCover } from "@/components/ReviewCover";
 import { StarRating } from "@/components/StarRating";
 import { RATING_BEST_DEFAULT, isStarBucketNineOrAbove } from "@/lib/rating-scale";
+import { reviewTitleSingleLine } from "@/lib/review-title";
 import { getAllReviews } from "@/lib/reviews";
 import type { Review } from "@/lib/types";
 
@@ -51,6 +52,7 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
       <ul className="mt-6 space-y-4">
         {items.map((r) => {
           const best = r.ratingBest ?? 10;
+          const titleOne = reviewTitleSingleLine(r.title);
           return (
             <li key={r.slug}>
               <Link
@@ -59,7 +61,7 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
               >
                 <ReviewCover
                   coverImage={r.coverImage}
-                  alt={r.title}
+                  alt={titleOne}
                   slug={r.slug}
                   priority
                   className="rounded-none"
@@ -70,7 +72,7 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
                       作品レビュー
                     </p>
                     <h3 className="mt-1 text-balance text-lg font-bold leading-snug text-slate-50 group-hover:text-sky-200 sm:text-xl">
-                      {r.title}
+                      {titleOne}
                     </h3>
                     <div className="mt-2 line-clamp-3 min-h-0 leading-relaxed text-slate-400">
                       <SummaryMarkdown markdown={r.summary} className="text-sm" />
@@ -124,7 +126,19 @@ export default function HomePage() {
           同人音声をこれまで1000本以上聴いてきた管理人が、作品を脳科学・心理学の視点からレビューしています。印象や好みだけに頼らず、主観の感想に加えて整理できる客観的なデータや観点も示し、新作が溢れるなかで「どれを選ぶか」迷ったときの按針になればと考えています。
         </p>
         <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
-          忖度はありません。宣伝やお世辞ではなく、聴き手の時間と買い物の判断に使える本音のレビューです。購入や視聴の決め手に、確かな一助になれば幸いです。
+          評価基準や方法は、
+          <Link
+            href="/reviews/evaluation-method/"
+            className="font-medium text-sky-300 underline-offset-2 hover:text-sky-200 hover:underline"
+          >
+            評価メソッド
+          </Link>
+          のページにまとめています。
+        </p>
+        <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
+          忖度はありません。宣伝やお世辞ではなく、聴き手の時間と買い物の判断に使える本音のレビューです。
+          <br />
+          購入や視聴の決め手に、確かな一助になれば幸いです。
         </p>
         <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
           質問などあれば

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { reviewTitleSingleLine } from "@/lib/review-title";
 import type { Review } from "@/lib/types";
 
 type Props = {
@@ -18,7 +19,7 @@ export function ArticleNextNav({ next }: Props) {
         href={`/reviews/${next.slug}/`}
         className="group mt-2 block min-h-[2.75rem] text-base font-semibold leading-snug text-slate-50 transition hover:text-sky-200 sm:min-h-0 sm:text-lg"
       >
-        {next.title}
+        {reviewTitleSingleLine(next.title)}
         <span
           aria-hidden
           className="ml-1 inline-block text-sky-400 transition group-hover:translate-x-0.5"

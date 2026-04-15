@@ -16,6 +16,7 @@ import {
   splitRatingAtWorkIntroLabel,
   splitRestAfterWorkImpression,
 } from "@/lib/split-review-body";
+import { reviewTitleSingleLine } from "@/lib/review-title";
 import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
 import type { AffiliateLink } from "@/lib/types";
 
@@ -44,9 +45,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const review = getReviewBySlug(slug);
   if (!review) return { title: "見つかりません" };
 
-  const title = review.title;
+  const title = reviewTitleSingleLine(review.title);
   const description =
-    stripMarkdownForMeta(review.summary) || review.title;
+    stripMarkdownForMeta(review.summary) || title;
   const url = `${siteUrl()}/reviews/${slug}/`;
   const { url: imageUrl, alt: imageAlt } = resolveSocialPreviewImage(review);
 
@@ -80,6 +81,7 @@ export default async function ReviewPage({ params }: Props) {
   const best = review.ratingBest ?? 10;
 
   const isArticle = review.contentKind === "article";
+  const titleHasBreak = review.title.includes("\n");
   const nextReview = review.nextSlug
     ? getReviewBySlug(review.nextSlug)
     : undefined;
@@ -87,7 +89,7 @@ export default async function ReviewPage({ params }: Props) {
   const coverEl = (
     <ReviewCover
       coverImage={review.coverImage}
-      alt={review.title}
+      alt={reviewTitleSingleLine(review.title)}
       slug={review.slug}
       priority
       variant="hero"
@@ -149,7 +151,7 @@ export default async function ReviewPage({ params }: Props) {
               className={`border-t border-slate-600/40 bg-slate-900/50 px-5 py-6 sm:px-8 sm:py-8 ${isArticle ? "max-sm:px-5 max-sm:pb-7 max-sm:pt-6" : ""}`}
             >
               <h1
-                className={`text-balance text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl ${isArticle ? "max-sm:text-[1.7rem] max-sm:leading-snug" : ""}`}
+                className={`text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl ${isArticle || titleHasBreak ? "whitespace-pre-line text-pretty" : "text-balance"} ${isArticle ? "max-sm:text-[1.7rem] max-sm:leading-snug" : ""}`}
               >
                 {review.title}
               </h1>

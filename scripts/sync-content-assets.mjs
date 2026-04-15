@@ -71,6 +71,10 @@ const LEGACY_ARTICLE_COVERS = [
     path.join("reviews", "dry-orgasm-what-is", "cover"),
     "ドライオーガズムとは.jpg",
   ],
+  [
+    "evaluation-method",
+    path.join("reviews", "evaluation-method", "cover"),
+  ],
 ];
 const COVER_BASENAMES = [
   "cover.jpg",

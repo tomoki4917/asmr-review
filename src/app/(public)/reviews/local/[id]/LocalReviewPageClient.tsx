@@ -17,6 +17,7 @@ import {
   readPostedReviewsFromStorage,
   type PostedReview,
 } from "@/lib/posted-review";
+import { reviewTitleSingleLine } from "@/lib/review-title";
 
 export default function LocalReviewPageClient() {
   const params = useParams();
@@ -65,6 +66,7 @@ export default function LocalReviewPageClient() {
   }
 
   const best = postedReviewRatingBest(review);
+  const titleOne = reviewTitleSingleLine(review.title);
   const slug = `local-${review.id}`;
   const kind = effectivePostKind(review);
   const kindLabel = postedKindLabel(kind);
@@ -78,6 +80,7 @@ export default function LocalReviewPageClient() {
           : "text-amber-300/95";
 
   const articleReading = !isStarRatedReview(review);
+  const titleHasBreak = review.title.includes("\n");
 
   return (
     <article
@@ -101,7 +104,7 @@ export default function LocalReviewPageClient() {
               // eslint-disable-next-line @next/next/no-img-element -- 外部URL任意
               <img
                 src={review.thumbnailUrl}
-                alt={review.title}
+                alt={titleOne}
                 className="h-full w-full object-cover"
               />
             ) : (
@@ -115,7 +118,7 @@ export default function LocalReviewPageClient() {
               ブラウザ保存の投稿（他端末とは共有されません）· {kindLabel}
             </p>
             <h1
-              className={`mt-2 text-balance text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl ${articleReading ? "max-sm:text-[1.7rem] max-sm:leading-snug" : ""}`}
+              className={`mt-2 text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl ${articleReading || titleHasBreak ? "whitespace-pre-line text-pretty" : "text-balance"} ${articleReading ? "max-sm:text-[1.7rem] max-sm:leading-snug" : ""}`}
             >
               {review.title}
             </h1>
