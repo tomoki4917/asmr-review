@@ -1,75 +1,142 @@
 ---
 # 複製して「タイトル用フォルダ/index.md」として置く。
-# ・レビュー → src/content/レビュー/あなたのフォルダ/index.md
-# ・記事 → src/content/記事/あなたのフォルダ/index.md（下の contentKind: article を有効化）
+# レビュー → src/content/レビュー/<slug>/index.md
+# 記事 → src/content/記事/<slug>/index.md（下の contentKind: article を有効化）
 #
+# フォーマット・文体の正本: unknown-hypno-daijobu-koe-ni-yudanete/index.md（執筆ガイド参照）
 # --- 必須・推奨フィールド -----------------------------------------------
-# レビュー（星あり・「レビュー一覧」）か 記事（星なし・「記事」欄）か。省略時は review
+# レビュー（星あり）か 記事（星なし）。省略時は review
 # contentKind: article
 
-# 記事の URL 末尾になります（英小文字・数字・ハイフン推奨）。未指定時は index.md の親フォルダ名が使われます。
 slug: my-first-review
 
-# 一覧カード・ブラウザタブに出るタイトル（レビューは「作品名　レビュー」＝全角スペース推奨）
+# 一覧・タブ。レビューは「作品名　レビュー」（全角スペース推奨）
 title: 作品名　レビュー
 
-# 紹介文（OGP・詳細ページ上部）。プレーンでも Markdown 可。画像: ![alt](https://...) または ![alt](/content/foo.png)
-# 改行して見やすくする場合は YAML の |（リテラルブロック）＋空行で段落分け（本文は変えず改行だけでも可）。
-# summary: |
-#   1段落目の文章。
-#
-#   2段落目の文章。
-summary: メタディスクリプション・一覧用。120文字前後が目安。
+# 一覧・OGP。読者向けに魅力・型を2段落程度でも可（| ブロック）
+summary: |
+  1段落目の紹介。
 
-# 1つ以上。一覧のタグ表示に使われます。
+  2段落目の紹介。
+
 tags:
-  - 癒やし
-  - ASMR
+  - 催眠音声
 
-# レビュー（contentKind が review または省略）のとき必須。記事では不要。
+# レビュー必須（記事では不要）
 ratingValue: 9
-# 省略時は 10 点満点として表示・絞り込み換算されます
 ratingBest: 10
 
-# Schema.org（構造化データ）用。作品名として使われます。
 itemName: 作品名（itemReviewed）
 
-# 任意。未指定時は summary が使われることがあります。summary と同様、| で複数段落にできる。
-itemDescription: 作品の短い説明
+itemDescription: |
+  summary と同趣旨の短い説明（構造化データ用）
 
-authorName: あなたの名前
+authorName: 催眠音声レビュー室
 
-# ISO 日付推奨（一覧の並びは新しい順）
-publishedAt: "2026-03-29"
+publishedAt: "2026-04-18"
 
-# 任意。省略可（省略時はリンクなし）。1件以上ある場合は vendor / href が必須。
+# 表紙。ASCII パス推奨: /content/reviews/<slug>/cover.jpg
+# coverImage: /content/reviews/my-first-review/cover.jpg
+
+# 任意。ジャケクリックで作品ページへ
+# coverAffiliateHref: https://...
+
 affiliateLinks:
   - vendor: dlsite
     href: https://www.dlsite.com/
-    label: DLsiteで見る
-  # - vendor: amazon
-  #   href: https://www.amazon.co.jp/...
-  #   label: Amazonで見る
+    label: 体験版はこちら
 
-# --- 任意フィールド -----------------------------------------------------
-# 表紙。画像はこの index と同じフォルダに置き、同期後の URL を書く。
-# 例（フォルダ名が my-first-review のとき）: coverImage: /content/レビュー/my-first-review/cover.jpg
-# 記事なら: /content/記事/<フォルダ名>/cover.jpg
-# coverImage: /content/レビュー/my-first-review/cover.jpg
+# 任意。作品感想見出しの右に丸アイコン（本文に同じ画像を書かない）
+# workImpressionAvatar: /content/reviews/my-first-review/avatar.png
 
-# 任意。詳細ページ本文の直後に「次の記事」へリンク（値は相手の slug）
 # nextSlug: another-post-slug
 ---
 
-ここから **Markdown** で本文を書けます。
+## 作品名
 
-## 見出し
+**作品名（フルタイトル）**
 
-- リスト
-- も OK
+---
 
-画像を本文に出す例:
+## 作品概要
 
-```markdown
-![説明](https://example.com/image.png)
-```
+### 基本情報
+
+- **サークル：** …
+- **種類：** …
+- **シナリオ：** …
+- **声優：** …
+- **イラスト：** …（任意）
+- **収録形式：** …（任意）
+
+### 収録の長さ（パッケージ表記より）
+
+- **本編（本レビュー対象）：** 約 **0:00**
+- 派生トラックがある場合は箇条書きで追加
+
+### パートの長さ（目安）
+
+先頭に、区切り方の前提を一文（文字起こしベースの目安である旨など）。
+
+- **01** パート名 … 約 **0:00**
+- **02** …
+
+### 聴取時の身体反応（心拍）
+
+心拍ログを載せる作品のみ。導入文・画像・波形の読みは執筆ガイド「聴取時の身体反応（心拍）— 標準フォーマット」に従う。画像は `/content/reviews/<slug>/polar_h10_heart_rate_session.jpg`。
+
+### 作品評価グラフ
+
+各軸は10点満点です。**トランス度**は…、**快楽度**は…、**満足度**は…を表します。
+
+![作品評価グラフ（トランス度・快楽度・満足度）](/content/reviews/my-first-review/review_triangle.png)
+
+---
+
+## どんな人におすすめか
+
+- …
+- …
+
+**合わない人:** …
+
+---
+
+## 総合評価
+
+**★9／10**
+
+- **価格：** …
+- **セール：** …（任意）
+- **クーポン：** …（任意）
+- **体験版：** …
+
+価格やキャンペーンは変更されることがあります。
+
+---
+
+### 作品解説と感想
+
+## 作品像
+
+販売文・構成・テンポ・バイノーラル等の**総論**（段落複数可）。
+
+---
+
+## パート解説
+
+### パート名（約 0:00–0:00）
+
+> 台詞引用（作品の実際の文言に寄せる）
+
+引用の直後に、その台詞の働きと技法の補助線を**解説段落**で書く。**引用 → 解説 → 引用 → 解説**の順を守る。長尺では同一パートに引用が複数あってよい。
+
+---
+
+## 作品感想
+
+今回はサークル名「〇〇」様の新作を聞かせていただきました。
+
+本作は…。…
+
+では、良き催眠ライフを👋
