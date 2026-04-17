@@ -33,6 +33,11 @@ export type Review = {
   itemDescription?: string;
   authorName: string;
   publishedAt: string;
+  /**
+   * 任意。`YYYY-MM-DD` の公開予定日（その日の UTC 0:00 以降に一覧・詳細へ表示）。
+   * 未指定なら常に表示対象。`NODE_ENV === "development"` では未来日付も表示（プレビュー用）。
+   */
+  goLiveAt?: string;
   affiliateLinks: AffiliateLink[];
   /** 詳細ページ末尾の「次の記事」用（フロントマター `nextSlug`） */
   nextSlug?: string;

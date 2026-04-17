@@ -89,6 +89,38 @@ function parseOptionalNextSlug(raw: unknown): string | undefined {
   return raw.trim();
 }
 
+const GO_LIVE_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+/** `goLiveAt: "YYYY-MM-DD"` … その日の UTC 午前0時から公開とみなす */
+function parseOptionalGoLiveAt(raw: unknown): string | undefined {
+  if (raw == null || raw === "") return undefined;
+  if (typeof raw !== "string" || !raw.trim()) return undefined;
+  const s = raw.trim();
+  if (!GO_LIVE_DATE_RE.test(s)) {
+    throw new Error(`goLiveAt は YYYY-MM-DD 形式で指定してください: ${s}`);
+  }
+  const t = Date.parse(`${s}T00:00:00.000Z`);
+  if (Number.isNaN(t)) {
+    throw new Error(`goLiveAt が日付として解釈できません: ${s}`);
+  }
+  return s;
+}
+
+/** 開発時は常に true。本番ビルド・本番実行時は現在時刻が goLiveAt 日以降なら true */
+function isReviewVisibleByGoLiveAt(review: Review, now: Date): boolean {
+  if (!review.goLiveAt?.trim()) return true;
+  const start = Date.parse(`${review.goLiveAt.trim()}T00:00:00.000Z`);
+  return now.getTime() >= start;
+}
+
+function applyGoLiveFilter(reviews: Review[]): Review[] {
+  if (process.env.NODE_ENV === "development") {
+    return reviews;
+  }
+  const now = new Date();
+  return reviews.filter((r) => isReviewVisibleByGoLiveAt(r, now));
+}
+
 function parseOptionalCoverAffiliateHref(raw: unknown): string | undefined {
   if (raw == null) return undefined;
   if (typeof raw !== "string" || !raw.trim()) return undefined;
@@ -146,6 +178,7 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
         : undefined,
     authorName: asString(d.authorName, "authorName"),
     publishedAt: asString(d.publishedAt, "publishedAt"),
+    goLiveAt: parseOptionalGoLiveAt(d.goLiveAt),
     affiliateLinks: parseAffiliateLinks(d.affiliateLinks),
     nextSlug: parseOptionalNextSlug(d.nextSlug),
     workImpressionAvatar: parseOptionalCoverImage(d.workImpressionAvatar),
@@ -242,9 +275,10 @@ function readReviewFiles(): Review[] {
     bySlug.set(r.slug, r);
   }
 
-  return Array.from(bySlug.values()).sort(
+  const sorted = Array.from(bySlug.values()).sort(
     (a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt)
   );
+  return applyGoLiveFilter(sorted);
 }
 
 export const getAllReviews = cache((): Review[] => readReviewFiles());

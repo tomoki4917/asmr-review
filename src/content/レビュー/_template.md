@@ -35,6 +35,9 @@ authorName: 催眠音声レビュー室
 
 publishedAt: "2026-04-18"
 
+# 任意。予約投稿: YYYY-MM-DD（その日の UTC 0:00 以降に本番で表示。dev では無視して常に表示）
+# goLiveAt: "2026-05-01"
+
 # 表紙。ASCII パス推奨: /content/reviews/<slug>/cover.jpg
 # coverImage: /content/reviews/my-first-review/cover.jpg
 
