@@ -89,6 +89,17 @@ function parseOptionalNextSlug(raw: unknown): string | undefined {
   return raw.trim();
 }
 
+/** DLsite 商品 ID（例 RJ01517030） */
+function parseOptionalDlsiteProductId(raw: unknown): string | undefined {
+  if (raw == null) return undefined;
+  if (typeof raw !== "string" || !raw.trim()) return undefined;
+  const s = raw.trim().toUpperCase();
+  if (!/^RJ\d+$/.test(s)) {
+    throw new Error(`dlsiteProductId は RJ + 数字の形式にしてください: ${raw}`);
+  }
+  return s;
+}
+
 const GO_LIVE_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 /** `goLiveAt: "YYYY-MM-DD"` … その日の UTC 午前0時から公開とみなす */
@@ -182,6 +193,7 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
     affiliateLinks: parseAffiliateLinks(d.affiliateLinks),
     nextSlug: parseOptionalNextSlug(d.nextSlug),
     workImpressionAvatar: parseOptionalCoverImage(d.workImpressionAvatar),
+    dlsiteProductId: parseOptionalDlsiteProductId(d.dlsiteProductId),
   };
 
   if (Number.isNaN(Date.parse(review.publishedAt))) {

@@ -3,6 +3,7 @@ import { formatPublishedAtForList } from "@/lib/format-published-at";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import type { Review } from "@/lib/types";
 import { ReviewCover } from "./ReviewCover";
+import { ReviewDlsiteListPrice } from "./ReviewDlsiteListPrice";
 import { ReviewNewBadge } from "./ReviewNewBadge";
 import { StarRating } from "./StarRating";
 
@@ -49,8 +50,9 @@ export function ReviewCard({
             {titleOne}
           </h2>
           {review.contentKind === "review" && (
-            <div className="mt-3">
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
               <StarRating value={review.ratingValue} best={best} size="sm" />
+              <ReviewDlsiteListPrice review={review} />
             </div>
           )}
           <ul className="mt-4 flex flex-wrap gap-2">

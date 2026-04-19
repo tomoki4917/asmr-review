@@ -11,7 +11,8 @@
     "out": "next build",
     "start": "next start",
     "start:lan": "next start -H 0.0.0.0",
-    "lint": "next lint"
+    "lint": "next lint",
+    "update-prices": "node scripts/update-prices.js"
   },
   "dependencies": {
     "@next/third-parties": "^16.2.2",
@@ -26,6 +27,8 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "autoprefixer": "^10.4.20",
+    "axios": "^1.15.1",
+    "cheerio": "^1.2.0",
     "eslint": "^9.17.0",
     "eslint-config-next": "^15.1.0",
     "postcss": "^8.4.49",

@@ -49,6 +49,8 @@ affiliateLinks:
 
     label: 体験版はこちら
 
+dlsiteProductId: RJ380162
+
 ---
 
 ## 作品名

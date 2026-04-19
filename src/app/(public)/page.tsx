@@ -5,6 +5,7 @@ import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { MatureContentNotice } from "@/components/MatureContentNotice";
 import { PsychologyInsightsSection } from "@/components/PsychologyInsightsSection";
 import { ReviewCover } from "@/components/ReviewCover";
+import { ReviewDlsiteListPrice } from "@/components/ReviewDlsiteListPrice";
 import { StarRating } from "@/components/StarRating";
 import { ReviewNewBadge } from "@/components/ReviewNewBadge";
 import { RATING_BEST_DEFAULT, isStarBucketNineOrAbove } from "@/lib/rating-scale";
@@ -93,8 +94,9 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
                       <SummaryMarkdown markdown={r.summary} className="text-sm" />
                     </div>
                   </div>
-                  <div className="flex shrink-0 flex-col items-start gap-1 sm:items-end">
+                  <div className="flex shrink-0 flex-col items-start gap-2 sm:items-end">
                     <StarRating value={r.ratingValue} best={best} size="md" />
+                    <ReviewDlsiteListPrice review={r} />
                     <span className="text-sm font-semibold text-sky-300 transition group-hover:text-sky-200">
                       レビューを読む
                       <span aria-hidden className="ml-1 inline-block transition group-hover:translate-x-0.5">

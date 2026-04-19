@@ -10,6 +10,7 @@ import { ReviewMarkdown } from "@/components/ReviewMarkdown";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { StarRating } from "@/components/StarRating";
 import { ReviewNewBadge } from "@/components/ReviewNewBadge";
+import { DlsitePricePanel } from "@/components/DlsitePricePanel";
 import { resolveSocialPreviewImage, siteUrl } from "@/lib/og-metadata";
 import { isNewestMarkdownContent } from "@/lib/review-new-badge";
 import { getAllReviews, getAllSlugs, getReviewBySlug } from "@/lib/reviews";
@@ -20,6 +21,8 @@ import {
 } from "@/lib/split-review-body";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
+import { getDlsiteProductById } from "@/lib/dlsite-product-catalog";
+import { resolveDlsiteAffiliateHref } from "@/lib/resolve-dlsite-affiliate-href";
 import type { AffiliateLink } from "@/lib/types";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -120,6 +123,11 @@ export default async function ReviewPage({ params }: Props) {
   const showAffiliateBesideRating =
     Boolean(finalRatingSplit) && review.affiliateLinks.length > 0;
 
+  const dlsiteProduct =
+    !isArticle && review.dlsiteProductId != null
+      ? getDlsiteProductById(review.dlsiteProductId)
+      : undefined;
+
   return (
     <>
       {!isArticle && (
@@ -217,6 +225,14 @@ export default async function ReviewPage({ params }: Props) {
                   </div>
                 ) : null}
               </div>
+              {dlsiteProduct ? (
+                <div className="mt-5 border-t border-slate-700/30 pt-5">
+                  <DlsitePricePanel
+                    product={dlsiteProduct}
+                    affiliateHref={resolveDlsiteAffiliateHref(review)}
+                  />
+                </div>
+              ) : null}
               {hasAffiliateContent ? (
                 <p
                   className="mt-4 border-t border-slate-700/25 pt-3 text-[11px] leading-relaxed text-slate-600 sm:text-xs"

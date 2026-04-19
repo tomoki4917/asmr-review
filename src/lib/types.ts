@@ -46,4 +46,9 @@ export type Review = {
    * `coverImage` と同じく `/` 始まりの public パスまたは http(s) URL。
    */
   workImpressionAvatar?: string;
+  /**
+   * 任意。`data/products.json` の `id`（例 RJ01517030）と対応。一覧カード・レビュー詳細の DLsite 価格パネル等で使う。
+   * 無効化は `NEXT_PUBLIC_SHOW_DL_PRODUCT_PRICES=false`。
+   */
+  dlsiteProductId?: string;
 };

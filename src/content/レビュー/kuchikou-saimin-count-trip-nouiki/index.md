@@ -47,6 +47,8 @@ affiliateLinks:
 
     label: 体験版はこちら
 
+dlsiteProductId: RJ01546680
+
 ---
 
 

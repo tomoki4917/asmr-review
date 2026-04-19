@@ -30,6 +30,7 @@ affiliateLinks:
   - vendor: dlsite
     href: https://dlaf.jp/maniax/dlaf/=/t/n/link/work/aid/reviewLab/id/RJ215569.html
     label: 体験版はこちら
+dlsiteProductId: RJ215569
 ---
 
 ## 作品名
