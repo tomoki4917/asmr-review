@@ -16,6 +16,7 @@ import {
 import { formatPublishedAtForList } from "@/lib/format-published-at";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import { ratingFilterBucket } from "@/lib/rating-scale";
+import { getNewestMarkdownSlug } from "@/lib/review-new-badge";
 import type { Review } from "@/lib/types";
 import { RatingStarsSidebar } from "@/components/RatingStarsSidebar";
 import { FileMarkdownArticleCard } from "@/components/FileMarkdownArticleCard";
@@ -235,6 +236,11 @@ export function HomeReviewList({ markdownReviews }: Props) {
     [markdownReviews]
   );
 
+  const newestMarkdownSlug = useMemo(
+    () => getNewestMarkdownSlug(markdownReviews),
+    [markdownReviews]
+  );
+
   const mergedReviews = useMemo(
     () => mergeReviews(markdownReviews, posted),
     [markdownReviews, posted]
@@ -368,7 +374,14 @@ export function HomeReviewList({ markdownReviews }: Props) {
                   className="min-w-0"
                 >
                   {item.kind === "file" ? (
-                    <ReviewCard review={item.review} priorityImage={index < 2} />
+                    <ReviewCard
+                      review={item.review}
+                      priorityImage={index < 2}
+                      showNew={
+                        newestMarkdownSlug != null &&
+                        item.review.slug === newestMarkdownSlug
+                      }
+                    />
                   ) : (
                     <LocalPostedCard review={item.review} />
                   )}
@@ -414,6 +427,10 @@ export function HomeReviewList({ markdownReviews }: Props) {
                     <FileMarkdownArticleCard
                       review={entry.review}
                       priorityImage={index < 2}
+                      showNew={
+                        newestMarkdownSlug != null &&
+                        entry.review.slug === newestMarkdownSlug
+                      }
                     />
                   ) : (
                     <LocalPostedCard review={entry.post} />

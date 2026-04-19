@@ -9,8 +9,10 @@ import { ArticleNextNav } from "@/components/ArticleNextNav";
 import { ReviewMarkdown } from "@/components/ReviewMarkdown";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { StarRating } from "@/components/StarRating";
+import { ReviewNewBadge } from "@/components/ReviewNewBadge";
 import { resolveSocialPreviewImage, siteUrl } from "@/lib/og-metadata";
-import { getAllSlugs, getReviewBySlug } from "@/lib/reviews";
+import { isNewestMarkdownContent } from "@/lib/review-new-badge";
+import { getAllReviews, getAllSlugs, getReviewBySlug } from "@/lib/reviews";
 import {
   splitBodyAtFinalRating,
   splitRatingAtWorkIntroLabel,
@@ -86,6 +88,11 @@ export default async function ReviewPage({ params }: Props) {
     ? getReviewBySlug(review.nextSlug)
     : undefined;
 
+  const showNewBadge = isNewestMarkdownContent(
+    review.slug,
+    getAllReviews()
+  );
+
   const coverEl = (
     <ReviewCover
       coverImage={review.coverImage}
@@ -150,11 +157,18 @@ export default async function ReviewPage({ params }: Props) {
             <div
               className={`border-t border-slate-600/40 bg-slate-900/50 px-5 py-6 sm:px-8 sm:py-8 ${isArticle ? "max-sm:px-5 max-sm:pb-7 max-sm:pt-6" : ""}`}
             >
-              <h1
-                className={`text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl ${isArticle || titleHasBreak ? "whitespace-pre-line text-pretty" : "text-balance"} ${isArticle ? "max-sm:text-[1.7rem] max-sm:leading-snug" : ""}`}
+              <div
+                className={`flex flex-wrap items-start gap-2 sm:gap-3 ${showNewBadge ? "items-center" : ""}`}
               >
-                {review.title}
-              </h1>
+                {showNewBadge ? (
+                  <ReviewNewBadge className="mt-0.5 sm:mt-1" />
+                ) : null}
+                <h1
+                  className={`min-w-0 flex-1 text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl ${isArticle || titleHasBreak ? "whitespace-pre-line text-pretty" : "text-balance"} ${isArticle ? "max-sm:text-[1.7rem] max-sm:leading-snug" : ""}`}
+                >
+                  {review.title}
+                </h1>
+              </div>
               <div
                 className={`mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 ${!isArticle ? "sm:justify-between" : ""}`}
               >

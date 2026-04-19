@@ -3,16 +3,19 @@ import { formatPublishedAtForList } from "@/lib/format-published-at";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import type { Review } from "@/lib/types";
 import { ReviewCover } from "./ReviewCover";
+import { ReviewNewBadge } from "./ReviewNewBadge";
 
 type Props = {
   review: Review;
   priorityImage?: boolean;
+  showNew?: boolean;
 };
 
 /** `contentKind: article` の Markdown 記事用カード（星なし） */
 export function FileMarkdownArticleCard({
   review,
   priorityImage = false,
+  showNew = false,
 }: Props) {
   const titleOne = reviewTitleSingleLine(review.title);
 
@@ -22,13 +25,20 @@ export function FileMarkdownArticleCard({
         href={`/reviews/${review.slug}`}
         className="group block min-w-0 max-w-full overflow-hidden rounded-3xl border border-slate-600/40 bg-slate-800/50 shadow-md shadow-slate-950/20 ring-1 ring-slate-700/30 transition hover:-translate-y-0.5 hover:border-sky-500/35 hover:shadow-lg hover:shadow-sky-950/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400/45"
       >
-        <ReviewCover
-          coverImage={review.coverImage}
-          alt={titleOne}
-          slug={review.slug}
-          priority={priorityImage}
-          className="rounded-t-3xl group-focus-visible:rounded-t-3xl"
-        />
+        <div className="relative">
+          {showNew ? (
+            <div className="absolute right-3 top-3 z-10">
+              <ReviewNewBadge variant="overlay" />
+            </div>
+          ) : null}
+          <ReviewCover
+            coverImage={review.coverImage}
+            alt={titleOne}
+            slug={review.slug}
+            priority={priorityImage}
+            className="rounded-t-3xl group-focus-visible:rounded-t-3xl"
+          />
+        </div>
         <div className="p-5 sm:p-6">
           <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
             <p className="text-xs font-medium uppercase tracking-wider text-emerald-400/95">

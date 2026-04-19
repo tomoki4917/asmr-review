@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { getNewestMarkdownSlug } from "@/lib/review-new-badge";
 import type { Review } from "@/lib/types";
 import { ReviewCard } from "./ReviewCard";
 
@@ -32,6 +33,11 @@ export function ReviewFilterList({ reviews }: Props) {
   const filtered = useMemo(
     () => reviews.filter((r) => matchesTags(r, selected)),
     [reviews, selected]
+  );
+
+  const newestSlug = useMemo(
+    () => getNewestMarkdownSlug(reviews),
+    [reviews]
   );
 
   function toggleTag(tag: string) {
@@ -98,7 +104,13 @@ export function ReviewFilterList({ reviews }: Props) {
       <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:gap-10">
         {filtered.map((review, index) => (
           <li key={review.slug}>
-            <ReviewCard review={review} priorityImage={index < 2} />
+            <ReviewCard
+              review={review}
+              priorityImage={index < 2}
+              showNew={
+                newestSlug != null && review.slug === newestSlug
+              }
+            />
           </li>
         ))}
       </ul>

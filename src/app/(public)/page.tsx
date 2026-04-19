@@ -6,7 +6,9 @@ import { MatureContentNotice } from "@/components/MatureContentNotice";
 import { PsychologyInsightsSection } from "@/components/PsychologyInsightsSection";
 import { ReviewCover } from "@/components/ReviewCover";
 import { StarRating } from "@/components/StarRating";
+import { ReviewNewBadge } from "@/components/ReviewNewBadge";
 import { RATING_BEST_DEFAULT, isStarBucketNineOrAbove } from "@/lib/rating-scale";
+import { isNewestMarkdownContent } from "@/lib/review-new-badge";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import { getAllReviews } from "@/lib/reviews";
 import type { Review } from "@/lib/types";
@@ -35,6 +37,8 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
 
   if (items.length === 0) return null;
 
+  const reviewListForNew = reviews;
+
   return (
     <section
       className="mx-auto mt-14 max-w-5xl px-4 sm:px-0"
@@ -53,19 +57,30 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
         {items.map((r) => {
           const best = r.ratingBest ?? 10;
           const titleOne = reviewTitleSingleLine(r.title);
+          const spotlightNew = isNewestMarkdownContent(
+            r.slug,
+            reviewListForNew
+          );
           return (
             <li key={r.slug}>
               <Link
                 href={`/reviews/${r.slug}/`}
                 className="group block overflow-hidden rounded-2xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/25 ring-1 ring-sky-900/20 transition hover:-translate-y-0.5 hover:border-sky-500/35 hover:shadow-lg hover:shadow-sky-950/15 hover:ring-sky-500/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400/45"
               >
-                <ReviewCover
-                  coverImage={r.coverImage}
-                  alt={titleOne}
-                  slug={r.slug}
-                  priority
-                  className="rounded-none"
-                />
+                <div className="relative">
+                  {spotlightNew ? (
+                    <div className="absolute right-3 top-3 z-10">
+                      <ReviewNewBadge variant="overlay" />
+                    </div>
+                  ) : null}
+                  <ReviewCover
+                    coverImage={r.coverImage}
+                    alt={titleOne}
+                    slug={r.slug}
+                    priority
+                    className="rounded-none"
+                  />
+                </div>
                 <div className="flex flex-col gap-3 px-5 py-5 sm:flex-row sm:items-start sm:justify-between sm:gap-6 sm:px-6 sm:py-6">
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-semibold uppercase tracking-wider text-sky-400/90">
