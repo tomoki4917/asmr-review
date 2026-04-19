@@ -22,6 +22,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
   ),
+  verification: {
+    google: "JxpKAGOi1ZmNsbCYwYjZm4n9E-ql5qtDrIXsyMJXeBY",
+  },
 };
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim() ?? "";
