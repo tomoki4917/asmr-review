@@ -24,7 +24,7 @@ function buildReviewSchema(review: Review, canonicalUrl: string) {
       worstRating: 1,
     },
     itemReviewed: {
-      "@type": "CreativeWork",
+      "@type": "Product",
       name: review.itemName,
       description: review.itemDescription ?? summaryPlain,
     },
