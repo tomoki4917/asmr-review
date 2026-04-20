@@ -1,0 +1,31 @@
+# 毎日 日本時間 0:00 に Vercel のデプロイフックを叩き、本番を再ビルドする。
+# goLiveAt 通過後の記事公開や静的生成の更新に使う。
+#
+# 事前準備: GitHub リポジトリ → Settings → Secrets and variables → Actions
+#   に `VERCEL_DEPLOY_HOOK_URL` を追加（Vercel プロジェクトの Deploy Hooks に表示される URL）
+#
+# cron は UTC。JST 0:00 = UTC 前日 15:00 → `0 15 * * *`
+#
+# 手動テスト: Actions → Schedule Vercel deploy → Run workflow
+
+name: Schedule Vercel deploy
+
+on:
+  schedule:
+    - cron: "0 15 * * *"
+  workflow_dispatch:
+
+jobs:
+  hook:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger Vercel deploy hook
+        env:
+          HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$HOOK_URL" ]; then
+            echo "VERCEL_DEPLOY_HOOK_URL が未設定です。GitHub の Repository secrets に追加してください。"
+            exit 1
+          fi
+          curl -fsS -X POST "$HOOK_URL"
