@@ -1,16 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { getContactDestinationEmail } from "@/lib/contact-destination-email";
 
 /**
  * FormSubmit（https://formsubmit.co）の AJAX エンドポイントへ送信します。
- * 送信先は NEXT_PUBLIC_CONTACT_TO_EMAIL のみ（未設定時はフォームを出しません）。
+ * 届け先は `getContactDestinationEmail()`（env またはコード既定）。
  */
 export function ContactForm() {
-  const to = process.env.NEXT_PUBLIC_CONTACT_TO_EMAIL?.trim() ?? "";
-  const ajaxUrl = to
-    ? `https://formsubmit.co/ajax/${encodeURIComponent(to)}`
-    : "";
+  const to = getContactDestinationEmail();
+  const ajaxUrl = `https://formsubmit.co/ajax/${encodeURIComponent(to)}`;
 
   const [status, setStatus] = useState<"idle" | "sending" | "ok" | "err">(
     "idle"
@@ -44,13 +43,6 @@ export function ContactForm() {
     if (!name || !email || !subject || !message) {
       setValidationHint(
         "お名前・メール・件名・内容はすべて入力してください（空白のみは送信できません）。"
-      );
-      return;
-    }
-
-    if (!to || !ajaxUrl) {
-      setValidationHint(
-        "送信先が未設定です。NEXT_PUBLIC_CONTACT_TO_EMAIL を .env.local に設定してください。"
       );
       return;
     }
@@ -105,37 +97,6 @@ export function ContactForm() {
       setStatus("err");
       setSubmitErrorDetail(null);
     }
-  }
-
-  if (!to) {
-    const codeCls =
-      "rounded border border-amber-600/50 bg-slate-900/60 px-1.5 py-0.5 font-mono text-xs";
-    const isDev = process.env.NODE_ENV === "development";
-
-    return (
-      <div
-        className="rounded-2xl border border-amber-600/40 bg-amber-950/20 px-5 py-6 text-sm text-amber-100/95"
-        role="status"
-      >
-        <p className="font-medium">お問い合わせフォームは未設定です</p>
-        {isDev ? (
-          <p className="mt-2 leading-relaxed text-amber-200/80">
-            プロジェクト直下に{" "}
-            <code className={codeCls}>.env.local</code> を作成し（
-            <code className={codeCls}>.env.example</code> をコピーしてよい）、
-            <br />
-            <code className={codeCls}>NEXT_PUBLIC_CONTACT_TO_EMAIL=あなたの受信メール</code>{" "}
-            のように 1 行追加して保存し、開発サーバーを再起動してください。
-          </p>
-        ) : (
-          <p className="mt-2 leading-relaxed text-amber-200/80">
-            ホスティングの環境変数に{" "}
-            <code className={codeCls}>NEXT_PUBLIC_CONTACT_TO_EMAIL</code>{" "}
-            を追加し、送信先メールを設定してから再ビルド・再デプロイしてください（リポジトリにメールを直書きしません）。
-          </p>
-        )}
-      </div>
-    );
   }
 
   return (
@@ -248,18 +209,9 @@ export function ContactForm() {
   );
 }
 
-/** お問い合わせページ下部の注記（送信先は env のみ参照） */
+/** お問い合わせページ下部の注記 */
 export function ContactFormEnvNote() {
-  const email = process.env.NEXT_PUBLIC_CONTACT_TO_EMAIL?.trim() ?? "";
-  if (!email) {
-    return (
-      <p className="mt-8 text-center text-xs text-slate-600">
-        送信先メールは環境変数{" "}
-        <code className="text-slate-500">NEXT_PUBLIC_CONTACT_TO_EMAIL</code>{" "}
-        で設定します。
-      </p>
-    );
-  }
+  const email = getContactDestinationEmail();
   return (
     <p className="mt-8 text-center text-xs text-slate-600">
       送信は FormSubmit 経由で{" "}
