@@ -16,6 +16,9 @@ export function ContactForm() {
     "idle"
   );
   const [validationHint, setValidationHint] = useState<string | null>(null);
+  const [submitErrorDetail, setSubmitErrorDetail] = useState<string | null>(
+    null
+  );
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -53,11 +56,14 @@ export function ContactForm() {
     }
 
     setStatus("sending");
-    const payload = {
+    setSubmitErrorDetail(null);
+    const payload: Record<string, string> = {
       name,
       email,
+      _replyto: email,
       _subject: subject,
       message,
+      _captcha: "false",
     };
     try {
       const res = await fetch(ajaxUrl, {
@@ -68,14 +74,36 @@ export function ContactForm() {
         },
         body: JSON.stringify(payload),
       });
-      if (res.ok) {
+
+      const ct = res.headers.get("content-type") ?? "";
+      let apiSaysOk = res.ok;
+      let apiMessage: string | null = null;
+
+      if (ct.includes("application/json")) {
+        try {
+          const data = (await res.json()) as Record<string, unknown>;
+          const success = data.success;
+          if (success === "false" || success === false) {
+            apiSaysOk = false;
+          }
+          if (typeof data.message === "string" && data.message.trim()) {
+            apiMessage = data.message.trim();
+          }
+        } catch {
+          apiSaysOk = false;
+        }
+      }
+
+      if (apiSaysOk) {
         setStatus("ok");
         form.reset();
       } else {
         setStatus("err");
+        setSubmitErrorDetail(apiMessage);
       }
     } catch {
       setStatus("err");
+      setSubmitErrorDetail(null);
     }
   }
 
@@ -194,9 +222,14 @@ export function ContactForm() {
         </p>
       )}
       {status === "err" && (
-        <p className="text-center text-sm text-rose-400" role="alert">
-          送信に失敗しました。時間をおいて再度お試しください。
-        </p>
+        <div className="text-center text-sm text-rose-400" role="alert">
+          <p>送信に失敗しました。時間をおいて再度お試しください。</p>
+          {submitErrorDetail ? (
+            <p className="mt-2 text-xs leading-relaxed text-rose-300/90">
+              {submitErrorDetail}
+            </p>
+          ) : null}
+        </div>
       )}
     </form>
   );
