@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { cache } from "react";
+import { DEFAULT_WORK_IMPRESSION_AVATAR_SRC } from "./default-work-impression-avatar";
 import type {
   AffiliateLink,
   AffiliateVendor,
@@ -171,6 +172,7 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
       ? d.itemName.trim()
       : titleStr;
 
+  const parsedWorkImpressionAvatar = parseOptionalCoverImage(d.workImpressionAvatar);
   const review: Review = {
     slug,
     contentKind,
@@ -192,8 +194,11 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
     goLiveAt: parseOptionalGoLiveAt(d.goLiveAt),
     affiliateLinks: parseAffiliateLinks(d.affiliateLinks),
     nextSlug: parseOptionalNextSlug(d.nextSlug),
-    workImpressionAvatar: parseOptionalCoverImage(d.workImpressionAvatar),
+    workImpressionAvatar:
+      parsedWorkImpressionAvatar ??
+      (contentKind === "review" ? DEFAULT_WORK_IMPRESSION_AVATAR_SRC : undefined),
     dlsiteProductId: parseOptionalDlsiteProductId(d.dlsiteProductId),
+    safeForExternalLanding: d.safeForExternalLanding === true ? true : undefined,
   };
 
   if (Number.isNaN(Date.parse(review.publishedAt))) {
@@ -294,6 +299,25 @@ function readReviewFiles(): Review[] {
 }
 
 export const getAllReviews = cache((): Review[] => readReviewFiles());
+
+/** SNS 流入ページ用。`safeForExternalLanding: true` の記事のみ（フロントマターで明示） */
+export function getReviewsForExternalLanding(): Review[] {
+  return getAllReviews().filter((r) => r.safeForExternalLanding === true);
+}
+
+/** トップ「催眠音声入門」と同じ 3 本（存在する slug のみ・この順） */
+const BEGINNER_GUIDE_SLUGS = [
+  "hypnosis-mechanism-01",
+  "nou-iki-toha",
+  "dry-orgasm-what-is",
+] as const;
+
+export function getBeginnerGuides(): Review[] {
+  const all = getAllReviews();
+  return BEGINNER_GUIDE_SLUGS.map((slug) => all.find((r) => r.slug === slug)).filter(
+    (r): r is Review => r != null
+  );
+}
 
 export function getReviewBySlug(slug: string): Review | undefined {
   return getAllReviews().find((r) => r.slug === slug);

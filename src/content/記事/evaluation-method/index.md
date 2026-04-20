@@ -1,6 +1,7 @@
 ---
 slug: "evaluation-method"
 contentKind: article
+safeForExternalLanding: true
 title: |
   評価メソッド
   レビューで使う手順と根拠

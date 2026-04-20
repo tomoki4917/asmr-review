@@ -2,6 +2,8 @@
 slug: "hypnosis-mechanism-01"
 # 星なしの解説記事として「記事」欄に表示（省略時はレビュー扱いで星あり）
 contentKind: article
+# TikTok / YouTube 向け流入ページ（/welcome/*）に掲載してよい一般向け記事
+safeForExternalLanding: true
 title: "催眠音声のメカニズムを解剖：なぜ『声』だけで脳は反応するのか？"
 summary: "「怪しい」「自分には無理」そんな先入観で損をしていませんか？脳が音に反応し、深いリラックスへ導かれる仕組みを、実体験を交えて解説します。"
 tags: ["催眠音声", "メカニズム", "記事"]

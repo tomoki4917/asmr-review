@@ -1,29 +1,9 @@
 import Link from "next/link";
+import { HYPNOSIS_INTRO_GUIDE_META } from "@/lib/hypnosis-intro-guide-meta";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import type { Review } from "@/lib/types";
 import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
 import { ReviewCover } from "./ReviewCover";
-
-const GUIDE_META: Record<
-  string,
-  { step: string; shortTitle: string; accent: string }
-> = {
-  "hypnosis-mechanism-01": {
-    step: "STEP 1",
-    shortTitle: "催眠音声とは",
-    accent: "from-emerald-500/25 to-sky-500/10",
-  },
-  "nou-iki-toha": {
-    step: "STEP 2",
-    shortTitle: "脳イキとは",
-    accent: "from-violet-500/25 to-sky-500/10",
-  },
-  "dry-orgasm-what-is": {
-    step: "STEP 3",
-    shortTitle: "ドライオーガズムとは",
-    accent: "from-amber-500/20 to-rose-500/10",
-  },
-};
 
 type Props = {
   beginnerGuides: Review[];
@@ -55,7 +35,7 @@ export function PsychologyInsightsSection({ beginnerGuides }: Props) {
             className="mt-5 grid grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-3 sm:gap-3 md:mt-10 md:gap-5"
           >
             {beginnerGuides.map((review, i) => {
-              const meta = GUIDE_META[review.slug] ?? {
+              const meta = HYPNOSIS_INTRO_GUIDE_META[review.slug] ?? {
                 step: `STEP ${i + 1}`,
                 shortTitle: reviewTitleSingleLine(review.title),
                 accent: "from-slate-600/30 to-slate-800/20",

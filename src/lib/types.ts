@@ -51,4 +51,9 @@ export type Review = {
    * 無効化は `NEXT_PUBLIC_SHOW_DL_PRODUCT_PRICES=false`。
    */
   dlsiteProductId?: string;
+  /**
+   * `true` のときのみ `/welcome/tiktok`・`/welcome/youtube` 等の外部 SNS 向け流入ページに掲載する。
+   * 18 禁に該当しない一般向け記事にだけ付与する。
+   */
+  safeForExternalLanding?: boolean;
 };

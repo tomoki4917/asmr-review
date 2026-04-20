@@ -11,7 +11,7 @@ import { ReviewNewBadge } from "@/components/ReviewNewBadge";
 import { RATING_BEST_DEFAULT, isStarBucketNineOrAbove } from "@/lib/rating-scale";
 import { isNewestMarkdownContent } from "@/lib/review-new-badge";
 import { reviewTitleSingleLine } from "@/lib/review-title";
-import { getAllReviews } from "@/lib/reviews";
+import { getAllReviews, getBeginnerGuides } from "@/lib/reviews";
 import type { Review } from "@/lib/types";
 
 /** ピックアップに並べる最大件数（直近・高評価のうち先頭から） */
@@ -114,21 +114,9 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
   );
 }
 
-const BEGINNER_GUIDE_SLUGS = [
-  "hypnosis-mechanism-01",
-  "nou-iki-toha",
-  "dry-orgasm-what-is",
-] as const;
-
-function pickBeginnerGuides(reviews: Review[]): Review[] {
-  return BEGINNER_GUIDE_SLUGS.map((slug) =>
-    reviews.find((r) => r.slug === slug)
-  ).filter((r): r is Review => r != null);
-}
-
 export default function HomePage() {
   const reviews = getAllReviews();
-  const beginnerGuides = pickBeginnerGuides(reviews);
+  const beginnerGuides = getBeginnerGuides();
 
   return (
     <main className="mx-auto w-full max-w-6xl py-10 sm:py-14">
@@ -168,6 +156,34 @@ export default function HomePage() {
           にてお待ちしております。
         </p>
         <MatureContentNotice context="home" className="mx-auto mt-8 max-w-xl text-left" />
+
+        {process.env.NODE_ENV === "development" ? (
+          <aside
+            className="mx-auto mt-6 max-w-xl rounded-xl border border-amber-600/50 bg-amber-950/30 px-4 py-3 text-left text-xs leading-relaxed text-amber-100/90 sm:text-sm"
+            aria-label="開発用のショートカット"
+          >
+            <p className="font-medium text-amber-200">
+              開発環境のみ：SNS 流入ページの確認
+            </p>
+            <p className="mt-1 text-amber-100/75">
+              本番ビルドでは表示されません。
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Link
+                href="/welcome/tiktok/"
+                className="inline-flex min-h-9 items-center rounded-full border border-amber-500/40 bg-amber-900/40 px-3 text-sm font-medium text-amber-50 transition hover:border-amber-400/60 hover:bg-amber-800/50"
+              >
+                /welcome/tiktok/
+              </Link>
+              <Link
+                href="/welcome/youtube/"
+                className="inline-flex min-h-9 items-center rounded-full border border-amber-500/40 bg-amber-900/40 px-3 text-sm font-medium text-amber-50 transition hover:border-amber-400/60 hover:bg-amber-800/50"
+              >
+                /welcome/youtube/
+              </Link>
+            </div>
+          </aside>
+        ) : null}
       </header>
 
       <SpotlightReviews reviews={reviews} />
