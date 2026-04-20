@@ -12,7 +12,8 @@
     "start": "next start",
     "start:lan": "next start -H 0.0.0.0",
     "lint": "next lint",
-    "update-prices": "node scripts/update-prices.js"
+    "update-prices": "node scripts/update-prices.js",
+    "update-prices:stale": "node scripts/update-prices.js --stale-sale-ended"
   },
   "dependencies": {
     "@next/third-parties": "^16.2.2",

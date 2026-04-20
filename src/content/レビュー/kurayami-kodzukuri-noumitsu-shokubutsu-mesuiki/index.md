@@ -27,7 +27,7 @@ itemDescription: |
 
 authorName: 催眠音声レビュー室
 
-publishedAt: "2026-04-18"
+publishedAt: "2026-04-20"
 
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01542000/RJ01541752_img_main.jpg
 

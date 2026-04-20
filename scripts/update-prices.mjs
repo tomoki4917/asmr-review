@@ -3,6 +3,11 @@
  * 利用規約・サーバー負荷に配慮し、手動・CI で適度な間隔での実行を想定しています。
  * 連続取得の間は 8〜15 秒のランダム待機（ジッター。負荷・パターン緩和用。規約遵守の代替にはなりません）。
  * 起動直後の待機: 環境変数 DL_PRICE_START_JITTER_MAX_SEC に正の整数秒を指定すると、0〜その秒数まで等確率で待機（CI で開始時刻をばらす用途）。
+ *
+ * モード:
+ * - 既定: 全行を取得
+ * - `--stale-sale-ended` または DL_PRICE_MODE=stale-sale-ended:
+ *   `on_sale===true` かつ `sale_end_iso` が現在より前の行だけ再取得（セール終了後の表示ずれ修正用）
  */
 import fs from "fs";
 import path from "path";
@@ -324,6 +329,69 @@ function extractPriceRow(html) {
   };
 }
 
+/**
+ * セール終了時刻は過ぎているのに JSON 上はまだセール中の行か（再取得候補）
+ * @param {Record<string, unknown>} row
+ */
+function isStaleSaleEndedRow(row) {
+  if (row == null || typeof row !== "object") return false;
+  if (row.on_sale !== true) return false;
+  const iso = typeof row.sale_end_iso === "string" ? row.sale_end_iso.trim() : "";
+  if (!iso) return false;
+  const t = Date.parse(iso);
+  if (Number.isNaN(t)) return false;
+  return t < Date.now();
+}
+
+/**
+ * @param {Record<string, unknown>} row
+ */
+async function fetchProductRow(row) {
+  let id = typeof row.id === "string" ? row.id : "";
+  const url = typeof row.url === "string" ? row.url : "";
+  const idFromUrl = url.match(/RJ\d+/i);
+  if (!id.trim() && idFromUrl) id = idFromUrl[0].toUpperCase();
+  if (!url.trim()) {
+    throw new Error(`url なし: id=${id}`);
+  }
+
+  console.log(`取得: ${id} ${url}`);
+  const res = await axios.get(url.trim(), {
+    timeout: 30000,
+    headers: {
+      "User-Agent": CHROME_USER_AGENT,
+      "Accept-Language": "ja,en;q=0.9",
+      Accept:
+        "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    },
+    validateStatus: (s) => s >= 200 && s < 400,
+  });
+
+  const html = typeof res.data === "string" ? res.data : String(res.data);
+  const extracted = extractPriceRow(html);
+  const fetched_at = new Date().toISOString();
+
+  return {
+    ...row,
+    id,
+    url: url.trim(),
+    current_price: extracted.current_price,
+    original_price: extracted.original_price,
+    discount_rate: extracted.discount_rate,
+    on_sale: extracted.on_sale,
+    sale_limit: extracted.sale_limit,
+    sale_end_iso: extracted.sale_end_iso,
+    fetched_at,
+  };
+}
+
+function staleSaleEndedModeEnabled() {
+  return (
+    process.argv.includes("--stale-sale-ended") ||
+    process.env.DL_PRICE_MODE === "stale-sale-ended"
+  );
+}
+
 async function main() {
   await startupJitter();
 
@@ -331,6 +399,43 @@ async function main() {
   /** @type {Array<Record<string, unknown>>} */
   const list = JSON.parse(raw);
   if (!Array.isArray(list)) throw new Error("products.json は配列にしてください。");
+
+  const staleMode = staleSaleEndedModeEnabled();
+
+  if (staleMode) {
+    const indices = [];
+    for (let i = 0; i < list.length; i++) {
+      if (isStaleSaleEndedRow(list[i])) indices.push(i);
+    }
+    if (indices.length === 0) {
+      console.log(
+        "stale-sale-ended: 対象なし（sale_end_iso 経過後も on_sale の行はありません）。ファイルは更新しません。"
+      );
+      return;
+    }
+    console.log(`stale-sale-ended: ${indices.length} 件を再取得します。`);
+    const out = list.map((row) => ({ ...row }));
+    for (let k = 0; k < indices.length; k++) {
+      const i = indices[k];
+      const row = list[i];
+      let id = typeof row.id === "string" ? row.id : "";
+      const url = typeof row.url === "string" ? row.url : "";
+      if (!url.trim()) {
+        console.warn(`スキップ: id=${id} url なし`);
+        continue;
+      }
+      out[i] = await fetchProductRow(row);
+      if (k < indices.length - 1) {
+        const wait = randomDelayMs();
+        console.log(`次の取得まで ${(wait / 1000).toFixed(1)} 秒待機…`);
+        await sleep(wait);
+      }
+    }
+    fs.mkdirSync(path.dirname(OUT), { recursive: true });
+    fs.writeFileSync(OUT, `${JSON.stringify(out, null, 2)}\n`, "utf8");
+    console.log(`更新しました: ${OUT}`);
+    return;
+  }
 
   const out = [];
   for (let i = 0; i < list.length; i++) {
@@ -345,34 +450,7 @@ async function main() {
       continue;
     }
 
-    console.log(`取得: ${id} ${url}`);
-    const res = await axios.get(url, {
-      timeout: 30000,
-      headers: {
-        "User-Agent": CHROME_USER_AGENT,
-        "Accept-Language": "ja,en;q=0.9",
-        Accept:
-          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-      },
-      validateStatus: (s) => s >= 200 && s < 400,
-    });
-
-    const html = typeof res.data === "string" ? res.data : String(res.data);
-    const extracted = extractPriceRow(html);
-    const fetched_at = new Date().toISOString();
-
-    out.push({
-      ...row,
-      id,
-      url: url.trim(),
-      current_price: extracted.current_price,
-      original_price: extracted.original_price,
-      discount_rate: extracted.discount_rate,
-      on_sale: extracted.on_sale,
-      sale_limit: extracted.sale_limit,
-      sale_end_iso: extracted.sale_end_iso,
-      fetched_at,
-    });
+    out.push(await fetchProductRow(row));
 
     if (i < list.length - 1) {
       const wait = randomDelayMs();
