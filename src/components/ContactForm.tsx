@@ -50,7 +50,7 @@ export function ContactForm() {
 
     if (!to || !ajaxUrl) {
       setValidationHint(
-        "送信先が未設定です。NEXT_PUBLIC_CONTACT_TO_EMAIL を .env に設定してください。"
+        "送信先が未設定です。NEXT_PUBLIC_CONTACT_TO_EMAIL を .env.local に設定してください。"
       );
       return;
     }
@@ -108,19 +108,32 @@ export function ContactForm() {
   }
 
   if (!to) {
+    const codeCls =
+      "rounded border border-amber-600/50 bg-slate-900/60 px-1.5 py-0.5 font-mono text-xs";
+    const isDev = process.env.NODE_ENV === "development";
+
     return (
       <div
         className="rounded-2xl border border-amber-600/40 bg-amber-950/20 px-5 py-6 text-sm text-amber-100/95"
         role="status"
       >
         <p className="font-medium">お問い合わせフォームは未設定です</p>
-        <p className="mt-2 text-amber-200/80">
-          デプロイ時に{" "}
-          <code className="rounded border border-amber-600/50 bg-slate-900/60 px-1.5 py-0.5 font-mono text-xs">
-            NEXT_PUBLIC_CONTACT_TO_EMAIL
-          </code>{" "}
-          に送信先メールを設定してください（リポジトリにメールアドレスを直書きしません）。
-        </p>
+        {isDev ? (
+          <p className="mt-2 leading-relaxed text-amber-200/80">
+            プロジェクト直下に{" "}
+            <code className={codeCls}>.env.local</code> を作成し（
+            <code className={codeCls}>.env.example</code> をコピーしてよい）、
+            <br />
+            <code className={codeCls}>NEXT_PUBLIC_CONTACT_TO_EMAIL=あなたの受信メール</code>{" "}
+            のように 1 行追加して保存し、開発サーバーを再起動してください。
+          </p>
+        ) : (
+          <p className="mt-2 leading-relaxed text-amber-200/80">
+            ホスティングの環境変数に{" "}
+            <code className={codeCls}>NEXT_PUBLIC_CONTACT_TO_EMAIL</code>{" "}
+            を追加し、送信先メールを設定してから再ビルド・再デプロイしてください（リポジトリにメールを直書きしません）。
+          </p>
+        )}
       </div>
     );
   }
