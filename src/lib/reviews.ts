@@ -139,7 +139,7 @@ function parseOptionalGoLiveAt(raw: unknown): string | undefined {
   return s;
 }
 
-/** 開発時は常に true。本番ビルド・本番実行時は現在時刻が goLiveAt 以降なら true */
+/** 現在時刻が goLiveAt 以降なら true（未指定なら常に true） */
 function isReviewVisibleByGoLiveAt(review: Review, now: Date): boolean {
   if (!review.goLiveAt?.trim()) return true;
   const start = goLiveStartMs(review.goLiveAt.trim());
@@ -147,10 +147,15 @@ function isReviewVisibleByGoLiveAt(review: Review, now: Date): boolean {
   return now.getTime() >= start;
 }
 
+/**
+ * 予約投稿の除外。`REVIEW_IGNORE_GO_LIVE=true` のときだけ全件通す（ローカルで予約前の下書き確認用）。
+ * 以前は `NODE_ENV===development` で常に無視していたが、時刻指定と矛盾するため廃止。
+ */
 function applyGoLiveFilter(reviews: Review[]): Review[] {
-  if (process.env.NODE_ENV === "development") {
-    return reviews;
-  }
+  const ignore =
+    process.env.REVIEW_IGNORE_GO_LIVE === "1" ||
+    process.env.REVIEW_IGNORE_GO_LIVE === "true";
+  if (ignore) return reviews;
   const now = new Date();
   return reviews.filter((r) => isReviewVisibleByGoLiveAt(r, now));
 }

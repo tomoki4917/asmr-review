@@ -37,7 +37,7 @@ export type Review = {
    * 任意。本番で一覧・詳細に出す開始時刻。
    * - `YYYY-MM-DD` … その日の UTC 0:00 以降。
    * - ISO 8601 日時 … その瞬間以降（日本時間で指定するなら `2026-04-18T13:59:00+09:00` のように `+09:00` を付与）。
-   * 未指定なら常に表示。`NODE_ENV === "development"` では未到来も表示（プレビュー用）。
+   * 未指定なら常に表示。未到来は一覧・詳細から除外。ローカルで予約前も見たいときは `REVIEW_IGNORE_GO_LIVE=true`。
    */
   goLiveAt?: string;
   affiliateLinks: AffiliateLink[];
