@@ -148,14 +148,26 @@ function isReviewVisibleByGoLiveAt(review: Review, now: Date): boolean {
 }
 
 /**
- * 予約投稿の除外。`REVIEW_IGNORE_GO_LIVE=true` のときだけ全件通す（ローカルで予約前の下書き確認用）。
- * 以前は `NODE_ENV===development` で常に無視していたが、時刻指定と矛盾するため廃止。
+ * 予約投稿（goLiveAt）の除外。
+ * - 本番（`NODE_ENV===production`）: 既定で適用（ビルド時の現在時刻と比較）。
+ * - 開発（`next dev`）: 既定では**適用しない**（予約日時より前でも一覧・詳細に出してプレビューしやすくする）。
+ * - 開発で予約を厳密に試す: `REVIEW_RESPECT_GO_LIVE=true`
+ * - どちらの環境でも強制的に全件出す: `REVIEW_IGNORE_GO_LIVE=true`（本番のビルドでは通常使わない）
  */
 function applyGoLiveFilter(reviews: Review[]): Review[] {
-  const ignore =
+  const forceShowAll =
     process.env.REVIEW_IGNORE_GO_LIVE === "1" ||
     process.env.REVIEW_IGNORE_GO_LIVE === "true";
-  if (ignore) return reviews;
+  if (forceShowAll) return reviews;
+
+  const respectInDev =
+    process.env.REVIEW_RESPECT_GO_LIVE === "1" ||
+    process.env.REVIEW_RESPECT_GO_LIVE === "true";
+
+  if (process.env.NODE_ENV === "development" && !respectInDev) {
+    return reviews;
+  }
+
   const now = new Date();
   return reviews.filter((r) => isReviewVisibleByGoLiveAt(r, now));
 }

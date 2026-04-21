@@ -131,7 +131,11 @@ export default async function ReviewPage({ params }: Props) {
   return (
     <>
       {!isArticle && (
-        <ReviewJsonLd review={review} canonicalUrl={canonicalUrl} />
+        <ReviewJsonLd
+          review={review}
+          canonicalUrl={canonicalUrl}
+          dlsiteProduct={dlsiteProduct}
+        />
       )}
       <article
         className={`mx-auto w-full min-w-0 max-w-3xl py-8 sm:py-10 lg:max-w-4xl xl:max-w-5xl xl:py-11 ${isArticle ? "article-reading" : ""}`}
