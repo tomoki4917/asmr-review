@@ -21,24 +21,14 @@ export function getDlsiteProductById(id: string): DlsiteProductRecord | undefine
   return rows.find((p) => p.id === id);
 }
 
-/** レビュー一覧カードに税込価格を併記する作品（`dlsiteProductId`）。拡張時に追加 */
-export const DL_PRODUCT_IDS_ON_REVIEW_LIST_CARD = new Set<string>([
-  "RJ01517030",
-  "RJ01541752",
-  "RJ01546680",
-  "RJ01523980",
-  "RJ01594429",
-  "RJ213951",
-  "RJ215569",
-  "RJ259751",
-  "RJ312554",
-  "RJ380162",
-]);
-
+/**
+ * 一覧カードに税込・セール価格を出す条件。
+ * `data/products.json` に該当 `id` があり、`current_price` が正のとき（ホワイトリストは使わない）。
+ */
 export function shouldShowDlsitePriceOnReviewListCard(
   dlsiteProductId: string | undefined
 ): boolean {
-  return Boolean(
-    dlsiteProductId && DL_PRODUCT_IDS_ON_REVIEW_LIST_CARD.has(dlsiteProductId)
-  );
+  if (!dlsiteProductId) return false;
+  const p = getDlsiteProductById(dlsiteProductId);
+  return Boolean(p && p.current_price > 0);
 }

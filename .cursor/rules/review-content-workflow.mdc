@@ -7,9 +7,12 @@ alwaysApply: false
 # レビュー記事を直したあと
 
 1. `npm run sync:content-assets` を実行する（画像・表紙の反映）。
-2. 開発サーバーを再起動する（`npm run dev`。既存プロセスがあればポート 3000 を空けてから）。
-3. ユーザーへの返答に、**ブラウザで確認する URL** を必ず書く。
+2. **新規レビューで `dlsiteProductId` を付けた／変えたとき** … リポジトリ直下 **`data/products.json`** に、**`id`（`RJ…`）と作品ページの `url`** を持つオブジェクトを1件追加する。続けて **`npm run update-prices`** を実行し、税込・セール・期限を DLsite から取り込む（一覧・詳細の価格表示の正本。手動を省略する場合は週次 CI の更新を待ってもよい）。
+3. 開発サーバーを再起動する（`npm run dev`。既存プロセスがあればポート 3000 を空けてから）。
+4. ユーザーへの返答に、**ブラウザで確認する URL** を必ず書く。
    - トップ: `http://localhost:3000/`
    - 該当レビュー: `http://localhost:3000/reviews/<slug>/`（`index.md` の `slug` を使う）
 
 静的書き出しを見る場合は `npm run build` 後に `out/` を開く。
+
+**セール終了後に一覧だけ古い表示のまま**のときは、`npm run update-prices:stale`（`--stale-sale-ended` 相当）で、期限切れセール行だけ再取得できる。

@@ -103,25 +103,47 @@ function parseOptionalDlsiteProductId(raw: unknown): string | undefined {
 
 const GO_LIVE_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-/** `goLiveAt: "YYYY-MM-DD"` … その日の UTC 午前0時から公開とみなす */
+/**
+ * `goLiveAt` の開始瞬間（ms）。`YYYY-MM-DD` のときは UTC 0:00 開始。
+ * ISO 日時のときは `Date.parse`（タイムゾーン付き推奨。例: `2026-04-18T13:59:00+09:00`）。
+ */
+function goLiveStartMs(goLiveAt: string): number {
+  const s = goLiveAt.trim();
+  if (GO_LIVE_DATE_RE.test(s)) {
+    return Date.parse(`${s}T00:00:00.000Z`);
+  }
+  return Date.parse(s);
+}
+
+/**
+ * `goLiveAt: "YYYY-MM-DD"` … その日の UTC 午前0時から公開。
+ * または ISO 8601 日時（日本時間なら `...+09:00` を推奨）。
+ */
 function parseOptionalGoLiveAt(raw: unknown): string | undefined {
   if (raw == null || raw === "") return undefined;
   if (typeof raw !== "string" || !raw.trim()) return undefined;
   const s = raw.trim();
-  if (!GO_LIVE_DATE_RE.test(s)) {
-    throw new Error(`goLiveAt は YYYY-MM-DD 形式で指定してください: ${s}`);
+  if (GO_LIVE_DATE_RE.test(s)) {
+    const t = Date.parse(`${s}T00:00:00.000Z`);
+    if (Number.isNaN(t)) {
+      throw new Error(`goLiveAt が日付として解釈できません: ${s}`);
+    }
+    return s;
   }
-  const t = Date.parse(`${s}T00:00:00.000Z`);
+  const t = goLiveStartMs(s);
   if (Number.isNaN(t)) {
-    throw new Error(`goLiveAt が日付として解釈できません: ${s}`);
+    throw new Error(
+      `goLiveAt は YYYY-MM-DD、または解釈可能な ISO 8601 日時（例: 2026-04-18T13:59:00+09:00）にしてください: ${s}`
+    );
   }
   return s;
 }
 
-/** 開発時は常に true。本番ビルド・本番実行時は現在時刻が goLiveAt 日以降なら true */
+/** 開発時は常に true。本番ビルド・本番実行時は現在時刻が goLiveAt 以降なら true */
 function isReviewVisibleByGoLiveAt(review: Review, now: Date): boolean {
   if (!review.goLiveAt?.trim()) return true;
-  const start = Date.parse(`${review.goLiveAt.trim()}T00:00:00.000Z`);
+  const start = goLiveStartMs(review.goLiveAt.trim());
+  if (Number.isNaN(start)) return true;
   return now.getTime() >= start;
 }
 

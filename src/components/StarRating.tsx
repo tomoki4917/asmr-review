@@ -68,13 +68,13 @@ export function StarRating({ value, best = 10, size = "sm", className = "" }: Pr
       </span>
       <span
         className={`text-sm font-semibold tabular-nums ${
-          isPerfect ? "text-red-400" : "text-slate-200"
+          isPerfect ? "text-red-400" : "text-sky-200"
         }`}
         aria-hidden
       >
         {value}
         <span
-          className={`font-normal ${isPerfect ? "text-red-400/85" : "text-slate-500"}`}
+          className={`font-normal ${isPerfect ? "text-red-400/85" : "text-sky-400/90"}`}
         >
           /{best}
         </span>

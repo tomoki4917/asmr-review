@@ -174,7 +174,7 @@ function LocalPostedCard({ review }: { review: PostedReview }) {
             {review.tags.map((tag) => (
               <li
                 key={tag}
-                className="rounded-lg border border-slate-600/45 bg-slate-900/40 px-2.5 py-1 text-xs font-medium text-slate-400"
+                className="rounded-lg border border-slate-600/50 bg-slate-900/55 px-2.5 py-1 text-xs font-medium text-sky-300/95"
               >
                 {tag}
               </li>

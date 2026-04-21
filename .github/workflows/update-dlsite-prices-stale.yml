@@ -1,7 +1,9 @@
-# セール終了後も JSON 上がセール中のままの行だけ再取得（日1回）
+# セール終了後も JSON 上がセール中のままの行だけ再取得（日2回）
 #
 # 条件: on_sale===true かつ sale_end_iso が現在時刻より前
-# cron は UTC。例: 48 3 * * * = 毎日 03:48 UTC ≈ 日本時間 12:48
+# GitHub の schedule は UTC。日本は DST なし（UTC+9）
+#   - `1 15 * * *` → 毎日 JST 00:01（例: 2026-04-20 15:01 UTC = 2026-04-21 00:01 JST）
+#   - `1 5 * * *` → 毎日 JST 14:01（例: 2026-04-21 05:01 UTC = 2026-04-21 14:01 JST）
 #
 # 手動実行: Actions → Update DLsite prices (stale sale ended) → Run workflow
 
@@ -9,7 +11,8 @@ name: Update DLsite prices (stale sale ended)
 
 on:
   schedule:
-    - cron: "48 3 * * *"
+    - cron: "1 15 * * *" # 毎日 00:01 JST
+    - cron: "1 5 * * *" # 毎日 14:01 JST
   workflow_dispatch:
 
 permissions:

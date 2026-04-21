@@ -2,6 +2,7 @@
  * DLsite 作品ページから価格情報を取得し data/products.json を上書きします。
  * 利用規約・サーバー負荷に配慮し、手動・CI で適度な間隔での実行を想定しています。
  * 連続取得の間は 8〜15 秒のランダム待機（ジッター。負荷・パターン緩和用。規約遵守の代替にはなりません）。
+ * リクエストは Chrome 風ヘッダに揃えるが、TLS 等はブラウザと同一ではない（見た目の一貫性・限定的な負荷平準化が目的）。
  * 起動直後の待機: 環境変数 DL_PRICE_START_JITTER_MAX_SEC に正の整数秒を指定すると、0〜その秒数まで等確率で待機（CI で開始時刻をばらす用途）。
  *
  * モード:
@@ -26,6 +27,80 @@ const DELAY_MAX_MS = 15000;
 /** 一般的なデスクトップ Chrome の UA（定期的に実ブラウザと揃えるとよい） */
 const CHROME_USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36";
+
+/** UA の major と揃える（Client Hints） */
+const CHROME_MAJOR = "134";
+
+/**
+ * 作品ページ GET 用。ブラウザの文書ナビゲーションに近いヘッダ（Referer は dlsite のみ付与）。
+ * @param {string} targetUrl
+ */
+function buildChromeLikeHtmlHeaders(targetUrl) {
+  /** @type {Record<string, string>} */
+  const h = {
+    "User-Agent": CHROME_USER_AGENT,
+    "Accept-Language": "ja,en;q=0.9",
+    Accept:
+      "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+    "sec-ch-ua": `"Google Chrome";v="${CHROME_MAJOR}", "Chromium";v="${CHROME_MAJOR}", "Not-A.Brand";v="99"`,
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": '"Windows"',
+    "Upgrade-Insecure-Requests": "1",
+  };
+  try {
+    const u = new URL(targetUrl);
+    if (/(\.|^)dlsite\.com$/i.test(u.hostname)) {
+      h.Referer = `${u.protocol}//www.dlsite.com/`;
+    }
+  } catch {
+    /* noop */
+  }
+  return h;
+}
+
+/**
+ * 429 / 503 / ネットワークエラー時のみ最大 maxAttempts 回まで再試行。
+ * @param {string} urlTrimmed
+ * @param {number} [maxAttempts]
+ */
+async function getProductPageHtml(urlTrimmed, maxAttempts = 3) {
+  const config = {
+    timeout: 30000,
+    headers: buildChromeLikeHtmlHeaders(urlTrimmed),
+    validateStatus: (s) => s >= 200 && s < 400,
+  };
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const res = await axios.get(urlTrimmed, config);
+      return res;
+    } catch (e) {
+      const status = e.response?.status;
+      const code = e.code;
+      const retriable =
+        status === 429 ||
+        status === 503 ||
+        code === "ECONNRESET" ||
+        code === "ETIMEDOUT" ||
+        code === "ECONNABORTED" ||
+        code === "ENOTFOUND" ||
+        (typeof e.message === "string" && /network/i.test(e.message));
+      if (!retriable || attempt >= maxAttempts) throw e;
+
+      let waitMs = randomDelayMs() * attempt;
+      const ra = e.response?.headers?.["retry-after"];
+      if (ra) {
+        const sec = parseInt(String(ra).trim(), 10);
+        if (Number.isFinite(sec) && sec > 0) waitMs = Math.max(waitMs, sec * 1000);
+      }
+      waitMs = Math.min(waitMs, 120_000);
+      console.warn(
+        `試行 ${attempt}/${maxAttempts} 失敗（${status ?? code ?? "error"}）。${(waitMs / 1000).toFixed(0)} 秒待って再試行します…`
+      );
+      await sleep(waitMs);
+    }
+  }
+}
 
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
@@ -356,16 +431,7 @@ async function fetchProductRow(row) {
   }
 
   console.log(`取得: ${id} ${url}`);
-  const res = await axios.get(url.trim(), {
-    timeout: 30000,
-    headers: {
-      "User-Agent": CHROME_USER_AGENT,
-      "Accept-Language": "ja,en;q=0.9",
-      Accept:
-        "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-    },
-    validateStatus: (s) => s >= 200 && s < 400,
-  });
+  const res = await getProductPageHtml(url.trim());
 
   const html = typeof res.data === "string" ? res.data : String(res.data);
   const extracted = extractPriceRow(html);

@@ -35,8 +35,9 @@ authorName: 催眠音声レビュー室
 
 publishedAt: "2026-04-18"
 
-# 任意。予約投稿: YYYY-MM-DD（その日の UTC 0:00 以降に本番で表示。dev では無視して常に表示）
+# 任意。予約投稿（本番のみ）。日付のみ or 日時（日本時間なら +09:00）
 # goLiveAt: "2026-05-01"
+# goLiveAt: "2026-04-18T13:59:00+09:00"
 
 # 表紙。ASCII パス推奨: /content/reviews/<slug>/cover.jpg
 # coverImage: /content/reviews/my-first-review/cover.jpg
@@ -48,6 +49,10 @@ affiliateLinks:
   - vendor: dlsite
     href: https://www.dlsite.com/
     label: 体験版はこちら
+
+# DLsite 作品なら推奨。一覧カードの税込・セール表示用。
+# → data/products.json に id + url の1件を追加し、ルートで npm run update-prices を実行（執筆ガイド「新規レビューでの価格反映」参照）。
+# dlsiteProductId: RJ00000000
 
 # 任意。作品感想見出しの右に丸アイコン（本文に同じ画像を書かない）
 # workImpressionAvatar: /content/reviews/my-first-review/avatar.png
