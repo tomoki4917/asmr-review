@@ -30,7 +30,7 @@ authorName: 催眠音声レビュー室
 
 publishedAt: "2026-04-22"
 
-goLiveAt: "2026-04-22T17:30:00+09:00"
+goLiveAt: "2026-04-22T17:38:00+09:00"
 
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ274000/RJ273500_img_main.jpg
 
