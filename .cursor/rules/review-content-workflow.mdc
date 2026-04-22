@@ -16,3 +16,5 @@ alwaysApply: false
 静的書き出しを見る場合は `npm run build` 後に `out/` を開く。
 
 **セール終了後に一覧だけ古い表示のまま**のときは、`npm run update-prices:stale`（`--stale-sale-ended` 相当）で、期限切れセール行だけ再取得できる。
+
+本文のトーン（AI感の抑制・専門性と読みやすさ）は `.cursor/rules/review-prose-voice.mdc` を参照。
