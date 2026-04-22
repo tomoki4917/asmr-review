@@ -2,10 +2,13 @@
 # goLiveAt 通過後の記事公開や静的生成の更新に使う。
 # （予約が JST 17:38 のとき、同日ビルドで公開されるよう 1 分後に実行）
 #
-# 事前準備: GitHub リポジトリ → Settings → Secrets and variables → Actions
-#   に `VERCEL_DEPLOY_HOOK_URL` を追加（Vercel プロジェクトの Deploy Hooks に表示される URL）
-#
-# cron は UTC。JST 17:39 = UTC 08:39 → `39 8 * * *`
+# --- 動かないときのチェック（コード側ではなく GitHub / Vercel 設定がほとんど）---
+# 1. Repository secrets に VERCEL_DEPLOY_HOOK_URL（Vercel Deploy Hooks の URL 全文）があるか。
+# 2. 本ファイルは「デフォルトブランチ」にマージされているか（未マージだと schedule は動かない）。
+# 3. Settings → Actions → General で Actions が無効になっていないか。
+# 4. リポジトリが約 60 日無操作だと GitHub がスケジュールを止めることがある → 空コミット等で再開。
+# 5. Actions タブで本ワークフローが「スケジュール済み」かつ直近 Run が成功しているか（失敗ならログを開く）。
+# 6. Vercel 側でフックが「正しいプロジェクト・接続ブランチ」を指しているか。
 #
 # 手動テスト: Actions → Schedule Vercel deploy → Run workflow
 
@@ -16,17 +19,28 @@ on:
     - cron: "39 8 * * *"
   workflow_dispatch:
 
+# 外部 URL へ POST のみ（GITHUB_TOKEN は未使用）
+permissions: {}
+
 jobs:
   hook:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: Log runner time (debug)
+        run: |
+          echo "Runner UTC: $(date -u '+%Y-%m-%d %H:%M:%S')"
+          echo "Runner JST: $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M:%S')"
+
       - name: Trigger Vercel deploy hook
         env:
           HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
         run: |
           if [ -z "$HOOK_URL" ]; then
-            echo "VERCEL_DEPLOY_HOOK_URL が未設定です。GitHub の Repository secrets に追加してください。"
+            echo "::error::VERCEL_DEPLOY_HOOK_URL が未設定です。GitHub → Settings → Secrets and variables → Actions に追加してください。"
             exit 1
           fi
-          curl -fsS -X POST "$HOOK_URL"
+          echo "POST to deploy hook (URL はログに出しません)…"
+          # -L: リダイレクト追随 / -f: 4xx5xx で失敗 / -S: エラー時に本文表示
+          curl -fsSL -X POST "$HOOK_URL"
+          echo "OK: deploy hook を受け付けた応答でした。"
