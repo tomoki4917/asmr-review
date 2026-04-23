@@ -1,6 +1,6 @@
-# 毎日 日本時間 13:01 に Vercel のデプロイフックを叩き、本番を再ビルドする。
+# 毎日 日本時間 13:10 に Vercel のデプロイフックを叩き、本番を再ビルドする。
 # goLiveAt 通過後の記事公開や静的生成の更新に使う。
-# （予約が JST 13:00 のとき、同日ビルドで公開されるよう 1 分後に実行）
+# （例: goLiveAt を JST 13:00 にしている場合、同日 13:10 のビルドで確実に拾わせる）
 #
 # --- 動かないときのチェック（コード側ではなく GitHub / Vercel 設定がほとんど）---
 # 1. Repository secrets に VERCEL_DEPLOY_HOOK_URL（Vercel Deploy Hooks の URL 全文）があるか。
@@ -16,7 +16,7 @@ name: Schedule Vercel deploy
 
 on:
   schedule:
-    - cron: "1 4 * * *" # 毎日 13:01 JST（UTC 04:01）
+    - cron: "10 4 * * *" # 毎日 13:10 JST（UTC 04:10）
   workflow_dispatch:
 
 # 外部 URL へ POST のみ（GITHUB_TOKEN は未使用）
