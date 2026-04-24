@@ -8,7 +8,7 @@
     "on_sale": true,
     "sale_limit": "5月13日 14:00まで",
     "sale_end_iso": "2026-05-13T05:00:00.000Z",
-    "fetched_at": "2026-04-23T07:19:16.614Z"
+    "fetched_at": "2026-04-23T20:52:38.736Z"
   },
   {
     "id": "RJ01517030",
@@ -19,7 +19,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-04-23T07:19:27.108Z"
+    "fetched_at": "2026-04-23T20:52:49.271Z"
   },
   {
     "id": "RJ01541752",
@@ -30,7 +30,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-04-23T07:19:38.723Z"
+    "fetched_at": "2026-04-23T20:52:57.403Z"
   },
   {
     "id": "RJ01546680",
@@ -41,7 +41,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-04-23T07:19:47.709Z"
+    "fetched_at": "2026-04-23T20:53:07.917Z"
   },
   {
     "id": "RJ01523980",
@@ -52,7 +52,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-04-23T07:20:01.322Z"
+    "fetched_at": "2026-04-23T20:53:19.191Z"
   },
   {
     "id": "RJ01594429",
@@ -63,7 +63,7 @@
     "on_sale": true,
     "sale_limit": "5月16日 00:00まで",
     "sale_end_iso": "2026-05-15T15:00:00.000Z",
-    "fetched_at": "2026-04-23T07:20:14.178Z"
+    "fetched_at": "2026-04-23T20:53:33.008Z"
   },
   {
     "id": "RJ213951",
@@ -74,7 +74,7 @@
     "on_sale": true,
     "sale_limit": "5月13日 14:00まで",
     "sale_end_iso": "2026-05-13T05:00:00.000Z",
-    "fetched_at": "2026-04-23T07:20:22.752Z"
+    "fetched_at": "2026-04-23T20:53:45.251Z"
   },
   {
     "id": "RJ215569",
@@ -85,7 +85,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-04-23T07:20:35.583Z"
+    "fetched_at": "2026-04-23T20:53:54.902Z"
   },
   {
     "id": "RJ259751",
@@ -96,7 +96,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-04-23T07:20:49.225Z"
+    "fetched_at": "2026-04-23T20:54:09.304Z"
   },
   {
     "id": "RJ312554",
@@ -107,7 +107,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-04-23T07:21:02.666Z"
+    "fetched_at": "2026-04-23T20:54:18.484Z"
   },
   {
     "id": "RJ380162",
@@ -118,7 +118,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-04-23T07:21:11.381Z"
+    "fetched_at": "2026-04-23T20:54:27.383Z"
   },
   {
     "id": "RJ273500",
@@ -129,7 +129,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-04-23T07:21:25.944Z"
+    "fetched_at": "2026-04-23T20:54:37.611Z"
   },
   {
     "id": "RJ190391",
@@ -140,7 +140,7 @@
     "on_sale": true,
     "sale_limit": "5月16日 00:00まで",
     "sale_end_iso": "2026-05-15T15:00:00.000Z",
-    "fetched_at": "2026-04-23T07:21:35.934Z"
+    "fetched_at": "2026-04-23T20:54:46.953Z"
   },
   {
     "id": "RJ378120",
@@ -151,6 +151,17 @@
     "on_sale": true,
     "sale_limit": "5月16日 00:00まで",
     "sale_end_iso": "2026-05-15T15:00:00.000Z",
-    "fetched_at": "2026-04-23T07:21:49.755Z"
+    "fetched_at": "2026-04-23T20:54:58.531Z"
+  },
+  {
+    "id": "RJ285530",
+    "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ285530.html",
+    "current_price": 605,
+    "original_price": 1210,
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "5月13日 14:00まで",
+    "sale_end_iso": "2026-05-13T05:00:00.000Z",
+    "fetched_at": "2026-04-23T20:55:10.475Z"
   }
 ]
