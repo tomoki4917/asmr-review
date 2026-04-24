@@ -6,6 +6,8 @@ alwaysApply: false
 
 # レビュー記事を直したあと
 
+- **構造化データ（Google 商品スニペット）**は `src/components/ReviewJsonLd.tsx` が自動生成する。テーマや本文に **手で `Product` / `Review` の JSON-LD を追記しない**（Search Console の重複・不整合の原因になる）。
+
 1. `npm run sync:content-assets` を実行する（画像・表紙の反映）。
 2. **新規レビューで `dlsiteProductId` を付けた／変えたとき** … リポジトリ直下 **`data/products.json`** に、**`id`（`RJ…`）と作品ページの `url`** を持つオブジェクトを1件追加する。続けて **`npm run update-prices`** を実行し、税込・セール・期限を DLsite から取り込む（一覧・詳細の価格表示の正本。手動を省略する場合は週次 CI の更新を待ってもよい）。
 3. 開発サーバーを再起動する（`npm run dev`。既存プロセスがあればポート 3000 を空けてから）。
