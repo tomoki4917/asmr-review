@@ -78,7 +78,7 @@ src/content/
 
 このプロジェクトは **`next.config` の `output: "export"`** により、**ビルド時**に Markdown を読み込みます。
 
-- **開発中（`npm run dev`）** … 起動時にアセット同期のあとサーバーが立ちます。`index.md` を保存したあとブラウザを更新すると本文は反映されます。フロントマターの **`goLiveAt`（予約投稿）は、開発サーバーでは既定で無視**され、**予約日時より前でも一覧・詳細に表示**されます（下書きプレビュー用）。予約と同じ条件で dev 上でも試すときは **`REVIEW_RESPECT_GO_LIVE=true`** を付けて起動してください。
+- **検証用サーバー（`npm run dev` / `npm run start` / `dev:lan` 等）** … `goLiveAt` は**既定で無視**され、**予約日時より前でも一覧・詳細に表示**されます（`npm_lifecycle_event` が `dev` または `start` のとき）。Docker 等で npm が無い場合は **`REVIEW_PREVIEW_SERVER=true`**。本番と同じ除外を試すときは **`REVIEW_RESPECT_GO_LIVE=true`**。
 - **本番の静的ファイル（GitHub Pages 等）** … 記事を追加・変更したら **必ず `npm run build` を実行し、生成物をデプロイ**してください。`prebuild` でアセット同期が走ります。`goLiveAt` は **ビルドを実行した瞬間の時刻**と比較されるため、本番で「ちょうどその分まで」公開したい場合は、その時刻**以降**にデプロイ（例: 毎日 JST 17:39 の Vercel フック）が必要です。
 - **定期フックが走らない／本番が更新されないとき** … GitHub → **Actions** → **Schedule Vercel deploy** の直近実行が成功しているか確認する。失敗する典型は **`VERCEL_DEPLOY_HOOK_URL` 未設定**、ワークフローが**デフォルトブランチに無い**、リポジトリ長期無操作でスケジュール停止、など。詳細は `.github/workflows/schedule-vercel-deploy.yml` 冒頭のチェックリスト。
 

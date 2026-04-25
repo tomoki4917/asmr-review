@@ -13,10 +13,13 @@ import {
   readPostedReviewsFromStorage,
   type PostedReview,
 } from "@/lib/posted-review";
-import { formatPublishedAtForList } from "@/lib/format-published-at";
+import {
+  formatPublishedAtForList,
+  reviewPublicationTimeMs,
+} from "@/lib/format-published-at";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import { ratingFilterBucket } from "@/lib/rating-scale";
-import { getNewestMarkdownSlug } from "@/lib/review-new-badge";
+import { isReviewNewPublication } from "@/lib/review-new-badge";
 import type { Review } from "@/lib/types";
 import { RatingStarsSidebar } from "@/components/RatingStarsSidebar";
 import { FileMarkdownArticleCard } from "@/components/FileMarkdownArticleCard";
@@ -29,9 +32,8 @@ type MergedReviewItem =
   | { kind: "local"; review: PostedReview };
 
 function publishedAtMs(item: MergedReviewItem): number {
-  const s =
-    item.kind === "file" ? item.review.publishedAt : item.review.publishedAt;
-  const t = Date.parse(s);
+  if (item.kind === "file") return reviewPublicationTimeMs(item.review);
+  const t = Date.parse(item.review.publishedAt);
   return Number.isNaN(t) ? 0 : t;
 }
 
@@ -236,11 +238,6 @@ export function HomeReviewList({ markdownReviews }: Props) {
     [markdownReviews]
   );
 
-  const newestMarkdownSlug = useMemo(
-    () => getNewestMarkdownSlug(markdownReviews),
-    [markdownReviews]
-  );
-
   const mergedReviews = useMemo(
     () => mergeReviews(markdownReviews, posted),
     [markdownReviews, posted]
@@ -280,7 +277,7 @@ export function HomeReviewList({ markdownReviews }: Props) {
     const fromFile: Entry[] = markdownArticles.map((review) => ({
       source: "file",
       review,
-      t: Date.parse(review.publishedAt),
+      t: reviewPublicationTimeMs(review),
     }));
     const fromLocal: Entry[] = articlePosts.map((post) => ({
       source: "local",
@@ -377,10 +374,7 @@ export function HomeReviewList({ markdownReviews }: Props) {
                     <ReviewCard
                       review={item.review}
                       priorityImage={index < 2}
-                      showNew={
-                        newestMarkdownSlug != null &&
-                        item.review.slug === newestMarkdownSlug
-                      }
+                      showNew={isReviewNewPublication(item.review, new Date())}
                     />
                   ) : (
                     <LocalPostedCard review={item.review} />
@@ -427,10 +421,7 @@ export function HomeReviewList({ markdownReviews }: Props) {
                     <FileMarkdownArticleCard
                       review={entry.review}
                       priorityImage={index < 2}
-                      showNew={
-                        newestMarkdownSlug != null &&
-                        entry.review.slug === newestMarkdownSlug
-                      }
+                      showNew={isReviewNewPublication(entry.review, new Date())}
                     />
                   ) : (
                     <LocalPostedCard review={entry.post} />

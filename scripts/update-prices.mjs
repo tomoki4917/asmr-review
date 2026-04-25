@@ -211,6 +211,25 @@ function pad2(n) {
 }
 
 /**
+ * DLsite `contents.detail[0].regist_date`（例 "2026/04/24"）を UTC の ISO に変換
+ * @param {unknown} regist
+ */
+function registDateToReleaseIso(regist) {
+  if (regist == null) return "";
+  const s = String(regist).trim();
+  const m = s.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
+  if (!m) return "";
+  const y = Number(m[1]);
+  const mo = Number(m[2]);
+  const d = Number(m[3]);
+  if (!Number.isFinite(y) || !Number.isFinite(mo) || !Number.isFinite(d)) return "";
+  const iso = `${y}-${pad2(mo)}-${pad2(d)}T00:00:00+09:00`;
+  const t = Date.parse(iso);
+  if (Number.isNaN(t)) return "";
+  return new Date(t).toISOString();
+}
+
+/**
  * JST の日時を UTC の ISO 文字列に（締切表示が JST 前提のため）
  * @param {number} y
  * @param {number} mo 1-12
@@ -394,6 +413,10 @@ function extractPriceRow(html) {
     sale_end_iso = tryParseSaleEndIso(sale_limit, new Date().getFullYear());
   }
 
+  const release_date_iso = registDateToReleaseIso(
+    detail?.regist_date ?? detail?.release_date
+  );
+
   return {
     current_price: current,
     original_price: original,
@@ -401,6 +424,7 @@ function extractPriceRow(html) {
     on_sale,
     sale_limit,
     sale_end_iso,
+    release_date_iso,
   };
 }
 
@@ -436,6 +460,8 @@ async function fetchProductRow(row) {
   const html = typeof res.data === "string" ? res.data : String(res.data);
   const extracted = extractPriceRow(html);
   const fetched_at = new Date().toISOString();
+  const prevRelease =
+    typeof row.release_date_iso === "string" ? row.release_date_iso.trim() : "";
 
   return {
     ...row,
@@ -447,6 +473,7 @@ async function fetchProductRow(row) {
     on_sale: extracted.on_sale,
     sale_limit: extracted.sale_limit,
     sale_end_iso: extracted.sale_end_iso,
+    release_date_iso: extracted.release_date_iso || prevRelease || "",
     fetched_at,
   };
 }

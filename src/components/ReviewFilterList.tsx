@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { getNewestMarkdownSlug } from "@/lib/review-new-badge";
+import { isReviewNewPublication } from "@/lib/review-new-badge";
 import type { Review } from "@/lib/types";
 import { ReviewCard } from "./ReviewCard";
 
@@ -33,11 +33,6 @@ export function ReviewFilterList({ reviews }: Props) {
   const filtered = useMemo(
     () => reviews.filter((r) => matchesTags(r, selected)),
     [reviews, selected]
-  );
-
-  const newestSlug = useMemo(
-    () => getNewestMarkdownSlug(reviews),
-    [reviews]
   );
 
   function toggleTag(tag: string) {
@@ -107,9 +102,7 @@ export function ReviewFilterList({ reviews }: Props) {
             <ReviewCard
               review={review}
               priorityImage={index < 2}
-              showNew={
-                newestSlug != null && review.slug === newestSlug
-              }
+              showNew={isReviewNewPublication(review, new Date())}
             />
           </li>
         ))}

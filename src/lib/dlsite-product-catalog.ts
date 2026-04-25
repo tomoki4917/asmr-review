@@ -11,9 +11,29 @@ export type DlsiteProductRecord = {
   sale_limit: string;
   /** ISO 8601。取得できた場合のみ */
   sale_end_iso: string;
+  /**
+   * 作品ページ `contents.detail[0].regist_date`（YYYY/MM/DD）から変換した UTC の ISO。
+   * `npm run update-prices` で更新。未取得時は空。
+   */
+  release_date_iso?: string;
   /** 最終スクレイプ時刻 */
   fetched_at: string;
 };
+
+/** 発売日（regist_date）から7日以内を「新作」とする */
+const SHINSAKU_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+
+export function isDlsiteProductShinsaku(
+  product: DlsiteProductRecord | undefined,
+  now: Date
+): boolean {
+  const iso = product?.release_date_iso?.trim();
+  if (!iso) return false;
+  const t = Date.parse(iso);
+  if (Number.isNaN(t)) return false;
+  const elapsed = now.getTime() - t;
+  return elapsed >= 0 && elapsed <= SHINSAKU_WINDOW_MS;
+}
 
 const rows = catalog as DlsiteProductRecord[];
 

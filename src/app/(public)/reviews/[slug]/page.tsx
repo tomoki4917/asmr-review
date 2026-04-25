@@ -10,10 +10,20 @@ import { ReviewMarkdown } from "@/components/ReviewMarkdown";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { StarRating } from "@/components/StarRating";
 import { ReviewNewBadge } from "@/components/ReviewNewBadge";
+import { ShinsakuBadge } from "@/components/ShinsakuBadge";
 import { DlsitePricePanel } from "@/components/DlsitePricePanel";
 import { resolveSocialPreviewImage, siteUrl } from "@/lib/og-metadata";
-import { isNewestMarkdownContent } from "@/lib/review-new-badge";
-import { getAllReviews, getAllSlugs, getReviewBySlug } from "@/lib/reviews";
+import { isReviewNewPublication } from "@/lib/review-new-badge";
+import {
+  articlePublishedTimeIso,
+  effectiveDisplayPublishedIsoDate,
+  formatPublishedAtForList,
+} from "@/lib/format-published-at";
+import {
+  getAllSlugs,
+  getReviewBySlug,
+  isReviewVisibleOnSite,
+} from "@/lib/reviews";
 import {
   splitBodyAtFinalRating,
   splitRatingAtWorkIntroLabel,
@@ -21,11 +31,30 @@ import {
 } from "@/lib/split-review-body";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
-import { getDlsiteProductById } from "@/lib/dlsite-product-catalog";
+import {
+  getDlsiteProductById,
+  isDlsiteProductShinsaku,
+} from "@/lib/dlsite-product-catalog";
 import { resolveDlsiteAffiliateHref } from "@/lib/resolve-dlsite-affiliate-href";
 import type { AffiliateLink } from "@/lib/types";
 
 type Props = { params: Promise<{ slug: string }> };
+
+function formatGoLiveForReader(goLiveAt: string): string {
+  const s = goLiveAt.trim();
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/;
+  const iso = dateOnly.test(s) ? `${s}T00:00:00.000Z` : s;
+  const t = Date.parse(iso);
+  if (Number.isNaN(t)) return s;
+  return new Date(t).toLocaleString("ja-JP", {
+    timeZone: "Asia/Tokyo",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
 
 /** 文頭サマリー横。先頭リンクのラベルを作品ページ導線に統一 */
 function affiliateLinksHeader(links: AffiliateLink[]): AffiliateLink[] {
@@ -51,6 +80,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!review) return { title: "見つかりません" };
 
   const title = reviewTitleSingleLine(review.title);
+  const now = new Date();
+  if (!isReviewVisibleOnSite(review, now)) {
+    return {
+      title: `${title}（公開予定）`,
+      description: "このページは予約公開前です。",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const publishedTimeIso = articlePublishedTimeIso(review);
   const description =
     stripMarkdownForMeta(review.summary) || title;
   const url = `${siteUrl()}/reviews/${slug}/`;
@@ -64,7 +103,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url,
       type: "article",
-      publishedTime: review.publishedAt,
+      publishedTime: publishedTimeIso,
       images: [{ url: imageUrl, alt: imageAlt }],
     },
     twitter: {
@@ -82,6 +121,48 @@ export default async function ReviewPage({ params }: Props) {
   const review = getReviewBySlug(slug);
   if (!review) notFound();
 
+  const now = new Date();
+  if (!isReviewVisibleOnSite(review, now)) {
+    const titleOne = reviewTitleSingleLine(review.title);
+    const when = review.goLiveAt?.trim()
+      ? formatGoLiveForReader(review.goLiveAt)
+      : "予定時刻が設定されていません";
+    return (
+      <article className="mx-auto w-full min-w-0 max-w-3xl py-8 sm:py-10 lg:max-w-4xl xl:max-w-5xl xl:py-11">
+        <Link
+          href="/"
+          className="inline-flex min-h-11 items-center gap-1 text-sm font-medium text-sky-300 transition hover:text-sky-200"
+        >
+          <span aria-hidden>←</span> トップへ
+        </Link>
+        <header className="mt-8 rounded-3xl border border-amber-700/35 bg-slate-800/60 px-6 py-8 sm:px-8 sm:py-10">
+          <p className="text-xs font-semibold uppercase tracking-wider text-amber-300/90">
+            予約公開
+          </p>
+          <h1 className="mt-2 text-xl font-bold leading-snug text-slate-50 sm:text-2xl">
+            {titleOne}
+          </h1>
+          <p className="mt-4 text-sm leading-relaxed text-slate-400">
+            このレビューはまだ公開開始前です。本文は公開日時以降に表示されます。
+          </p>
+          <p className="mt-3 text-sm tabular-nums text-slate-300">
+            公開予定（目安）：{when}
+          </p>
+          <p className="mt-5 text-xs leading-relaxed text-slate-500">
+            本番ではビルド時刻が公開判定に使われます。日次デプロイ後に自動で本文が載ります。
+          </p>
+        </header>
+      </article>
+    );
+  }
+
+  const displayPublishedIso = effectiveDisplayPublishedIsoDate(
+    review.publishedAt,
+    review.goLiveAt
+  );
+  const displayPublishedLabel =
+    formatPublishedAtForList(displayPublishedIso);
+
   const canonicalUrl = `${siteUrl()}/reviews/${review.slug}/`;
   const best = review.ratingBest ?? 10;
 
@@ -91,10 +172,16 @@ export default async function ReviewPage({ params }: Props) {
     ? getReviewBySlug(review.nextSlug)
     : undefined;
 
-  const showNewBadge = isNewestMarkdownContent(
-    review.slug,
-    getAllReviews()
-  );
+  const dlsiteProduct =
+    !isArticle && review.dlsiteProductId != null
+      ? getDlsiteProductById(review.dlsiteProductId)
+      : undefined;
+
+  const nowBadges = new Date();
+  const showNewBadge = isReviewNewPublication(review, nowBadges);
+  const showShinsakuBadge =
+    !isArticle && isDlsiteProductShinsaku(dlsiteProduct, nowBadges);
+  const showHeaderBadges = showNewBadge || showShinsakuBadge;
 
   const coverEl = (
     <ReviewCover
@@ -122,11 +209,6 @@ export default async function ReviewPage({ params }: Props) {
     : { core: "", workIntro: "" };
   const showAffiliateBesideRating =
     Boolean(finalRatingSplit) && review.affiliateLinks.length > 0;
-
-  const dlsiteProduct =
-    !isArticle && review.dlsiteProductId != null
-      ? getDlsiteProductById(review.dlsiteProductId)
-      : undefined;
 
   return (
     <>
@@ -170,10 +252,17 @@ export default async function ReviewPage({ params }: Props) {
               className={`border-t border-slate-600/40 bg-slate-900/50 px-5 py-6 sm:px-8 sm:py-8 ${isArticle ? "max-sm:px-5 max-sm:pb-7 max-sm:pt-6" : ""}`}
             >
               <div
-                className={`flex flex-wrap items-start gap-2 sm:gap-3 ${showNewBadge ? "items-center" : ""}`}
+                className={`flex flex-wrap items-start gap-2 sm:gap-3 ${showHeaderBadges ? "items-center" : ""}`}
               >
-                {showNewBadge ? (
-                  <ReviewNewBadge className="mt-0.5 sm:mt-1" />
+                {showHeaderBadges ? (
+                  <div className="flex shrink-0 flex-wrap items-center gap-1.5">
+                    {showNewBadge ? (
+                      <ReviewNewBadge className="mt-0.5 sm:mt-1" />
+                    ) : null}
+                    {showShinsakuBadge ? (
+                      <ShinsakuBadge variant="inline" className="mt-0.5 sm:mt-1" />
+                    ) : null}
+                  </div>
                 ) : null}
                 <h1
                   className={`min-w-0 flex-1 text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl ${isArticle || titleHasBreak ? "whitespace-pre-line text-pretty" : "text-balance"} ${isArticle ? "max-sm:text-[1.7rem] max-sm:leading-snug" : ""}`}
@@ -190,7 +279,9 @@ export default async function ReviewPage({ params }: Props) {
                 <p
                   className={`text-sm text-slate-500 ${isArticle ? "sm:ml-auto" : ""}`}
                 >
-                  <time dateTime={review.publishedAt}>{review.publishedAt}</time>
+                  <time dateTime={displayPublishedIso}>
+                    {displayPublishedLabel}
+                  </time>
                   <span className="mx-2 text-slate-600">·</span>
                   <span>{review.authorName}</span>
                 </p>

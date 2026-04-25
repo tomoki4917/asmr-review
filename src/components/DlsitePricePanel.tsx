@@ -1,4 +1,8 @@
-import type { DlsiteProductRecord } from "@/lib/dlsite-product-catalog";
+import {
+  isDlsiteProductShinsaku,
+  type DlsiteProductRecord,
+} from "@/lib/dlsite-product-catalog";
+import { ShinsakuBadge } from "./ShinsakuBadge";
 
 const ALERT_DAYS = 7;
 
@@ -47,15 +51,20 @@ export function DlsitePricePanel({
   const showUrgent =
     urgentDays != null && urgentDays >= 0 && urgentDays <= ALERT_DAYS;
 
+  const showShinsaku = isDlsiteProductShinsaku(product, new Date());
+
   return (
     <aside
       className="mt-5 rounded-2xl border border-amber-500/25 bg-gradient-to-br from-slate-900/80 to-slate-950/90 p-4 shadow-inner shadow-black/20 sm:p-5"
       aria-label="DLsite の価格情報"
     >
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-sm font-semibold tracking-wide text-slate-200">
-          DLsite 価格
-        </h2>
+        <div className="flex min-w-0 flex-wrap items-center gap-2">
+          <h2 className="text-sm font-semibold tracking-wide text-slate-200">
+            DLsite 価格
+          </h2>
+          {showShinsaku ? <ShinsakuBadge variant="inline" /> : null}
+        </div>
         {product.fetched_at ? (
           <p className="text-[11px] text-slate-500">
             更新:{" "}

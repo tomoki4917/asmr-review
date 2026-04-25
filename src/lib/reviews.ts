@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { cache } from "react";
 import { DEFAULT_WORK_IMPRESSION_AVATAR_SRC } from "./default-work-impression-avatar";
+import { reviewPublicationTimeMs } from "./format-published-at";
 import type {
   AffiliateLink,
   AffiliateVendor,
@@ -148,28 +149,50 @@ function isReviewVisibleByGoLiveAt(review: Review, now: Date): boolean {
 }
 
 /**
- * 予約投稿（goLiveAt）の除外。
- * - 本番（`NODE_ENV===production`）: 既定で適用（ビルド時の現在時刻と比較）。
- * - 開発（`next dev`）: 既定では**適用しない**（予約日時より前でも一覧・詳細に出してプレビューしやすくする）。
- * - 開発で予約を厳密に試す: `REVIEW_RESPECT_GO_LIVE=true`
- * - どちらの環境でも強制的に全件出す: `REVIEW_IGNORE_GO_LIVE=true`（本番のビルドでは通常使わない）
+ * 一覧・サイトマップ・本文公開可否。`applyGoLiveFilter` と同じルール。
+ *
+ * - `REVIEW_IGNORE_GO_LIVE` … 常に公開扱い。
+ * - `REVIEW_RESPECT_GO_LIVE` … dev / `next start` でも goLive を厳密に適用。
+ * - それ以外で **`npm run dev` / `npm run start`**（`npm_lifecycle_event` が dev または start）や
+ *   **`NODE_ENV===development`** のときは、検証用サーバーとして **goLive 前も表示**（静的 `out` の
+ *   `npm run build` フェーズでは lifecycle が build のためこの扱いにならない）。
+ * - Docker 等で `npm` が無いときは `REVIEW_PREVIEW_SERVER=true`。
  */
-function applyGoLiveFilter(reviews: Review[]): Review[] {
+export function isReviewVisibleOnSite(review: Review, now: Date): boolean {
   const forceShowAll =
     process.env.REVIEW_IGNORE_GO_LIVE === "1" ||
     process.env.REVIEW_IGNORE_GO_LIVE === "true";
-  if (forceShowAll) return reviews;
+  if (forceShowAll) return true;
 
-  const respectInDev =
+  const respectGoLive =
     process.env.REVIEW_RESPECT_GO_LIVE === "1" ||
     process.env.REVIEW_RESPECT_GO_LIVE === "true";
 
-  if (process.env.NODE_ENV === "development" && !respectInDev) {
-    return reviews;
+  if (!respectGoLive) {
+    if (process.env.NODE_ENV === "development") return true;
+    const ev = process.env.npm_lifecycle_event;
+    if (ev === "dev" || ev === "start") return true;
+    if (
+      process.env.REVIEW_PREVIEW_SERVER === "1" ||
+      process.env.REVIEW_PREVIEW_SERVER === "true"
+    ) {
+      return true;
+    }
   }
 
+  return isReviewVisibleByGoLiveAt(review, now);
+}
+
+/**
+ * 予約投稿（goLiveAt）の除外。
+ * - **`npm run build`（静的 `out`）** … ビルド時刻で goLive を判定（従来どおり）。
+ * - **`npm run dev` / `npm run start`** … 既定では goLive 前も一覧に出す（`isReviewVisibleOnSite` 参照）。
+ * - 開発・起動時も予約と同じ除外を試す: `REVIEW_RESPECT_GO_LIVE=true`
+ * - 常に全件: `REVIEW_IGNORE_GO_LIVE=true`
+ */
+function applyGoLiveFilter(reviews: Review[]): Review[] {
   const now = new Date();
-  return reviews.filter((r) => isReviewVisibleByGoLiveAt(r, now));
+  return reviews.filter((r) => isReviewVisibleOnSite(r, now));
 }
 
 function parseOptionalCoverAffiliateHref(raw: unknown): string | undefined {
@@ -306,7 +329,8 @@ function fallbackSlugFromPath(filePath: string): string {
   return normalized.replace(/\//g, "-");
 }
 
-function readReviewFiles(): Review[] {
+/** ディスク上の全 Markdown（`goLiveAt` による除外なし・並びのみ） */
+function readAllReviewsSorted(): Review[] {
   const paths = listAllReviewMarkdownFiles();
   const reviews: Review[] = [];
 
@@ -331,13 +355,19 @@ function readReviewFiles(): Review[] {
     bySlug.set(r.slug, r);
   }
 
-  const sorted = Array.from(bySlug.values()).sort(
-    (a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt)
+  return Array.from(bySlug.values()).sort(
+    (a, b) => reviewPublicationTimeMs(b) - reviewPublicationTimeMs(a)
   );
-  return applyGoLiveFilter(sorted);
 }
 
-export const getAllReviews = cache((): Review[] => readReviewFiles());
+/** 予約中の記事も含む全件（静的ルート生成・slug 解決用） */
+export const getAllReviewsIncludingScheduled = cache((): Review[] =>
+  readAllReviewsSorted()
+);
+
+export const getAllReviews = cache((): Review[] =>
+  applyGoLiveFilter(getAllReviewsIncludingScheduled())
+);
 
 /** SNS 流入ページ用。`safeForExternalLanding: true` の記事のみ（フロントマターで明示） */
 export function getReviewsForExternalLanding(): Review[] {
@@ -359,11 +389,11 @@ export function getBeginnerGuides(): Review[] {
 }
 
 export function getReviewBySlug(slug: string): Review | undefined {
-  return getAllReviews().find((r) => r.slug === slug);
+  return getAllReviewsIncludingScheduled().find((r) => r.slug === slug);
 }
 
 export function getAllSlugs(): string[] {
-  return getAllReviews().map((r) => r.slug);
+  return getAllReviewsIncludingScheduled().map((r) => r.slug);
 }
 
 /** Gemini 用に軽量な一覧（全文送信を避ける） */

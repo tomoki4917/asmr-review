@@ -1,5 +1,6 @@
 import type { DlsiteProductRecord } from "@/lib/dlsite-product-catalog";
 import { reviewTitleSingleLine } from "@/lib/review-title";
+import { effectiveDisplayPublishedIsoDate } from "@/lib/format-published-at";
 import type { Review } from "@/lib/types";
 import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
 
@@ -64,7 +65,10 @@ function buildGraphSchema(
     "@id": reviewId,
     name: titleOne,
     reviewBody: summaryPlain,
-    datePublished: review.publishedAt,
+    datePublished: effectiveDisplayPublishedIsoDate(
+      review.publishedAt,
+      review.goLiveAt
+    ),
     url: canonicalUrl,
     author: {
       "@type": "Person",

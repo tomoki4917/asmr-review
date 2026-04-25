@@ -8,9 +8,15 @@ import { ReviewCover } from "@/components/ReviewCover";
 import { ReviewDlsiteListPrice } from "@/components/ReviewDlsiteListPrice";
 import { StarRating } from "@/components/StarRating";
 import { ReviewNewBadge } from "@/components/ReviewNewBadge";
+import { ShinsakuBadge } from "@/components/ShinsakuBadge";
 import { RATING_BEST_DEFAULT, isStarBucketNineOrAbove } from "@/lib/rating-scale";
-import { isNewestMarkdownContent } from "@/lib/review-new-badge";
+import {
+  getDlsiteProductById,
+  isDlsiteProductShinsaku,
+} from "@/lib/dlsite-product-catalog";
+import { isReviewNewPublication } from "@/lib/review-new-badge";
 import { reviewTitleSingleLine } from "@/lib/review-title";
+import { reviewPublicationTimeMs } from "@/lib/format-published-at";
 import { getAllReviews, getBeginnerGuides } from "@/lib/reviews";
 import type { Review } from "@/lib/types";
 
@@ -24,9 +30,9 @@ function pickSpotlightReviews(reviews: Review[]): Review[] {
       isStarBucketNineOrAbove(r.ratingValue, r.ratingBest ?? RATING_BEST_DEFAULT)
     )
     .sort((a, b) => {
-      const tb = Date.parse(b.publishedAt);
-      const ta = Date.parse(a.publishedAt);
-      const diff = (Number.isNaN(tb) ? 0 : tb) - (Number.isNaN(ta) ? 0 : ta);
+      const tb = reviewPublicationTimeMs(b);
+      const ta = reviewPublicationTimeMs(a);
+      const diff = tb - ta;
       if (diff !== 0) return diff;
       return a.slug.localeCompare(b.slug);
     })
@@ -37,8 +43,6 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
   const items = pickSpotlightReviews(reviews);
 
   if (items.length === 0) return null;
-
-  const reviewListForNew = reviews;
 
   return (
     <section
@@ -58,10 +62,15 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
         {items.map((r) => {
           const best = r.ratingBest ?? 10;
           const titleOne = reviewTitleSingleLine(r.title);
-          const spotlightNew = isNewestMarkdownContent(
-            r.slug,
-            reviewListForNew
+          const nowSpot = new Date();
+          const spotlightNew = isReviewNewPublication(r, nowSpot);
+          const spotlightShinsaku = isDlsiteProductShinsaku(
+            r.dlsiteProductId
+              ? getDlsiteProductById(r.dlsiteProductId)
+              : undefined,
+            nowSpot
           );
+          const spotlightBadges = spotlightNew || spotlightShinsaku;
           return (
             <li key={r.slug}>
               <Link
@@ -69,9 +78,14 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
                 className="group block overflow-hidden rounded-2xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/25 ring-1 ring-sky-900/20 transition hover:-translate-y-0.5 hover:border-sky-500/35 hover:shadow-lg hover:shadow-sky-950/15 hover:ring-sky-500/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400/45"
               >
                 <div className="relative">
-                  {spotlightNew ? (
-                    <div className="absolute right-3 top-3 z-10">
-                      <ReviewNewBadge variant="overlay" />
+                  {spotlightBadges ? (
+                    <div className="absolute right-3 top-3 z-10 flex max-w-[min(100%,calc(100%-1.5rem))] flex-wrap justify-end gap-1.5">
+                      {spotlightNew ? (
+                        <ReviewNewBadge variant="overlay" />
+                      ) : null}
+                      {spotlightShinsaku ? (
+                        <ShinsakuBadge variant="overlay" />
+                      ) : null}
                     </div>
                   ) : null}
                   <ReviewCover
