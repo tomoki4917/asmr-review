@@ -102,23 +102,26 @@ body {
   }
 
   /**
-   * 記事ページ（.article-reading）スマホ専用：
+   * 記事（.article-reading）・星付きレビュー（.review-reading）スマホ専用：
    * 狭い幅では両端揃えより左寄せのほうが読みやすい。字をわずかに大きく、行間を広げる。
    * sm 以上は従来どおり（PCは変更なし）。
    */
   @media (max-width: 639px) {
-    .article-reading .summary-md {
+    .article-reading .summary-md,
+    .review-reading .summary-md {
       font-size: 1.0625rem;
       line-height: 1.82;
     }
 
-    .article-reading .summary-md p {
+    .article-reading .summary-md p,
+    .review-reading .summary-md p {
       text-align: start;
       text-justify: none;
       letter-spacing: 0.03em;
     }
 
-    .article-reading .review-md p.review-md-p {
+    .article-reading .review-md p.review-md-p,
+    .review-reading .review-md p.review-md-p {
       text-align: start;
       text-justify: none;
       font-size: 1.0625rem;
@@ -126,18 +129,21 @@ body {
       letter-spacing: 0.03em;
     }
 
-    .article-reading .review-md blockquote.review-md-bq {
+    .article-reading .review-md blockquote.review-md-bq,
+    .review-reading .review-md blockquote.review-md-bq {
       font-size: 1.0625rem;
       line-height: 1.88;
     }
 
-    .article-reading .review-md blockquote.review-md-bq p {
+    .article-reading .review-md blockquote.review-md-bq p,
+    .review-reading .review-md blockquote.review-md-bq p {
       text-align: start;
       text-justify: none;
       letter-spacing: 0.03em;
     }
 
-    .article-reading .review-md a {
+    .article-reading .review-md a,
+    .review-reading .review-md a {
       text-underline-offset: 4px;
     }
   }

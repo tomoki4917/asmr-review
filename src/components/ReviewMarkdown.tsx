@@ -6,6 +6,11 @@ type Props = {
   markdown: string;
   /** 記事（contentKind: article）向け。スマホで字下げ・行間・リスト間隔を読みやすくする */
   articleReading?: boolean;
+  /**
+   * 星付きレビュー向け。記事と同様、スマホで見出し・段落・引用・リストの余白と行間を広げる。
+   * 本文の文言・見出し順は変えない（表示のみ）。親に `review-reading` とセットで使う。
+   */
+  starReviewReadingComfort?: boolean;
   /** フロントマター `workImpressionAvatar`。「作品感想」見出しの右に丸アイコンを並べる */
   workImpressionAvatar?: string;
 };
@@ -30,20 +35,20 @@ function isTenOutOfTenRating(text: string): boolean {
 export function ReviewMarkdown({
   markdown,
   articleReading = false,
+  starReviewReadingComfort = false,
   workImpressionAvatar,
 }: Props) {
-  const listGap = articleReading ? "space-y-2 sm:space-y-1" : "space-y-1";
-  const h2Article = articleReading
+  const readingComfort = articleReading || starReviewReadingComfort;
+  const listGap = readingComfort ? "space-y-2 sm:space-y-1" : "space-y-1";
+  const h2Comfort = readingComfort
     ? "max-sm:text-[1.3125rem] max-sm:leading-snug"
     : "";
-  const h3Article = articleReading ? "max-sm:text-[1.08rem]" : "";
-  const pArticle = articleReading
-    ? "max-sm:mb-6 max-sm:leading-[1.88]"
-    : "";
+  const h3Comfort = readingComfort ? "max-sm:text-[1.08rem]" : "";
+  const pComfort = readingComfort ? "max-sm:mb-6 max-sm:leading-[1.88]" : "";
 
   return (
     <div
-      className={`review-md flow-root min-w-0 max-w-full ${articleReading ? "review-md--article" : ""}`}
+      className={`review-md flow-root min-w-0 max-w-full ${readingComfort ? "review-md--article" : ""}`}
     >
       <ReactMarkdown
         components={{
@@ -54,8 +59,8 @@ export function ReviewMarkdown({
               <h3
                 className={
                   isWorkIntroLabel
-                    ? `mb-2 mt-8 scroll-mt-24 text-xl font-semibold tracking-tight text-slate-100 ${h3Article}`
-                    : `mb-2 mt-8 scroll-mt-24 text-lg font-semibold tracking-tight text-slate-100 ${h3Article}`
+                    ? `mb-2 mt-8 scroll-mt-24 text-xl font-semibold tracking-tight text-slate-100 ${h3Comfort}`
+                    : `mb-2 mt-8 scroll-mt-24 text-lg font-semibold tracking-tight text-slate-100 ${h3Comfort}`
                 }
               >
                 {children}
@@ -69,7 +74,7 @@ export function ReviewMarkdown({
               return (
                 <div className="review-work-impression-head mb-3 mt-10 flex w-full min-w-0 scroll-mt-24 flex-wrap items-center gap-x-2.5 gap-y-2 first:mt-0 sm:gap-x-3">
                   <h2
-                    className={`mb-0 mt-0 w-auto max-w-full shrink-0 text-xl font-bold leading-tight tracking-tight text-slate-50 ${h2Article}`}
+                    className={`mb-0 mt-0 w-auto max-w-full shrink-0 text-xl font-bold leading-tight tracking-tight text-slate-50 ${h2Comfort}`}
                   >
                     {children}
                   </h2>
@@ -86,7 +91,7 @@ export function ReviewMarkdown({
             }
             return (
               <h2
-                className={`mb-3 mt-10 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 first:mt-0 ${h2Article} ${
+                className={`mb-3 mt-10 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 first:mt-0 ${h2Comfort} ${
                   isWorkImpression ? "review-h2--work-impression" : ""
                 }`}
               >
@@ -96,7 +101,7 @@ export function ReviewMarkdown({
           },
           p: ({ children }) => (
             <p
-              className={`review-md-p mb-5 leading-[1.75] text-slate-300 last:mb-0 ${pArticle}`}
+              className={`review-md-p mb-5 leading-[1.75] text-slate-300 last:mb-0 ${pComfort}`}
             >
               {children}
             </p>
@@ -114,7 +119,7 @@ export function ReviewMarkdown({
           li: ({ children }) => (
             <li
               className={
-                articleReading ? "leading-relaxed max-sm:leading-[1.75]" : "leading-relaxed"
+                readingComfort ? "leading-relaxed max-sm:leading-[1.75]" : "leading-relaxed"
               }
             >
               {children}
@@ -159,7 +164,7 @@ export function ReviewMarkdown({
           ),
           blockquote: ({ children }) => (
             <blockquote
-              className={`review-md-bq relative my-6 rounded-xl border border-slate-600/40 border-l-4 border-l-sky-500/50 bg-slate-800/95 py-4 pl-5 pr-4 leading-[1.8] text-slate-400 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] ring-1 ring-slate-700/45 [&_p]:mb-3 [&_p:last-child]:mb-0 ${articleReading ? "max-sm:my-5 max-sm:pl-4 max-sm:pr-3 max-sm:py-[0.95rem]" : ""}`}
+              className={`review-md-bq relative my-6 rounded-xl border border-slate-600/40 border-l-4 border-l-sky-500/50 bg-slate-800/95 py-4 pl-5 pr-4 leading-[1.8] text-slate-400 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] ring-1 ring-slate-700/45 [&_p]:mb-3 [&_p:last-child]:mb-0 ${readingComfort ? "max-sm:my-5 max-sm:pl-4 max-sm:pr-3 max-sm:py-[0.95rem]" : ""}`}
             >
               {children}
             </blockquote>
@@ -167,7 +172,7 @@ export function ReviewMarkdown({
           hr: () => (
             <hr
               className={
-                articleReading
+                readingComfort
                   ? "my-8 border-slate-700/60 max-sm:my-9"
                   : "my-8 border-slate-700/60"
               }

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://asmr-review.local/schemas/review-analysis.v1.schema.json",
+  "title": "催眠音声レビュー — 分析データ（v1）",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "workName", "scores"],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1,
+      "description": "スキーマ版。将来の互換用。"
+    },
+    "workName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "作品名（旧テキストの「作品名:」に相当）"
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trance", "pleasure", "satisfaction"],
+      "properties": {
+        "trance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "トランス度（レーダー・本文と一致）"
+        },
+        "pleasure": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "快楽度"
+        },
+        "satisfaction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "満足度（第三軸。従来のストーリー性等は thirdAxisLabel で表記）"
+        }
+      }
+    },
+    "thirdAxisLabel": {
+      "type": "string",
+      "description": "第三軸の表示ラベル。省略時は「満足度」。"
+    },
+    "orgasmSummary": {
+      "type": "string",
+      "description": "絶頂目安（本文の総合評価と同期させる一行。任意）"
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "評価方針・参照データ・軸ごとのメモなど（旧 # コメント行）"
+    }
+  }
+}

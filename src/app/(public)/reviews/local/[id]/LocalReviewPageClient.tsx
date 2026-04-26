@@ -84,7 +84,7 @@ export default function LocalReviewPageClient() {
 
   return (
     <article
-      className={`mx-auto w-full min-w-0 max-w-3xl py-8 sm:py-10 lg:max-w-4xl xl:max-w-5xl xl:py-11 ${articleReading ? "article-reading" : ""}`}
+      className={`mx-auto w-full min-w-0 max-w-3xl py-8 sm:py-10 lg:max-w-4xl xl:max-w-5xl xl:py-11 ${articleReading ? "article-reading" : "review-reading"}`}
     >
       <Link
         href="/"
@@ -166,10 +166,14 @@ export default function LocalReviewPageClient() {
       </header>
 
       <section
-        className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${articleReading ? "px-5 py-8 max-sm:py-8" : "px-4 py-7"}`}
+        className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${articleReading ? "px-5 py-8 max-sm:py-8" : "px-5 py-7"}`}
       >
         {review.body ? (
-          <ReviewMarkdown markdown={review.body} articleReading={articleReading} />
+          <ReviewMarkdown
+            markdown={review.body}
+            articleReading={articleReading}
+            starReviewReadingComfort={isStarRatedReview(review)}
+          />
         ) : (
           <p className="text-slate-500">本文がありません。</p>
         )}

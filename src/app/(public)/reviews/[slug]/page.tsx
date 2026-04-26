@@ -220,7 +220,7 @@ export default async function ReviewPage({ params }: Props) {
         />
       )}
       <article
-        className={`mx-auto w-full min-w-0 max-w-3xl py-8 sm:py-10 lg:max-w-4xl xl:max-w-5xl xl:py-11 ${isArticle ? "article-reading" : ""}`}
+        className={`mx-auto w-full min-w-0 max-w-3xl py-8 sm:py-10 lg:max-w-4xl xl:max-w-5xl xl:py-11 ${isArticle ? "article-reading" : "review-reading"}`}
       >
         <Link
           href="/"
@@ -341,7 +341,7 @@ export default async function ReviewPage({ params }: Props) {
         </header>
 
         <section
-          className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${isArticle ? "px-5 py-8 max-sm:py-8" : "px-4 py-7"}`}
+          className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${isArticle ? "px-5 py-8 max-sm:py-8" : "px-5 py-7"}`}
         >
           {!review.body ? (
             <p className="text-slate-500">本文がまだありません。</p>
@@ -351,6 +351,7 @@ export default async function ReviewPage({ params }: Props) {
                 <ReviewMarkdown
                   markdown={finalRatingSplit.before}
                   articleReading={isArticle}
+                  starReviewReadingComfort={!isArticle}
                   workImpressionAvatar={review.workImpressionAvatar}
                 />
               ) : null}
@@ -366,6 +367,7 @@ export default async function ReviewPage({ params }: Props) {
                     <ReviewMarkdown
                       markdown={ratingParts.core}
                       articleReading={isArticle}
+                      starReviewReadingComfort={!isArticle}
                       workImpressionAvatar={review.workImpressionAvatar}
                     />
                   </div>
@@ -383,6 +385,7 @@ export default async function ReviewPage({ params }: Props) {
                     <ReviewMarkdown
                       markdown={ratingParts.workIntro}
                       articleReading={isArticle}
+                      starReviewReadingComfort={!isArticle}
                       workImpressionAvatar={review.workImpressionAvatar}
                     />
                   </div>
@@ -395,6 +398,7 @@ export default async function ReviewPage({ params }: Props) {
                       <ReviewMarkdown
                         markdown={restWorkSplit.before}
                         articleReading={isArticle}
+                        starReviewReadingComfort={!isArticle}
                         workImpressionAvatar={review.workImpressionAvatar}
                       />
                       <div className="mt-8 flex justify-center sm:justify-start">
@@ -411,6 +415,7 @@ export default async function ReviewPage({ params }: Props) {
                           <ReviewMarkdown
                             markdown={restWorkSplit.after}
                             articleReading={isArticle}
+                            starReviewReadingComfort={!isArticle}
                             workImpressionAvatar={review.workImpressionAvatar}
                           />
                         </div>
@@ -420,6 +425,7 @@ export default async function ReviewPage({ params }: Props) {
                     <ReviewMarkdown
                       markdown={finalRatingSplit.rest}
                       articleReading={isArticle}
+                      starReviewReadingComfort={!isArticle}
                       workImpressionAvatar={review.workImpressionAvatar}
                     />
                   )}
@@ -430,6 +436,7 @@ export default async function ReviewPage({ params }: Props) {
             <ReviewMarkdown
               markdown={review.body}
               articleReading={isArticle}
+              starReviewReadingComfort={!isArticle}
               workImpressionAvatar={review.workImpressionAvatar}
             />
           )}

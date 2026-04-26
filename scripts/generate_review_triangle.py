@@ -1,22 +1,19 @@
 """
 「催眠音声レビュー室」アイアン・トライアングル（3軸レーダー）生成。
-_分析データ.txt を読み、review_triangle.png を出力する。
+_分析データ.json を読み、review_triangle.png を出力する。
 各軸は 10.0 満点。
 
 軸配置（上から時計回り）: 12時=トランス度, 4時=快楽度, 8時=第三軸
-第三軸のキー例: ストーリー性（従来） / 満足度（聴き終わりの満足） など
+第三軸のラベル: JSON の thirdAxisLabel、省略時は「満足度」
 """
 from __future__ import annotations
 
-import re
+import json
 import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-
-# 第三軸は作品ごとにキー名を変えられる（先頭から最初に見つかったものを採用）
-THIRD_AXIS_KEYS = ("ストーリー性", "満足度", "充実度")
 
 BG = "#121212"
 NEON = "#00f2ff"
@@ -30,40 +27,47 @@ LABEL_COLOR = "#ffffff"
 THETA_CCW = np.array([np.pi / 2, 7 * np.pi / 6, 11 * np.pi / 6, np.pi / 2])
 
 
-def load_scores(txt_path: Path) -> tuple[str, float, float, float, str]:
-    text = txt_path.read_text(encoding="utf-8")
-    name_m = re.search(r"作品名:\s*(.+)", text)
-    work_name = name_m.group(1).strip() if name_m else ""
+def load_scores(json_path: Path) -> tuple[str, float, float, float, str]:
+    raw = json_path.read_text(encoding="utf-8")
+    data = json.loads(raw)
 
-    def one(key: str) -> float:
-        m = re.search(rf"^{re.escape(key)}:\s*([0-9]+(?:\.[0-9]+)?)\s*$", text, re.MULTILINE)
-        if not m:
-            raise ValueError(f"missing key: {key}")
-        return float(m.group(1))
+    if data.get("schemaVersion") != 1:
+        raise ValueError(f"unsupported schemaVersion in {json_path}")
 
-    trans = one("トランス度")
-    body = one("快楽度")
-    third_label: str | None = None
-    third_val: float | None = None
-    for key in THIRD_AXIS_KEYS:
-        m = re.search(rf"^{re.escape(key)}:\s*([0-9]+(?:\.[0-9]+)?)\s*$", text, re.MULTILINE)
-        if m:
-            third_label = key
-            third_val = float(m.group(1))
-            break
-    if third_label is None or third_val is None:
-        raise ValueError(
-            f"第三軸が見つかりません（いずれか1行を書いてください）: {', '.join(THIRD_AXIS_KEYS)}"
-        )
+    work_name = str(data.get("workName", "")).strip()
+    scores = data.get("scores")
+    if not isinstance(scores, dict):
+        raise ValueError(f"missing scores object: {json_path}")
 
-    return (work_name, trans, body, third_val, third_label)
+    try:
+        trans = float(scores["trance"])
+        pleasure = float(scores["pleasure"])
+        satisfaction = float(scores["satisfaction"])
+    except (KeyError, TypeError, ValueError) as e:
+        raise ValueError(f"scores.trance/pleasure/satisfaction must be numbers: {json_path}") from e
+
+    third_label = data.get("thirdAxisLabel")
+    if third_label is not None and str(third_label).strip():
+        third_label = str(third_label).strip()
+    else:
+        third_label = "満足度"
+
+    return (work_name, trans, pleasure, satisfaction, third_label)
 
 
 def main() -> None:
     root = Path(__file__).resolve().parents[1]
     slug = sys.argv[1] if len(sys.argv) > 1 else "kyoku-mugen-zekkyou-count-chikuni"
-    data_path = root / "src" / "content" / "レビュー" / slug / "_分析データ.txt"
+    data_path = root / "src" / "content" / "レビュー" / slug / "_分析データ.json"
     out_path = data_path.parent / "review_triangle.png"
+
+    if not data_path.is_file():
+        print(
+            f"Missing {data_path}\n"
+            "分析データは _分析データ.json に置いてください（docs/schemas/review-analysis.v1.schema.json 参照）。",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
     _, trans, body, third, third_label = load_scores(data_path)
     r_max = 10.0
