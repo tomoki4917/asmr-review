@@ -25,6 +25,7 @@ import {
   isReviewVisibleOnSite,
 } from "@/lib/reviews";
 import {
+  splitBeforeAtRecommendedAudience,
   splitBodyAtFinalRating,
   splitRatingAtWorkIntroLabel,
   splitRestAfterWorkImpression,
@@ -207,6 +208,10 @@ export default async function ReviewPage({ params }: Props) {
   const ratingParts = finalRatingSplit?.rating
     ? splitRatingAtWorkIntroLabel(finalRatingSplit.rating)
     : { core: "", workIntro: "" };
+  const recommendedAudienceSplit =
+    !isArticle && finalRatingSplit?.before
+      ? splitBeforeAtRecommendedAudience(finalRatingSplit.before)
+      : null;
   const showAffiliateBesideRating =
     Boolean(finalRatingSplit) && review.affiliateLinks.length > 0;
 
@@ -351,7 +356,34 @@ export default async function ReviewPage({ params }: Props) {
             <p className="text-slate-500">本文がまだありません。</p>
           ) : finalRatingSplit ? (
             <>
-              {finalRatingSplit.before.trim() ? (
+              {recommendedAudienceSplit ? (
+                <>
+                  {recommendedAudienceSplit.prefix.trim() ? (
+                    <ReviewMarkdown
+                      markdown={recommendedAudienceSplit.prefix}
+                      articleReading={isArticle}
+                      starReviewReadingComfort={!isArticle}
+                      workImpressionAvatar={review.workImpressionAvatar}
+                    />
+                  ) : null}
+                  <div
+                    className={`review-recommended-panel flow-root rounded-2xl border border-sky-500/25 bg-gradient-to-br from-slate-900/90 via-slate-900/75 to-sky-950/25 px-4 py-5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] ring-1 ring-sky-500/10 sm:px-6 sm:py-6 ${
+                      recommendedAudienceSplit.prefix.trim()
+                        ? "mt-8 sm:mt-9"
+                        : ""
+                    }`}
+                    aria-labelledby="recommended-audience"
+                  >
+                    <ReviewMarkdown
+                      markdown={recommendedAudienceSplit.audience}
+                      articleReading={isArticle}
+                      starReviewReadingComfort={!isArticle}
+                      workImpressionAvatar={review.workImpressionAvatar}
+                      recommendedAudienceHeading
+                    />
+                  </div>
+                </>
+              ) : finalRatingSplit.before.trim() ? (
                 <ReviewMarkdown
                   markdown={finalRatingSplit.before}
                   articleReading={isArticle}

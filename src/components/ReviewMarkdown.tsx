@@ -13,6 +13,10 @@ type Props = {
   starReviewReadingComfort?: boolean;
   /** フロントマター `workImpressionAvatar`。「作品感想」見出しの右に丸アイコンを並べる */
   workImpressionAvatar?: string;
+  /**
+   * 「どんな人におすすめか」ブロック単体表示時。該当 h2 にアンカー用 id と強調クラスを付ける。
+   */
+  recommendedAudienceHeading?: boolean;
 };
 
 /** `**★10／10**` など満点行を検出（総合評価の強調色用） */
@@ -32,11 +36,18 @@ function isTenOutOfTenRating(text: string): boolean {
   return /^★\s*10\s*[／/]\s*10\s*$/.test(t);
 }
 
+/** 「グラフ評価内訳」の `- **トランス度 8** …` 形式を検出（表示を見出し風にする用） */
+function isReviewAxisScoresListItem(children: ReactNode): boolean {
+  const text = nodeToPlainText(children).replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
+  return /^(トランス度|快楽度|満足度)\s*\d+\b/.test(text);
+}
+
 export function ReviewMarkdown({
   markdown,
   articleReading = false,
   starReviewReadingComfort = false,
   workImpressionAvatar,
+  recommendedAudienceHeading = false,
 }: Props) {
   const readingComfort = articleReading || starReviewReadingComfort;
   const listGap = readingComfort ? "space-y-2 sm:space-y-1" : "space-y-1";
@@ -69,6 +80,8 @@ export function ReviewMarkdown({
           },
           h2: ({ children }) => {
             const label = nodeToPlainText(children).replace(/\u00a0/g, " ").trim();
+            const isRecommendedAudience =
+              recommendedAudienceHeading && label === "どんな人におすすめか";
             const isWorkImpression = label === "作品感想";
             if (isWorkImpression && workImpressionAvatar) {
               return (
@@ -91,8 +104,11 @@ export function ReviewMarkdown({
             }
             return (
               <h2
-                className={`mb-3 mt-10 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 first:mt-0 ${h2Comfort} ${
-                  isWorkImpression ? "review-h2--work-impression" : ""
+                id={isRecommendedAudience ? "recommended-audience" : undefined}
+                className={`mb-3 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 ${
+                  isRecommendedAudience ? "mt-0" : "mt-10 first:mt-0"
+                } ${h2Comfort} ${isWorkImpression ? "review-h2--work-impression" : ""} ${
+                  isRecommendedAudience ? "review-h2--recommended-audience" : ""
                 }`}
               >
                 {children}
@@ -116,15 +132,18 @@ export function ReviewMarkdown({
               {children}
             </ol>
           ),
-          li: ({ children }) => (
-            <li
-              className={
-                readingComfort ? "leading-relaxed max-sm:leading-[1.68]" : "leading-relaxed"
-              }
-            >
-              {children}
-            </li>
-          ),
+          li: ({ children }) => {
+            const axisLi = isReviewAxisScoresListItem(children);
+            return (
+              <li
+                className={`${
+                  readingComfort ? "leading-relaxed max-sm:leading-[1.68]" : "leading-relaxed"
+                } ${axisLi ? "review-md-axis-li" : ""}`}
+              >
+                {children}
+              </li>
+            );
+          },
           strong: ({ children }) => {
             const plain = nodeToPlainText(children);
             const perfect = isTenOutOfTenRating(plain);

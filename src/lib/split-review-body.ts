@@ -47,6 +47,29 @@ export function splitRestAfterWorkImpression(rest: string): {
   };
 }
 
+/**
+ * `## 総合評価` より前の `before` を、`## どんな人におすすめか` で二分割する。
+ * 見つからなければ null（従来どおり一括表示）。
+ */
+export function splitBeforeAtRecommendedAudience(before: string): {
+  prefix: string;
+  audience: string;
+} | null {
+  const n = before.replace(/\r\n/g, "\n").trimEnd();
+  const needle = "\n## どんな人におすすめか\n";
+  const idx = n.indexOf(needle);
+  if (idx !== -1) {
+    return {
+      prefix: n.slice(0, idx).trimEnd(),
+      audience: n.slice(idx + 1).trimStart(),
+    };
+  }
+  if (n.startsWith("## どんな人におすすめか\n")) {
+    return { prefix: "", audience: n.trimStart() };
+  }
+  return null;
+}
+
 export function splitBodyAtFinalRating(
   body: string
 ): { before: string; rating: string; rest: string } | null {
