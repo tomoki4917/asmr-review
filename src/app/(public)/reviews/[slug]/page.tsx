@@ -249,7 +249,11 @@ export default async function ReviewPage({ params }: Props) {
               coverEl
             )}
             <div
-              className={`border-t border-slate-600/40 bg-slate-900/50 px-5 py-6 sm:px-8 sm:py-8 ${isArticle ? "max-sm:px-5 max-sm:pb-7 max-sm:pt-6" : ""}`}
+              className={`border-t border-slate-600/40 bg-slate-900/50 py-6 sm:px-8 sm:py-8 ${
+                isArticle
+                  ? "px-5 max-sm:px-5 max-sm:pb-7 max-sm:pt-6"
+                  : "px-4"
+              }`}
             >
               <div
                 className={`flex flex-wrap items-start gap-2 sm:gap-3 ${showHeaderBadges ? "items-center" : ""}`}
@@ -341,7 +345,7 @@ export default async function ReviewPage({ params }: Props) {
         </header>
 
         <section
-          className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${isArticle ? "px-5 py-8 max-sm:py-8" : "px-5 py-7"}`}
+          className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${isArticle ? "px-5 py-8 max-sm:py-8" : "px-4 py-7"}`}
         >
           {!review.body ? (
             <p className="text-slate-500">本文がまだありません。</p>

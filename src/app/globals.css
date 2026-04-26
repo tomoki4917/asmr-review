@@ -103,43 +103,43 @@ body {
 
   /**
    * 記事（.article-reading）・星付きレビュー（.review-reading）スマホ専用：
-   * 狭い幅では左寄せ。字サイズは 1rem 前後に抑え、行間は読みやすさを残しつつややコンパクトに。
+   * 狭い幅では左寄せ。1 行の字数を増やすため字をやや小さく（15px 前後）、行間は読みやすさを維持。
    * sm 以上は従来どおり（PCは変更なし）。
    */
   @media (max-width: 639px) {
     .article-reading .summary-md,
     .review-reading .summary-md {
-      font-size: 1rem;
-      line-height: 1.76;
+      font-size: 0.9375rem;
+      line-height: 1.74;
     }
 
     .article-reading .summary-md p,
     .review-reading .summary-md p {
       text-align: start;
       text-justify: none;
-      letter-spacing: 0.025em;
+      letter-spacing: 0.02em;
     }
 
     .article-reading .review-md p.review-md-p,
     .review-reading .review-md p.review-md-p {
       text-align: start;
       text-justify: none;
-      font-size: 1rem;
-      line-height: 1.76;
-      letter-spacing: 0.025em;
+      font-size: 0.9375rem;
+      line-height: 1.74;
+      letter-spacing: 0.02em;
     }
 
     .article-reading .review-md blockquote.review-md-bq,
     .review-reading .review-md blockquote.review-md-bq {
-      font-size: 1rem;
-      line-height: 1.72;
+      font-size: 0.9375rem;
+      line-height: 1.68;
     }
 
     .article-reading .review-md blockquote.review-md-bq p,
     .review-reading .review-md blockquote.review-md-bq p {
       text-align: start;
       text-justify: none;
-      letter-spacing: 0.025em;
+      letter-spacing: 0.02em;
     }
 
     .article-reading .review-md a,

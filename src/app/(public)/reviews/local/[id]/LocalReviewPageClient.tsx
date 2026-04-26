@@ -111,7 +111,11 @@ export default function LocalReviewPageClient() {
               <ReviewCoverPlaceholder slug={slug} />
             )}
           </div>
-          <div className="border-t border-slate-600/40 bg-slate-900/50 px-5 py-6 sm:px-8 sm:py-8">
+          <div
+            className={`border-t border-slate-600/40 bg-slate-900/50 py-6 sm:px-8 sm:py-8 ${
+              articleReading ? "px-5" : "px-4"
+            }`}
+          >
             <p
               className={`text-xs font-medium uppercase tracking-wider ${kindBadgeClass}`}
             >
@@ -166,7 +170,7 @@ export default function LocalReviewPageClient() {
       </header>
 
       <section
-        className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${articleReading ? "px-5 py-8 max-sm:py-8" : "px-5 py-7"}`}
+        className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${articleReading ? "px-5 py-8 max-sm:py-8" : "px-4 py-7"}`}
       >
         {review.body ? (
           <ReviewMarkdown
