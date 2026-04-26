@@ -22,7 +22,7 @@ itemDescription: |
   恋人と即売会ブースを舞台に、魔法少女コスと催眠でメス化を進め、焦らしと前立腺でドライの山を重ねたあとノーハンド射精へ着地する。羞恥と調教の声が同時進行しつつ、ドライの段取りが最後まで途切れない一本。三軸の目安は総合★8（トランス8・快楽9・満足8）。
 authorName: 催眠音声レビュー室
 publishedAt: "2026-04-26"
-goLiveAt: "2026-04-26T20:00:00+09:00"
+goLiveAt: "2026-04-26T21:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ401000/RJ400972_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ400972.html
 affiliateLinks:
