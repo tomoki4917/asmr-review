@@ -87,6 +87,9 @@ web_modules/
 .next
 out
 
+# Vercel CLI (`vercel link` — org/project id は Secret 用にローカルだけで保持)
+.vercel
+
 # src/content/{レビュー,記事} から同期（原本は src 側のみコミット）
 /public/content/レビュー/
 /public/content/記事/

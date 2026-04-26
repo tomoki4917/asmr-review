@@ -1,19 +1,17 @@
-# 毎日 日本時間 21:05 と 22:00 に Vercel のデプロイフックを叩き、本番を再ビルドする。
-# goLiveAt 通過後の記事公開や静的生成の更新に使う。
+# 毎日 日本時間 21:05 と 22:00 に本番向けビルドを走らせる（goLiveAt 通過後の反映用）。
 #
-# 【なぜビルドが要るか】本番は `output: "export"` の静的サイトで、`goLiveAt` は
-# 「その瞬間の new Date()」と比較される。予約時刻を過ぎても **再ビルド・再デプロイが無ければ
-# 一覧も本文も更新されない**（CMS のようなサーバ予約投稿ではない）。
-# goLive を「その日の最初のビルド」より後ろに置きたいとき、日次を 21:00 ちょうどだと
-# Actions→Vercel の遅延で翌ビルドまで本文が出ないリスクがあるため、21:05 を主とし 22:00 を保険に二重化する。
+# 【静的サイトの前提】`output: "export"` では `goLiveAt` はビルド実行時刻と比較される。
+# 予約時刻のあとに **本番ビルドが一度走る**必要がある（サーバの予約投稿ではない）。
 #
-# --- 動かないときのチェック（コード側ではなく GitHub / Vercel 設定がほとんど）---
-# 1. Repository secrets に VERCEL_DEPLOY_HOOK_URL（Vercel Deploy Hooks の URL 全文）があるか。
-# 2. 本ファイルは「デフォルトブランチ」にマージされているか（未マージだと schedule は動かない）。
-# 3. Settings → Actions → General で Actions が無効になっていないか。
-# 4. リポジトリが約 60 日無操作だと GitHub がスケジュールを止めることがある → 空コミット等で再開。
-# 5. Actions タブで本ワークフローが「スケジュール済み」かつ直近 Run が成功しているか（失敗ならログを開く）。
-# 6. Vercel 側でフックが「正しいプロジェクト・接続ブランチ」を指しているか。
+# --- デプロイの二通り（どちらか一方があればよい。CLI を推奨）---
+# A) **推奨: Vercel CLI** … Secrets に `VERCEL_TOKEN` + `VERCEL_ORG_ID` + `VERCEL_PROJECT_ID` を入れる。
+#    Deploy Hook より確実に Deployments に行が付きやすい。値の取り方は `src/content/README.md` の該当節。
+# B) **Deploy Hook** … `VERCEL_DEPLOY_HOOK_URL` のみ。`https://api.vercel.com/v1/integrations/deploy/...` 全文。
+#
+# --- 動かないとき ---
+# 1. 上記 A または B が default branch の Secrets に入っているか。
+# 2. Actions が無効・リポジトリ長期無操作で schedule 停止、など。
+# 3. Vercel のチーム／プロジェクトを取り違えていないか。
 #
 # 手動テスト: Actions → Schedule Vercel deploy → Run workflow
 
@@ -21,35 +19,75 @@ name: Schedule Vercel deploy
 
 on:
   schedule:
-    # GitHub の cron は UTC のみ。JST = UTC+9（日本は夏時間なし）。
-    # 12:05 UTC = JST 21:05 … 当日 21:00 前後の goLiveAt を越えたあとでビルドする。
     - cron: "5 12 * * *"
-    # 13:00 UTC = JST 22:00 … 上記の失敗・遅延・21:00〜22:00 台の goLive の拾い直し。
     - cron: "0 13 * * *"
   workflow_dispatch:
 
-# 外部 URL へ POST のみ（GITHUB_TOKEN は未使用）
-permissions: {}
+permissions:
+  contents: read
 
 jobs:
-  hook:
+  deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 30
     steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
       - name: Log runner time (debug)
         run: |
           echo "Runner UTC: $(date -u '+%Y-%m-%d %H:%M:%S')"
           echo "Runner JST: $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M:%S')"
 
-      - name: Trigger Vercel deploy hook
+      - name: Production deploy on Vercel
         env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
         run: |
-          if [ -z "$HOOK_URL" ]; then
-            echo "::error::VERCEL_DEPLOY_HOOK_URL が未設定です。GitHub → Settings → Secrets and variables → Actions に追加してください。"
+          set -euo pipefail
+
+          if [ -n "${VERCEL_TOKEN:-}" ] && [ -n "${VERCEL_ORG_ID:-}" ] && [ -n "${VERCEL_PROJECT_ID:-}" ]; then
+            echo "Using Vercel CLI (VERCEL_TOKEN + VERCEL_ORG_ID + VERCEL_PROJECT_ID)…"
+            export VERCEL_ORG_ID
+            export VERCEL_PROJECT_ID
+            npx --yes vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN" --cwd "$GITHUB_WORKSPACE"
+            echo "OK: Vercel CLI deploy finished. Check Vercel → Deployments for this project."
+            exit 0
+          fi
+
+          echo "CLI 用シークレットが揃っていないため Deploy Hook を試します…"
+
+          if [ -z "${HOOK_URL:-}" ]; then
+            echo "::error::Vercel へのデプロイ方法が未設定です。次の **どちらか** を GitHub → Settings → Secrets → Actions に設定してください。"
+            echo "::error::(A 推奨) VERCEL_TOKEN / VERCEL_ORG_ID / VERCEL_PROJECT_ID … 手順はリポジトリの src/content/README.md を参照。"
+            echo "::error::(B) VERCEL_DEPLOY_HOOK_URL … Vercel → Project → Settings → Git → Deploy Hooks の Production 用 URL 全文。"
             exit 1
           fi
+
+          case "$HOOK_URL" in
+            *api.vercel.com*) ;;
+            *)
+              echo "::error::VERCEL_DEPLOY_HOOK_URL は https://api.vercel.com/v1/integrations/deploy/... 形式である必要があります。"
+              exit 1
+              ;;
+          esac
+
           echo "POST to deploy hook (URL はログに出しません)…"
-          # -L: リダイレクト追随 / -f: 4xx5xx で失敗 / -S: エラー時に本文表示
-          curl -fsSL -X POST "$HOOK_URL"
-          echo "OK: deploy hook を受け付けた応答でした。"
+          http_code=$(curl -sS -L -o /tmp/vercel_hook_body.txt -w "%{http_code}" -X POST "$HOOK_URL") || exit $?
+          echo "Deploy hook HTTP status: ${http_code}"
+          head -c 400 /tmp/vercel_hook_body.txt | tr '\r\n' ' '
+          echo ""
+          case "$http_code" in
+            200|201|202) ;;
+            *)
+              echo "::error::Deploy hook が想定外の HTTP を返しました (${http_code})。フックを作り直すか、(A) の CLI 方式に切り替えてください。"
+              exit 1
+              ;;
+          esac
+          echo "OK: deploy hook を受け付けました。Deployments に行が付くか確認してください。"
