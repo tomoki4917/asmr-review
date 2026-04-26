@@ -41,10 +41,10 @@ export function ReviewMarkdown({
   const readingComfort = articleReading || starReviewReadingComfort;
   const listGap = readingComfort ? "space-y-2 sm:space-y-1" : "space-y-1";
   const h2Comfort = readingComfort
-    ? "max-sm:text-[1.3125rem] max-sm:leading-snug"
+    ? "max-sm:text-[1.25rem] max-sm:leading-snug"
     : "";
-  const h3Comfort = readingComfort ? "max-sm:text-[1.08rem]" : "";
-  const pComfort = readingComfort ? "max-sm:mb-6 max-sm:leading-[1.88]" : "";
+  const h3Comfort = readingComfort ? "max-sm:text-[1.0625rem]" : "";
+  const pComfort = readingComfort ? "max-sm:mb-5 max-sm:leading-[1.76]" : "";
 
   return (
     <div
@@ -119,7 +119,7 @@ export function ReviewMarkdown({
           li: ({ children }) => (
             <li
               className={
-                readingComfort ? "leading-relaxed max-sm:leading-[1.75]" : "leading-relaxed"
+                readingComfort ? "leading-relaxed max-sm:leading-[1.72]" : "leading-relaxed"
               }
             >
               {children}
@@ -173,7 +173,7 @@ export function ReviewMarkdown({
             <hr
               className={
                 readingComfort
-                  ? "my-8 border-slate-700/60 max-sm:my-9"
+                  ? "my-8 border-slate-700/60 max-sm:my-8"
                   : "my-8 border-slate-700/60"
               }
             />
