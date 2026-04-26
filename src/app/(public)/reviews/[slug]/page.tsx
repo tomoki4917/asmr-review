@@ -150,7 +150,10 @@ export default async function ReviewPage({ params }: Props) {
             公開予定（目安）：{when}
           </p>
           <p className="mt-5 text-xs leading-relaxed text-slate-500">
-            本番ではビルド時刻が公開判定に使われます。日次デプロイ後に自動で本文が載ります。
+            本番（静的エクスポート）では<strong>ビルドを実行した瞬間</strong>が公開判定に使われます。予約時刻のあとに本番ビルドが走るまで本文は出ません（サーバーが時刻で切り替える方式ではありません）。日次は GitHub
+            Actions が概ね JST 21:05・22:00 に Vercel へ再デプロイをかける想定です。出ないときは Actions の成否と、リポジトリの{" "}
+            <code className="rounded bg-slate-900/80 px-1">VERCEL_DEPLOY_HOOK_URL</code>{" "}
+            設定を確認してください。
           </p>
         </header>
       </article>

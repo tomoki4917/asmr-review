@@ -1,6 +1,11 @@
-# 毎日 日本時間 21:00 に Vercel のデプロイフックを叩き、本番を再ビルドする。
+# 毎日 日本時間 21:05 と 22:00 に Vercel のデプロイフックを叩き、本番を再ビルドする。
 # goLiveAt 通過後の記事公開や静的生成の更新に使う。
-# （日次ビルドで予約投稿の反映などをまとめて拾う）
+#
+# 【なぜビルドが要るか】本番は `output: "export"` の静的サイトで、`goLiveAt` は
+# 「その瞬間の new Date()」と比較される。予約時刻を過ぎても **再ビルド・再デプロイが無ければ
+# 一覧も本文も更新されない**（CMS のようなサーバ予約投稿ではない）。
+# goLive を「その日の最初のビルド」より後ろに置きたいとき、日次を 21:00 ちょうどだと
+# Actions→Vercel の遅延で翌ビルドまで本文が出ないリスクがあるため、21:05 を主とし 22:00 を保険に二重化する。
 #
 # --- 動かないときのチェック（コード側ではなく GitHub / Vercel 設定がほとんど）---
 # 1. Repository secrets に VERCEL_DEPLOY_HOOK_URL（Vercel Deploy Hooks の URL 全文）があるか。
@@ -16,9 +21,11 @@ name: Schedule Vercel deploy
 
 on:
   schedule:
-    # GitHub の cron は UTC のみ。日本時間 21:00 = 当日 UTC 12:00。
-    # 誤例: "10 8 * * *" は UTC 08:10 = JST 17:10 になるので 21 時にはならない。
-    - cron: "0 12 * * *"
+    # GitHub の cron は UTC のみ。JST = UTC+9（日本は夏時間なし）。
+    # 12:05 UTC = JST 21:05 … 当日 21:00 前後の goLiveAt を越えたあとでビルドする。
+    - cron: "5 12 * * *"
+    # 13:00 UTC = JST 22:00 … 上記の失敗・遅延・21:00〜22:00 台の goLive の拾い直し。
+    - cron: "0 13 * * *"
   workflow_dispatch:
 
 # 外部 URL へ POST のみ（GITHUB_TOKEN は未使用）

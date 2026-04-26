@@ -78,9 +78,16 @@ src/content/
 
 このプロジェクトは **`next.config` の `output: "export"`** により、**ビルド時**に Markdown を読み込みます。
 
+### 予約投稿（`goLiveAt`）のしくみ（ここを誤ると「自動で出ない」）
+
+1. **`goLiveAt` はサーバーが時刻を見て切り替える仕組みではない。** `npm run build` が走ったときの **`new Date()`** と `goLiveAt` を比較し、その時点で「まだ早い」レビューは一覧・サイトマップから外れ、詳細は「予約公開」プレースホルダの HTML になる。
+2. **予約時刻を過ぎたあと、必ず本番向けのビルド＋デプロイがもう一度必要。** プッシュだけで昼にビルドしたまま夜に何もしなければ、夜の `goLiveAt` になっても本番は更新されない。
+3. **既定の自動化** … GitHub Actions **Schedule Vercel deploy** が **JST 21:05 と 22:00**（UTC `5 12` / `0 13`）に Vercel の **Deploy Hook** を POST し、その結果として Vercel 上で `next build` が走る想定。**リポジトリの Actions secrets に `VERCEL_DEPLOY_HOOK_URL` が無いとこのジョブは失敗し、予約は一切自動で拾われない。**
+4. **`goLiveAt` をその日の 22:00 より後ろにした記事**は、当日の 2 本の日次ビルドではまだ非表示のままになる。翌日 21:05 以降のビルドで初めて載る（またはその前に手動でデプロイする）。
+
 - **検証用サーバー（`npm run dev` / `npm run start` / `dev:lan` 等）** … `goLiveAt` は**既定で無視**され、**予約日時より前でも一覧・詳細に表示**されます（`npm_lifecycle_event` が `dev` または `start` のとき）。Docker 等で npm が無い場合は **`REVIEW_PREVIEW_SERVER=true`**。本番と同じ除外を試すときは **`REVIEW_RESPECT_GO_LIVE=true`**。
-- **本番の静的ファイル（GitHub Pages 等）** … 記事を追加・変更したら **必ず `npm run build` を実行し、生成物をデプロイ**してください。`prebuild` でアセット同期が走ります。`goLiveAt` は **ビルドを実行した瞬間の時刻**と比較されるため、本番で「ちょうどその分まで」公開したい場合は、その時刻**以降**にデプロイ（日次は **毎日 JST 21:00 前後**の Vercel フック。GitHub の負荷で **数十分遅れる**ことがあります）が必要です。
-- **定期フックが走らない／本番が更新されないとき** … GitHub → **Actions** → **Schedule Vercel deploy** の直近実行が成功しているか確認する。失敗する典型は **`VERCEL_DEPLOY_HOOK_URL` 未設定**、ワークフローが**デフォルトブランチに無い**、リポジトリ長期無操作でスケジュール停止、など。詳細は `.github/workflows/schedule-vercel-deploy.yml` 冒頭のチェックリスト。
+- **本番の静的ファイル（GitHub Pages 等）** … 記事を追加・変更したら **必ず `npm run build` を実行し、生成物をデプロイ**してください。`prebuild` でアセット同期が走ります。`goLiveAt` は **ビルドを実行した瞬間の時刻**と比較されるため、本番で「ちょうどその分まで」公開したい場合は、その時刻**以降**にデプロイする。日次は **JST 21:05・22:00 前後**の Vercel フック（GitHub の負荷で **数分〜十数分遅れる**ことがある）。
+- **定期フックが走らない／本番が更新されないとき** … GitHub → **Actions** → **Schedule Vercel deploy** の直近実行が成功しているか確認する。失敗する典型は **`VERCEL_DEPLOY_HOOK_URL` 未設定**、ワークフローが**デフォルトブランチに無い**、リポジトリ長期無操作でスケジュール停止、Vercel のフックが**別プロジェクト／別ブランチ**を指している、など。詳細は `.github/workflows/schedule-vercel-deploy.yml` 冒頭のチェックリスト。**急ぎなら** Actions で **Run workflow**（手動）を実行するか、Vercel ダッシュボードから **Redeploy** する。
 
 ---
 
