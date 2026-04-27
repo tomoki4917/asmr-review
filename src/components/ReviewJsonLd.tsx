@@ -4,6 +4,62 @@ import { effectiveDisplayPublishedIsoDate } from "@/lib/format-published-at";
 import type { Review } from "@/lib/types";
 import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
 
+/** 購入・解約等の案内（販売元ポリシー。構造化データの returnPolicyUrl 用） */
+const DLSITE_PURCHASE_INFO_URL = "https://www.dlsite.com/contents/purchase/005.html";
+
+/**
+ * 実物配送なしのダウンロード販売（`products.json` は DLsite 税込価格）。
+ * `Product.review` が同グラフ上の `Review` を指すため、`Review` に `itemReviewed` は置かない（重複参照の警告を避ける）。
+ */
+function dlsiteDigitalDownloadOffer(
+  dlsiteProduct: DlsiteProductRecord
+): Record<string, unknown> {
+  const offer: Record<string, unknown> = {
+    "@type": "Offer",
+    url: dlsiteProduct.url,
+    price: dlsiteProduct.current_price,
+    priceCurrency: "JPY",
+    availability: "https://schema.org/InStock",
+    shippingDetails: {
+      "@type": "OfferShippingDetails",
+      shippingRate: {
+        "@type": "MonetaryAmount",
+        value: 0,
+        currency: "JPY",
+      },
+      shippingDestination: {
+        "@type": "DefinedRegion",
+        addressCountry: "JP",
+      },
+      deliveryTime: {
+        "@type": "ShippingDeliveryTime",
+        handlingTime: {
+          "@type": "QuantitativeValue",
+          minValue: 0,
+          maxValue: 0,
+          unitCode: "HUR" as const,
+        },
+        transitTime: {
+          "@type": "QuantitativeValue",
+          minValue: 0,
+          maxValue: 0,
+          unitCode: "HUR" as const,
+        },
+      },
+    },
+    hasMerchantReturnPolicy: {
+      "@type": "MerchantReturnPolicy",
+      applicableCountry: "JP",
+      returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+      returnPolicyUrl: DLSITE_PURCHASE_INFO_URL,
+    },
+  };
+  if (dlsiteProduct.sale_end_iso?.trim()) {
+    offer.priceValidUntil = dlsiteProduct.sale_end_iso.trim();
+  }
+  return offer;
+}
+
 function productAndReviewIds(canonicalUrl: string) {
   const base = canonicalUrl.replace(/#.*$/, "");
   return { productId: `${base}#product`, reviewId: `${base}#review` };
@@ -47,17 +103,8 @@ function buildGraphSchema(
   }
 
   if (dlsiteProduct && dlsiteProduct.current_price > 0) {
-    const offer: Record<string, unknown> = {
-      "@type": "Offer",
-      url: dlsiteProduct.url,
-      price: dlsiteProduct.current_price,
-      priceCurrency: "JPY",
-      availability: "https://schema.org/InStock",
-    };
-    if (dlsiteProduct.sale_end_iso?.trim()) {
-      offer.priceValidUntil = dlsiteProduct.sale_end_iso.trim();
-    }
-    product.offers = offer;
+    product.brand = { "@type": "Brand", name: "DLsite" };
+    product.offers = dlsiteDigitalDownloadOffer(dlsiteProduct);
   }
 
   const reviewNode: Record<string, unknown> = {
@@ -80,7 +127,6 @@ function buildGraphSchema(
       bestRating: best,
       worstRating: 1,
     },
-    itemReviewed: { "@id": productId },
   };
 
   return {
