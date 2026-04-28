@@ -83,6 +83,8 @@ export function ReviewMarkdown({
             const isRecommendedAudience =
               recommendedAudienceHeading && label === "どんな人におすすめか";
             const isWorkImpression = label === "作品感想";
+            const isWorkOverview = label === "作品像";
+            const isPartBreakdown = label === "パート解説";
             if (isWorkImpression && workImpressionAvatar) {
               return (
                 <div className="review-work-impression-head mb-3 mt-10 flex w-full min-w-0 scroll-mt-24 flex-wrap items-center gap-x-2.5 gap-y-2 first:mt-0 sm:gap-x-3">
@@ -109,6 +111,8 @@ export function ReviewMarkdown({
                   isRecommendedAudience ? "mt-0" : "mt-10 first:mt-0"
                 } ${h2Comfort} ${isWorkImpression ? "review-h2--work-impression" : ""} ${
                   isRecommendedAudience ? "review-h2--recommended-audience" : ""
+                } ${isWorkOverview ? "review-h2--work-overview" : ""} ${
+                  isPartBreakdown ? "review-h2--part-breakdown" : ""
                 }`}
               >
                 {children}

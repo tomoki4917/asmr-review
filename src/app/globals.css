@@ -92,13 +92,39 @@ body {
   .review-md li.review-md-axis-li > p.review-md-p > strong:first-of-type,
   .review-md li.review-md-axis-li > strong:first-of-type {
     display: block;
-    font-size: clamp(0.9375rem, 0.22vw + 0.89rem, 1.0625rem);
+    font-size: clamp(0.8125rem, 0.18vw + 0.78rem, 0.95rem);
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.02em;
     color: rgb(224 242 254);
     margin-bottom: 0.4rem;
     padding-bottom: 0.25rem;
     border-bottom: 1px solid rgba(100, 116, 139, 0.5);
+  }
+
+  /**
+   * レビュー本文：`## 作品像` と `## パート解説` の視覚的区別。
+   * 作品像は次の h2 までの段落に左ガイド（散文の塊をほどく）。パート解説は見出しアクセントのみ（引用ブロックが主役）。
+   */
+  .review-md h2.review-h2--work-overview {
+    margin-bottom: 1rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.38);
+  }
+
+  .review-md h2.review-h2--part-breakdown {
+    margin-bottom: 1rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid rgba(45, 212, 191, 0.42);
+  }
+
+  .review-md h2.review-h2--work-overview ~ p.review-md-p {
+    padding-left: 0.65rem;
+    border-left: 2px solid rgba(56, 189, 248, 0.22);
+  }
+
+  .review-md h2.review-h2--work-overview ~ h2 ~ p.review-md-p {
+    padding-left: 0;
+    border-left: none;
   }
 
   /**
