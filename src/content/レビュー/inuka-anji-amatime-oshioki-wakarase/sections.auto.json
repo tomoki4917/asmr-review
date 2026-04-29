@@ -1,0 +1,26 @@
+[
+  {
+    "name": "導入",
+    "start": 0.0,
+    "end": 275.532,
+    "confidence": 0.83
+  },
+  {
+    "name": "深化",
+    "start": 275.532,
+    "end": 652.267,
+    "confidence": 0.76
+  },
+  {
+    "name": "快楽",
+    "start": 652.267,
+    "end": 1691.75,
+    "confidence": 0.79
+  },
+  {
+    "name": "解除",
+    "start": 1691.75,
+    "end": 1856.778,
+    "confidence": 0.9
+  }
+]

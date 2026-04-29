@@ -25,19 +25,19 @@
           "type": "number",
           "minimum": 0,
           "maximum": 10,
-          "description": "トランス度（レーダー・本文と一致）"
+          "description": "トランス度（レーダー・本文と一致）。標準採点では先に決め、快楽・満足と整合させる（docs/レビュー三軸評価定義.md「トランスありき」）"
         },
         "pleasure": {
           "type": "number",
           "minimum": 0,
           "maximum": 10,
-          "description": "快楽度"
+          "description": "快楽度（催眠として提案が届いた前提の報酬設計として読む）"
         },
         "satisfaction": {
           "type": "number",
           "minimum": 0,
           "maximum": 10,
-          "description": "満足度（第三軸。従来のストーリー性等は thirdAxisLabel で表記）"
+          "description": "満足度（催眠体験の着地・約束の回収。第三軸ラベルは thirdAxisLabel）"
         }
       }
     },

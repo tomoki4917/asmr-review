@@ -1,0 +1,60 @@
+{
+  "version": "v0.1-auto",
+  "source": {
+    "waveforms": [
+      "01.初回のご挨拶_waveform.csv",
+      "02.冒頭_waveform.csv",
+      "03.ふにゃふにゃ導入_waveform.csv",
+      "04.なでなで深化_waveform.csv",
+      "05.とろとろオーガズム_waveform.csv",
+      "06.乳首パート_waveform.csv",
+      "07.亀頭パート_waveform.csv",
+      "08.耳責めパート_waveform.csv",
+      "09.解除_waveform.csv"
+    ],
+    "srts": [
+      "01.初回のご挨拶.srt",
+      "02.冒頭.srt",
+      "03.ふにゃふにゃ導入.srt",
+      "04.なでなで深化.srt",
+      "05.とろとろオーガズム.srt",
+      "06.乳首パート.srt",
+      "07.亀頭パート.srt",
+      "08.耳責めパート.srt",
+      "09.解除.srt"
+    ]
+  },
+  "duration_sec": 6032.326,
+  "rms_mean": 0.02352258,
+  "rms_std": 0.02996632,
+  "rms_p95": 0.08481738,
+  "centroid_mean_hz": 3501.625,
+  "centroid_std_hz": 2707.227,
+  "silence_ratio_rms_lt_0_002": 0.3617,
+  "surge_events_per_min_rms_gt_p95": 30.516,
+  "keyword_counts": {
+    "可愛い": 1,
+    "泣": 0,
+    "気持ちいい": 107,
+    "暗示": 1,
+    "解除": 0,
+    "ワン": 0,
+    "行け": 0,
+    "お仕置き": 0
+  },
+  "keyword_density_per_min": {
+    "可愛い": 0.01,
+    "泣": 0.0,
+    "気持ちいい": 1.064,
+    "暗示": 0.01,
+    "解除": 0.0,
+    "ワン": 0.0,
+    "行け": 0.0,
+    "お仕置き": 0.0
+  },
+  "event_counts": {
+    "countdown": 15,
+    "trigger": 32,
+    "release": 1
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "version": "v0.1-auto",
+  "source": {
+    "waveforms": [
+      "犬化暗示BGMつき_waveform.csv"
+    ],
+    "srts": [
+      "犬化暗示BGMつき.srt"
+    ]
+  },
+  "duration_sec": 1856.778,
+  "rms_mean": 0.01083278,
+  "rms_std": 0.01148915,
+  "rms_p95": 0.03470318,
+  "centroid_mean_hz": 2033.072,
+  "centroid_std_hz": 896.395,
+  "silence_ratio_rms_lt_0_002": 0.0787,
+  "surge_events_per_min_rms_gt_p95": 30.052,
+  "keyword_counts": {
+    "可愛い": 19,
+    "泣": 10,
+    "気持ちいい": 5,
+    "暗示": 5,
+    "解除": 3,
+    "ワン": 19,
+    "行け": 11,
+    "お仕置き": 2
+  },
+  "keyword_density_per_min": {
+    "可愛い": 0.614,
+    "泣": 0.323,
+    "気持ちいい": 0.162,
+    "暗示": 0.162,
+    "解除": 0.097,
+    "ワン": 0.614,
+    "行け": 0.355,
+    "お仕置き": 0.065
+  },
+  "event_counts": {
+    "countdown": 5,
+    "trigger": 25,
+    "release": 10
+  }
+}
