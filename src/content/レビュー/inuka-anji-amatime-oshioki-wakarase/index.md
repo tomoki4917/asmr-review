@@ -1,4 +1,4 @@
-﻿---
+---
 slug: inuka-anji-amatime-oshioki-wakarase
 
 title: 【犬化暗示】あまあまタイムだと思ってたらおしおき脳イキで徹底わからせ　レビュー

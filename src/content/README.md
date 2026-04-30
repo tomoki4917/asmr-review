@@ -80,6 +80,18 @@ src/content/
 
 ### 予約投稿（`goLiveAt`）のしくみ（ここを誤ると「自動で出ない」）
 
+#### 既定の予約時刻（エージェント・執筆）
+
+**ユーザーから `goLiveAt` を明示指示されない限り**、新規レビューの予約は次とする。
+
+1. 既存の `src/content/レビュー/**/index.md` で **`goLiveAt` が付いているもの**のうち、**最も遅い `goLiveAt` の暦日（JST）**を「最新予約投稿日」とみなす。
+2. **新規の `goLiveAt`** … **その翌日 12:00 JST**（例: 最新が `2026-05-03T20:00:00+09:00` なら `2026-05-04T12:00:00+09:00`）。
+3. **`publishedAt`** … 原則 **`goLiveAt` と同日**の `YYYY-MM-DD`。
+
+初稿で `goLiveAt` 付きレビューが他に無い場合は、執筆日の翌日 12:00 JST を仮にし、必要なら運用者に確認する。
+
+---
+
 1. **`goLiveAt` はサーバーが時刻を見て切り替える仕組みではない。** `npm run build` が走ったときの **`new Date()`** と `goLiveAt` を比較し、その時点で「まだ早い」レビューは一覧・サイトマップから外れ、詳細は「予約公開」プレースホルダの HTML になる。
 2. **予約時刻を過ぎたあと、必ず本番向けのビルド＋デプロイがもう一度必要。** プッシュだけで昼にビルドしたまま夜に何もしなければ、夜の `goLiveAt` になっても本番は更新されない。
 3. **既定の自動化** … GitHub Actions **Schedule Vercel deploy** が **JST 21:05 と 22:00**（UTC `5 12` / `0 13`）に走り、**Vercel 上で本番ビルド**が立つ想定。**推奨**は Actions secrets に **`VERCEL_TOKEN` + `VERCEL_ORG_ID` + `VERCEL_PROJECT_ID`** を入れ、**Vercel CLI で `deploy --prod`** する方式（Deployments に確実に行が付きやすい）。**代替**として **`VERCEL_DEPLOY_HOOK_URL` のみ**でも可（Deploy Hook の POST）。**どちらも無い**とジョブは失敗し、予約は自動で拾われない。
