@@ -1,8 +1,12 @@
 import type { ReactNode } from "react";
+import { Fragment } from "react";
 import BananaSlug from "github-slugger";
+import type { Components } from "react-markdown";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { MarkdownSafeImage } from "@/components/MarkdownSafeImage";
+import { partitionMarkdownAtWorkImpressionHeadings } from "@/lib/split-review-body";
 
 type Props = {
   markdown: string;
@@ -38,11 +42,295 @@ function isTenOutOfTenRating(text: string): boolean {
   return /^★\s*10\s*[／/]\s*10\s*$/.test(t);
 }
 
-/** 「グラフ評価内訳」の `- **トランス度 8** …` 形式を検出（表示を見出し風にする用） */
+/** 「グラフ評価内訳」の `- **トランス度 8** …` / `- **没入度 8** …` 形式を検出（表示を見出し風にする用） */
 function isReviewAxisScoresListItem(children: ReactNode): boolean {
   const text = nodeToPlainText(children).replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
-  return /^(トランス度|快楽度|満足度)\s*\d+\b/.test(text);
+  return /^(トランス度|快楽度|没入度|刺激度|満足度)\s*\d+\b/.test(text);
 }
+
+/**
+ * パート解説のセリフ一行など。長い分析引用と見分けやすくアクセント表示する。
+ * （「で始まらないセリフ」や **キャラ：**「…」形式も拾う）
+ */
+function isAccentQuoteBlockquote(children: ReactNode): boolean {
+  const raw = nodeToPlainText(children).replace(/\u00a0/g, " ").trim();
+  if (!raw) return false;
+  const softBreaks = (raw.match(/\n\n/g) ?? []).length;
+  if (softBreaks >= 2) return false;
+  if (raw.length > 320) return false;
+  if (/^[「『（【―]/.test(raw)) return true;
+  if (/^\*\*[^*]+\*\*\s*[：:]\s*[「『]/.test(raw)) return true;
+  const lines = raw.split(/\n/).map((l) => l.trim()).filter(Boolean);
+  if (lines.length === 1 && lines[0].length <= 170) return true;
+  if (lines.length === 2 && lines.every((l) => l.length <= 150)) return true;
+  return false;
+}
+
+type BuildOpts = {
+  readingComfort: boolean;
+  starReviewReadingComfort: boolean;
+  articleReading: boolean;
+  workImpressionAvatar?: string;
+  recommendedAudienceHeading: boolean;
+  articleHeadingSlugger: BananaSlug | null;
+  listGap: string;
+  h2Comfort: string;
+  h3Comfort: string;
+  pComfort: string;
+};
+
+function buildMarkdownComponents(o: BuildOpts): Components {
+  const {
+    readingComfort,
+    starReviewReadingComfort,
+    articleReading,
+    workImpressionAvatar,
+    recommendedAudienceHeading,
+    articleHeadingSlugger,
+    listGap,
+    h2Comfort,
+    h3Comfort,
+    pComfort,
+  } = o;
+
+  return {
+    h3: ({ children }) => {
+      const label = nodeToPlainText(children).replace(/\u00a0/g, " ").trim();
+      const isWorkIntroLabel = label === "作品解説と感想";
+      const starTrackH3 =
+        starReviewReadingComfort && !articleReading && !isWorkIntroLabel;
+      return (
+        <h3
+          className={
+            isWorkIntroLabel
+              ? `mb-2 mt-8 scroll-mt-24 text-xl font-semibold tracking-tight text-slate-100 ${h3Comfort} ${starReviewReadingComfort ? "review-h3--work-intro-star" : ""}`
+              : starTrackH3
+                ? `review-h3--star-track mb-2.5 mt-8 scroll-mt-24 text-[1.0625rem] font-medium leading-snug tracking-tight text-slate-200/95 sm:text-lg ${h3Comfort}`
+                : `mb-2 mt-8 scroll-mt-24 text-lg font-semibold tracking-tight text-slate-100 ${h3Comfort}`
+          }
+        >
+          {children}
+        </h3>
+      );
+    },
+    h2: ({ children }) => {
+      const label = nodeToPlainText(children).replace(/\u00a0/g, " ").trim();
+      const isRecommendedAudience =
+        recommendedAudienceHeading && label === "どんな人におすすめか";
+      const isWorkImpression = label === "作品感想";
+      const isWorkOverview = label === "作品像";
+      const isPartBreakdown = label === "パート解説";
+      const articleH2Accent =
+        articleReading &&
+        !isRecommendedAudience &&
+        !isWorkOverview &&
+        !isPartBreakdown &&
+        !isWorkImpression;
+      const articleHeadingId = isRecommendedAudience
+        ? "recommended-audience"
+        : articleHeadingSlugger && label
+          ? articleHeadingSlugger.slug(label)
+          : undefined;
+      if (isWorkImpression && workImpressionAvatar) {
+        return (
+          <div className="review-work-impression-head mb-3 mt-10 flex w-full min-w-0 scroll-mt-24 flex-wrap items-center gap-x-2.5 gap-y-2 first:mt-0 sm:gap-x-3">
+            <h2
+              id={articleHeadingId}
+              className={`mb-0 mt-0 w-auto max-w-full shrink-0 text-xl font-bold leading-tight tracking-tight text-slate-50 ${h2Comfort}`}
+            >
+              {children}
+            </h2>
+            {/* eslint-disable-next-line @next/next/no-img-element -- レビュー同梱の相対パス／任意 URL */}
+            <img
+              src={workImpressionAvatar}
+              alt=""
+              className="h-9 w-9 shrink-0 rounded-full border-2 border-slate-500/55 bg-slate-800/80 object-cover shadow-[0_1px_8px_rgba(0,0,0,0.4)] sm:h-[2.5rem] sm:w-[2.5rem]"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        );
+      }
+      return (
+        <h2
+          id={articleHeadingId}
+          className={`mb-3 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 ${
+            isRecommendedAudience ? "mt-0" : "mt-10 first:mt-0"
+          } ${h2Comfort} ${articleH2Accent ? "article-md-h2 article-md-h2--accent" : ""} ${isWorkImpression ? "review-h2--work-impression" : ""} ${
+            isRecommendedAudience ? "review-h2--recommended-audience" : ""
+          } ${isWorkOverview ? "review-h2--work-overview" : ""} ${
+            isPartBreakdown ? "review-h2--part-breakdown" : ""
+          }`}
+        >
+          {children}
+        </h2>
+      );
+    },
+    p: ({ children }) => {
+      const plain = nodeToPlainText(children).replace(/\u00a0/g, " ").trimStart();
+      const pullSummary =
+        starReviewReadingComfort && /^一言で言えば[:：\uFF1A]/.test(plain);
+      return (
+        <p
+          className={`review-md-p mb-5 leading-[1.75] last:mb-0 ${pComfort} ${articleReading ? "text-slate-200/95" : "text-slate-300"} ${pullSummary ? "review-md-p--pull-summary" : ""}`}
+        >
+          {children}
+        </p>
+      );
+    },
+    ul: ({ children }) => (
+      <ul
+        className={`mb-4 list-disc pl-5 ${listGap} ${articleReading ? "article-md-list text-slate-200/92" : "text-slate-300"}`}
+      >
+        {children}
+      </ul>
+    ),
+    ol: ({ children }) => (
+      <ol
+        className={`mb-4 list-decimal pl-5 ${listGap} ${articleReading ? "article-md-list text-slate-200/92" : "text-slate-300"}`}
+      >
+        {children}
+      </ol>
+    ),
+    li: ({ children }) => {
+      const axisLi = isReviewAxisScoresListItem(children);
+      return (
+        <li
+          className={`${
+            readingComfort ? "leading-relaxed max-sm:leading-[1.68]" : "leading-relaxed"
+          } ${axisLi ? "review-md-axis-li" : ""}`}
+        >
+          {children}
+        </li>
+      );
+    },
+    strong: ({ children }) => {
+      const plain = nodeToPlainText(children);
+      const perfect = isTenOutOfTenRating(plain);
+      return (
+        <strong
+          className={
+            perfect
+              ? "font-semibold text-red-400 drop-shadow-[0_0_14px_rgba(248,113,113,0.4)]"
+              : starReviewReadingComfort
+                ? "font-semibold text-slate-200/95"
+                : "font-semibold text-slate-100"
+          }
+        >
+          {children}
+        </strong>
+      );
+    },
+    em: ({ children }) => <em className="italic text-slate-200">{children}</em>,
+    mark: ({ children }) => (
+      <mark className={starReviewReadingComfort ? "review-md-mark" : undefined}>{children}</mark>
+    ),
+    abbr: ({ title, children }) => (
+      <abbr
+        title={typeof title === "string" ? title : undefined}
+        className={starReviewReadingComfort ? "review-md-abbr" : undefined}
+      >
+        {children}
+      </abbr>
+    ),
+    a: ({ href, children }) => {
+      const h = typeof href === "string" ? href.trim() : "";
+      const isFragment = h.startsWith("#") && h.length > 1 && !h.includes(":");
+      const ok =
+        isFragment ||
+        h.startsWith("https://") ||
+        h.startsWith("http://") ||
+        h.startsWith("/");
+      if (!ok) return <span>{children}</span>;
+      const className =
+        "font-medium text-sky-300 underline decoration-sky-500/40 underline-offset-[3px] transition hover:text-sky-200 hover:decoration-sky-400/60";
+      if (isFragment) {
+        return (
+          <a href={h} className={`${className}${articleReading ? " article-md-anchor" : ""}`}>
+            {children}
+          </a>
+        );
+      }
+      return (
+        <a href={h} className={className} rel="noopener noreferrer" target="_blank">
+          {children}
+        </a>
+      );
+    },
+    img: ({ src, alt }) => (
+      <MarkdownSafeImage src={src} alt={alt ?? ""} variant="body" />
+    ),
+    blockquote: ({ children }) => {
+      const accentQuote =
+        starReviewReadingComfort && !articleReading && isAccentQuoteBlockquote(children);
+      return (
+        <blockquote
+          className={`review-md-bq relative my-6 rounded-xl border py-4 pl-5 pr-4 leading-[1.8] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] [&_p]:mb-3 [&_p:last-child]:mb-0 ${
+            articleReading
+              ? "article-md-bq border border-teal-500/25 border-l-[3px] border-l-teal-400/55 bg-gradient-to-br from-slate-900/95 via-slate-900/85 to-teal-950/20 text-slate-300/95 ring-1 ring-teal-500/15"
+              : "border-slate-600/40 border-l-4 border-l-sky-500/50 bg-slate-800/95 text-slate-400 ring-1 ring-slate-700/45"
+          } ${readingComfort ? "max-sm:my-5 max-sm:pl-4 max-sm:pr-3 max-sm:py-[0.95rem]" : ""} ${accentQuote ? "review-md-bq--accent-quote" : ""}`}
+        >
+          {children}
+        </blockquote>
+      );
+    },
+    hr: () => (
+      <hr
+        className={
+          articleReading
+            ? "article-md-hr my-10 max-sm:my-9"
+            : readingComfort
+              ? "my-8 border-slate-700/60 max-sm:my-8"
+              : "my-8 border-slate-700/60"
+        }
+      />
+    ),
+    table: ({ children }) => (
+      <div
+        className={`my-6 overflow-x-auto rounded-xl border ring-1 ${
+          articleReading
+            ? "article-md-table-wrap border-sky-500/20 bg-slate-950/40 ring-sky-500/10"
+            : "border-slate-600/40 bg-slate-900/35 ring-slate-700/35"
+        } ${readingComfort ? "max-sm:my-5" : ""}`}
+      >
+        <table className="w-full min-w-[16rem] border-collapse text-left text-sm text-slate-300">
+          {children}
+        </table>
+      </div>
+    ),
+    thead: ({ children }) => (
+      <thead
+        className={`border-b ${articleReading ? "border-sky-500/20 bg-sky-500/[0.09]" : "border-slate-600/50 bg-slate-800/55"}`}
+      >
+        {children}
+      </thead>
+    ),
+    tbody: ({ children }) => <tbody className="divide-y divide-slate-700/45">{children}</tbody>,
+    tr: ({ children }) => <tr>{children}</tr>,
+    th: ({ children }) => (
+      <th
+        scope="col"
+        className={`whitespace-nowrap px-3 py-2.5 text-sm font-semibold text-slate-100 sm:px-4 sm:py-3 ${
+          readingComfort ? "max-sm:py-3" : ""
+        }`}
+      >
+        {children}
+      </th>
+    ),
+    td: ({ children }) => (
+      <td
+        className={`px-3 py-2.5 align-top sm:px-4 sm:py-3 ${
+          readingComfort ? "max-sm:py-3 max-sm:leading-relaxed" : ""
+        }`}
+      >
+        {children}
+      </td>
+    ),
+  };
+}
+
+const remarkPlugins = [remarkGfm];
 
 export function ReviewMarkdown({
   markdown,
@@ -52,239 +340,89 @@ export function ReviewMarkdown({
   recommendedAudienceHeading = false,
 }: Props) {
   const readingComfort = articleReading || starReviewReadingComfort;
-  const listGap = readingComfort ? "space-y-2 sm:space-y-1" : "space-y-1";
+  const listGap =
+    starReviewReadingComfort && readingComfort
+      ? "space-y-2.5 sm:space-y-1.5"
+      : readingComfort
+        ? "space-y-2 sm:space-y-1"
+        : "space-y-1";
   const h2Comfort = readingComfort
     ? "max-sm:text-[1.1875rem] max-sm:leading-snug"
     : "";
   const h3Comfort = readingComfort ? "max-sm:text-[1rem]" : "";
-  const pComfort = readingComfort ? "max-sm:mb-5 max-sm:leading-[1.74]" : "";
+  const pComfort =
+    readingComfort && starReviewReadingComfort
+      ? "max-sm:mb-6 max-sm:leading-[1.74]"
+      : readingComfort
+        ? "max-sm:mb-5 max-sm:leading-[1.74]"
+        : "";
 
-  /** 記事の見出しジャンプ（TOC の `#…` と対応）。markdown が変わるたびに採番をリセットする */
   const articleHeadingSlugger = articleReading ? new BananaSlug() : null;
+
+  const normalizedMd = markdown.replace(/\r\n/g, "\n");
+  const segments = starReviewReadingComfort
+    ? partitionMarkdownAtWorkImpressionHeadings(normalizedMd)
+    : [{ kind: "markdown" as const, source: normalizedMd }];
+
+  const components = buildMarkdownComponents({
+    readingComfort,
+    starReviewReadingComfort,
+    articleReading,
+    workImpressionAvatar,
+    recommendedAudienceHeading,
+    articleHeadingSlugger,
+    listGap,
+    h2Comfort,
+    h3Comfort,
+    pComfort,
+  });
+
+  const rehypePlugins = starReviewReadingComfort ? [rehypeRaw] : [];
 
   return (
     <div
-      className={`review-md flow-root min-w-0 max-w-full ${readingComfort ? "review-md--article" : ""} ${articleReading ? "article-md-prose" : ""}`}
+      className={`review-md flow-root min-w-0 max-w-full ${readingComfort ? "review-md--article" : ""} ${articleReading ? "article-md-prose" : ""} ${starReviewReadingComfort ? "review-md--star-review" : ""}`}
     >
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        components={{
-          h3: ({ children }) => {
-            const label = nodeToPlainText(children).replace(/\u00a0/g, " ").trim();
-            const isWorkIntroLabel = label === "作品解説と感想";
-            return (
-              <h3
-                className={
-                  isWorkIntroLabel
-                    ? `mb-2 mt-8 scroll-mt-24 text-xl font-semibold tracking-tight text-slate-100 ${h3Comfort}`
-                    : `mb-2 mt-8 scroll-mt-24 text-lg font-semibold tracking-tight text-slate-100 ${h3Comfort}`
-                }
-              >
-                {children}
-              </h3>
-            );
-          },
-          h2: ({ children }) => {
-            const label = nodeToPlainText(children).replace(/\u00a0/g, " ").trim();
-            const isRecommendedAudience =
-              recommendedAudienceHeading && label === "どんな人におすすめか";
-            const isWorkImpression = label === "作品感想";
-            const isWorkOverview = label === "作品像";
-            const isPartBreakdown = label === "パート解説";
-            const articleH2Accent =
-              articleReading &&
-              !isRecommendedAudience &&
-              !isWorkOverview &&
-              !isPartBreakdown &&
-              !isWorkImpression;
-            const articleHeadingId = isRecommendedAudience
-              ? "recommended-audience"
-              : articleHeadingSlugger && label
-                ? articleHeadingSlugger.slug(label)
-                : undefined;
-            if (isWorkImpression && workImpressionAvatar) {
-              return (
-                <div className="review-work-impression-head mb-3 mt-10 flex w-full min-w-0 scroll-mt-24 flex-wrap items-center gap-x-2.5 gap-y-2 first:mt-0 sm:gap-x-3">
-                  <h2
-                    id={articleHeadingId}
-                    className={`mb-0 mt-0 w-auto max-w-full shrink-0 text-xl font-bold leading-tight tracking-tight text-slate-50 ${h2Comfort}`}
-                  >
-                    {children}
-                  </h2>
-                  {/* eslint-disable-next-line @next/next/no-img-element -- レビュー同梱の相対パス／任意 URL */}
-                  <img
-                    src={workImpressionAvatar}
-                    alt=""
-                    className="h-9 w-9 shrink-0 rounded-full border-2 border-slate-500/55 bg-slate-800/80 object-cover shadow-[0_1px_8px_rgba(0,0,0,0.4)] sm:h-[2.5rem] sm:w-[2.5rem]"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-              );
-            }
-            return (
-              <h2
-                id={articleHeadingId}
-                className={`mb-3 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 ${
-                  isRecommendedAudience ? "mt-0" : "mt-10 first:mt-0"
-                } ${h2Comfort} ${articleH2Accent ? "article-md-h2 article-md-h2--accent" : ""} ${isWorkImpression ? "review-h2--work-impression" : ""} ${
-                  isRecommendedAudience ? "review-h2--recommended-audience" : ""
-                } ${isWorkOverview ? "review-h2--work-overview" : ""} ${
-                  isPartBreakdown ? "review-h2--part-breakdown" : ""
-                }`}
-              >
-                {children}
-              </h2>
-            );
-          },
-          p: ({ children }) => (
-            <p
-              className={`review-md-p mb-5 leading-[1.75] last:mb-0 ${pComfort} ${articleReading ? "text-slate-200/95" : "text-slate-300"}`}
+      {segments.map((seg, idx) => {
+        if (seg.kind === "markdown") {
+          if (!seg.source.trim()) return null;
+          return (
+            <ReactMarkdown
+              key={idx}
+              remarkPlugins={remarkPlugins}
+              {...(rehypePlugins.length > 0 ? { rehypePlugins } : {})}
+              components={components}
             >
-              {children}
-            </p>
-          ),
-          ul: ({ children }) => (
-            <ul
-              className={`mb-4 list-disc pl-5 ${listGap} ${articleReading ? "article-md-list text-slate-200/92" : "text-slate-300"}`}
+              {seg.source}
+            </ReactMarkdown>
+          );
+        }
+        const body = seg.bodyMarkdown;
+        return (
+          <Fragment key={idx}>
+            <ReactMarkdown
+              remarkPlugins={remarkPlugins}
+              {...(rehypePlugins.length > 0 ? { rehypePlugins } : {})}
+              components={components}
             >
-              {children}
-            </ul>
-          ),
-          ol: ({ children }) => (
-            <ol
-              className={`mb-4 list-decimal pl-5 ${listGap} ${articleReading ? "article-md-list text-slate-200/92" : "text-slate-300"}`}
-            >
-              {children}
-            </ol>
-          ),
-          li: ({ children }) => {
-            const axisLi = isReviewAxisScoresListItem(children);
-            return (
-              <li
-                className={`${
-                  readingComfort ? "leading-relaxed max-sm:leading-[1.68]" : "leading-relaxed"
-                } ${axisLi ? "review-md-axis-li" : ""}`}
-              >
-                {children}
-              </li>
-            );
-          },
-          strong: ({ children }) => {
-            const plain = nodeToPlainText(children);
-            const perfect = isTenOutOfTenRating(plain);
-            return (
-              <strong
-                className={
-                  perfect
-                    ? "font-semibold text-red-400 drop-shadow-[0_0_14px_rgba(248,113,113,0.4)]"
-                    : "font-semibold text-slate-100"
-                }
-              >
-                {children}
-              </strong>
-            );
-          },
-          em: ({ children }) => <em className="italic text-slate-200">{children}</em>,
-          a: ({ href, children }) => {
-            const h = typeof href === "string" ? href.trim() : "";
-            const isFragment = h.startsWith("#") && h.length > 1 && !h.includes(":");
-            const ok =
-              isFragment ||
-              h.startsWith("https://") ||
-              h.startsWith("http://") ||
-              h.startsWith("/");
-            if (!ok) return <span>{children}</span>;
-            const className =
-              "font-medium text-sky-300 underline decoration-sky-500/40 underline-offset-[3px] transition hover:text-sky-200 hover:decoration-sky-400/60";
-            if (isFragment) {
-              return (
-                <a href={h} className={`${className}${articleReading ? " article-md-anchor" : ""}`}>
-                  {children}
-                </a>
-              );
-            }
-            return (
-              <a
-                href={h}
-                className={className}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                {children}
-              </a>
-            );
-          },
-          img: ({ src, alt }) => (
-            <MarkdownSafeImage src={src} alt={alt ?? ""} variant="body" />
-          ),
-          blockquote: ({ children }) => (
-            <blockquote
-              className={`review-md-bq relative my-6 rounded-xl border py-4 pl-5 pr-4 leading-[1.8] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] [&_p]:mb-3 [&_p:last-child]:mb-0 ${
-                articleReading
-                  ? "article-md-bq border border-teal-500/25 border-l-[3px] border-l-teal-400/55 bg-gradient-to-br from-slate-900/95 via-slate-900/85 to-teal-950/20 text-slate-300/95 ring-1 ring-teal-500/15"
-                  : "border-slate-600/40 border-l-4 border-l-sky-500/50 bg-slate-800/95 text-slate-400 ring-1 ring-slate-700/45"
-              } ${readingComfort ? "max-sm:my-5 max-sm:pl-4 max-sm:pr-3 max-sm:py-[0.95rem]" : ""}`}
-            >
-              {children}
-            </blockquote>
-          ),
-          hr: () => (
-            <hr
-              className={
-                articleReading
-                  ? "article-md-hr my-10 max-sm:my-9"
-                  : readingComfort
-                    ? "my-8 border-slate-700/60 max-sm:my-8"
-                    : "my-8 border-slate-700/60"
-              }
-            />
-          ),
-          table: ({ children }) => (
+              {seg.headingMarkdown}
+            </ReactMarkdown>
             <div
-              className={`my-6 overflow-x-auto rounded-xl border ring-1 ${
-                articleReading
-                  ? "article-md-table-wrap border-sky-500/20 bg-slate-950/40 ring-sky-500/10"
-                  : "border-slate-600/40 bg-slate-900/35 ring-slate-700/35"
-              } ${readingComfort ? "max-sm:my-5" : ""}`}
+              className={`review-work-impression-panel${body.trim() ? "" : " review-work-impression-panel--empty"}`}
             >
-              <table className="w-full min-w-[16rem] border-collapse text-left text-sm text-slate-300">
-                {children}
-              </table>
+              {body.trim() ? (
+                <ReactMarkdown
+                  remarkPlugins={remarkPlugins}
+                  {...(rehypePlugins.length > 0 ? { rehypePlugins } : {})}
+                  components={components}
+                >
+                  {body}
+                </ReactMarkdown>
+              ) : null}
             </div>
-          ),
-          thead: ({ children }) => (
-            <thead
-              className={`border-b ${articleReading ? "border-sky-500/20 bg-sky-500/[0.09]" : "border-slate-600/50 bg-slate-800/55"}`}
-            >
-              {children}
-            </thead>
-          ),
-          tbody: ({ children }) => <tbody className="divide-y divide-slate-700/45">{children}</tbody>,
-          tr: ({ children }) => <tr>{children}</tr>,
-          th: ({ children }) => (
-            <th
-              scope="col"
-              className={`whitespace-nowrap px-3 py-2.5 text-sm font-semibold text-slate-100 sm:px-4 sm:py-3 ${
-                readingComfort ? "max-sm:py-3" : ""
-              }`}
-            >
-              {children}
-            </th>
-          ),
-          td: ({ children }) => (
-            <td
-              className={`px-3 py-2.5 align-top sm:px-4 sm:py-3 ${
-                readingComfort ? "max-sm:py-3 max-sm:leading-relaxed" : ""
-              }`}
-            >
-              {children}
-            </td>
-          ),
-        }}
-      >
-        {markdown}
-      </ReactMarkdown>
+          </Fragment>
+        );
+      })}
     </div>
   );
 }

@@ -75,7 +75,7 @@ body {
   }
 
   /**
-   * 星レビュー「グラフ評価内訳」の三軸行（`- **トランス度 n** …` 等）。
+   * 星レビュー「グラフ評価内訳」の三軸行（`- **トランス度 n** …` / `- **没入度 n** …` 等）。
    * ReviewMarkdown が `li.review-md-axis-li` を付与。先頭の太字ラベルを小見出し風にする。
    */
   .review-md li.review-md-axis-li {
@@ -99,6 +99,143 @@ body {
     margin-bottom: 0.4rem;
     padding-bottom: 0.25rem;
     border-bottom: 1px solid rgba(100, 116, 139, 0.5);
+  }
+
+  /**
+   * 星付きレビュー（review-md--star-review）：太字密度を下げたうえでの段落リズム・セリフ引用・作品感想パネル。
+   */
+  .review-reading .review-md--star-review li.review-md-axis-li > p.review-md-p + p.review-md-p {
+    margin-top: 0.55rem;
+  }
+
+  .review-reading .review-md--star-review li.review-md-axis-li > p.review-md-p {
+    margin-bottom: 1.05rem;
+  }
+
+  @media (max-width: 639px) {
+    .review-reading .review-md--star-review li.review-md-axis-li > p.review-md-p {
+      margin-bottom: 1.15rem;
+    }
+
+    .review-reading .review-md--star-review h3.review-h3--work-intro-star {
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.12);
+    }
+  }
+
+  .review-reading .review-md--star-review .review-work-impression-panel {
+    margin-top: 0.2rem;
+    margin-bottom: 0.75rem;
+    padding: 1rem 1.15rem 1.2rem;
+    border-radius: 0.95rem;
+    border: 1px solid rgba(100, 116, 139, 0.38);
+    border-left: 3px solid rgba(56, 189, 248, 0.55);
+    background:
+      linear-gradient(168deg, rgba(15, 23, 42, 0.88) 0%, rgba(30, 41, 59, 0.42) 100%);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.045),
+      0 14px 38px -26px rgba(0, 0, 0, 0.65);
+  }
+
+  .review-reading .review-md--star-review .review-work-impression-panel--empty {
+    min-height: 0;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+    opacity: 0.85;
+  }
+
+  .review-reading .review-md--star-review .review-work-impression-panel .review-md-p:first-child {
+    margin-top: 0;
+  }
+
+  .review-reading .review-md--star-review p.review-md-p.review-md-p--pull-summary {
+    margin-top: 0.85rem;
+    margin-bottom: 1.45rem;
+    padding: 0.7rem 0.95rem;
+    border-radius: 0.55rem;
+    background: rgba(56, 189, 248, 0.07);
+    border-left: 3px solid rgba(56, 189, 248, 0.42);
+    font-size: clamp(0.9375rem, 0.22vw + 0.9rem, 1.02rem);
+    font-weight: 500;
+    color: rgb(224 242 254 / 0.95);
+    text-align: start;
+    text-justify: none;
+    line-height: 1.68;
+  }
+
+  .review-reading .review-md--star-review abbr.review-md-abbr[title] {
+    text-decoration: underline dotted rgba(148, 163, 184, 0.5);
+    text-underline-offset: 3px;
+    cursor: help;
+  }
+
+  .review-reading .review-md--star-review mark.review-md-mark {
+    background: linear-gradient(transparent 64%, rgba(250, 204, 21, 0.22) 0);
+    color: inherit;
+    padding: 0 0.06em;
+  }
+
+  /**
+   * 同一段落・軸リスト内で「太字ラッシュ」を抑える：先頭の強調より後続の ** を一段弱める。
+   */
+  .review-reading .review-md--star-review p.review-md-p strong ~ strong,
+  .review-reading .review-md--star-review li.review-md-axis-li strong ~ strong,
+  .review-reading .review-md--star-review li.review-md-axis-li > p.review-md-p > strong:first-of-type ~ strong {
+    font-weight: 500;
+    color: rgb(163 174 196 / 0.88);
+  }
+
+  /** パート見出し（###）：極端な「塗りつぶし太字」を避け、左ガイドだけで区切る */
+  .review-reading .review-md--star-review h3.review-h3--star-track {
+    padding-left: 0.55rem;
+    border-left: 2px solid rgba(56, 189, 248, 0.35);
+    color: rgb(226 232 240 / 0.94);
+  }
+
+  /**
+   * パート解説のセリフ引用：地の文から切り離して読めるよう左バーを太く・トーンを変える。
+   */
+  .review-reading .review-md--star-review blockquote.review-md-bq.review-md-bq--accent-quote {
+    border-left-width: 6px;
+    border-left-color: rgba(45, 212, 191, 0.72);
+    padding-left: 2.45rem;
+    padding-top: 1.35rem;
+    padding-bottom: 1.35rem;
+    background: linear-gradient(
+      118deg,
+      rgba(13, 148, 136, 0.14) 0%,
+      rgba(30, 41, 59, 0.92) 38%,
+      rgba(15, 23, 42, 0.88) 100%
+    );
+    font-size: clamp(1.02rem, 0.28vw + 0.97rem, 1.09rem);
+    letter-spacing: 0.035em;
+    color: rgb(236 254 255 / 0.94);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+      inset 6px 0 0 -1px rgba(45, 212, 191, 0.35);
+  }
+
+  .review-reading .review-md--star-review blockquote.review-md-bq.review-md-bq--accent-quote::before {
+    content: "\201C";
+    font-family: Georgia, "Times New Roman", ui-serif, serif;
+    position: absolute;
+    left: 0.55rem;
+    top: 0.38rem;
+    font-size: 2.95rem;
+    line-height: 1;
+    color: rgba(45, 212, 191, 0.32);
+    pointer-events: none;
+  }
+
+  .review-reading .review-md--star-review h2.review-h2--part-breakdown ~ blockquote.review-md-bq + p.review-md-p {
+    margin-top: 1.35rem;
+  }
+
+  @media (max-width: 639px) {
+    .review-reading .review-md--star-review h2.review-h2--part-breakdown ~ blockquote.review-md-bq + p.review-md-p {
+      margin-top: 1.25rem;
+    }
   }
 
   /**

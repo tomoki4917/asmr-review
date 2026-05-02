@@ -26,7 +26,7 @@ itemDescription: |
 
 authorName: 催眠音声レビュー室
 publishedAt: "2026-05-03"
-goLiveAt: "2026-05-03T20:00:00+09:00"
+goLiveAt: "2026-05-03T08:00:00+09:00"
 
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01033000/RJ01032464_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ01032464.html

@@ -70,6 +70,67 @@ export function splitBeforeAtRecommendedAudience(before: string): {
   return null;
 }
 
+/** `ReviewMarkdown` が「作品感想」本文をパネルで包むときの分割単位 */
+export type MarkdownWorkImpressionSegment =
+  | { kind: "markdown"; source: string }
+  | {
+      kind: "workImpressionPanel";
+      /** `## 作品感想` / `### 作品感想` の1行（末尾改行付き） */
+      headingMarkdown: string;
+      /** 次のレベル2見出し `## ` 手前まで（パネル内にレンダリング） */
+      bodyMarkdown: string;
+    };
+
+/**
+ * `## 作品感想`（または `###`）から次の `## ` 手前までを1ブロックとして切り出す。
+ * HTML でラップすると内部 Markdown がパースされないため、セグメント分割でパネルを挟む。
+ */
+export function partitionMarkdownAtWorkImpressionHeadings(
+  markdown: string
+): MarkdownWorkImpressionSegment[] {
+  const n = markdown.replace(/\r\n/g, "\n");
+  const segments: MarkdownWorkImpressionSegment[] = [];
+  let pos = 0;
+
+  while (pos < n.length) {
+    const rest = n.slice(pos);
+    const headingMatch = rest.match(/(?:^|\n)(#{2,3} 作品感想\s*\n)/);
+    if (!headingMatch || headingMatch.index === undefined) {
+      const tail = n.slice(pos);
+      if (tail.length > 0) {
+        segments.push({ kind: "markdown", source: tail });
+      }
+      break;
+    }
+
+    const idx = headingMatch.index;
+    const prefix = rest.slice(0, idx);
+    if (prefix.length > 0) {
+      segments.push({ kind: "markdown", source: prefix });
+    }
+
+    const headingMarkdown = headingMatch[1];
+    const absHeadingEnd = pos + idx + headingMatch[0].length;
+    const afterHeading = n.slice(absHeadingEnd);
+    const nextH2Match = afterHeading.match(/\n## (?![#])/);
+    const bodyLen =
+      nextH2Match && nextH2Match.index !== undefined
+        ? nextH2Match.index
+        : afterHeading.length;
+    const bodyMarkdown = afterHeading.slice(0, bodyLen).trimEnd();
+
+    segments.push({
+      kind: "workImpressionPanel",
+      headingMarkdown,
+      bodyMarkdown,
+    });
+
+    pos = absHeadingEnd + bodyLen;
+  }
+
+  return segments.length > 0 ? segments : [{ kind: "markdown", source: n }];
+}
+
 export function splitBodyAtFinalRating(
   body: string
 ): { before: string; rating: string; rest: string } | null {
