@@ -60,7 +60,7 @@ export function PsychologyInsightsSection({ beginnerGuides }: Props) {
                           slug={review.slug}
                           priority={i < 2}
                           className="!aspect-[16/10] w-full rounded-none"
-                          imageClassName="h-full w-full object-cover object-center"
+                          imageClassName="h-full w-full object-contain object-center"
                         />
                       </div>
                       <div className="flex min-h-0 min-w-0 flex-1 flex-col px-3 pb-3 pt-2 sm:px-2 sm:pb-3 sm:pt-1.5 md:px-5 md:pb-6 md:pt-3">

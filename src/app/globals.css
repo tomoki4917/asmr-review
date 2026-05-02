@@ -350,6 +350,17 @@ body {
     font-variant-numeric: tabular-nums;
   }
 
+  /**
+   * 第1列が過度に狭くなり、「ドーパミン」「オキシトシン」等が不自然に折り返されるのを防ぐ。
+   * 長文が入る第1列セルは min-width 内で通常どおり折り返す。
+   */
+  .article-reading .article-md-table-wrap table th:first-child,
+  .article-reading .article-md-table-wrap table td:first-child {
+    min-width: 11rem;
+    box-sizing: border-box;
+    word-break: keep-all;
+  }
+
   .article-reading hr.article-md-hr {
     border: none;
     height: 1px;
@@ -366,6 +377,13 @@ body {
   @media (max-width: 639px) {
     .article-reading .article-md-prose ul.article-md-list:has(a.article-md-anchor) {
       padding: 0.85rem 0.95rem 1rem;
+    }
+
+    .article-reading .article-md-table-wrap table th:first-child,
+    .article-reading .article-md-table-wrap table td:first-child {
+      min-width: 9.25rem;
+      font-size: 0.8125rem;
+      line-height: 1.45;
     }
   }
 }

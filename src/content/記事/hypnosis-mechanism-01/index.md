@@ -21,6 +21,8 @@ nextSlug: "nou-iki-toha"
 
 ---
 
+![催眠誘導・感受性・催眠状態・暗示から快楽（脳イキ／ドライオーガズム）までの関係を示す全体図](/content/記事/hypnosis-mechanism-01/diagram-hypnosis-full-flow.png)
+
 ## 概要
 
 - [**1. 核心：批判的吟味機能（CF）の理解**](#1-核心批判的吟味機能cfの理解)
@@ -35,6 +37,8 @@ nextSlug: "nou-iki-toha"
 ---
 
 ## 1. 核心：批判的吟味機能（CF）の理解
+
+![「催眠」を What・How・Do で示した図（How＝批判的吟味機能 CF のバイパス）](/content/記事/hypnosis-mechanism-01/diagram-hypnosis-what-how-do.png)
 
 催眠のプロセスを理解する上で最も重要なのが、**批判的吟味機能（CF：Critical Faculty）**という認知機能です。
 
@@ -92,8 +96,6 @@ CFは、私たちが外部から情報を受け取った際に、それが「現
 | 脳波の遷移 | 音響的な刺激（バイノーラルビート等）を用いて、覚醒状態から深いリラックス状態への移行を促します。 |
 | 混乱 | 短時間に複雑な情報を提示し、論理的な処理を飽和させることで、一時的にCFの働きを緩めます。（別名：コンフュージョン） |
 | ASMR | 至近距離の囁きや定位感を用い、思考を介さず直接的に身体的な反応（ゾクゾク感等）を誘発します。 |
-
-![催眠状態](/content/記事/hypnosis-mechanism-01/diagram-hypnosis-definition.png)
 
 ### ③ 暗示と体感（出力の結果）
 
