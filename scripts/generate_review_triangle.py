@@ -3,8 +3,8 @@
 _分析データ.json を読み、review_triangle.png を出力する。
 各軸は 10.0 満点。
 
-軸配置（上から時計回り）: 12時=トランス度, 4時=快楽度, 8時=第三軸
-第三軸のラベル: JSON の thirdAxisLabel、省略時は「満足度」
+軸配置（上から時計回り）: 12時=第一軸（既定: トランス度）, 4時付近=第二軸（既定: 快楽度）, 8時付近=第三軸
+ラベル: JSON の radarAxisLabels（first / second / third）で上書き可。無ければ thirdAxisLabel（第三軸のみ、省略時「満足度」）。
 """
 from __future__ import annotations
 
@@ -27,7 +27,9 @@ LABEL_COLOR = "#ffffff"
 THETA_CCW = np.array([np.pi / 2, 7 * np.pi / 6, 11 * np.pi / 6, np.pi / 2])
 
 
-def load_scores(json_path: Path) -> tuple[str, float, float, float, str]:
+def load_scores(
+    json_path: Path,
+) -> tuple[str, float, float, float, str, str, str]:
     raw = json_path.read_text(encoding="utf-8")
     data = json.loads(raw)
 
@@ -52,7 +54,15 @@ def load_scores(json_path: Path) -> tuple[str, float, float, float, str]:
     else:
         third_label = "満足度"
 
-    return (work_name, trans, pleasure, satisfaction, third_label)
+    radar = data.get("radarAxisLabels")
+    if isinstance(radar, dict):
+        lab1 = str(radar.get("first") or "").strip() or "トランス度"
+        lab2 = str(radar.get("second") or "").strip() or "快楽度"
+        lab3 = str(radar.get("third") or "").strip() or third_label
+    else:
+        lab1, lab2, lab3 = "トランス度", "快楽度", third_label
+
+    return (work_name, trans, pleasure, satisfaction, lab1, lab2, lab3)
 
 
 def main() -> None:
@@ -69,7 +79,7 @@ def main() -> None:
         )
         sys.exit(1)
 
-    _, trans, body, third, third_label = load_scores(data_path)
+    _, trans, body, third, lab1, lab2, lab3 = load_scores(data_path)
     r_max = 10.0
     trans = float(np.clip(trans, 0.0, r_max))
     body = float(np.clip(body, 0.0, r_max))
@@ -118,9 +128,9 @@ def main() -> None:
 
     # ラベル（12 / 4 / 8 の位置）
     label_specs = [
-        (np.pi / 2, "トランス度", trans),
-        (11 * np.pi / 6, "快楽度", body),
-        (7 * np.pi / 6, third_label, third),
+        (np.pi / 2, lab1, trans),
+        (11 * np.pi / 6, lab2, body),
+        (7 * np.pi / 6, lab3, third),
     ]
     for ang, lab, val in label_specs:
         ax.text(

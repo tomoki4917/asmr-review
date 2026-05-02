@@ -1,4 +1,5 @@
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { MarkdownSafeImage } from "@/components/MarkdownSafeImage";
 
 type Props = {
@@ -12,6 +13,7 @@ export function SummaryMarkdown({ markdown, className = "" }: Props) {
   return (
     <div className={`summary-md text-pretty leading-relaxed text-slate-400 ${className}`}>
       <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
         components={{
           p: ({ children }) => (
             <p className="mb-3 last:mb-0 [&+p]:mt-0">{children}</p>

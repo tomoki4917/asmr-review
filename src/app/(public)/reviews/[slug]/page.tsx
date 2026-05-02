@@ -242,7 +242,9 @@ export default async function ReviewPage({ params }: Props) {
         ) : null}
 
         <header className="mt-5 sm:mt-6">
-          <div className="overflow-hidden rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-lg shadow-slate-950/25 backdrop-blur-sm">
+          <div
+            className={`overflow-hidden rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-lg shadow-slate-950/25 backdrop-blur-sm ${isArticle ? "article-hero-card" : ""}`}
+          >
             {review.coverAffiliateHref ? (
               <a
                 href={review.coverAffiliateHref}
@@ -302,7 +304,7 @@ export default async function ReviewPage({ params }: Props) {
                 {review.tags.map((tag) => (
                   <li
                     key={tag}
-                    className="rounded-lg border border-sky-800/35 bg-sky-950/30 px-3 py-1 text-xs font-semibold text-sky-200/90"
+                    className={`rounded-lg border px-3 py-1 text-xs font-semibold ${isArticle ? "article-tag-pill" : "border-sky-800/35 bg-sky-950/30 text-sky-200/90"}`}
                   >
                     {tag}
                   </li>
@@ -353,7 +355,7 @@ export default async function ReviewPage({ params }: Props) {
         </header>
 
         <section
-          className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${isArticle ? "px-5 py-8 max-sm:py-8" : "px-4 py-7"}`}
+          className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${isArticle ? "article-body-shell px-5 py-8 max-sm:py-8" : "px-4 py-7"}`}
         >
           {!review.body ? (
             <p className="text-slate-500">本文がまだありません。</p>

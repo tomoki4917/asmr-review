@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://asmr-review.local/schemas/review-analysis.v1.schema.json",
-  "title": "催眠音声レビュー — 分析データ（v1）",
+  "title": "レビュー — 分析データ（v1・催眠／同人共通）",
   "type": "object",
   "additionalProperties": false,
   "required": ["schemaVersion", "workName", "scores"],
@@ -25,25 +25,44 @@
           "type": "number",
           "minimum": 0,
           "maximum": 10,
-          "description": "トランス度（レーダー・本文と一致）。標準採点では先に決め、快楽・満足と整合させる（docs/レビュー三軸評価定義.md「トランスありき」）"
+          "description": "催眠: トランス度（レーダー・本文と一致）。同人シチュボイス: 没入度として scores と一致（docs/レビュー三軸評価定義.md は催眠のみ参照）。"
         },
         "pleasure": {
           "type": "number",
           "minimum": 0,
           "maximum": 10,
-          "description": "快楽度（催眠として提案が届いた前提の報酬設計として読む）"
+          "description": "催眠: 快楽度。同人シチュボイス: 刺激度として読む。"
         },
         "satisfaction": {
           "type": "number",
           "minimum": 0,
           "maximum": 10,
-          "description": "満足度（催眠体験の着地・約束の回収。第三軸ラベルは thirdAxisLabel）"
+          "description": "満足度（着地・約束の回収）。第三軸ラベルは thirdAxisLabel または radarAxisLabels.third。"
         }
       }
     },
     "thirdAxisLabel": {
       "type": "string",
-      "description": "第三軸の表示ラベル。省略時は「満足度」。"
+      "description": "第三軸の表示ラベル。省略時は「満足度」。radarAxisLabels.third があるときはそちらが優先。"
+    },
+    "radarAxisLabels": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "review_triangle.png の軸名。省略時は 12時=トランス度, 4時=快楽度, 8時=thirdAxisLabel（または満足度）。同人レビューでは没入度／刺激度／満足度を指定する。",
+      "properties": {
+        "first": {
+          "type": "string",
+          "description": "12時位置のラベル（scores.trance に対応）。既定: トランス度"
+        },
+        "second": {
+          "type": "string",
+          "description": "4時位置のラベル（scores.pleasure に対応）。既定: 快楽度"
+        },
+        "third": {
+          "type": "string",
+          "description": "8時位置のラベル（scores.satisfaction に対応）。既定: thirdAxisLabel または満足度"
+        }
+      }
     },
     "orgasmSummary": {
       "type": "string",

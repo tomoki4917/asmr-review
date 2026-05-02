@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
+import BananaSlug from "github-slugger";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { MarkdownSafeImage } from "@/components/MarkdownSafeImage";
 
 type Props = {
@@ -57,11 +59,15 @@ export function ReviewMarkdown({
   const h3Comfort = readingComfort ? "max-sm:text-[1rem]" : "";
   const pComfort = readingComfort ? "max-sm:mb-5 max-sm:leading-[1.74]" : "";
 
+  /** 記事の見出しジャンプ（TOC の `#…` と対応）。markdown が変わるたびに採番をリセットする */
+  const articleHeadingSlugger = articleReading ? new BananaSlug() : null;
+
   return (
     <div
-      className={`review-md flow-root min-w-0 max-w-full ${readingComfort ? "review-md--article" : ""}`}
+      className={`review-md flow-root min-w-0 max-w-full ${readingComfort ? "review-md--article" : ""} ${articleReading ? "article-md-prose" : ""}`}
     >
       <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
         components={{
           h3: ({ children }) => {
             const label = nodeToPlainText(children).replace(/\u00a0/g, " ").trim();
@@ -85,10 +91,22 @@ export function ReviewMarkdown({
             const isWorkImpression = label === "作品感想";
             const isWorkOverview = label === "作品像";
             const isPartBreakdown = label === "パート解説";
+            const articleH2Accent =
+              articleReading &&
+              !isRecommendedAudience &&
+              !isWorkOverview &&
+              !isPartBreakdown &&
+              !isWorkImpression;
+            const articleHeadingId = isRecommendedAudience
+              ? "recommended-audience"
+              : articleHeadingSlugger && label
+                ? articleHeadingSlugger.slug(label)
+                : undefined;
             if (isWorkImpression && workImpressionAvatar) {
               return (
                 <div className="review-work-impression-head mb-3 mt-10 flex w-full min-w-0 scroll-mt-24 flex-wrap items-center gap-x-2.5 gap-y-2 first:mt-0 sm:gap-x-3">
                   <h2
+                    id={articleHeadingId}
                     className={`mb-0 mt-0 w-auto max-w-full shrink-0 text-xl font-bold leading-tight tracking-tight text-slate-50 ${h2Comfort}`}
                   >
                     {children}
@@ -106,10 +124,10 @@ export function ReviewMarkdown({
             }
             return (
               <h2
-                id={isRecommendedAudience ? "recommended-audience" : undefined}
+                id={articleHeadingId}
                 className={`mb-3 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 ${
                   isRecommendedAudience ? "mt-0" : "mt-10 first:mt-0"
-                } ${h2Comfort} ${isWorkImpression ? "review-h2--work-impression" : ""} ${
+                } ${h2Comfort} ${articleH2Accent ? "article-md-h2 article-md-h2--accent" : ""} ${isWorkImpression ? "review-h2--work-impression" : ""} ${
                   isRecommendedAudience ? "review-h2--recommended-audience" : ""
                 } ${isWorkOverview ? "review-h2--work-overview" : ""} ${
                   isPartBreakdown ? "review-h2--part-breakdown" : ""
@@ -121,18 +139,22 @@ export function ReviewMarkdown({
           },
           p: ({ children }) => (
             <p
-              className={`review-md-p mb-5 leading-[1.75] text-slate-300 last:mb-0 ${pComfort}`}
+              className={`review-md-p mb-5 leading-[1.75] last:mb-0 ${pComfort} ${articleReading ? "text-slate-200/95" : "text-slate-300"}`}
             >
               {children}
             </p>
           ),
           ul: ({ children }) => (
-            <ul className={`mb-4 list-disc pl-5 text-slate-300 ${listGap}`}>
+            <ul
+              className={`mb-4 list-disc pl-5 ${listGap} ${articleReading ? "article-md-list text-slate-200/92" : "text-slate-300"}`}
+            >
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol className={`mb-4 list-decimal pl-5 text-slate-300 ${listGap}`}>
+            <ol
+              className={`mb-4 list-decimal pl-5 ${listGap} ${articleReading ? "article-md-list text-slate-200/92" : "text-slate-300"}`}
+            >
               {children}
             </ol>
           ),
@@ -166,15 +188,26 @@ export function ReviewMarkdown({
           em: ({ children }) => <em className="italic text-slate-200">{children}</em>,
           a: ({ href, children }) => {
             const h = typeof href === "string" ? href.trim() : "";
+            const isFragment = h.startsWith("#") && h.length > 1 && !h.includes(":");
             const ok =
+              isFragment ||
               h.startsWith("https://") ||
               h.startsWith("http://") ||
               h.startsWith("/");
             if (!ok) return <span>{children}</span>;
+            const className =
+              "font-medium text-sky-300 underline decoration-sky-500/40 underline-offset-[3px] transition hover:text-sky-200 hover:decoration-sky-400/60";
+            if (isFragment) {
+              return (
+                <a href={h} className={`${className}${articleReading ? " article-md-anchor" : ""}`}>
+                  {children}
+                </a>
+              );
+            }
             return (
               <a
                 href={h}
-                className="font-medium text-sky-300 underline decoration-sky-500/40 underline-offset-[3px] transition hover:text-sky-200 hover:decoration-sky-400/60"
+                className={className}
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -187,7 +220,11 @@ export function ReviewMarkdown({
           ),
           blockquote: ({ children }) => (
             <blockquote
-              className={`review-md-bq relative my-6 rounded-xl border border-slate-600/40 border-l-4 border-l-sky-500/50 bg-slate-800/95 py-4 pl-5 pr-4 leading-[1.8] text-slate-400 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] ring-1 ring-slate-700/45 [&_p]:mb-3 [&_p:last-child]:mb-0 ${readingComfort ? "max-sm:my-5 max-sm:pl-4 max-sm:pr-3 max-sm:py-[0.95rem]" : ""}`}
+              className={`review-md-bq relative my-6 rounded-xl border py-4 pl-5 pr-4 leading-[1.8] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] [&_p]:mb-3 [&_p:last-child]:mb-0 ${
+                articleReading
+                  ? "article-md-bq border border-teal-500/25 border-l-[3px] border-l-teal-400/55 bg-gradient-to-br from-slate-900/95 via-slate-900/85 to-teal-950/20 text-slate-300/95 ring-1 ring-teal-500/15"
+                  : "border-slate-600/40 border-l-4 border-l-sky-500/50 bg-slate-800/95 text-slate-400 ring-1 ring-slate-700/45"
+              } ${readingComfort ? "max-sm:my-5 max-sm:pl-4 max-sm:pr-3 max-sm:py-[0.95rem]" : ""}`}
             >
               {children}
             </blockquote>
@@ -195,11 +232,54 @@ export function ReviewMarkdown({
           hr: () => (
             <hr
               className={
-                readingComfort
-                  ? "my-8 border-slate-700/60 max-sm:my-8"
-                  : "my-8 border-slate-700/60"
+                articleReading
+                  ? "article-md-hr my-10 max-sm:my-9"
+                  : readingComfort
+                    ? "my-8 border-slate-700/60 max-sm:my-8"
+                    : "my-8 border-slate-700/60"
               }
             />
+          ),
+          table: ({ children }) => (
+            <div
+              className={`my-6 overflow-x-auto rounded-xl border ring-1 ${
+                articleReading
+                  ? "article-md-table-wrap border-sky-500/20 bg-slate-950/40 ring-sky-500/10"
+                  : "border-slate-600/40 bg-slate-900/35 ring-slate-700/35"
+              } ${readingComfort ? "max-sm:my-5" : ""}`}
+            >
+              <table className="w-full min-w-[16rem] border-collapse text-left text-sm text-slate-300">
+                {children}
+              </table>
+            </div>
+          ),
+          thead: ({ children }) => (
+            <thead
+              className={`border-b ${articleReading ? "border-sky-500/20 bg-sky-500/[0.09]" : "border-slate-600/50 bg-slate-800/55"}`}
+            >
+              {children}
+            </thead>
+          ),
+          tbody: ({ children }) => <tbody className="divide-y divide-slate-700/45">{children}</tbody>,
+          tr: ({ children }) => <tr>{children}</tr>,
+          th: ({ children }) => (
+            <th
+              scope="col"
+              className={`whitespace-nowrap px-3 py-2.5 text-sm font-semibold text-slate-100 sm:px-4 sm:py-3 ${
+                readingComfort ? "max-sm:py-3" : ""
+              }`}
+            >
+              {children}
+            </th>
+          ),
+          td: ({ children }) => (
+            <td
+              className={`px-3 py-2.5 align-top sm:px-4 sm:py-3 ${
+                readingComfort ? "max-sm:py-3 max-sm:leading-relaxed" : ""
+              }`}
+            >
+              {children}
+            </td>
           ),
         }}
       >
