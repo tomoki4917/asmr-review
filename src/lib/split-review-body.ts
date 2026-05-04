@@ -70,8 +70,8 @@ export function splitBeforeAtRecommendedAudience(before: string): {
   return null;
 }
 
-/** `ReviewMarkdown` が「作品感想」本文をパネルで包むときの分割単位 */
-export type MarkdownWorkImpressionSegment =
+/** `ReviewMarkdown` がパネル／横スクロールを挟むときの分割単位 */
+export type MarkdownReviewPipeSegment =
   | { kind: "markdown"; source: string }
   | {
       kind: "workImpressionPanel";
@@ -79,7 +79,124 @@ export type MarkdownWorkImpressionSegment =
       headingMarkdown: string;
       /** 次のレベル2見出し `## ` 手前まで（パネル内にレンダリング） */
       bodyMarkdown: string;
+    }
+  | {
+      kind: "workSummaryPanel";
+      /** `## 作品概要` の1行（末尾改行付き） */
+      headingMarkdown: string;
+      /** 次のレベル2見出し `## ` 手前まで（カード分割のもとになる本文） */
+      bodyMarkdown: string;
     };
+
+/** @deprecated `MarkdownReviewPipeSegment` と同義 */
+export type MarkdownWorkImpressionSegment = MarkdownReviewPipeSegment;
+
+/**
+ * `## 作品概要` 直下の本文を `### ` 見出し単位で分割（横スクロールのカード用）。
+ */
+export function splitMarkdownByH3Sections(body: string): string[] {
+  const n = body.replace(/\r\n/g, "\n").trimEnd();
+  if (!n) return [];
+  const parts = n.split(/\n(?=### )/);
+  return parts.map((p) => p.trimEnd()).filter((p) => p.length > 0);
+}
+
+/** `## 作品概要` の横スクロール枠に含めず、直後の通常本文として出す `###`（`\b` は日本語見出しで効かないため使わない） */
+const WORK_SUMMARY_OUTSIDE_PANEL_H3_RES = [/^###\s+視聴時の注意/, /^###\s+作品評価グラフ/];
+
+/**
+ * `### 視聴時の注意` / `### 作品評価グラフ` をパネル外に回し、それ以外を概要パネル本文に残す。
+ */
+export function partitionWorkSummaryPanelBodyAndOutside(bodyMarkdown: string): {
+  panelBodyMarkdown: string;
+  outsideMarkdown: string;
+} {
+  const chunks = splitMarkdownByH3Sections(bodyMarkdown);
+  const inside: string[] = [];
+  const outside: string[] = [];
+  for (const chunk of chunks) {
+    const head = chunk.split("\n")[0]?.trim() ?? "";
+    const isOutside = WORK_SUMMARY_OUTSIDE_PANEL_H3_RES.some((re) => re.test(head));
+    if (isOutside) outside.push(chunk.trimEnd());
+    else inside.push(chunk.trimEnd());
+  }
+  return {
+    panelBodyMarkdown: inside.filter((c) => c.length > 0).join("\n\n"),
+    outsideMarkdown: outside.filter((c) => c.length > 0).join("\n\n"),
+  };
+}
+
+/**
+ * `## 作品概要` から次の `## ` 手前までを切り出し、概要ブロックとしてマークする。
+ */
+export function partitionMarkdownAtWorkSummaryHeadings(
+  markdown: string
+): MarkdownReviewPipeSegment[] {
+  const n = markdown.replace(/\r\n/g, "\n");
+  const segments: MarkdownReviewPipeSegment[] = [];
+  let pos = 0;
+
+  while (pos < n.length) {
+    const rest = n.slice(pos);
+    const headingMatch = rest.match(/(?:^|\n)(## 作品概要\s*\n)/);
+    if (!headingMatch || headingMatch.index === undefined) {
+      const tail = n.slice(pos);
+      if (tail.length > 0) {
+        segments.push({ kind: "markdown", source: tail });
+      }
+      break;
+    }
+
+    const idx = headingMatch.index;
+    const prefix = rest.slice(0, idx);
+    if (prefix.length > 0) {
+      segments.push({ kind: "markdown", source: prefix });
+    }
+
+    const headingMarkdown = headingMatch[1];
+    const absHeadingEnd = pos + idx + headingMatch[0].length;
+    const afterHeading = n.slice(absHeadingEnd);
+    const nextH2Match = afterHeading.match(/\n## (?![#])/);
+    const bodyLen =
+      nextH2Match && nextH2Match.index !== undefined
+        ? nextH2Match.index
+        : afterHeading.length;
+    const bodyMarkdown = afterHeading.slice(0, bodyLen).trimEnd();
+
+    const { panelBodyMarkdown, outsideMarkdown } =
+      partitionWorkSummaryPanelBodyAndOutside(bodyMarkdown);
+
+    segments.push({
+      kind: "workSummaryPanel",
+      headingMarkdown,
+      bodyMarkdown: panelBodyMarkdown,
+    });
+
+    if (outsideMarkdown.trim()) {
+      segments.push({ kind: "markdown", source: outsideMarkdown });
+    }
+
+    pos = absHeadingEnd + bodyLen;
+  }
+
+  return segments.length > 0 ? segments : [{ kind: "markdown", source: n }];
+}
+
+/**
+ * 作品概要パネル → 作品感想パネルの順で適用する（感想ブロックが概要より後ろにある前提）。
+ */
+export function partitionStarReviewMarkdown(markdown: string): MarkdownReviewPipeSegment[] {
+  const impressionChunks = partitionMarkdownAtWorkImpressionHeadings(markdown);
+  const out: MarkdownReviewPipeSegment[] = [];
+  for (const seg of impressionChunks) {
+    if (seg.kind !== "markdown") {
+      out.push(seg);
+      continue;
+    }
+    out.push(...partitionMarkdownAtWorkSummaryHeadings(seg.source));
+  }
+  return out.length > 0 ? out : [{ kind: "markdown", source: markdown.replace(/\r\n/g, "\n") }];
+}
 
 /**
  * `## 作品感想`（または `###`）から次の `## ` 手前までを1ブロックとして切り出す。
@@ -87,9 +204,9 @@ export type MarkdownWorkImpressionSegment =
  */
 export function partitionMarkdownAtWorkImpressionHeadings(
   markdown: string
-): MarkdownWorkImpressionSegment[] {
+): MarkdownReviewPipeSegment[] {
   const n = markdown.replace(/\r\n/g, "\n");
-  const segments: MarkdownWorkImpressionSegment[] = [];
+  const segments: MarkdownReviewPipeSegment[] = [];
   let pos = 0;
 
   while (pos < n.length) {

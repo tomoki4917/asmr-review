@@ -6,7 +6,10 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { MarkdownSafeImage } from "@/components/MarkdownSafeImage";
-import { partitionMarkdownAtWorkImpressionHeadings } from "@/lib/split-review-body";
+import {
+  partitionStarReviewMarkdown,
+  splitMarkdownByH3Sections,
+} from "@/lib/split-review-body";
 
 type Props = {
   markdown: string;
@@ -119,7 +122,7 @@ function buildMarkdownComponents(o: BuildOpts): Components {
         recommendedAudienceHeading && label === "どんな人におすすめか";
       const isWorkImpression = label === "作品感想";
       const isWorkOverview = label === "作品像";
-      const isPartBreakdown = label === "パート解説";
+      const isPartBreakdown = label === "パート解説" || label === "パート別解析";
       const articleH2Accent =
         articleReading &&
         !isRecommendedAudience &&
@@ -361,7 +364,7 @@ export function ReviewMarkdown({
 
   const normalizedMd = markdown.replace(/\r\n/g, "\n");
   const segments = starReviewReadingComfort
-    ? partitionMarkdownAtWorkImpressionHeadings(normalizedMd)
+    ? partitionStarReviewMarkdown(normalizedMd)
     : [{ kind: "markdown" as const, source: normalizedMd }];
 
   const components = buildMarkdownComponents({
@@ -395,6 +398,41 @@ export function ReviewMarkdown({
             >
               {seg.source}
             </ReactMarkdown>
+          );
+        }
+        if (seg.kind === "workSummaryPanel") {
+          const stripChunks = splitMarkdownByH3Sections(seg.bodyMarkdown);
+          return (
+            <Fragment key={idx}>
+              <ReactMarkdown
+                remarkPlugins={remarkPlugins}
+                {...(rehypePlugins.length > 0 ? { rehypePlugins } : {})}
+                components={components}
+              >
+                {seg.headingMarkdown}
+              </ReactMarkdown>
+              {stripChunks.length > 0 ? (
+                <div
+                  className="review-work-summary-strip mb-6 mt-1 min-w-0 sm:mb-7"
+                  role="region"
+                  aria-label="作品概要の内訳（横にスクロール）"
+                >
+                  <div className="review-work-summary-strip__track touch-pan-x">
+                    {stripChunks.map((chunk, j) => (
+                      <div key={j} className="review-work-summary-card">
+                        <ReactMarkdown
+                          remarkPlugins={remarkPlugins}
+                          {...(rehypePlugins.length > 0 ? { rehypePlugins } : {})}
+                          components={components}
+                        >
+                          {chunk}
+                        </ReactMarkdown>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </Fragment>
           );
         }
         const body = seg.bodyMarkdown;

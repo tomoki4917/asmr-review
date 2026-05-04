@@ -463,12 +463,25 @@ export default async function ReviewPage({ params }: Props) {
                       ) : null}
                     </>
                   ) : (
-                    <ReviewMarkdown
-                      markdown={finalRatingSplit.rest}
-                      articleReading={isArticle}
-                      starReviewReadingComfort={!isArticle}
-                      workImpressionAvatar={review.workImpressionAvatar}
-                    />
+                    <>
+                      <ReviewMarkdown
+                        markdown={finalRatingSplit.rest}
+                        articleReading={isArticle}
+                        starReviewReadingComfort={!isArticle}
+                        workImpressionAvatar={review.workImpressionAvatar}
+                      />
+                      {review.affiliateLinks.length > 0 ? (
+                        <div className="mt-8 flex justify-center sm:justify-start">
+                          <AffiliateButton
+                            link={{
+                              ...review.affiliateLinks[0],
+                              label: "購入はこちら",
+                            }}
+                            className="w-full min-h-[3.25rem] sm:w-auto sm:min-w-[14rem]"
+                          />
+                        </div>
+                      ) : null}
+                    </>
                   )}
                 </div>
               ) : null}
