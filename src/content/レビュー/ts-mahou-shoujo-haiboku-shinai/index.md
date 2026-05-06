@@ -1,4 +1,4 @@
-﻿---
+---
 slug: ts-mahou-shoujo-haiboku-shinai
 title: 【レビュー】TS魔法少女は敗北しない【敗北TS催眠音声】
 summary: |

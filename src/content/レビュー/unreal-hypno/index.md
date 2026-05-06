@@ -1,4 +1,4 @@
-﻿---
+---
 slug: unreal-hypno
 title: 【レビュー】アンリアルヒプノ
 summary: |

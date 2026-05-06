@@ -1,4 +1,4 @@
-﻿---
+---
 slug: jinsei-senpai-koi-dorei-mind-control
 title: 【レビュー】人生舐めてる先輩の恋ドレイ化マインドコントロール
 summary: |

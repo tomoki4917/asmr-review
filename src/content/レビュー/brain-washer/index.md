@@ -1,4 +1,4 @@
-﻿---
+---
 slug: brain-washer
 title: 【レビュー】【催○音声】ブレインウォッシャー
 summary: |

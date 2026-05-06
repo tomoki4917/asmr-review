@@ -1,4 +1,4 @@
-﻿---
+---
 slug: tenshi-akuma-souhan-saimin
 title: 【レビュー】天使と悪魔の相反催眠
 summary: |

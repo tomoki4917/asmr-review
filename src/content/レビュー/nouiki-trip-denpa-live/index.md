@@ -1,4 +1,4 @@
-﻿---
+---
 slug: nouiki-trip-denpa-live
 title: 【レビュー】【10周年記念作品】脳イキトリップ電波☆LIVE
 summary: |

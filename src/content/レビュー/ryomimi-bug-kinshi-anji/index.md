@@ -1,4 +1,4 @@
-﻿---
+---
 slug: ryomimi-bug-kinshi-anji
 title: 【レビュー】両耳から脳をバグらせるダメダメ禁止暗示
 summary: |

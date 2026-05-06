@@ -1,4 +1,4 @@
-﻿---
+---
 slug: nohand-shasei-mahou-shoujo-mesuiki
 title: 【レビュー】ノーハンド射精☆魔法少女 ～メスイキは神への叛逆行為～
 summary: |

@@ -1,4 +1,4 @@
-﻿---
+---
 slug: re-limit-marionette
 title: 【レビュー】Re:リミットマリオネット
 summary: |
