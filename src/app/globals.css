@@ -379,6 +379,22 @@ body {
     border-bottom: 1px solid rgba(56, 189, 248, 0.38);
   }
 
+  /** レビュー内の解析ブロック見出し（作品評価グラフ／本作の誘導・暗示解析）を強調 */
+  .review-md h2.review-h2--analysis-block {
+    margin-bottom: 1rem;
+    padding-left: 0.82rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.5rem;
+    border-left: 4px solid rgba(56, 189, 248, 0.95);
+    border-bottom: 2px solid rgba(56, 189, 248, 0.52);
+    background: linear-gradient(90deg, rgba(56, 189, 248, 0.2) 0%, rgba(56, 189, 248, 0.07) 52%, transparent 100%);
+    font-size: clamp(1.28rem, 0.42vw + 1.18rem, 1.52rem);
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    color: rgb(240 249 255);
+    text-shadow: 0 0 28px rgba(56, 189, 248, 0.28);
+  }
+
   .review-md h2.review-h2--part-breakdown {
     margin-bottom: 1rem;
     padding-bottom: 0.35rem;
@@ -547,6 +563,18 @@ body {
     .article-reading .review-md a,
     .review-reading .review-md a {
       text-underline-offset: 4px;
+    }
+
+    /**
+     * レビュー本文の表: 1列目（項目名）が1文字単位で折り返されるのを防ぐ。
+     * 「論理性」「強制力」などの短語は1行維持し、列幅も最低限確保する。
+     */
+    .review-reading .review-md table th:first-child,
+    .review-reading .review-md table td:first-child {
+      min-width: 5.5rem;
+      white-space: nowrap;
+      word-break: keep-all;
+      overflow-wrap: normal;
     }
   }
 

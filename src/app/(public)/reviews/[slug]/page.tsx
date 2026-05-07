@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BananaSlug from "github-slugger";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AffiliateButton, AffiliateButtonGroup } from "@/components/AffiliateButton";
@@ -40,6 +41,19 @@ import { resolveDlsiteAffiliateHref } from "@/lib/resolve-dlsite-affiliate-href"
 import type { AffiliateLink } from "@/lib/types";
 
 type Props = { params: Promise<{ slug: string }> };
+
+function extractH2Headings(markdown: string): Array<{ label: string; id: string }> {
+  const slugger = new BananaSlug();
+  const rows: Array<{ label: string; id: string }> = [];
+  const normalized = markdown.replace(/\r\n/g, "\n");
+  const matches = normalized.matchAll(/^##\s+(.+)$/gm);
+  for (const m of matches) {
+    const label = (m[1] ?? "").trim();
+    if (!label) continue;
+    rows.push({ label, id: slugger.slug(label) });
+  }
+  return rows;
+}
 
 function formatGoLiveForReader(goLiveAt: string): string {
   const s = goLiveAt.trim();
@@ -217,6 +231,12 @@ export default async function ReviewPage({ params }: Props) {
       : null;
   const showAffiliateBesideRating =
     Boolean(finalRatingSplit) && review.affiliateLinks.length > 0;
+  const bodyH2Headings = review.body
+    ? extractH2Headings(review.body).filter(
+        (h) => h.label !== "作品名" && h.label !== "どんな人におすすめか"
+      )
+    : [];
+  const overviewText = review.itemDescription?.trim() ?? "";
 
   return (
     <>
@@ -353,6 +373,48 @@ export default async function ReviewPage({ params }: Props) {
             </div>
           </div>
         </header>
+
+        {!isArticle ? (
+          <section className="mt-6 rounded-2xl border border-slate-600/45 bg-slate-800/45 px-5 py-5 shadow-sm shadow-slate-950/20 sm:mt-7 sm:px-6 sm:py-6">
+            {overviewText ? (
+              <div className="mt-3 text-slate-300">
+                <SummaryMarkdown
+                  markdown={overviewText}
+                  className="text-sm leading-relaxed"
+                />
+              </div>
+            ) : null}
+            {bodyH2Headings.length > 0 ? (
+              <nav
+                className={`${overviewText ? "mt-4 border-t border-slate-700/40 pt-4" : ""}`}
+                aria-label="本文見出し"
+              >
+                <p className="rounded-lg border border-slate-600/70 bg-slate-900/65 px-3 py-2.5 text-base font-bold tracking-wide text-slate-100">
+                  <span className="mr-2 align-middle text-sm font-extrabold uppercase tracking-[0.22em] text-sky-300">
+                    OUTLINE
+                  </span>
+                  <span className="text-slate-200">読みたい項目からご覧いただけます。</span>
+                </p>
+                <ul className="mt-3 space-y-2">
+                  {bodyH2Headings.map((h) => (
+                    <li key={h.id}>
+                      <a
+                        href={`#${h.id}`}
+                        className="group inline-flex min-h-10 items-center gap-2 rounded-md px-2 py-1 text-[0.95rem] font-medium text-slate-200 transition hover:bg-slate-900/40 hover:text-sky-200"
+                      >
+                        <span
+                          aria-hidden
+                          className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange-400 transition group-hover:bg-sky-300"
+                        />
+                        {h.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ) : null}
+          </section>
+        ) : null}
 
         <section
           className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${isArticle ? "article-body-shell px-5 py-8 max-sm:py-8" : "px-4 py-7"}`}

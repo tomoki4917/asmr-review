@@ -121,8 +121,12 @@ function buildMarkdownComponents(o: BuildOpts): Components {
       const isRecommendedAudience =
         recommendedAudienceHeading && label === "どんな人におすすめか";
       const isWorkImpression = label === "作品感想";
-      const isWorkOverview = label === "作品像";
+      const isWorkOverview = label === "作品像" || label === "作品概要";
       const isPartBreakdown = label === "パート解説" || label === "パート別解析";
+      const isInductionAnalysis = label === "本作の誘導・暗示解析";
+      const isReviewGraph = label === "作品評価グラフ";
+      const isSummarySection = label === "まとめ" || label === "解析まとめ";
+      const isStructuralConclusion = label === "総評：本作品の構造的結論";
       const articleH2Accent =
         articleReading &&
         !isRecommendedAudience &&
@@ -163,7 +167,7 @@ function buildMarkdownComponents(o: BuildOpts): Components {
             isRecommendedAudience ? "review-h2--recommended-audience" : ""
           } ${isWorkOverview ? "review-h2--work-overview" : ""} ${
             isPartBreakdown ? "review-h2--part-breakdown" : ""
-          }`}
+          } ${isInductionAnalysis || isReviewGraph || isWorkOverview || isSummarySection || isStructuralConclusion ? "review-h2--analysis-block" : ""}`}
         >
           {children}
         </h2>
@@ -360,7 +364,7 @@ export function ReviewMarkdown({
         ? "max-sm:mb-5 max-sm:leading-[1.74]"
         : "";
 
-  const articleHeadingSlugger = articleReading ? new BananaSlug() : null;
+  const articleHeadingSlugger = new BananaSlug();
 
   const normalizedMd = markdown.replace(/\r\n/g, "\n");
   const segments = starReviewReadingComfort
