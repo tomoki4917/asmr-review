@@ -28,8 +28,8 @@ itemDescription: |
 
 authorName: 同人音声レビュー室
 
-publishedAt: "2026-05-10"
-goLiveAt: "2026-05-10T12:00:00+09:00"
+publishedAt: "2026-05-07"
+goLiveAt: "2026-05-07T12:00:00+09:00"
 
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01607000/RJ01606763_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ01606763.html

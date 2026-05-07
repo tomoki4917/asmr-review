@@ -24,7 +24,7 @@ export function SiteHeader() {
               personal blog
             </span>
             <span className="block truncate text-base font-bold tracking-tight text-slate-50 sm:text-lg">
-              催眠音声レビュー室
+              催眠音声解析室
             </span>
           </span>
         </Link>

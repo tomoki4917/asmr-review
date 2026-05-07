@@ -139,7 +139,7 @@ export default function HomePage() {
           hypnosis · ASMR · psychology
         </p>
         <h1 className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">
-          催眠音声レビュー室
+          催眠音声解析室
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
           同人音声をこれまで1000本以上聴いてきた管理人が、作品を脳科学・心理学の視点からレビューしています。印象や好みだけに頼らず、主観の感想に加えて整理できる客観的なデータや観点も示し、新作が溢れるなかで「どれを選ぶか」迷ったときの按針になればと考えています。

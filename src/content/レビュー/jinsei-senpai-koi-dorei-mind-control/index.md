@@ -17,8 +17,8 @@ itemDescription: |
   注意事項・音集中訓練・ドラマ・本編催眠・解除の五段構成で、恋愛関係と服従暗示を連結する長めの尺作。質問応答と心酔キーワード反復で深度を持続させる設計です。
 
 authorName: 催眠音声レビュー室
-publishedAt: "2026-05-07"
-goLiveAt: "2026-05-07T12:00:00+09:00"
+publishedAt: "2026-05-08"
+goLiveAt: "2026-05-08T12:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01058000/RJ01057134_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ01057134.html
 affiliateLinks:

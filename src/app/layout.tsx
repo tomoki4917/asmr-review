@@ -3,7 +3,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 
-const siteName = "催眠音声レビュー室";
+const siteName = "催眠音声解析室";
 
 const notoSansJp = Noto_Sans_JP({
   subsets: ["latin"],

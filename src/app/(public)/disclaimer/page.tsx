@@ -5,7 +5,7 @@ import { DisclaimerContent } from "@/components/DisclaimerContent";
 export const metadata: Metadata = {
   title: "免責事項",
   description:
-    "催眠音声レビュー室のレビュー内容、健康上の注意、効果保証、外部リンク、アフィリエイトに関する免責です。",
+    "催眠音声解析室のレビュー内容、健康上の注意、効果保証、外部リンク、アフィリエイトに関する免責です。",
 };
 
 export default function DisclaimerPage() {
