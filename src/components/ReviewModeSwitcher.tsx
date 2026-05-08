@@ -9,6 +9,18 @@ type Props = {
   quickAffiliateHref: string;
   quickDiscountLabel: string;
   quickIsOnSale: boolean;
+  quickSampleHref?: string;
+  quickScoreLabel: string;
+  quickOneLine: string;
+  quickInductionType: string;
+  quickVoiceActor: string;
+  quickTempoType: string;
+  quickMajorFetish: string;
+  quickKinkType: string;
+  quickRecommendedLevel: string;
+  quickRecording: string;
+  quickRecommendedFor: string[];
+  quickNotRecommendedFor: string[];
   children: ReactNode;
 };
 
@@ -18,10 +30,26 @@ export function ReviewModeSwitcher({
   quickAffiliateHref,
   quickDiscountLabel,
   quickIsOnSale,
+  quickSampleHref,
+  quickScoreLabel,
+  quickOneLine,
+  quickInductionType,
+  quickVoiceActor,
+  quickTempoType,
+  quickMajorFetish,
+  quickKinkType,
+  quickRecommendedLevel,
+  quickRecording,
+  quickRecommendedFor,
+  quickNotRecommendedFor,
   children,
 }: Props) {
   const [mode, setMode] = useState<"quick" | "detail">("quick");
   const showQuick = mode === "quick";
+  const hasVoiceActor = quickVoiceActor.trim().length > 0 && !/確認中|未設定|不明/.test(quickVoiceActor);
+  const showSampleLink =
+    Boolean(quickSampleHref) &&
+    hasVoiceActor;
 
   return (
     <div className="mt-8 sm:mt-9">
@@ -68,43 +96,58 @@ export function ReviewModeSwitcher({
 
           <div className="mt-4 space-y-2 rounded-xl border border-slate-700/60 bg-slate-950/45 p-3.5 sm:p-4">
             <p className="text-sm font-semibold text-slate-100">
-              <span className="text-amber-300">★</span> 総合スコア：9.0 / 10
+              <span className="text-amber-300">★</span> 総合スコア：{quickScoreLabel}
             </p>
             <p className="text-sm leading-relaxed text-slate-200">
-              一言で： 「先輩後輩ドラマで関係を固め、はい／いいえの質問反復とトリガーで恋ドレイ化へ連れていく約163分のマインドコントロール」
+              一言で： 「{quickOneLine}」
             </p>
           </div>
 
           <div className="mt-5">
             <h3 className="text-base font-bold tracking-tight text-sky-200 sm:text-lg">【スペック表】</h3>
             <ul
-              className="mt-3 list-none space-y-2.5 rounded-xl border border-slate-600/70 bg-gradient-to-br from-slate-950/95 via-slate-900/92 to-slate-950/95 px-3.5 py-3.5 text-sm font-semibold leading-snug text-slate-50 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)] sm:px-4 sm:py-4"
+              className="mt-3 list-none space-y-2 rounded-xl border border-slate-600/70 bg-gradient-to-br from-slate-950/95 via-slate-900/92 to-slate-950/95 px-3 py-3 text-[0.92rem] font-semibold leading-[1.55] text-slate-50 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)] sm:space-y-2.5 sm:px-4 sm:py-4 sm:text-sm sm:leading-snug"
               aria-label="視聴前提の要点"
             >
-              <li className="border-l-[3px] border-slate-500/90 pl-3.5">
-                ・<span className="text-slate-100">誘導タイプ：</span>{" "}
-                <span className="text-slate-50">洗脳系 / 服従・支配系 / 反復刷り込み系</span>
+              <li className="border-l-[3px] border-slate-500/90 pl-3">
+                <span className="text-slate-100">誘導タイプ：</span>{" "}
+                <span className="text-slate-50">{quickInductionType}</span>
               </li>
-              <li className="border-l-[3px] border-slate-500/90 pl-3.5">
-                ・<span className="text-slate-100">声質　　　：</span>{" "}
-                <span className="text-slate-50">お姉さん系 / ウィスパー系</span>
+              {hasVoiceActor ? (
+                <li className="border-l-[3px] border-slate-500/90 pl-3">
+                  <span className="text-slate-100">声優：</span>{" "}
+                  <span className="text-slate-50">{quickVoiceActor}</span>
+                  {showSampleLink ? (
+                    <>
+                      <span className="px-1 text-slate-400">・</span>
+                      <a
+                        href={quickSampleHref}
+                        target="_blank"
+                        rel="nofollow sponsored noopener noreferrer"
+                        className="text-sky-300 underline decoration-sky-500/60 underline-offset-2 transition hover:text-sky-200"
+                      >
+                        音声サンプルはこちら
+                      </a>
+                    </>
+                  ) : null}
+                </li>
+              ) : null}
+              <li className="border-l-[3px] border-slate-500/90 pl-3">
+                <span className="text-slate-100">テンポ：</span>{" "}
+                <span className="text-slate-50">{quickTempoType}</span>
               </li>
-              <li className="border-l-[3px] border-slate-500/90 pl-3.5">
-                ・<span className="text-slate-100">テンポ　　：</span>{" "}
-                <span className="text-slate-50">ややゆっくり / 断続系（間が多い）</span>
+              <li className="border-l-[3px] border-slate-500/90 pl-3">
+                主要フェチ： {quickMajorFetish}
               </li>
-              <li className="border-l-[3px] border-slate-500/90 pl-3.5">
-                ・主要フェチ： 主従関係 / 言葉責め / 耳舐め / 乳首責め / 前立腺責め
+              <li className="border-l-[3px] border-slate-500/90 pl-3">
+                性癖タイプ： {quickKinkType}
               </li>
-              <li className="border-l-[3px] border-slate-500/90 pl-3.5">
-                ・性癖タイプ： M推奨
+              <li className="border-l-[3px] border-slate-500/90 pl-3">
+                おすすめ催眠Lv：{quickRecommendedLevel}
               </li>
-              <li className="border-l-[3px] border-slate-500/90 pl-3.5">
-                ・おすすめ催眠Lv：初中級（中程度トランス＋暗示受容）
-              </li>
-              <li className="border-l-[3px] border-slate-500/90 pl-3.5">
-                ・<span className="text-slate-100">収録時間　：</span>{" "}
-                <span className="text-slate-50">約163分（バイノーラル）</span>
+              <li className="border-l-[3px] border-slate-500/90 pl-3">
+                <span className="text-slate-100">収録時間：</span>{" "}
+                <span className="text-slate-50">{quickRecording}</span>
               </li>
             </ul>
           </div>
@@ -112,17 +155,18 @@ export function ReviewModeSwitcher({
           <div className="mt-6">
             <h3 className="text-base font-bold tracking-tight text-emerald-200 sm:text-lg">【こんな人におすすめ】</h3>
             <ul className="mt-2 space-y-1.5 text-sm leading-relaxed text-slate-200">
-              <li>・「はい／いいえ」だけで思考を放棄したい</li>
-              <li>・長い時間をかけてじっくり堕とされたい</li>
-              <li>・特定の合図で体が反応する感覚（トリガー）を味わいたい</li>
+              {quickRecommendedFor.map((row) => (
+                <li key={row}>・{row}</li>
+              ))}
             </ul>
           </div>
 
           <div className="mt-6">
             <h3 className="text-base font-bold tracking-tight text-rose-200 sm:text-lg">【合わない可能性がある人】</h3>
             <ul className="mt-2 space-y-1.5 text-sm leading-relaxed text-slate-200">
-              <li>・短時間でパッと済ませたい</li>
-              <li>・命令されるのが苦手、対等な関係がいい</li>
+              {quickNotRecommendedFor.map((row) => (
+                <li key={row}>・{row}</li>
+              ))}
             </ul>
           </div>
 

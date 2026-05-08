@@ -380,7 +380,8 @@ body {
   }
 
   /** レビュー内の解析ブロック見出し（作品評価グラフ／本作の誘導・暗示解析）を強調 */
-  .review-md h2.review-h2--analysis-block {
+  .review-md h2.review-h2--analysis-block,
+  .review-reading h2.review-h2--analysis-block {
     margin-bottom: 1rem;
     padding-left: 0.82rem;
     padding-top: 0.2rem;

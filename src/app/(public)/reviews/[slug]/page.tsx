@@ -237,13 +237,137 @@ export default async function ReviewPage({ params }: Props) {
         (h) => h.label !== "作品名" && h.label !== "どんな人におすすめか"
       )
     : [];
-  const overviewText = review.itemDescription?.trim() ?? "";
-  const enableTwoModeReview =
-    review.slug === "jinsei-senpai-koi-dorei-mind-control";
+  const quickGuideBySlug: Record<
+    string,
+    {
+      scoreLabel: string;
+      oneLine: string;
+      inductionType: string;
+      voiceActor: string;
+      tempoType: string;
+      majorFetish: string;
+      kinkType: string;
+      recommendedLevel: string;
+      recording: string;
+      recommendedFor: string[];
+      notRecommendedFor: string[];
+    }
+  > = {
+    "jinsei-senpai-koi-dorei-mind-control": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "先輩後輩ドラマで関係を固め、はい／いいえの質問反復とトリガーで恋ドレイ化へ連れていく約163分のマインドコントロール",
+      inductionType: "洗脳系 / 服従・支配系 / 反復刷り込み系",
+      voiceActor: "野上菜月",
+      tempoType: "ややゆっくり / 断続系（間が多い）",
+      majorFetish: "主従関係 / 言葉責め / 耳舐め / 乳首責め / 前立腺責め",
+      kinkType: "M推奨",
+      recommendedLevel: "初中級（中程度トランス＋暗示受容）",
+      recording: "約163分（バイノーラル）",
+      recommendedFor: [
+        "「はい／いいえ」だけで思考を放棄したい",
+        "長い時間をかけてじっくり堕とされたい",
+        "特定の合図で体が反応する感覚（トリガー）を味わいたい",
+      ],
+      notRecommendedFor: [
+        "短時間でパッと済ませたい",
+        "命令されるのが苦手、対等な関係がいい",
+      ],
+    },
+    "ryomimi-bug-kinshi-anji": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "「行っちゃダメ」の禁止暗示を両耳反復で快感トリガーに反転し、連続ピークから解除まで運ぶ約96分の実験型催眠",
+      inductionType: "洗脳系 / 禁止暗示系 / 反復刷り込み系",
+      voiceActor: "乙倉ゅい / 恋鈴桃歌",
+      tempoType: "ややゆっくり / 断続系（間が多い）",
+      majorFetish: "禁止暗示 / 言葉責め / 脳イキ / 寸止め / 両耳責め",
+      kinkType: "M推奨",
+      recommendedLevel: "初中級（中程度トランス＋暗示受容）",
+      recording: "約96分（バイノーラル）",
+      recommendedFor: [
+        "反復暗示で深まるタイプの方",
+        "禁止暗示の逆説を体験したい方",
+        "長尺で一気に落ちたい方",
+      ],
+      notRecommendedFor: [
+        "癒やし中心で聴きたい方",
+        "高反復語に疲れやすい方",
+      ],
+    },
+    "kyoku-mugen-zekkyou-count-chikuni": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "双子定位と逆カウントを反復し、乳首ドライ連発から脱出・後催眠・覚醒までを一連で処理する約56分のカウント依存型",
+      inductionType: "洗脳系 / 反復刷り込み系 / カウント誘導系",
+      voiceActor: "乙倉ゅい",
+      tempoType: "ややゆっくり / 断続系（間が多い）",
+      majorFetish: "乳首責め / カウント責め / 言葉責め / ドライ絶頂 / 後催眠",
+      kinkType: "M推奨",
+      recommendedLevel: "初中級（中程度トランス＋暗示受容）",
+      recording: "約56分（本編・バイノーラル）",
+      recommendedFor: [
+        "乳首起点でドライ絶頂を深めたい方",
+        "カウント終端で反応が立ち上がる感覚を味わいたい方",
+        "脱出から覚醒まで通し設計で聴きたい方",
+      ],
+      notRecommendedFor: [
+        "短時間で軽く済ませたい方",
+        "後催眠の持ち越し感を避けたい方",
+      ],
+    },
+    "futarigake-saimin-melty-orgasm": {
+      scoreLabel: "10.0 / 10",
+      oneLine:
+        "双子の左右定位と長尺とろとろ誘導で安心と快感を同時注入し、部位別パートから解除まで甘いトーンを維持する約105分",
+      inductionType: "リラックス系 / 快感増幅系 / 反復刷り込み系",
+      voiceActor: "みもりあいの",
+      tempoType: "ゆっくり / 断続系（間が多い）",
+      majorFetish: "双子責め / キス責め / 乳首責め / 亀頭責め / 耳責め",
+      kinkType: "ノーマル〜M向け",
+      recommendedLevel: "初心者（浅いトランス＋暗示受容）",
+      recording: "約105分（バイノーラル）",
+      recommendedFor: [
+        "安心トーンで深く入りたい方",
+        "長尺でとろとろ没入したい方",
+        "解除まで含めて通しで聴きたい方",
+      ],
+      notRecommendedFor: [
+        "短時間で強刺激だけ欲しい方",
+        "ウェット描写を重視する方",
+      ],
+    },
+    "unknown-hypno-daijobu-koe-ni-yudanete": {
+      scoreLabel: "10.0 / 10",
+      oneLine:
+        "環境・呼吸・往復深化を長尺で積み、幸福と快感の波を心象入力として重ねて覚醒まで処理する約110分の深催眠構成",
+      inductionType: "リラックス系 / 深化反復系 / 同一化誘導系",
+      voiceActor: "天知遥",
+      tempoType: "ゆっくり / 断続系（間が多い）",
+      majorFetish: "耳元囁き / 呼吸同期 / 心象快感 / ドライ絶頂 / 深催眠",
+      kinkType: "ノーマル〜M向け",
+      recommendedLevel: "初心者（浅いトランス＋暗示受容）",
+      recording: "約110分（バイノーラル本編）",
+      recommendedFor: [
+        "長尺でじっくり沈みたい方",
+        "安心トーンで深催眠へ入りたい方",
+        "覚醒まで丁寧に戻したい方",
+      ],
+      notRecommendedFor: [
+        "短時間で即刺激を求める方",
+        "強イベント連打を重視する方",
+      ],
+    },
+  };
+  const quickGuideSpec = quickGuideBySlug[review.slug];
+  const enableTwoModeReview = Boolean(quickGuideSpec);
   const quickDiscountLabel = dlsiteProduct?.on_sale
     ? `今なら${dlsiteProduct.discount_rate}%OFF`
     : "価格はページでご確認ください";
   const quickAffiliateHref = resolveDlsiteAffiliateHref(review) ?? "#";
+  const quickSampleHref =
+    review.affiliateLinks.find((link) => /体験版|サンプル/.test(String(link.label ?? "")))?.href ??
+    undefined;
 
   return (
     <>
@@ -388,22 +512,31 @@ export default async function ReviewPage({ params }: Props) {
             quickAffiliateHref={quickAffiliateHref}
             quickDiscountLabel={quickDiscountLabel}
             quickIsOnSale={Boolean(dlsiteProduct?.on_sale)}
+            quickSampleHref={quickSampleHref}
+            quickScoreLabel={quickGuideSpec?.scoreLabel ?? `${review.ratingValue}.0 / ${best}`}
+            quickOneLine={
+              quickGuideSpec?.oneLine ??
+              "作品固有の体験を要点だけで把握できるクイック解析です。"
+            }
+            quickInductionType={quickGuideSpec?.inductionType ?? "分析中"}
+            quickVoiceActor={quickGuideSpec?.voiceActor ?? ""}
+            quickTempoType={quickGuideSpec?.tempoType ?? "分析中"}
+            quickMajorFetish={quickGuideSpec?.majorFetish ?? "分析中"}
+            quickKinkType={quickGuideSpec?.kinkType ?? "ノーマル"}
+            quickRecommendedLevel={quickGuideSpec?.recommendedLevel ?? "初中級（中程度トランス＋暗示受容）"}
+            quickRecording={quickGuideSpec?.recording ?? "収録時間を確認中"}
+            quickRecommendedFor={
+              quickGuideSpec?.recommendedFor ?? ["作品ごとの相性要件を整理中です。"]
+            }
+            quickNotRecommendedFor={
+              quickGuideSpec?.notRecommendedFor ?? ["合わない可能性のある条件を整理中です。"]
+            }
           >
             <>
               {!isArticle ? (
                 <section className="mt-6 rounded-2xl border border-slate-600/45 bg-slate-800/45 px-5 py-5 shadow-sm shadow-slate-950/20 sm:mt-7 sm:px-6 sm:py-6">
-                  {overviewText ? (
-                    <div className="mt-3 text-slate-300">
-                      <SummaryMarkdown
-                        markdown={overviewText}
-                        className="text-sm leading-relaxed"
-                      />
-                    </div>
-                  ) : null}
                   {bodyH2Headings.length > 0 ? (
-                    <div
-                      className={overviewText ? "mt-4 border-t border-slate-700/40 pt-4" : ""}
-                    >
+                    <div>
                       <h2 className="mb-3 inline-flex scroll-mt-24 items-center gap-2 rounded-lg border border-sky-500/35 bg-sky-500/10 px-3 py-2 text-lg font-bold tracking-tight text-sky-100 shadow-[0_0_18px_rgba(56,189,248,0.18)] sm:text-xl">
                         <span
                           aria-hidden
@@ -487,7 +620,7 @@ export default async function ReviewPage({ params }: Props) {
                         <div className="min-w-0 flex-1">
                           <h2
                             id="final-rating-heading"
-                            className="mb-3 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50"
+                            className="review-h2--analysis-block mb-3 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50"
                           >
                             総合評価
                           </h2>
@@ -587,17 +720,9 @@ export default async function ReviewPage({ params }: Props) {
           <>
             {!isArticle ? (
               <section className="mt-6 rounded-2xl border border-slate-600/45 bg-slate-800/45 px-5 py-5 shadow-sm shadow-slate-950/20 sm:mt-7 sm:px-6 sm:py-6">
-                {overviewText ? (
-                  <div className="mt-3 text-slate-300">
-                    <SummaryMarkdown
-                      markdown={overviewText}
-                      className="text-sm leading-relaxed"
-                    />
-                  </div>
-                ) : null}
                 {bodyH2Headings.length > 0 ? (
                   <nav
-                    className={`${overviewText ? "mt-4 border-t border-slate-700/40 pt-4" : ""}`}
+                    className=""
                     aria-label="本文見出し"
                   >
                     <p className="rounded-lg border border-slate-600/70 bg-slate-900/65 px-3 py-2.5 text-base font-bold tracking-wide text-slate-100">
@@ -674,7 +799,7 @@ export default async function ReviewPage({ params }: Props) {
                   <div className="min-w-0 flex-1">
                     <h2
                       id="final-rating-heading"
-                      className="mb-3 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50"
+                      className="review-h2--analysis-block mb-3 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50"
                     >
                       総合評価
                     </h2>

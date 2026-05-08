@@ -19,8 +19,8 @@ itemName: 【極音】秘境の快眠エステサロンへようこそ～清楚�
 itemDescription: |
   古民家サロンの導入施術から耳かき・添い寝へ進み、終盤は蘭ルート（04a）と杏ルート（04b）に分岐する構成です。穏やかな会話の区間と、密着パートの温度差を一本で扱う作品になっています。
 authorName: 同人音声レビュー室
-publishedAt: "2026-05-08"
-goLiveAt: "2026-05-08T12:00:00+09:00"
+publishedAt: "2026-05-09"
+goLiveAt: "2026-05-09T12:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01618000/RJ01617970_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ01617970.html
 affiliateLinks:
