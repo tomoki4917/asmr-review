@@ -243,6 +243,7 @@ export default async function ReviewPage({ params }: Props) {
   const quickDiscountLabel = dlsiteProduct?.on_sale
     ? `今なら${dlsiteProduct.discount_rate}%OFF`
     : "価格はページでご確認ください";
+  const quickAffiliateHref = resolveDlsiteAffiliateHref(review) ?? "#";
 
   return (
     <>
@@ -384,7 +385,7 @@ export default async function ReviewPage({ params }: Props) {
           <ReviewModeSwitcher
             quickTitle="1分で判断！クイック解析"
             detailTitle="しっかり見たい人向け！作品詳細解析"
-            quickAffiliateHref={resolveDlsiteAffiliateHref(review)}
+            quickAffiliateHref={quickAffiliateHref}
             quickDiscountLabel={quickDiscountLabel}
             quickIsOnSale={Boolean(dlsiteProduct?.on_sale)}
           >

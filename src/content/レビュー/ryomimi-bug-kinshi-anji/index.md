@@ -16,7 +16,7 @@ itemName: 両耳から脳をバグらせるダメダメ禁止暗示
 itemDescription: |
   事前レクリエーションで集中条件を整え、禁止語と強制語の衝突を利用して快感を増幅する長めの尺催眠。終盤は射精誘導を回収し、解除で肯定暗示へ切り替える設計です。
 
-authorName: 催眠音声レビュー室
+authorName: 催眠音声解析室
 publishedAt: "2026-05-08"
 goLiveAt: "2026-05-08T12:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01075000/RJ01074483_img_main.jpg
