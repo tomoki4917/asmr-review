@@ -31,7 +31,7 @@ itemName: 作品名（itemReviewed）
 itemDescription: |
   summary と同趣旨の短い説明（構造化データ用）
 
-authorName: 催眠音声レビュー室
+authorName: 催眠音声解析室
 
 publishedAt: "2026-04-18"
 

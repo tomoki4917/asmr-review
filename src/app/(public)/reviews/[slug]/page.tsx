@@ -13,6 +13,7 @@ import { StarRating } from "@/components/StarRating";
 import { ReviewNewBadge } from "@/components/ReviewNewBadge";
 import { ShinsakuBadge } from "@/components/ShinsakuBadge";
 import { DlsitePricePanel } from "@/components/DlsitePricePanel";
+import { ReviewModeSwitcher } from "@/components/ReviewModeSwitcher";
 import { resolveSocialPreviewImage, siteUrl } from "@/lib/og-metadata";
 import { isReviewNewPublication } from "@/lib/review-new-badge";
 import {
@@ -237,6 +238,11 @@ export default async function ReviewPage({ params }: Props) {
       )
     : [];
   const overviewText = review.itemDescription?.trim() ?? "";
+  const enableTwoModeReview =
+    review.slug === "jinsei-senpai-koi-dorei-mind-control";
+  const quickDiscountLabel = dlsiteProduct?.on_sale
+    ? `今なら${dlsiteProduct.discount_rate}%OFF`
+    : "価格はページでご確認ください";
 
   return (
     <>
@@ -374,51 +380,255 @@ export default async function ReviewPage({ params }: Props) {
           </div>
         </header>
 
-        {!isArticle ? (
-          <section className="mt-6 rounded-2xl border border-slate-600/45 bg-slate-800/45 px-5 py-5 shadow-sm shadow-slate-950/20 sm:mt-7 sm:px-6 sm:py-6">
-            {overviewText ? (
-              <div className="mt-3 text-slate-300">
-                <SummaryMarkdown
-                  markdown={overviewText}
-                  className="text-sm leading-relaxed"
-                />
-              </div>
-            ) : null}
-            {bodyH2Headings.length > 0 ? (
-              <nav
-                className={`${overviewText ? "mt-4 border-t border-slate-700/40 pt-4" : ""}`}
-                aria-label="本文見出し"
-              >
-                <p className="rounded-lg border border-slate-600/70 bg-slate-900/65 px-3 py-2.5 text-base font-bold tracking-wide text-slate-100">
-                  <span className="mr-2 align-middle text-sm font-extrabold uppercase tracking-[0.22em] text-sky-300">
-                    OUTLINE
-                  </span>
-                  <span className="text-slate-200">読みたい項目からご覧いただけます。</span>
-                </p>
-                <ul className="mt-3 space-y-2">
-                  {bodyH2Headings.map((h) => (
-                    <li key={h.id}>
-                      <a
-                        href={`#${h.id}`}
-                        className="group inline-flex min-h-10 items-center gap-2 rounded-md px-2 py-1 text-[0.95rem] font-medium text-slate-200 transition hover:bg-slate-900/40 hover:text-sky-200"
-                      >
+        {enableTwoModeReview ? (
+          <ReviewModeSwitcher
+            quickTitle="1分で判断！クイック解析"
+            detailTitle="しっかり見たい人向け！作品詳細解析"
+            quickAffiliateHref={resolveDlsiteAffiliateHref(review)}
+            quickDiscountLabel={quickDiscountLabel}
+            quickIsOnSale={Boolean(dlsiteProduct?.on_sale)}
+          >
+            <>
+              {!isArticle ? (
+                <section className="mt-6 rounded-2xl border border-slate-600/45 bg-slate-800/45 px-5 py-5 shadow-sm shadow-slate-950/20 sm:mt-7 sm:px-6 sm:py-6">
+                  {overviewText ? (
+                    <div className="mt-3 text-slate-300">
+                      <SummaryMarkdown
+                        markdown={overviewText}
+                        className="text-sm leading-relaxed"
+                      />
+                    </div>
+                  ) : null}
+                  {bodyH2Headings.length > 0 ? (
+                    <div
+                      className={overviewText ? "mt-4 border-t border-slate-700/40 pt-4" : ""}
+                    >
+                      <h2 className="mb-3 inline-flex scroll-mt-24 items-center gap-2 rounded-lg border border-sky-500/35 bg-sky-500/10 px-3 py-2 text-lg font-bold tracking-tight text-sky-100 shadow-[0_0_18px_rgba(56,189,248,0.18)] sm:text-xl">
                         <span
                           aria-hidden
-                          className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange-400 transition group-hover:bg-sky-300"
+                          className="inline-block h-2 w-2 rounded-full bg-sky-300 shadow-[0_0_10px_rgba(125,211,252,0.85)]"
                         />
-                        {h.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            ) : null}
-          </section>
-        ) : null}
+                        しっかり見たい人向け！作品詳細解析
+                      </h2>
+                      <nav aria-label="本文見出し">
+                      <p className="rounded-lg border border-slate-600/70 bg-slate-900/65 px-3 py-2.5 text-base font-bold tracking-wide text-slate-100">
+                        <span className="mr-2 align-middle text-sm font-extrabold uppercase tracking-[0.22em] text-sky-300">
+                          OUTLINE
+                        </span>
+                        <span className="text-slate-200">読みたい項目からご覧いただけます。</span>
+                      </p>
+                      <ul className="mt-3 space-y-2">
+                        {bodyH2Headings.map((h) => (
+                          <li key={h.id}>
+                            <a
+                              href={`#${h.id}`}
+                              className="group inline-flex min-h-10 items-center gap-2 rounded-md px-2 py-1 text-[0.95rem] font-medium text-slate-200 transition hover:bg-slate-900/40 hover:text-sky-200"
+                            >
+                              <span
+                                aria-hidden
+                                className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange-400 transition group-hover:bg-sky-300"
+                              />
+                              {h.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                      </nav>
+                    </div>
+                  ) : null}
+                </section>
+              ) : null}
 
-        <section
-          className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${isArticle ? "article-body-shell px-5 py-8 max-sm:py-8" : "px-4 py-7"}`}
-        >
+              <section
+                className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${isArticle ? "article-body-shell px-5 py-8 max-sm:py-8" : "px-4 py-7"}`}
+              >
+                {!review.body ? (
+                  <p className="text-slate-500">本文がまだありません。</p>
+                ) : finalRatingSplit ? (
+                  <>
+                    {recommendedAudienceSplit ? (
+                      <>
+                        {recommendedAudienceSplit.prefix.trim() ? (
+                          <ReviewMarkdown
+                            markdown={recommendedAudienceSplit.prefix}
+                            articleReading={isArticle}
+                            starReviewReadingComfort={!isArticle}
+                            workImpressionAvatar={review.workImpressionAvatar}
+                          />
+                        ) : null}
+                        <div
+                          className={`review-recommended-panel flow-root rounded-2xl border border-sky-500/25 bg-gradient-to-br from-slate-900/90 via-slate-900/75 to-sky-950/25 px-4 py-5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] ring-1 ring-sky-500/10 sm:px-6 sm:py-6 ${
+                            recommendedAudienceSplit.prefix.trim()
+                              ? "mt-8 sm:mt-9"
+                              : ""
+                          }`}
+                          aria-labelledby="recommended-audience"
+                        >
+                          <ReviewMarkdown
+                            markdown={recommendedAudienceSplit.audience}
+                            articleReading={isArticle}
+                            starReviewReadingComfort={!isArticle}
+                            workImpressionAvatar={review.workImpressionAvatar}
+                            recommendedAudienceHeading
+                          />
+                        </div>
+                      </>
+                    ) : finalRatingSplit.before.trim() ? (
+                      <ReviewMarkdown
+                        markdown={finalRatingSplit.before}
+                        articleReading={isArticle}
+                        starReviewReadingComfort={!isArticle}
+                        workImpressionAvatar={review.workImpressionAvatar}
+                      />
+                    ) : null}
+                    <div className="mt-10 border-t border-slate-700/50 pt-8">
+                      <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
+                        <div className="min-w-0 flex-1">
+                          <h2
+                            id="final-rating-heading"
+                            className="mb-3 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50"
+                          >
+                            総合評価
+                          </h2>
+                          <ReviewMarkdown
+                            markdown={ratingParts.core}
+                            articleReading={isArticle}
+                            starReviewReadingComfort={!isArticle}
+                            workImpressionAvatar={review.workImpressionAvatar}
+                          />
+                        </div>
+                        {review.affiliateLinks.length > 0 ? (
+                          <div className="w-full shrink-0 sm:w-auto sm:max-w-[min(100%,20rem)] sm:pt-1">
+                            <AffiliateButtonGroup
+                              links={affiliateLinksBesideRating(review.affiliateLinks)}
+                              className="w-full sm:w-auto"
+                            />
+                          </div>
+                        ) : null}
+                      </div>
+                      {ratingParts.workIntro.trim() ? (
+                        <div className="mt-6 min-w-0 sm:mt-8">
+                          <ReviewMarkdown
+                            markdown={ratingParts.workIntro}
+                            articleReading={isArticle}
+                            starReviewReadingComfort={!isArticle}
+                            workImpressionAvatar={review.workImpressionAvatar}
+                          />
+                        </div>
+                      ) : null}
+                    </div>
+                    {finalRatingSplit.rest.trim() ? (
+                      <div className="mt-10 min-w-0 border-t border-slate-700/50 pt-8">
+                        {restWorkSplit && review.affiliateLinks.length > 0 ? (
+                          <>
+                            <ReviewMarkdown
+                              markdown={restWorkSplit.before}
+                              articleReading={isArticle}
+                              starReviewReadingComfort={!isArticle}
+                              workImpressionAvatar={review.workImpressionAvatar}
+                            />
+                            <div className="mt-8 flex justify-center sm:justify-start">
+                              <AffiliateButton
+                                link={{
+                                  ...review.affiliateLinks[0],
+                                  label: "購入はこちら",
+                                }}
+                                className="w-full min-h-[3.25rem] sm:w-auto sm:min-w-[14rem]"
+                              />
+                            </div>
+                            {restWorkSplit.after.trim() ? (
+                              <div className="mt-10 min-w-0">
+                                <ReviewMarkdown
+                                  markdown={restWorkSplit.after}
+                                  articleReading={isArticle}
+                                  starReviewReadingComfort={!isArticle}
+                                  workImpressionAvatar={review.workImpressionAvatar}
+                                />
+                              </div>
+                            ) : null}
+                          </>
+                        ) : (
+                          <>
+                            <ReviewMarkdown
+                              markdown={finalRatingSplit.rest}
+                              articleReading={isArticle}
+                              starReviewReadingComfort={!isArticle}
+                              workImpressionAvatar={review.workImpressionAvatar}
+                            />
+                            {review.affiliateLinks.length > 0 ? (
+                              <div className="mt-8 flex justify-center sm:justify-start">
+                                <AffiliateButton
+                                  link={{
+                                    ...review.affiliateLinks[0],
+                                    label: "購入はこちら",
+                                  }}
+                                  className="w-full min-h-[3.25rem] sm:w-auto sm:min-w-[14rem]"
+                                />
+                              </div>
+                            ) : null}
+                          </>
+                        )}
+                      </div>
+                    ) : null}
+                  </>
+                ) : (
+                  <ReviewMarkdown
+                    markdown={review.body}
+                    articleReading={isArticle}
+                    starReviewReadingComfort={!isArticle}
+                    workImpressionAvatar={review.workImpressionAvatar}
+                  />
+                )}
+              </section>
+            </>
+          </ReviewModeSwitcher>
+        ) : (
+          <>
+            {!isArticle ? (
+              <section className="mt-6 rounded-2xl border border-slate-600/45 bg-slate-800/45 px-5 py-5 shadow-sm shadow-slate-950/20 sm:mt-7 sm:px-6 sm:py-6">
+                {overviewText ? (
+                  <div className="mt-3 text-slate-300">
+                    <SummaryMarkdown
+                      markdown={overviewText}
+                      className="text-sm leading-relaxed"
+                    />
+                  </div>
+                ) : null}
+                {bodyH2Headings.length > 0 ? (
+                  <nav
+                    className={`${overviewText ? "mt-4 border-t border-slate-700/40 pt-4" : ""}`}
+                    aria-label="本文見出し"
+                  >
+                    <p className="rounded-lg border border-slate-600/70 bg-slate-900/65 px-3 py-2.5 text-base font-bold tracking-wide text-slate-100">
+                      <span className="mr-2 align-middle text-sm font-extrabold uppercase tracking-[0.22em] text-sky-300">
+                        OUTLINE
+                      </span>
+                      <span className="text-slate-200">読みたい項目からご覧いただけます。</span>
+                    </p>
+                    <ul className="mt-3 space-y-2">
+                      {bodyH2Headings.map((h) => (
+                        <li key={h.id}>
+                          <a
+                            href={`#${h.id}`}
+                            className="group inline-flex min-h-10 items-center gap-2 rounded-md px-2 py-1 text-[0.95rem] font-medium text-slate-200 transition hover:bg-slate-900/40 hover:text-sky-200"
+                          >
+                            <span
+                              aria-hidden
+                              className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange-400 transition group-hover:bg-sky-300"
+                            />
+                            {h.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+                ) : null}
+              </section>
+            ) : null}
+
+            <section
+              className={`mt-8 min-w-0 rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-md shadow-slate-950/20 backdrop-blur-sm sm:mt-9 sm:px-8 sm:py-9 ${isArticle ? "article-body-shell px-5 py-8 max-sm:py-8" : "px-4 py-7"}`}
+            >
           {!review.body ? (
             <p className="text-slate-500">本文がまだありません。</p>
           ) : finalRatingSplit ? (
@@ -557,6 +767,8 @@ export default async function ReviewPage({ params }: Props) {
             />
           )}
         </section>
+          </>
+        )}
 
         {nextReview ? <ArticleNextNav next={nextReview} /> : null}
 

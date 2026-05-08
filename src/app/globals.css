@@ -527,15 +527,16 @@ body {
   @media (max-width: 639px) {
     .article-reading .summary-md,
     .review-reading .summary-md {
-      font-size: 0.9375rem;
-      line-height: 1.74;
+      font-size: 1rem;
+      line-height: 1.82;
     }
 
     .article-reading .summary-md p,
     .review-reading .summary-md p {
       text-align: start;
       text-justify: none;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.005em;
+      text-wrap: pretty;
     }
 
     .article-reading .review-md p.review-md-p,
@@ -575,6 +576,50 @@ body {
       white-space: nowrap;
       word-break: keep-all;
       overflow-wrap: normal;
+    }
+
+    /**
+     * レビュー解析テーブル（3列）をスマホで読みやすくする。
+     * 2列目を絞り、3列目（読者が得る体験）に十分な幅を確保する。
+     */
+    .review-reading .review-md table th:nth-child(2),
+    .review-reading .review-md table td:nth-child(2) {
+      min-width: 3.25rem;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .review-reading .review-md table th:nth-child(3),
+    .review-reading .review-md table td:nth-child(3) {
+      min-width: 16rem;
+      white-space: normal;
+      word-break: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .review-reading .review-md table td {
+      font-size: 0.92rem;
+      line-height: 1.72;
+    }
+
+    .review-reading .review-md table th {
+      font-size: 0.86rem;
+      line-height: 1.35;
+    }
+
+    .review-reading .review-md .review-md-table-wrap table {
+      min-width: 26rem;
+    }
+
+    .review-reading .review-md table td:nth-child(3) {
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    .review-mode-quick p,
+    .review-mode-quick li {
+      font-size: 0.95rem;
+      line-height: 1.75;
     }
   }
 

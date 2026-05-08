@@ -167,7 +167,7 @@ function buildMarkdownComponents(o: BuildOpts): Components {
             isRecommendedAudience ? "review-h2--recommended-audience" : ""
           } ${isWorkOverview ? "review-h2--work-overview" : ""} ${
             isPartBreakdown ? "review-h2--part-breakdown" : ""
-          } ${isInductionAnalysis || isReviewGraph || isWorkOverview || isSummarySection || isStructuralConclusion ? "review-h2--analysis-block" : ""}`}
+          } ${isInductionAnalysis || isReviewGraph || isWorkOverview || isPartBreakdown || isSummarySection || isStructuralConclusion ? "review-h2--analysis-block" : ""}`}
         >
           {children}
         </h2>
@@ -295,7 +295,7 @@ function buildMarkdownComponents(o: BuildOpts): Components {
     ),
     table: ({ children }) => (
       <div
-        className={`my-6 overflow-x-auto rounded-xl border ring-1 ${
+        className={`review-md-table-wrap my-6 overflow-x-auto rounded-xl border ring-1 ${
           articleReading
             ? "article-md-table-wrap border-sky-500/20 bg-slate-950/40 ring-sky-500/10"
             : "border-slate-600/40 bg-slate-900/35 ring-slate-700/35"
