@@ -1,0 +1,14 @@
+{
+  "version": "v0.1-srt-sum",
+  "source": {
+    "srts": [
+      "analysis/01_導入パート.srt",
+      "analysis/02_催眠パート.srt",
+      "analysis/03_深化パート.srt",
+      "analysis/04_エロパート.srt",
+      "analysis/05_解除パート.srt"
+    ]
+  },
+  "duration_sec": 5314.271,
+  "analysis_note": "各 SRT 最終キュー終端の秒合算。同梱 info.txt の本編合計 1:28:48（5328s）およびパート表記の分秒和（5326s）とは数秒〜十四秒差（無音・境界・表記丸めの範囲）。"
+}

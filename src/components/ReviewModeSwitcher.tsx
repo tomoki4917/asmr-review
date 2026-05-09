@@ -11,6 +11,7 @@ type Props = {
   quickIsOnSale: boolean;
   quickSampleHref?: string;
   quickScoreLabel: string;
+  quickDryWetCounts?: string;
   quickOneLine: string;
   quickInductionType: string;
   quickVoiceActor: string;
@@ -32,6 +33,7 @@ export function ReviewModeSwitcher({
   quickIsOnSale,
   quickSampleHref,
   quickScoreLabel,
+  quickDryWetCounts,
   quickOneLine,
   quickInductionType,
   quickVoiceActor,
@@ -98,6 +100,9 @@ export function ReviewModeSwitcher({
             <p className="text-sm font-semibold text-slate-100">
               <span className="text-amber-300">★</span> 総合スコア：{quickScoreLabel}
             </p>
+            {quickDryWetCounts ? (
+              <p className="text-sm font-semibold text-slate-200">{quickDryWetCounts}</p>
+            ) : null}
             <p className="text-sm leading-relaxed text-slate-200">
               一言で： 「{quickOneLine}」
             </p>

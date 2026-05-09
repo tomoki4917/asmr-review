@@ -1,0 +1,15 @@
+{
+  "version": "v0.1-srt-sum",
+  "source": {
+    "srts": [
+      "analysis/01.注意事項.srt",
+      "analysis/02.催眠に慣れていない人向けの補助誘導.srt",
+      "analysis/03.深く音を感じるためのレクリエーション.srt",
+      "analysis/04.事前説明.srt",
+      "analysis/05.脳イキトリップ電波☆LIVE_通常Ver.srt",
+      "analysis/06.解除.srt"
+    ]
+  },
+  "duration_sec": 8469.78,
+  "analysis_note": "各 SRT 最終キュー終端の秒合算（01〜06）。販売ページの総再生時間「約2時間22分」（8520秒）とは約50秒差（無音・端処理・表記丸めの範囲）。合算秒は約2時間21分10秒。"
+}
