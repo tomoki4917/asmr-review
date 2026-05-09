@@ -347,7 +347,7 @@ export default async function ReviewPage({ params }: Props) {
       tempoType: "ゆっくり / 断続系（間が多い）",
       majorFetish: "双子責め / キス責め / 乳首責め / 亀頭責め / 耳責め",
       kinkType: "ノーマル〜M向け",
-      recommendedLevel: "初心者（浅いトランス＋暗示受容）",
+      recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
       recording: "約1時間45分（01〜09・パッケージ表記／バイノーラル）",
       recommendedFor: [
         "安心トーンで深く入りたい方",
@@ -368,12 +368,12 @@ export default async function ReviewPage({ params }: Props) {
       tempoType: "ゆっくり / 断続系（間が多い）",
       majorFetish: "耳元囁き / 呼吸同期 / 心象快感 / ドライ絶頂 / 深催眠",
       kinkType: "ノーマル〜M向け",
-      recommendedLevel: "初心者（浅いトランス＋暗示受容）",
+      recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
       recording: "約1時間49分49秒（01〜06・字幕終端／バイノーラル本編）",
       recommendedFor: [
-        "長尺でじっくり沈みたい方",
-        "安心トーンで深催眠へ入りたい方",
-        "長尺のあとも段階的に身体感覚を戻したい方",
+        "浅覚醒を挟む往復深化で深く沈みたい方",
+        "「私はあなたの無意識」という同一化語りが刺さる方",
+        "安眠分岐とR18本線を使い分けて聴きたい方",
       ],
       notRecommendedFor: [
         "短時間で即刺激を求める方",
@@ -410,7 +410,7 @@ export default async function ReviewPage({ params }: Props) {
       tempoType: "ややゆっくり / 断続系（間が多い）",
       majorFetish: "耳舐め / 囁き / 好意暗示 / ドライ絶頂 / ASMR催眠",
       kinkType: "ノーマル〜M向け",
-      recommendedLevel: "初心者（浅いトランス＋暗示受容）",
+      recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
       recording: "約32分02秒（01+02・字幕終端／バイノーラル）",
       recommendedFor: [
         "短尺で深く落ちたい方",
@@ -431,7 +431,7 @@ export default async function ReviewPage({ params }: Props) {
       tempoType: "ややゆっくり / 断続系（間が多い）",
       majorFetish: "ナデナデ / ハグ / 幸福暗示 / 背徳シチュ / ドライ絶頂",
       kinkType: "ノーマル〜M向け",
-      recommendedLevel: "初心者（浅いトランス＋暗示受容）",
+      recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
       recording: "約50分〜約110分（構成分岐／バイノーラル）",
       recommendedFor: [
         "幸福感で落ちたい方",
@@ -557,7 +557,7 @@ export default async function ReviewPage({ params }: Props) {
       tempoType: "ややゆっくり / 断続〜連続（終盤高密度）",
       majorFetish: "双子掛け合い / 褒め暗示 / 耳刺激 / 幸福ドライ / 愛語反復",
       kinkType: "ノーマル〜M向け",
-      recommendedLevel: "初心者（浅いトランス＋暗示受容）",
+      recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
       recording: "約1時間40分43秒（7トラック・字幕終端）",
       recommendedFor: [
         "左右の掛け合いで没入したい方",
@@ -588,6 +588,27 @@ export default async function ReviewPage({ params }: Props) {
       notRecommendedFor: [
         "短尺で済ませたい方",
         "回避不能感が苦手な方",
+      ],
+    },
+    "mayoigo-saimin-hypno-multi-rape": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "単独導入から多声展開へ段階移行し、予言カウントと耳舐め反復で先読み反応を連続回収する約64分+差分のヒプノマルチ構成",
+      inductionType: "反復刷り込み系 / カウント誘導系 / 多声展開系",
+      voiceActor: "沢野ぽぷら",
+      tempoType: "ややゆっくり / 断続〜連続（終盤高密度）",
+      majorFetish: "多声囁き / 耳舐め / 連続絶頂 / 予言カウント / ドライオーガズム",
+      kinkType: "M向け",
+      recommendedLevel: "初中級（中程度トランス＋暗示受容が可能）以上の方",
+      recording: "約64分（本編）+エンドレス差分（バイノーラル）",
+      recommendedFor: [
+        "予告カウントを聞いた瞬間に反応が走る感覚を深めたい方",
+        "単独導入から多声圧へ切り替わる展開を楽しみたい方",
+        "耳舐め反復で連続回収を長めに運用したい方",
+      ],
+      notRecommendedFor: [
+        "穏やかな単声催眠だけを求める方",
+        "差分運用なしで短時間完結を重視する方",
       ],
     },
     "unreal-hypno": {
@@ -882,6 +903,27 @@ export default async function ReviewPage({ params }: Props) {
       notRecommendedFor: [
         "上下固定・無力化が苦手な方",
         "反復単調さを避けたい方",
+      ],
+    },
+    "miraiyochi-zeccho-countdown": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "未来予知の宣言と絶頂カウントを合図化し、先読み反応を快感増幅へ転換して連続ピークへ運ぶ約198分の二本立て催眠",
+      inductionType: "予言トリガー系 / カウント誘導系 / 関係固定系",
+      voiceActor: "陽向葵ゅか / みたかりん",
+      tempoType: "中速 / 断続〜連続（後半反復密度高め）",
+      majorFetish: "未来予知暗示 / 絶頂カウント / 教祖・崇拝 / キス責め / 脳イキ",
+      kinkType: "M向け",
+      recommendedLevel: "初中級（中程度トランス＋暗示受容が可能）以上の方",
+      recording: "kuroko.版 約104分 / サイミー版 約94分",
+      recommendedFor: [
+        "予言カウントで反応を引き出されたい方",
+        "先読みしてしまう感覚ごと快感にしたい方",
+        "同コンセプトの別運用を聴き比べたい方",
+      ],
+      notRecommendedFor: [
+        "穏やかな癒やしだけを求める方",
+        "主従・崇拝の関係語が苦手な方",
       ],
     },
   };
