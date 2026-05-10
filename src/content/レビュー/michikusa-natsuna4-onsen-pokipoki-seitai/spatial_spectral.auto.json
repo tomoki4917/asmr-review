@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "hop_sec": 0.1,
+  "source_dir": "C:\\Users\\tomok\\Desktop\\解析後\\投稿完了【同人】\\【ポキポキ整体】道草屋-なつな4- 足湯、温泉、ポキポキ按摩！【貸し切り温泉】",
+  "tracks": [
+    {
+      "file": "1残業上がりの足湯さん.mp3",
+      "duration_sec": 3209.879,
+      "mono": false,
+      "hop_sec": 0.1,
+      "frames": 32099,
+      "pan_linear_mean": 0.1278824806213379,
+      "pan_linear_std": 0.3608958125114441,
+      "pan_linear_mean_abs": 0.287964403629303,
+      "centroid_hz_mean": 6680.0818969224565,
+      "centroid_hz_std": 2027.4585326897254,
+      "hf_ratio_ge_4khz_mean": 0.6640950441360474,
+      "hf_ratio_ge_4khz_std": 0.2035784125328064
+    },
+    {
+      "file": "2温泉貸切流しっ子.mp3",
+      "duration_sec": 2247.711,
+      "mono": false,
+      "hop_sec": 0.1,
+      "frames": 22478,
+      "pan_linear_mean": -0.09900220483541489,
+      "pan_linear_std": 0.3024485409259796,
+      "pan_linear_mean_abs": 0.19821195304393768,
+      "centroid_hz_mean": 6314.4294926324965,
+      "centroid_hz_std": 2056.6726933658165,
+      "hf_ratio_ge_4khz_mean": 0.6259421706199646,
+      "hf_ratio_ge_4khz_std": 0.20727725327014923
+    },
+    {
+      "file": "3ポキポキ按摩とクシュクシュ歯磨き.mp3",
+      "duration_sec": 3585.519,
+      "mono": false,
+      "hop_sec": 0.1,
+      "frames": 35856,
+      "pan_linear_mean": 0.008565329015254974,
+      "pan_linear_std": 0.36445000767707825,
+      "pan_linear_mean_abs": 0.2821997404098511,
+      "centroid_hz_mean": 5770.32032726836,
+      "centroid_hz_std": 1962.2445391654287,
+      "hf_ratio_ge_4khz_mean": 0.6102067828178406,
+      "hf_ratio_ge_4khz_std": 0.2286107838153839
+    }
+  ],
+  "aggregate": {
+    "tracks_n": 3,
+    "total_duration_sec": 9043.109,
+    "pan_linear_mean_abs_mean": 0.25612537,
+    "pan_linear_std_mean": 0.34259812,
+    "centroid_hz_mean_of_track_means": 6254.94390561,
+    "hf_ratio_ge_4khz_mean_of_track_means": 0.63341467,
+    "centroid_hz_std_pooled": 39.472928
+  },
+  "usage_note": "定位の材料: pan_linear_mean_abs / pan_linear_std が大きいほど左右差の揺れが多い傾向。質感の材料: centroid と hf_ratio_ge_4khz は囁き断定ではなく、高域・息成分の相対量の目安。"
+}

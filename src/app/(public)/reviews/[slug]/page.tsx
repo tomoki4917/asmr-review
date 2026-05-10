@@ -72,11 +72,9 @@ function formatGoLiveForReader(goLiveAt: string): string {
   });
 }
 
-/** 文頭サマリー横。先頭リンクのラベルを作品ページ導線に統一 */
+/** 文頭サマリー横。フロントマターのラベルをそのまま表示する */
 function affiliateLinksHeader(links: AffiliateLink[]): AffiliateLink[] {
-  return links.map((l, i) =>
-    i === 0 ? { ...l, label: "作品ページはこちら" } : l
-  );
+  return links;
 }
 
 /** 「総合評価」横ボタン用。先頭リンクのラベルを体験版導線に統一 */
@@ -232,9 +230,6 @@ export default async function ReviewPage({ params }: Props) {
       className="rounded-none"
     />
   );
-
-  const hasAffiliateContent =
-    review.affiliateLinks.length > 0 || Boolean(review.coverAffiliateHref);
 
   const finalRatingSplit = review.body
     ? splitBodyAtFinalRating(review.body)
@@ -464,6 +459,27 @@ export default async function ReviewPage({ params }: Props) {
         "単線で分かりやすい誘導を好む方",
       ],
     },
+    "time-rotor": {
+      scoreLabel: "8.0 / 10",
+      oneLine:
+        "約59分09秒。古典脱力のあと公園・繁華街・満員電車へ羞恥の段を上げ、遅延許可と強度100%でドライ一回に収束させるリモコンローター屋外催眠（非バイノーラル）",
+      inductionType: "リラックス系 / イメージ誘導系 / 段階深化系",
+      voiceActor: "かの仔",
+      tempoType: "中速 / 連続系（誘導厚め→屋外帯→電車で吊り上げ）",
+      majorFetish: "リモコンローター / 屋外羞恥 / 満員電車 / 遅延許可 / エロトランス",
+      kinkType: "ノーマル〜M向け",
+      recommendedLevel: "初中級（中程度トランス＋暗示受容）以上の方",
+      recording: "約59分09秒（6パート・字幕終端・非バイノーラル）",
+      recommendedFor: [
+        "古典的な脱力誘導から入りたい方",
+        "バレそうな緊張で快感を吊りたい方",
+        "ローター操作と羞恥シチュが好きな方",
+      ],
+      notRecommendedFor: [
+        "バイノーラル定位を主目的にしたい方",
+        "短尺だけで刺激だけ欲しい方",
+      ],
+    },
     "sukisuki-surikomi-chudoku-onanie-saimin": {
       scoreLabel: "8.0 / 10",
       oneLine:
@@ -567,6 +583,27 @@ export default async function ReviewPage({ params }: Props) {
       notRecommendedFor: [
         "強い支配語を求める方",
         "短時間で終えたい方",
+      ],
+    },
+    "hypno-cloud": {
+      scoreLabel: "8.0 / 10",
+      oneLine:
+        "約46分16秒。手を引くジャーニーで視界を奪い、雲の濃度とカウント増幅で性感を段階的に積むバイノーラル催眠（エロトランス／ヒプノクラウド）",
+      inductionType: "リラックス系 / ジャーニー誘導系 / カウント誘導系",
+      voiceActor: "紗藤ましろ",
+      tempoType: "ややゆっくり / 連続系（深化〜増幅まで一方通行）",
+      majorFetish: "囁きバイノーラル / 霧・雲メタファ / ジャーニー追随 / 段階増幅カウント",
+      kinkType: "M向け",
+      recommendedLevel: "初心者（浅いトランス〜脱力までを体験できる）以上の方",
+      recording: "約46分16秒（バイノーラル・4パート・字幕終端）",
+      recommendedFor: [
+        "ささやき定位とストーリー性を両取りしたい方",
+        "視界喪失と追随で沈みたい方",
+        "カウント増幅で波を積みたい方",
+      ],
+      notRecommendedFor: [
+        "短尺のみを求める方",
+        "イヤホン前提が現実的でない方",
       ],
     },
     "hypno-multi-rape": {
@@ -800,6 +837,27 @@ export default async function ReviewPage({ params }: Props) {
         "洗脳・崇拝など強い語感が苦手な方",
       ],
     },
+    "futari-saimin-namahousou": {
+      scoreLabel: "8.0 / 10",
+      oneLine:
+        "約95分。二人の催眠生放送ドラマからバイノーラル二声へ入り、媚薬と人形の本編をスイ／メロで分岐しつつドライ二回へ収束させる長尺構成",
+      inductionType: "ラジオ・生放送系 / 二声掛け合い系 / 分岐運用系 / 古典誘導系",
+      voiceActor: "そらまめ。／沢野ぽぷら",
+      tempoType: "中速 / 断続〜連続（冒頭トーク厚め→本編）",
+      majorFetish: "生放送 / 二声バイノーラル / 媚薬・人形 / 分岐本編 / エロトランス",
+      kinkType: "ノーマル〜M向け",
+      recommendedLevel: "初中級（中程度トランス＋暗示受容）以上の方",
+      recording: "約95分（分岐含む公式表記・バイノーラル）",
+      recommendedFor: [
+        "掛け合いの生放送体裁で入りたい方",
+        "二声定位を主戦場にしたい方",
+        "分岐で手続きの強弱を選びたい方",
+      ],
+      notRecommendedFor: [
+        "即深部のみを求める方",
+        "二声同時入力の負荷が苦手な方",
+      ],
+    },
     "futarigake-saimin-coming-orgasm": {
       scoreLabel: "9.0 / 10",
       oneLine:
@@ -924,6 +982,113 @@ export default async function ReviewPage({ params }: Props) {
       notRecommendedFor: [
         "穏やかな癒やしだけを求める方",
         "主従・崇拝の関係語が苦手な方",
+      ],
+    },
+    "aku-no-soshiki-hero-akudachi-sennou-saimin": {
+      scoreLabel: "10.0 / 10",
+      oneLine:
+        "約2時間15分。抵抗語を快感条件へ差し替えつつ、エナジーカウントと触手SEを同期させ、敗北宣誓からセルフ射精までを支配側の位相で締める悪堕ち洗脳催眠（触手SEあり本編）",
+      inductionType: "洗脳系 / 悪堕ち系 / 無力化系 / カウント誘導系",
+      voiceActor: "陽向葵ゅか",
+      tempoType: "中速 / 断続〜連続（後半追い込み）",
+      majorFetish: "悪堕ち / 洗脳 / 触手 / 薬液 / エナジー吸引 / 言葉責め",
+      kinkType: "M向け",
+      recommendedLevel: "中級（脳イキは可能だがドライ未達）以上の方",
+      recording:
+        "約2時間15分（波形ベースの通し尺／バイノーラル・触手SEあり本編）",
+      recommendedFor: [
+        "女幹部の論理で抵抗が快感条件へ差し替わる悪堕ちが欲しい方",
+        "レクリエーション経由で足場を作ったうえで本編へ沈みたい方",
+        "触手SEで触覚イベントの解像度を上げたい方",
+      ],
+      notRecommendedFor: [
+        "短時間で済ませたい方・静かな沈潜のみを求める方",
+        "触手・薬液・悪役視点が苦手な方",
+      ],
+    },
+    "zeccho-furi-karakai-kouhai-mazo-mesuiki-nohand": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "約96分49秒。フリからマゾ確定へ落差を作り、『ダメ』系禁制と感度操作を経て初級編でノーハンド志向まで言語で収束させる学園バイノーラル催眠（ルート選択あり）",
+      inductionType: "洗脳系 / 禁制反復系 / 感度操作系 / カウント誘導系",
+      voiceActor: "架月らみゅ",
+      tempoType: "やや速め / 断続系（からかいと禁止の往復）",
+      majorFetish: "後輩からかい / マゾバレ / メスイキ / ノーハンド / 言葉責め / 学園",
+      kinkType: "M向け",
+      recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
+      recording:
+        "約96分49秒（波形ベースの通し尺／バイノーラル・ルート選択あり・初級編ルート中心の記載）",
+      recommendedFor: [
+        "『ダメ』禁制とからかいで落差を味わいたい方",
+        "ノーハンド志向の段取りを段階的に積みたい方",
+        "部屋シチュの学園からかいが好きな方",
+      ],
+      notRecommendedFor: [
+        "静かな深催眠のみを求める方",
+        "マゾ・メスイキ・ノーハンドの趣向が苦手な方",
+      ],
+    },
+    "mimikaki-saimin": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "約79分。サロン規約で主導権を固定し、長尺の耳かき幸福感を核に終盤サービスと覚醒まで連結するバイノーラル催眠",
+      inductionType: "リラクゼーション系 / 耳刺激集中系 / カウント誘導系",
+      voiceActor: "伊ヶ崎綾香",
+      tempoType: "ややゆっくり / 断続〜連続（耳かき→終盤サービス）",
+      majorFetish: "耳かき / サロン主導 / 膝枕 / 受動没入 / バイノーラル",
+      kinkType: "ノーマル〜M向け",
+      recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
+      recording: "約79分1秒（5パート・通し）",
+      recommendedFor: [
+        "耳かきASMRと催眠導入を同時に味わいたい方",
+        "サロンで委ねる役割没入が好きな方",
+        "覚醒まで一式ある構成を重視する方",
+      ],
+      notRecommendedFor: [
+        "耳かき描写が苦手な方",
+        "短尺で即効性だけを求める方",
+      ],
+    },
+    "higengo-saimin-giseigo-pavlov-another": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "約61分8秒。首輪パートで条件付けと声のイメージを固め、擬声語パブロフで台詞をほぼ排したオノマトペ入力へ移す実験的バイノーラル催眠（秋野かえで・Another版）",
+      inductionType: "条件付け系 / リラックス系 / 擬似複線定位・効果音系（擬声語パート）",
+      voiceActor: "秋野かえで",
+      tempoType: "ややゆっくり〜断続（首輪）／高密度連打（擬声語パート）",
+      majorFetish: "オノマトペ / 耳舐め（首輪パート） / 条件付け / ペット・ワンちゃん",
+      kinkType: "ノーマル〜M向け",
+      recommendedLevel: "初中級（中程度トランス＋暗示受容）以上の方（擬声語パート単独は慣れ手向け）",
+      recording: "約61分8秒（バイノーラル・全3パート）",
+      recommendedFor: [
+        "オノマトペと効果音だけで反応を立ち上げたい方",
+        "シリーズの実験パートに挑戦したい・秋野かえで版を聴き比べたい方",
+        "耳舐めと声のイメージで快感を取りにいきたい方（首輪パート）",
+      ],
+      notRecommendedFor: [
+        "台詞の説明なしでは不安な方（EXは台詞ほぼ無し）",
+        "通常の物語催眠のみを求める方",
+      ],
+    },
+    "saimin-jutsushi-itazura-hypno-show-stage": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "約78分48秒の通し本編として、ステージ仕込みから公開催眠ショー・心象誘導・長めエロ帯・カウント覚醒まで処理するリアルヒプノ系バイノーラル",
+      inductionType: "公示ショー系 / イエスセット系 / 心象誘導系 / 段階深化系",
+      voiceActor: "陽向葵ゅか",
+      tempoType: "中速 / 断続〜連続（ショー→長めエロ帯）",
+      majorFetish: "催眠ショー / MC視点 / バイノーラル / ステージ / エロトランス",
+      kinkType: "ノーマル〜M向け",
+      recommendedLevel: "初中級（中程度トランス＋暗示受容）以上の方",
+      recording: "約78分48秒（バイノーラル・7パート・字幕終端）",
+      recommendedFor: [
+        "ショー進行と仕込みのドラマで没入したい方",
+        "心象誘導からエロ帯へ繋ぐ構成が好きな方",
+        "リアルヒプノシリーズの質感を追いたい方",
+      ],
+      notRecommendedFor: [
+        "ショー体裁や公開設定が苦手な方",
+        "最短時間だけで片付けたい方（エロ帯が長め）",
       ],
     },
   };
@@ -1061,14 +1226,6 @@ export default async function ReviewPage({ params }: Props) {
                     affiliateHref={resolveDlsiteAffiliateHref(review)}
                   />
                 </div>
-              ) : null}
-              {hasAffiliateContent ? (
-                <p
-                  className="mt-4 border-t border-slate-700/25 pt-3 text-[11px] leading-relaxed text-slate-600 sm:text-xs"
-                  role="note"
-                >
-                  ※本ページには紹介用のリンクが含まれる場合があります。成果が生じた際、当サイトに紹介料が入ることがあります。
-                </p>
               ) : null}
             </div>
           </div>

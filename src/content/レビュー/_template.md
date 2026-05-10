@@ -9,6 +9,9 @@
 # contentKind: article
 
 slug: my-first-review
+# レビュー（星あり）を新規追加したら必須: 上の slug と同じ文字列で
+# src/app/(public)/reviews/[slug]/page.tsx の quickGuideBySlug に 1 件追加する。
+# しないと詳細ページに「記事モード」（クイック解析／作品詳細解析）が出ない。
 
 # 一覧・タブ。レビューは「作品名　レビュー」（全角スペース推奨）
 title: 作品名　レビュー
@@ -159,7 +162,7 @@ affiliateLinks:
 
 以上から総合 **★n** としました。
 
-<!-- `ratingValue`／★ は三軸の機械平均ではない。星を付ける判断では docs/レビュー三軸評価定義.md「総合の星を付けるときの判断材料（作品の完成度）」も突き合わせる。標準採点では快楽・満足はトランスに整合（同ドキュメント「トランスありき」）。読者向け本文にそのメタ説明は書かなくてよい。本文に完成度の別点数行は不要。フリートーク・メイキング寄りボーナストラックは完成度・三軸の採点に含めない（同ドキュメント「評価の前提」の「フリートーク等」）。レーダー用の三軸数値は `_分析データ.json`（`docs/schemas/review-analysis.v1.schema.json`）に置き、`py -3 scripts/generate_review_triangle.py <slug>` で `review_triangle.png` を生成。 -->
+<!-- `ratingValue`／★ は三軸の機械平均ではない。星を付ける判断では docs/レビュー三軸評価定義.md「総合の星を付けるときの判断材料（作品の完成度）」も突き合わせる。標準採点では快楽・満足はトランスに整合（同ドキュメント「トランスありき」）。読者向け本文にそのメタ説明は書かなくてよい。本文に完成度の別点数行は不要。フリートーク・メイキング寄りボーナストラックは完成度・三軸の採点に含めない（同ドキュメント「評価の前提」の「フリートーク等」）。読者向け散文ではボーナストラックを列挙しない／「査定外」「未取得」などと書かない。グラフ内訳などでは `07 で〜` のように連番だけでパートを指さない（公式題名や場面の呼び方）。詳細は `.cursor/rules/review-audio-work-only-scoring.mdc`・`review-prose-voice.mdc`。`summary`・概要・パート表に **`derived_metrics.json` / `duration_sec` / 「解析字幕の終端」** などパイプライン都合の語を書かない。レーダー用の三軸数値は `_分析データ.json`（`docs/schemas/review-analysis.v1.schema.json`）に置き、`py -3 scripts/generate_review_triangle.py <slug>` で `review_triangle.png` を生成。 -->
 
 ---
 

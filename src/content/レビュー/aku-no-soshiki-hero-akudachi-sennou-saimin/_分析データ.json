@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "workName": "悪の組織のヒーロー悪堕ち洗脳催眠（触手SEあり）",
+  "scores": {
+    "trance": 10,
+    "pleasure": 10,
+    "satisfaction": 10
+  },
+  "orgasmSummary": "ドライ5回（カウント・触手・脳内痺れ連鎖）／ウェット1回（セルフ射精）",
+  "notes": [
+    "評価は docs/レビュー三軸評価定義.md に準拠（鑑賞用・臨床非保証）。",
+    "尺は販売ページ表記（総再生約2時間15分・各トラック表記）を正とする。本レビューは触手SEあり版（RJ299661）を対象。",
+    "主軸は「抵抗ほど快感」「エナジー吸引カウント」「思考結晶化とノイズ崩壊」「忠誠台詞と射精コントロール」の四層で、悪堕ちの説得力を音と台詞の両面から積む構成。",
+    "比較アンカー: 完成度の下限イメージは短い尺の薄い抵抗芝居、上限は台本密度と着地が揃った通し悪堕ち系として把握。",
+    "【自動補助根拠】derived_metrics.json: duration=8043.778s / rms_mean=0.02093602 / silence_ratio=0.0908 / surge_events_per_min=30.299。 spatial_spectral: pan_abs_mean=0.15901482, pan_std_mean=0.17950726, centroid_track_means_avg_hz=4251.33689251, hf_ratio_4khz_mean=0.32674631。",
+    "【自動補助根拠】keyword_counts: 可愛い=0, ワン=0, 行け=7, 泣=1。event_counts: countdown=3, trigger=39, release=8。",
+    "【自動補助根拠】sections.auto.json: 導入0.0-300.0 / 深化300.0-650.0 / 快楽650.0-7883.778 / 解除7883.778-8043.778。"
+  ]
+}

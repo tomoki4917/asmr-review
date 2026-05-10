@@ -1,5 +1,5 @@
 ---
-description: 新規レビュー記事を追加したときの公開前チェック（三角グラフ・価格・ビルド）。
+description: 新規レビュー記事を追加したときの公開前チェック（三角グラフ・価格・ビルド・記事モード用 quickGuideBySlug）。
 globs: src/content/レビュー/**/index.md
 alwaysApply: false
 ---
@@ -9,9 +9,15 @@ alwaysApply: false
 `src/content/レビュー/<slug>/index.md` を新規作成または大幅更新したら、次を満たしてから完了とする。
 
 - **予約日時（ユーザーが `goLiveAt` を指示しないとき）:** `.cursor/rules/review-golive-schedule-default.mdc` に従い、**最新予約投稿日の翌日 12:00 JST** を設定する（`publishedAt` は原則同日）。
+- **採点の根拠:** `.cursor/rules/review-audio-work-only-scoring.mdc` に従い、**星・三軸・総合評価は音声としての作品本体のみ**を根拠にする（パッケージのトラック数や未取得トラック、サイト運用での加减は点数理由にしない）。
+- **読者向け本文のトラック表現:** 同上および `.cursor/rules/review-prose-voice.mdc` に従い、**フリートーク・NG 集などボーナストラックを列挙したり「査定外」と書いたりしない**。**グラフ内訳・総評などの散文**では **`07 で〜` のように連番だけでパートを指さない**（公式題名または場面・役割の語で書く）。収録表にトラック番号を並べるのはカタログとして可だが、その**評価範囲の脚注**は付けない。
+- **読者向けにパイプライン語を出さない:** `summary`・`itemDescription`・パート表の説明文に **`derived_metrics.json`**・**`duration_sec`**・「解析字幕の終端」など**自動計測・ファイル由来が読める表現**を入れない（`.cursor/rules/review-prose-voice.mdc`）。
 
+0. **解析フォルダ起点で書いた／書き直す場合:** `docs/真催眠音声執筆ガイド.md` §1（補・解析パイプライン）どおり **`analyze_mp3_immersive_metrics.py` → `import-review-analysis.py` → `analyze_review_auto.py`** を実行済みか（`.mp3` が無い案件のみ MP3 計測はスキップ可）。`spatial_spectral.auto.json` と `derived_metrics.json` の `immersive_audio_mp3` を材料にしたうえで採点しているか。
 1. **`_分析データ.json`** の `scores.trance` / `pleasure` / `satisfaction` が本文の三軸・`review_triangle.png` と一致している。
 2. **`review_triangle.png`** を `py -3 scripts/generate_review_triangle.py <slug>` で生成済み。**`npm run sync:content-assets`** で `public/content/reviews/` にミラー済み。
 3. **`dlsiteProductId`** を付けた場合は **`data/products.json`** に **`id` と `url`** を追加し、**`npm run update-prices`** で税込・セール等を取得済み（またはユーザーが後続 CI に任せる旨を共有）。
 4. **心拍ログが無い**ときは **`### 聴取時の身体反応（心拍）`** を本文に置かない。
 5. **`npm run build`** が成功することを確認する。
+6. **（再発防止・必須）新規の作品レビュー**（`contentKind` 省略または `review`）を追加したら、**`src/app/(public)/reviews/[slug]/page.tsx`** の **`quickGuideBySlug`** に、**フロントマターの `slug` と同一キー**のオブジェクトを **1 件追加**する。未登録だと **記事モード**（「1分で判断！クイック解析」／「しっかり見たい人向け！作品詳細解析」）が出ず、他レビューと UI が揃わない。意図の説明は **`.cursor/rules/review-article-mode-quickguide.mdc`**（`alwaysApply`）に集約。
+7. **（再発防止・必須）`goLiveAt` と本番一覧の意図を一致させる。** 予約のままが正しいならよい。**「デプロイ直後の本番トップにも出したい」**なら、`goLiveAt` が **そのビルド時刻より未来**になっていないか確認する（未来だと一覧・サイトマップから落ちる。詳細は `.cursor/rules/review-golive-schedule-default.mdc` の「再発防止」節）。

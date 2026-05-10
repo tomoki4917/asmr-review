@@ -8,6 +8,10 @@
   - events.auto.json
   - （任意）_分析データ.json の notes に自動補助根拠を差し込み
 
+事前に MP3 から定位・高域比を取りたい場合（推奨・別コマンド）:
+  py -3 scripts/analyze_mp3_immersive_metrics.py "<解析フォルダ>" <slug>
+  → spatial_spectral.auto.json が同じ slug 直下に生成されると、本スクリプトが derived_metrics に取り込む。
+
 例:
   py -3 scripts/analyze_review_auto.py "C:\\path\\to\\解析後\\作品フォルダ" futarigake-saimin-love-happy-orgasm
 """
@@ -139,12 +143,25 @@ def _update_analysis_notes(review_dir: Path, metrics: dict, sections: list[dict]
     if not isinstance(notes, list):
         return
     notes = [n for n in notes if not (isinstance(n, str) and n.startswith("【自動補助根拠】"))]
+    extra_spatial = ""
+    imm = metrics.get("immersive_audio_mp3")
+    if isinstance(imm, dict):
+        ag = imm.get("aggregate")
+        if isinstance(ag, dict):
+            extra_spatial = (
+                " spatial_spectral: "
+                f"pan_abs_mean={ag.get('pan_linear_mean_abs_mean')}, "
+                f"pan_std_mean={ag.get('pan_linear_std_mean')}, "
+                f"centroid_track_means_avg_hz={ag.get('centroid_hz_mean_of_track_means')}, "
+                f"hf_ratio_4khz_mean={ag.get('hf_ratio_ge_4khz_mean_of_track_means')}。"
+            )
     notes.extend(
         [
             (
                 f"【自動補助根拠】derived_metrics.json: duration={metrics['duration_sec']}s / "
                 f"rms_mean={metrics['rms_mean']} / silence_ratio={metrics['silence_ratio_rms_lt_0_002']} / "
                 f"surge_events_per_min={metrics['surge_events_per_min_rms_gt_p95']}。"
+                + extra_spatial
             ),
             (
                 "【自動補助根拠】keyword_counts: "
@@ -203,6 +220,21 @@ def analyze(source_dir: Path, slug: str, update_notes: bool) -> int:
     p95 = _pctl(rms, 0.95)
     events = _build_events(entries)
     sections = _build_sections(entries, duration)
+    spatial_path = review_dir / "spatial_spectral.auto.json"
+    immersive_block: dict | None = None
+    if spatial_path.is_file():
+        try:
+            sp = json.loads(spatial_path.read_text(encoding="utf-8"))
+            agg = sp.get("aggregate") if isinstance(sp, dict) else None
+            if isinstance(agg, dict):
+                immersive_block = {
+                    "source_file": spatial_path.name,
+                    "hop_sec": sp.get("hop_sec"),
+                    "aggregate": agg,
+                }
+        except (json.JSONDecodeError, OSError):
+            immersive_block = None
+
     metrics = {
         "version": "v0.1-auto",
         "source": {
@@ -227,6 +259,8 @@ def analyze(source_dir: Path, slug: str, update_notes: bool) -> int:
             "release": sum(1 for e in events if e["type"] == "release"),
         },
     }
+    if immersive_block is not None:
+        metrics["immersive_audio_mp3"] = immersive_block
 
     (review_dir / "derived_metrics.json").write_text(json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (review_dir / "sections.auto.json").write_text(json.dumps(sections, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

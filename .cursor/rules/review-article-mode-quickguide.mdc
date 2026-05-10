@@ -1,0 +1,12 @@
+---
+description: 記事モード（クイック解析／作品詳細解析）は quickGuideBySlug 登録が必須。新規作品レビューで抜けると UI が出ないため常時リマインドする。
+alwaysApply: true
+---
+
+# 記事モード（再発防止）
+
+詳細ページの **記事モード**（**1分で判断！クイック解析**／**しっかり見たい人向け！作品詳細解析**）は、`src/app/(public)/reviews/[slug]/page.tsx` の **`quickGuideBySlug`** に **`index.md` の `slug` と同一キー**のオブジェクトが無いと **出ない**（他レビューと見た目が揃わない）。
+
+**新規で作品レビュー**（`src/content/レビュー/<slug>/index.md`・`contentKind` 省略または `review`）を追加するときは **必ず:** `quickGuideBySlug` に **1 件追加**する。フィールドは既存エントリに合わせる（`scoreLabel` / `oneLine` / `inductionType` / `voiceActor` / `tempoType` / `majorFetish` / `kinkType` / `recommendedLevel` / `recording` / `recommendedFor` / `notRecommendedFor`）。
+
+**完了前の確認:** `http://localhost:3000/reviews/<slug>/` で記事モードの 2 ボタンが表示されること（公開前チェックは `.cursor/rules/review-post-ship-checklist.mdc` 項目 6 と同一要件）。

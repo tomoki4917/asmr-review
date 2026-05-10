@@ -11,6 +11,8 @@
 | `src/content/レビュー/` | 星ありの**作品レビュー**（`contentKind` 省略または `review`） |
 | `src/content/記事/` | 星なしの**解説記事**（`contentKind: article`） |
 
+**作品レビューを新規追加するとき（再発防止・記事モード）:** 詳細ページの **記事モード**（クイック解析／作品詳細解析の切替）はコード側の登録が必要です。`index.md` の **`slug`** と同じキーで、`src/app/(public)/reviews/[slug]/page.tsx` 内の **`quickGuideBySlug`** にオブジェクトを **1 件追加**してください。抜けると切替 UI 自体が表示されません（Cursor 向けの常時ルール: `.cursor/rules/review-article-mode-quickguide.mdc`）。
+
 それぞれの中に、**1 本につき 1 フォルダ**を作り、本文は **`index.md`** に書きます。
 
 例:

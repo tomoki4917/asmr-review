@@ -37,7 +37,7 @@ export function ReviewCard({
   return (
     <article>
       <Link
-        href={`/reviews/${review.slug}`}
+        href={`/reviews/${review.slug}/`}
         className="group block min-w-0 max-w-full overflow-hidden rounded-3xl border border-slate-600/40 bg-slate-800/50 shadow-md shadow-slate-950/20 ring-1 ring-slate-700/30 transition hover:-translate-y-0.5 hover:border-sky-500/35 hover:shadow-lg hover:shadow-sky-950/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400/45"
       >
         <div className="relative">

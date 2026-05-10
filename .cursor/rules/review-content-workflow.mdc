@@ -8,8 +8,11 @@ alwaysApply: false
 
 - **構造化データ（Google 商品スニペット）**は `src/components/ReviewJsonLd.tsx` が自動生成する。テーマや本文に **手で `Product` / `Review` の JSON-LD を追記しない**（Search Console の重複・不整合の原因になる）。
 
+**ユーザーから解析フォルダ（`.mp3`・`.srt`・`*_waveform.csv` 等）を渡されて新規執筆・大きく書き直すとき**（`index.md` に手を入れる前）、`docs/真催眠音声執筆ガイド.md` §1（補・解析パイプライン）のとおり **`analyze_mp3_immersive_metrics.py` → `import-review-analysis.py` → `analyze_review_auto.py`** を実行する。生成物を**採点材料**とし、本文にスクリプト名や生数値列を晒さない。
+
 1. `npm run sync:content-assets` を実行する（画像・表紙の反映）。
 2. **新規レビューで `dlsiteProductId` を付けた／変えたとき** … リポジトリ直下 **`data/products.json`** に、**`id`（`RJ…`）と作品ページの `url`** を持つオブジェクトを1件追加する。続けて **`npm run update-prices`** を実行し、税込・セール・期限を DLsite から取り込む（一覧・詳細の価格表示の正本。手動を省略する場合は週次 CI の更新を待ってもよい）。
+2b. **新規の作品レビュー**（`contentKind` 省略または `review`）で **`slug` を新設したとき** … **`src/app/(public)/reviews/[slug]/page.tsx`** の **`quickGuideBySlug`** に **`slug` と同一キー**を追加する（未追加だと **記事モード**の切替が出ない。常時ルール: `.cursor/rules/review-article-mode-quickguide.mdc`）。
 3. 開発サーバーを再起動する（`npm run dev`。既存プロセスがあればポート 3000 を空けてから）。
 4. ユーザーへの返答に、**ブラウザで確認する URL** を必ず書く。
    - トップ: `http://localhost:3000/`

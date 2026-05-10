@@ -1,0 +1,54 @@
+{
+  "version": "v0.1-auto",
+  "source": {
+    "waveforms": [
+      "Tr.01_プロローグ_waveform.csv",
+      "Tr.02_期待しちゃダメです_waveform.csv",
+      "Tr.03_感じちゃダメです_waveform.csv",
+      "Tr.04_イっちゃダメです_waveform.csv",
+      "Tr.05-1_初級編・ノーハンド射精しちゃダメです_waveform.csv",
+      "Tr.06_解除-エピローグ_waveform.csv"
+    ],
+    "srts": [
+      "Tr.01_プロローグ.srt",
+      "Tr.02_期待しちゃダメです.srt",
+      "Tr.03_感じちゃダメです.srt",
+      "Tr.04_イっちゃダメです.srt",
+      "Tr.05-1_初級編・ノーハンド射精しちゃダメです.srt",
+      "Tr.06_解除-エピローグ.srt"
+    ]
+  },
+  "duration_sec": 5796.262,
+  "rms_mean": 0.01899154,
+  "rms_std": 0.0229689,
+  "rms_p95": 0.06404112,
+  "centroid_mean_hz": 4170.837,
+  "centroid_std_hz": 2696.827,
+  "silence_ratio_rms_lt_0_002": 0.3264,
+  "surge_events_per_min_rms_gt_p95": 30.071,
+  "keyword_counts": {
+    "可愛い": 2,
+    "泣": 1,
+    "気持ちいい": 31,
+    "暗示": 4,
+    "解除": 1,
+    "ワン": 1,
+    "行け": 0,
+    "お仕置き": 1
+  },
+  "keyword_density_per_min": {
+    "可愛い": 0.021,
+    "泣": 0.01,
+    "気持ちいい": 0.321,
+    "暗示": 0.041,
+    "解除": 0.01,
+    "ワン": 0.01,
+    "行け": 0.0,
+    "お仕置き": 0.01
+  },
+  "event_counts": {
+    "countdown": 7,
+    "trigger": 28,
+    "release": 3
+  }
+}

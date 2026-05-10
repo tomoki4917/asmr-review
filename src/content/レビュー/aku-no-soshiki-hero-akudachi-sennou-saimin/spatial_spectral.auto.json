@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "hop_sec": 0.1,
+  "source_dir": "C:\\Users\\tomok\\Desktop\\解析後\\悪の組織のヒーロー悪堕ち洗脳催眠",
+  "tracks": [
+    {
+      "file": "01.注意事項.wav",
+      "duration_sec": 77.384,
+      "mono": false,
+      "hop_sec": 0.1,
+      "frames": 774,
+      "pan_linear_mean": -0.15593664348125458,
+      "pan_linear_std": 0.14548207819461823,
+      "pan_linear_mean_abs": 0.17113672196865082,
+      "centroid_hz_mean": 6693.272605551973,
+      "centroid_hz_std": 4667.003081894396,
+      "hf_ratio_ge_4khz_mean": 0.4856685698032379,
+      "hf_ratio_ge_4khz_std": 0.3294730484485626
+    },
+    {
+      "file": "02.深く音を感じるためのレクリエーション.wav",
+      "duration_sec": 1119.887,
+      "mono": false,
+      "hop_sec": 0.1,
+      "frames": 11199,
+      "pan_linear_mean": -0.06569062918424606,
+      "pan_linear_std": 0.23387208580970764,
+      "pan_linear_mean_abs": 0.190601646900177,
+      "centroid_hz_mean": 4780.562089829896,
+      "centroid_hz_std": 2839.332084032242,
+      "hf_ratio_ge_4khz_mean": 0.39789658784866333,
+      "hf_ratio_ge_4khz_std": 0.20093053579330444
+    },
+    {
+      "file": "03.悪の組織のヒーロー悪堕ち洗脳催眠_触手SEあり.wav",
+      "duration_sec": 6375.464,
+      "mono": false,
+      "hop_sec": 0.1,
+      "frames": 63755,
+      "pan_linear_mean": -0.055298686027526855,
+      "pan_linear_std": 0.19748111069202423,
+      "pan_linear_mean_abs": 0.15171456336975098,
+      "centroid_hz_mean": 3320.5595623025447,
+      "centroid_hz_std": 1968.3467106640226,
+      "hf_ratio_ge_4khz_mean": 0.26340851187705994,
+      "hf_ratio_ge_4khz_std": 0.19476111233234406
+    },
+    {
+      "file": "04.解除.wav",
+      "duration_sec": 550.206,
+      "mono": false,
+      "hop_sec": 0.1,
+      "frames": 5503,
+      "pan_linear_mean": -0.058548808097839355,
+      "pan_linear_std": 0.14119374752044678,
+      "pan_linear_mean_abs": 0.12260632961988449,
+      "centroid_hz_mean": 2210.953312352485,
+      "centroid_hz_std": 1620.6051098279406,
+      "hf_ratio_ge_4khz_mean": 0.16001155972480774,
+      "hf_ratio_ge_4khz_std": 0.16422362625598907
+    }
+  ],
+  "aggregate": {
+    "tracks_n": 4,
+    "total_duration_sec": 8122.941,
+    "pan_linear_mean_abs_mean": 0.15901482,
+    "pan_linear_std_mean": 0.17950726,
+    "centroid_hz_mean_of_track_means": 4251.33689251,
+    "hf_ratio_ge_4khz_mean_of_track_means": 0.32674631,
+    "centroid_hz_std_pooled": 1179.737875
+  },
+  "usage_note": "定位の材料: pan_linear_mean_abs / pan_linear_std が大きいほど左右差の揺れが多い傾向。質感の材料: centroid と hf_ratio_ge_4khz は囁き断定ではなく、高域・息成分の相対量の目安。"
+}

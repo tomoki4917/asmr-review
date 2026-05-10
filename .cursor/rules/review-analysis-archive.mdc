@@ -18,9 +18,13 @@ alwaysApply: false
 ## 手順
 
 1. **スラッグ**を `index.md` の `slug:` と一致させる。
-2. 解析フォルダから **音声以外**を `analysis/` へコピーする。コマンド例:
+2. **（推奨・MP3 が解析フォルダに含まれるとき必須）** 定位・高域比の自動計測を先に実行する:  
+   `py -3 scripts/analyze_mp3_immersive_metrics.py "<解析フォルダのパス>" <slug>`  
+   → `src/content/レビュー/<slug>/spatial_spectral.auto.json` ができる。初回は `py -3 -m pip install -r scripts/requirements-audio.txt`（MP3 は ffmpeg 等が PATH に必要な場合あり）。詳細は `docs/真催眠音声執筆ガイド.md` §1（補・解析パイプライン）。
+3. 解析フォルダから **音声以外**を `analysis/` へコピーする。コマンド例:
    - `py -3 scripts/import-review-analysis.py "<解析フォルダのパス>" <slug>`
-3. **`npm run sync:content-assets`** を実行する。
+4. **（推奨）** `py -3 scripts/analyze_review_auto.py "<解析フォルダのパス>" <slug>` … `derived_metrics.json` 等。手順2の `spatial_spectral.auto.json` があれば `derived_metrics` の `immersive_audio_mp3` に取り込まれる。
+5. **`npm run sync:content-assets`** を実行する。
 
 ## 注意
 

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true}); console.log('removed .next')\"",
     "validate:content-data": "node scripts/validate-content-data.mjs",
     "sync:content-assets": "node scripts/sync-content-assets.mjs",
     "prebuild": "npm run validate:content-data && npm run sync:content-assets",
