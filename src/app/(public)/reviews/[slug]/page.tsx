@@ -508,10 +508,10 @@ export default async function ReviewPage({ params }: Props) {
       inductionType: "訓練型 / 反復刷り込み系 / イメージ誘導系",
       voiceActor: "秋野かえで",
       tempoType: "中速 / 断続系（手順説明あり）",
-      majorFetish: "ノーハンド / 脳イキ / PC筋トレ / 空想セックス / 解除トラック",
+      majorFetish: "ノーハンド / 脳イキ / PC筋トレ / 空想セックス",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初中級（自己調整と暗示受容）",
-      recording: "約54分（4トラック・字幕終端合算約53分55秒）",
+      recording: "約55分",
       recommendedFor: [
         "手順で脳イキを試したい方",
         "筋制御を重視して再現したい方",
