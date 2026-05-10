@@ -18,8 +18,8 @@ itemDescription: |
   ルール説明から探索開始し、中間地点と任意レベリングを通ってゴールを目指す分岐型オナサポ。成功・失敗・再挑戦まで含めて体験が閉じる、探索ゲーム色の強い同人音声です。
 
 authorName: 同人音声レビュー室
-publishedAt: "2026-05-11"
-goLiveAt: "2026-05-11T12:00:00+09:00"
+publishedAt: "2026-05-15"
+goLiveAt: "2026-05-15T12:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01357000/RJ01356621_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ01356621.html
 affiliateLinks:

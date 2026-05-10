@@ -908,7 +908,7 @@ export default async function ReviewPage({ params }: Props) {
     "miraiyochi-zeccho-countdown": {
       scoreLabel: "9.0 / 10",
       oneLine:
-        "未来予知の宣言と絶頂カウントを合図化し、先読み反応を快感増幅へ転換して連続ピークへ運ぶ約198分の二本立て催眠",
+        "未来予知の宣言と絶頂カウントを合図化し、先読み反応を快感増幅へ転換して連続ピークへ運ぶ、kuroko.版約104分・サイミー版約94分の二本立て催眠",
       inductionType: "予言トリガー系 / カウント誘導系 / 関係固定系",
       voiceActor: "陽向葵ゅか / みたかりん",
       tempoType: "中速 / 断続〜連続（後半反復密度高め）",
