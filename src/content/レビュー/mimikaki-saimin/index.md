@@ -16,6 +16,7 @@ itemDescription: |
   規約説明から誘導、両耳耳かき、終盤の性的サービス、覚醒までを一筆書きで接続する催眠音声です。
 authorName: 催眠音声解析室
 publishedAt: "2026-05-11"
+goLiveAt: "2026-05-11T12:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ128000/RJ127012_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ127012.html
 affiliateLinks:
