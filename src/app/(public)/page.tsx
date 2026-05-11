@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { HomeReviewList } from "@/components/HomeReviewList";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
-import { MatureContentNotice } from "@/components/MatureContentNotice";
 import { PsychologyInsightsSection } from "@/components/PsychologyInsightsSection";
 import { ReviewCover } from "@/components/ReviewCover";
 import { ReviewDlsiteListPrice } from "@/components/ReviewDlsiteListPrice";
@@ -141,36 +140,27 @@ export default function HomePage() {
         <h1 className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">
           催眠音声解析室
         </h1>
-        <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
-          同人音声をこれまで1000本以上聴いてきた管理人が、作品を脳科学・心理学の視点からレビューしています。印象や好みだけに頼らず、主観の感想に加えて整理できる客観的なデータや観点も示し、新作が溢れるなかで「どれを選ぶか」迷ったときの按針になればと考えています。
+        <div className="mx-auto mt-6 flex max-w-4xl items-center justify-center gap-3 sm:gap-4">
+          <span
+            aria-hidden
+            className="h-px w-10 bg-gradient-to-r from-transparent via-sky-300/70 to-transparent sm:w-16"
+          />
+          <p className="whitespace-nowrap text-lg font-semibold leading-relaxed tracking-[0.03em] text-slate-100 sm:text-2xl">
+            <span className="bg-gradient-to-r from-sky-100 via-cyan-200 to-teal-200 bg-clip-text text-transparent [text-shadow:0_0_18px_rgba(56,189,248,0.18)]">
+              あなたに、最高の没入と、心穏やかな時間を。
+            </span>
+          </p>
+          <span
+            aria-hidden
+            className="h-px w-10 bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent sm:w-16"
+          />
+        </div>
+        <p className="mx-auto mt-5 max-w-2xl text-pretty text-base leading-relaxed text-slate-300 sm:text-lg">
+          業界初 音声作品を多角的なツールを用い徹底解析
         </p>
-        <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
-          評価基準や方法は、
-          <Link
-            href="/reviews/evaluation-method/"
-            className="font-medium text-sky-300 underline-offset-2 hover:text-sky-200 hover:underline"
-          >
-            評価メソッド
-          </Link>
-          のページにまとめています。
+        <p className="mx-auto mt-2 max-w-2xl text-pretty text-base leading-relaxed text-slate-300 sm:text-lg">
+          解析結果と主観を照合しユーザーが求める最適な作品を紹介します。
         </p>
-        <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
-          忖度はありません。宣伝やお世辞ではなく、聴き手の時間と買い物の判断に使える本音のレビューです。
-          <br />
-          購入や視聴の決め手に、確かな一助になれば幸いです。
-        </p>
-        <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-slate-400">
-          質問などあれば
-          <Link
-            href="/contact/"
-            className="font-medium text-sky-300 underline-offset-2 hover:text-sky-200 hover:underline"
-          >
-            問い合わせフォーム
-          </Link>
-          にてお待ちしております。
-        </p>
-        <MatureContentNotice context="home" className="mx-auto mt-8 max-w-xl text-left" />
-
         {process.env.NODE_ENV === "development" ? (
           <aside
             className="mx-auto mt-6 max-w-xl rounded-xl border border-amber-600/50 bg-amber-950/30 px-4 py-3 text-left text-xs leading-relaxed text-amber-100/90 sm:text-sm"

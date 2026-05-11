@@ -3,7 +3,6 @@ import BananaSlug from "github-slugger";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AffiliateButton, AffiliateButtonGroup } from "@/components/AffiliateButton";
-import { MatureContentNotice } from "@/components/MatureContentNotice";
 import { ReviewCover } from "@/components/ReviewCover";
 import { ReviewJsonLd } from "@/components/ReviewJsonLd";
 import { ArticleNextNav } from "@/components/ArticleNextNav";
@@ -22,6 +21,7 @@ import {
   formatPublishedAtForList,
 } from "@/lib/format-published-at";
 import {
+  getAllReviews,
   getAllSlugs,
   getReviewBySlug,
   isReviewVisibleOnSite,
@@ -39,7 +39,7 @@ import {
   isDlsiteProductShinsaku,
 } from "@/lib/dlsite-product-catalog";
 import { resolveDlsiteAffiliateHref } from "@/lib/resolve-dlsite-affiliate-href";
-import type { AffiliateLink } from "@/lib/types";
+import type { AffiliateLink, Review } from "@/lib/types";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -102,6 +102,75 @@ function extractDryWetCounts(markdown?: string): string | undefined {
   if (dry && wet) return `ドライ${dry}回 / ウェット${wet}回`;
   if (dry) return `ドライ${dry}回`;
   return `ウェット${wet}回`;
+}
+
+function extractCircleName(markdown?: string): string | null {
+  if (!markdown) return null;
+  const normalized = markdown.replace(/\r\n/g, "\n");
+  const m = normalized.match(/^- \*\*サークル：\*\*\s*(.+)$/m);
+  if (!m?.[1]) return null;
+  return m[1].replace(/\s*（.*?）\s*$/u, "").trim() || null;
+}
+
+function extractInductionRatioVector(markdown?: string): number[] {
+  if (!markdown) return [];
+  const normalized = markdown.replace(/\r\n/g, "\n");
+  const block = normalized.match(/###\s*誘導構成比([\s\S]*?)(?:\n###\s|\n##\s|$)/);
+  if (!block?.[1]) return [];
+
+  const values: number[] = [];
+  const lines = block[1].split("\n");
+  for (const line of lines) {
+    if (!line.trim().startsWith("|")) continue;
+    if (line.includes("---")) continue;
+    const cells = line.split("|").map((v) => v.trim());
+    // [0] が空、[1] 項目名、[2] 数値、[3] 説明、[4] が空 になる想定
+    const valueRaw = cells[2];
+    if (!valueRaw) continue;
+    const n = Number(valueRaw);
+    if (Number.isFinite(n)) values.push(n);
+  }
+  return values;
+}
+
+function inductionDistance(a: number[], b: number[]): number {
+  if (a.length === 0 || b.length === 0) return Number.POSITIVE_INFINITY;
+  const len = Math.min(a.length, b.length);
+  if (len === 0) return Number.POSITIVE_INFINITY;
+  let sum = 0;
+  for (let i = 0; i < len; i += 1) {
+    sum += Math.abs((a[i] ?? 0) - (b[i] ?? 0));
+  }
+  return sum / len;
+}
+
+function pickRelatedReviews(current: Review): Review[] {
+  if (!current.body || current.contentKind !== "review") return [];
+  const all = getAllReviews().filter((r) => r.contentKind === "review" && r.slug !== current.slug);
+
+  const currentCircle = extractCircleName(current.body);
+  const currentVector = extractInductionRatioVector(current.body);
+
+  return all
+    .map((candidate) => {
+      const circle = extractCircleName(candidate.body);
+      const vector = extractInductionRatioVector(candidate.body);
+      const sameCircle = currentCircle && circle ? circle === currentCircle : false;
+      return {
+        candidate,
+        sameCircle,
+        distance: inductionDistance(currentVector, vector),
+      };
+    })
+    .sort((a, b) => {
+      if (a.sameCircle !== b.sameCircle) return a.sameCircle ? -1 : 1;
+      if (a.distance !== b.distance) return a.distance - b.distance;
+      return (
+        Date.parse(b.candidate.publishedAt) - Date.parse(a.candidate.publishedAt)
+      );
+    })
+    .slice(0, 4)
+    .map((v) => v.candidate);
 }
 
 export async function generateStaticParams() {
@@ -219,6 +288,7 @@ export default async function ReviewPage({ params }: Props) {
   const showShinsakuBadge =
     !isArticle && isDlsiteProductShinsaku(dlsiteProduct, nowBadges);
   const showHeaderBadges = showNewBadge || showShinsakuBadge;
+  const relatedReviews = pickRelatedReviews(review);
 
   const coverEl = (
     <ReviewCover
@@ -1122,10 +1192,6 @@ export default async function ReviewPage({ params }: Props) {
           <span aria-hidden>←</span> {isArticle ? "トップへ" : "レビュー一覧"}
         </Link>
 
-        {!isArticle ? (
-          <MatureContentNotice context="review" className="mt-5 sm:mt-6" />
-        ) : null}
-
         <header className="mt-5 sm:mt-6">
           <div
             className={`overflow-hidden rounded-3xl border border-slate-600/45 bg-slate-800/50 shadow-lg shadow-slate-950/25 backdrop-blur-sm ${isArticle ? "article-hero-card" : ""}`}
@@ -1622,6 +1688,41 @@ export default async function ReviewPage({ params }: Props) {
         </section>
           </>
         )}
+
+        {relatedReviews.length > 0 ? (
+          <section className="mt-10 border-t border-violet-400/40 pt-6 sm:mt-12 sm:pt-7">
+            <h2 className="text-xl font-bold tracking-tight text-slate-100">関連作品</h2>
+            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {relatedReviews.map((item) => {
+                const itemCircle = extractCircleName(item.body);
+                const titleOne = reviewTitleSingleLine(item.title);
+                return (
+                  <li key={item.slug}>
+                    <Link
+                      href={`/reviews/${item.slug}/`}
+                      className="group block overflow-hidden rounded-xl border border-slate-600/45 bg-slate-800/50 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-500/40 hover:shadow-lg hover:shadow-slate-950/30"
+                    >
+                      <ReviewCover
+                        coverImage={item.coverImage}
+                        alt={titleOne}
+                        slug={item.slug}
+                        className="rounded-none"
+                      />
+                      <div className="px-3 py-2.5">
+                        <p className="line-clamp-2 text-sm font-semibold leading-snug text-slate-100 group-hover:text-sky-200">
+                          {titleOne}
+                        </p>
+                        <p className="mt-1 text-xs text-slate-400">
+                          {itemCircle ?? "サークル情報なし"}
+                        </p>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ) : null}
 
         {nextReview ? <ArticleNextNav next={nextReview} /> : null}
 

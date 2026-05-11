@@ -103,7 +103,7 @@ export function RatingStarsSidebar({ starCounts, sortOrder }: Props) {
               className={linkClass(allGenreActive)}
               scroll={false}
             >
-              すべて
+              全て
             </Link>
           </li>
           <li>
@@ -184,7 +184,7 @@ export function RatingStarsSidebar({ starCounts, sortOrder }: Props) {
                 className={linkClass(allStarsActive)}
                 scroll={false}
               >
-                すべて
+                全て
               </Link>
             </li>
             {STAR_FILTERS.map((f) => {

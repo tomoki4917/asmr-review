@@ -3,7 +3,6 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { MatureContentNotice } from "@/components/MatureContentNotice";
 import { ReviewMarkdown } from "@/components/ReviewMarkdown";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { ReviewCoverPlaceholder } from "@/components/ReviewCover";
@@ -92,10 +91,6 @@ export default function LocalReviewPageClient() {
       >
         <span aria-hidden>←</span> トップへ
       </Link>
-
-      {isStarRatedReview(review) ? (
-        <MatureContentNotice context="review" className="mt-5 sm:mt-6" />
-      ) : null}
 
       <header className="mt-5 sm:mt-6">
         <div

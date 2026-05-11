@@ -21,7 +21,6 @@ import { reviewTitleSingleLine } from "@/lib/review-title";
 import { ratingFilterBucket } from "@/lib/rating-scale";
 import { isReviewNewPublication } from "@/lib/review-new-badge";
 import type { Review } from "@/lib/types";
-import { RatingStarsSidebar } from "@/components/RatingStarsSidebar";
 import { FileMarkdownArticleCard } from "@/components/FileMarkdownArticleCard";
 import { ReviewCard } from "@/components/ReviewCard";
 import { ReviewCoverPlaceholder } from "@/components/ReviewCover";
@@ -104,7 +103,64 @@ function matchesGenreFilter(
   return tags.includes("同人音声");
 }
 
-/** 現在のジャンル（未選択は全件）に対する評価別件数（サイドバー用） */
+function countByGenre(
+  merged: MergedReviewItem[],
+  genre: "hypnosis" | "doujin" | null
+): number {
+  return merged.filter((i) => matchesGenreFilter(i, genre)).length;
+}
+
+const SECTION_HYPNOSIS_INTRO = "hypnosis-intro";
+const SECTION_AUTHOR_POSTS = "author-posts-heading";
+
+const STAR_FILTER_LINKS = [
+  { param: "10", label: "★10" },
+  { param: "9", label: "★9" },
+  { param: "8", label: "★8" },
+  { param: "7", label: "★7" },
+  { param: "6", label: "★6" },
+  { param: "lte5", label: "★5〜" },
+] as const;
+
+function buildHomeSearchHref(
+  sp: URLSearchParams,
+  patch: {
+    genre?: "hypnosis" | "doujin" | null;
+    stars?: string | null;
+    clearStars?: boolean;
+    sort?: "new" | "old";
+  }
+): string {
+  const p = new URLSearchParams(sp.toString());
+  if (patch.genre !== undefined) {
+    if (patch.genre === null) p.delete("genre");
+    else p.set("genre", patch.genre);
+  }
+  if (patch.clearStars === true) {
+    p.delete("stars");
+  } else if (patch.stars !== undefined && patch.stars !== null) {
+    p.set("stars", patch.stars);
+  }
+  if (patch.sort === "old") p.set("sort", "old");
+  else if (patch.sort === "new") p.delete("sort");
+  const qs = p.toString();
+  return qs ? `/?${qs}` : "/";
+}
+
+/** 並び順と評価を同時に持たない（どちらか一方だけ） */
+function hrefListSortNew(sp: URLSearchParams): string {
+  return buildHomeSearchHref(sp, { clearStars: true, sort: "new" });
+}
+
+function hrefListSortOld(sp: URLSearchParams): string {
+  return buildHomeSearchHref(sp, { clearStars: true, sort: "old" });
+}
+
+function hrefListStarOnly(sp: URLSearchParams, stars: string): string {
+  return buildHomeSearchHref(sp, { stars, sort: "new" });
+}
+
+/** 現在のジャンル（未選択は全件）に対する評価別件数（絞り込みバー用） */
 function countsByStarFilter(
   merged: MergedReviewItem[],
   genre: "hypnosis" | "doujin" | null
@@ -250,11 +306,19 @@ export function HomeReviewList({ markdownReviews }: Props) {
     if (starFilter !== null) {
       list = list.filter((item) => matchesStarFilter(item, starFilter));
     }
-    return sortMergedByPublishedAt(list, sortOrder);
+    const effectiveSort: "new" | "old" =
+      starFilter !== null ? "new" : sortOrder;
+    return sortMergedByPublishedAt(list, effectiveSort);
   }, [mergedReviews, genreFilter, starFilter, sortOrder]);
 
-  const starCountsForSidebar = useMemo(
+  const starCountsForFilter = useMemo(
     () => countsByStarFilter(mergedReviews, genreFilter),
+    [mergedReviews, genreFilter]
+  );
+
+  const listScopeCount = useMemo(
+    () =>
+      mergedReviews.filter((i) => matchesGenreFilter(i, genreFilter)).length,
     [mergedReviews, genreFilter]
   );
 
@@ -289,6 +353,15 @@ export function HomeReviewList({ markdownReviews }: Props) {
     );
   }, [markdownArticles, articlePosts]);
 
+  const genrePillCounts = useMemo(
+    () => ({
+      all: mergedReviews.length,
+      hypnosis: countByGenre(mergedReviews, "hypnosis"),
+      doujin: countByGenre(mergedReviews, "doujin"),
+    }),
+    [mergedReviews]
+  );
+
   const hasAnyContent =
     mergedReviews.length > 0 ||
     markdownArticles.length > 0 ||
@@ -318,10 +391,141 @@ export function HomeReviewList({ markdownReviews }: Props) {
     );
   }
 
+  const filterBarWrap =
+    "mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-slate-600/45 bg-slate-800/50 px-4 py-3.5 shadow-md shadow-slate-950/25 ring-1 ring-slate-700/30 sm:mb-4 sm:gap-3 sm:px-5 sm:py-4";
+  const filterBarLabel =
+    "shrink-0 text-sm font-medium text-slate-300 sm:text-[0.9375rem]";
+  const pillBase =
+    "inline-flex min-h-9 items-center rounded-full px-3.5 py-1.5 text-sm font-medium tabular-nums transition sm:px-4";
+  const pillOn =
+    "bg-[#ca2aa6] text-white shadow-sm shadow-fuchsia-900/40 ring-1 ring-fuchsia-950/20";
+  const pillOff =
+    "border border-violet-400/45 bg-slate-900/70 text-violet-200 shadow-sm shadow-slate-950/20 hover:border-fuchsia-400/50 hover:bg-slate-800/90 hover:text-fuchsia-100";
+
   return (
-    <div className="mt-14 flex flex-col-reverse gap-10 lg:mt-16 lg:flex-row lg:items-start lg:gap-10 xl:gap-12">
-      <div className="min-w-0 flex-1 space-y-16 sm:space-y-20">
+    <div className="mt-14 space-y-16 sm:mt-16 sm:space-y-20">
+      <div className="min-w-0 space-y-16 sm:space-y-20">
         <section aria-labelledby="reviews-heading">
+          <div className="mb-6 space-y-3 sm:mb-7 sm:space-y-3.5">
+            <div
+              className={filterBarWrap}
+              role="group"
+              aria-label="並び順と評価（いずれか1つ）"
+            >
+              <span className={filterBarLabel}>絞り込み:</span>
+              <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+                <Link
+                  href={hrefListSortNew(searchParams)}
+                  scroll={false}
+                  className={[
+                    pillBase,
+                    starFilter === null && sortOrder === "new"
+                      ? pillOn
+                      : pillOff,
+                  ].join(" ")}
+                >
+                  新しい順（{listScopeCount}）
+                </Link>
+                <Link
+                  href={hrefListSortOld(searchParams)}
+                  scroll={false}
+                  className={[
+                    pillBase,
+                    starFilter === null && sortOrder === "old"
+                      ? pillOn
+                      : pillOff,
+                  ].join(" ")}
+                >
+                  古い順（{listScopeCount}）
+                </Link>
+                {STAR_FILTER_LINKS.map(({ param, label }) => {
+                  const active =
+                    param === "lte5"
+                      ? starFilter === "lte5"
+                      : starFilter === Number(param);
+                  const countKey =
+                    param === "lte5"
+                      ? ("lte5" as const)
+                      : (param as "10" | "9" | "8" | "7" | "6");
+                  const count = starCountsForFilter[countKey];
+                  return (
+                    <Link
+                      key={param}
+                      href={hrefListStarOnly(searchParams, param)}
+                      scroll={false}
+                      className={[pillBase, active ? pillOn : pillOff].join(
+                        " "
+                      )}
+                    >
+                      {label}（{count}）
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div
+              className={filterBarWrap}
+              role="group"
+              aria-label="ジャンル"
+            >
+              <span className={filterBarLabel}>ジャンル:</span>
+              <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+                <Link
+                  href={buildHomeSearchHref(searchParams, { genre: null })}
+                  scroll={false}
+                  className={[
+                    pillBase,
+                    genreFilter === null ? pillOn : pillOff,
+                  ].join(" ")}
+                >
+                  全て（{genrePillCounts.all}）
+                </Link>
+                <Link
+                  href={buildHomeSearchHref(searchParams, {
+                    genre: "hypnosis",
+                  })}
+                  scroll={false}
+                  className={[
+                    pillBase,
+                    genreFilter === "hypnosis" ? pillOn : pillOff,
+                  ].join(" ")}
+                >
+                  催眠音声（{genrePillCounts.hypnosis}）
+                </Link>
+                <Link
+                  href={buildHomeSearchHref(searchParams, {
+                    genre: "doujin",
+                  })}
+                  scroll={false}
+                  className={[
+                    pillBase,
+                    genreFilter === "doujin" ? pillOn : pillOff,
+                  ].join(" ")}
+                >
+                  同人音声（{genrePillCounts.doujin}）
+                </Link>
+              </div>
+            </div>
+
+            <p className="text-xs leading-relaxed text-slate-500">
+              <span className="text-slate-400">ページ内:</span>{" "}
+              <Link
+                href={`/#${SECTION_HYPNOSIS_INTRO}`}
+                className="text-sky-400/95 underline-offset-2 hover:text-sky-300 hover:underline"
+              >
+                催眠音声入門
+              </Link>
+              {" · "}
+              <Link
+                href={`/#${SECTION_AUTHOR_POSTS}`}
+                className="text-sky-400/95 underline-offset-2 hover:text-sky-300 hover:underline"
+              >
+                記事一覧
+              </Link>
+            </p>
+          </div>
+
           <div className="mb-8 sm:mb-10">
             <h2
               id="reviews-heading"
@@ -332,6 +536,9 @@ export function HomeReviewList({ markdownReviews }: Props) {
                 const parts: string[] = [];
                 if (genreFilter === "hypnosis") parts.push("催眠音声");
                 if (genreFilter === "doujin") parts.push("同人音声");
+                if (sortOrder === "old" && starFilter === null) {
+                  parts.push("古い順");
+                }
                 if (starFilter !== null) {
                   parts.push(
                     starFilter === "lte5" ? "★5〜" : `★${starFilter}`
@@ -348,7 +555,9 @@ export function HomeReviewList({ markdownReviews }: Props) {
             </h2>
             <p className="mt-1 text-sm text-slate-500">
               {filteredReviews.length} 件
-              {(starFilter !== null || genreFilter !== null) &&
+              {(starFilter !== null ||
+                genreFilter !== null ||
+                sortOrder === "old") &&
               mergedReviews.length > 0
                 ? ` / 全レビュー ${mergedReviews.length} 件`
                 : null}
@@ -360,7 +569,7 @@ export function HomeReviewList({ markdownReviews }: Props) {
               {starFilter !== null
                 ? `${
                     starFilter === "lte5" ? "★5〜" : `★${starFilter}`
-                  }のレビューはまだありません。右のメニューで「すべて」を選ぶと全件表示されます。`
+                  }のレビューはまだありません。上の「絞り込み」で「新しい順」「古い順」または別の星を選ぶと表示件数が変わります。`
                 : "レビューがありません。"}
             </p>
           ) : (
@@ -432,13 +641,6 @@ export function HomeReviewList({ markdownReviews }: Props) {
           )}
         </section>
       </div>
-
-      <aside className="shrink-0 lg:sticky lg:top-24 lg:w-52 xl:w-56">
-        <RatingStarsSidebar
-          starCounts={starCountsForSidebar}
-          sortOrder={sortOrder}
-        />
-      </aside>
     </div>
   );
 }
