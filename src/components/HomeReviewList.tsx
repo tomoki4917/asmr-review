@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   POSTED_REVIEWS_CHANGED_EVENT,
   POSTED_REVIEWS_STORAGE_KEY,
@@ -249,6 +249,7 @@ type Props = {
 };
 
 export function HomeReviewList({ markdownReviews }: Props) {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const starsRaw = searchParams.get("stars");
   const starFilter: number | "lte5" | null =
@@ -395,12 +396,11 @@ export function HomeReviewList({ markdownReviews }: Props) {
     "mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-slate-600/45 bg-slate-800/50 px-4 py-3.5 shadow-md shadow-slate-950/25 ring-1 ring-slate-700/30 sm:mb-4 sm:gap-3 sm:px-5 sm:py-4";
   const filterBarLabel =
     "shrink-0 text-sm font-medium text-slate-300 sm:text-[0.9375rem]";
-  const pillBase =
-    "inline-flex min-h-9 items-center rounded-full px-3.5 py-1.5 text-sm font-medium tabular-nums transition sm:px-4";
-  const pillOn =
-    "bg-[#ca2aa6] text-white shadow-sm shadow-fuchsia-900/40 ring-1 ring-fuchsia-950/20";
-  const pillOff =
-    "border border-violet-400/45 bg-slate-900/70 text-violet-200 shadow-sm shadow-slate-950/20 hover:border-fuchsia-400/50 hover:bg-slate-800/90 hover:text-fuchsia-100";
+  const selectBase =
+    "min-h-9 rounded-full border border-violet-400/45 bg-slate-900/70 px-3.5 py-1.5 text-sm font-medium text-violet-100 shadow-sm shadow-slate-950/20 transition hover:border-fuchsia-400/50 hover:bg-slate-800/90 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/45";
+  const currentSortKey =
+    starFilter === null ? (sortOrder === "old" ? "old" : "new") : String(starsRaw);
+  const currentGenreKey = genreFilter ?? "all";
 
   return (
     <div className="mt-14 space-y-16 sm:mt-16 sm:space-y-20">
@@ -410,102 +410,61 @@ export function HomeReviewList({ markdownReviews }: Props) {
             <div
               className={filterBarWrap}
               role="group"
-              aria-label="並び順と評価（いずれか1つ）"
+              aria-label="絞り込みとジャンル"
             >
               <span className={filterBarLabel}>絞り込み:</span>
-              <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
-                <Link
-                  href={hrefListSortNew(searchParams)}
-                  scroll={false}
-                  className={[
-                    pillBase,
-                    starFilter === null && sortOrder === "new"
-                      ? pillOn
-                      : pillOff,
-                  ].join(" ")}
-                >
-                  新しい順（{listScopeCount}）
-                </Link>
-                <Link
-                  href={hrefListSortOld(searchParams)}
-                  scroll={false}
-                  className={[
-                    pillBase,
-                    starFilter === null && sortOrder === "old"
-                      ? pillOn
-                      : pillOff,
-                  ].join(" ")}
-                >
-                  古い順（{listScopeCount}）
-                </Link>
+              <select
+                aria-label="並び順と評価"
+                className={selectBase}
+                value={currentSortKey}
+                onChange={(e) => {
+                  const next = e.currentTarget.value;
+                  const href =
+                    next === "new"
+                      ? hrefListSortNew(searchParams)
+                      : next === "old"
+                        ? hrefListSortOld(searchParams)
+                        : hrefListStarOnly(searchParams, next);
+                  router.push(href, { scroll: false });
+                }}
+              >
+                <option value="new">新しい順（{listScopeCount}）</option>
+                <option value="old">古い順（{listScopeCount}）</option>
                 {STAR_FILTER_LINKS.map(({ param, label }) => {
-                  const active =
-                    param === "lte5"
-                      ? starFilter === "lte5"
-                      : starFilter === Number(param);
                   const countKey =
                     param === "lte5"
                       ? ("lte5" as const)
                       : (param as "10" | "9" | "8" | "7" | "6");
                   const count = starCountsForFilter[countKey];
                   return (
-                    <Link
-                      key={param}
-                      href={hrefListStarOnly(searchParams, param)}
-                      scroll={false}
-                      className={[pillBase, active ? pillOn : pillOff].join(
-                        " "
-                      )}
-                    >
+                    <option key={param} value={param}>
                       {label}（{count}）
-                    </Link>
+                    </option>
                   );
                 })}
-              </div>
-            </div>
-
-            <div
-              className={filterBarWrap}
-              role="group"
-              aria-label="ジャンル"
-            >
+              </select>
               <span className={filterBarLabel}>ジャンル:</span>
-              <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
-                <Link
-                  href={buildHomeSearchHref(searchParams, { genre: null })}
-                  scroll={false}
-                  className={[
-                    pillBase,
-                    genreFilter === null ? pillOn : pillOff,
-                  ].join(" ")}
-                >
-                  全て（{genrePillCounts.all}）
-                </Link>
-                <Link
-                  href={buildHomeSearchHref(searchParams, {
-                    genre: "hypnosis",
-                  })}
-                  scroll={false}
-                  className={[
-                    pillBase,
-                    genreFilter === "hypnosis" ? pillOn : pillOff,
-                  ].join(" ")}
-                >
+              <select
+                aria-label="ジャンル"
+                className={selectBase}
+                value={currentGenreKey}
+                onChange={(e) => {
+                  const next = e.currentTarget.value;
+                  const href = buildHomeSearchHref(searchParams, {
+                    genre:
+                      next === "hypnosis" || next === "doujin" ? next : null,
+                  });
+                  router.push(href, { scroll: false });
+                }}
+              >
+                <option value="all">全て（{genrePillCounts.all}）</option>
+                <option value="hypnosis">
                   催眠音声（{genrePillCounts.hypnosis}）
-                </Link>
-                <Link
-                  href={buildHomeSearchHref(searchParams, {
-                    genre: "doujin",
-                  })}
-                  scroll={false}
-                  className={[
-                    pillBase,
-                    genreFilter === "doujin" ? pillOn : pillOff,
-                  ].join(" ")}
-                >
+                </option>
+                <option value="doujin">
                   同人音声（{genrePillCounts.doujin}）
-                </Link>
-              </div>
+                </option>
+              </select>
             </div>
 
             <p className="text-xs leading-relaxed text-slate-500">

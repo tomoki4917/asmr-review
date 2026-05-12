@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { HomeReviewList } from "@/components/HomeReviewList";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
+import { HomeSaleColumn } from "@/components/HomeSaleColumn";
 import { PsychologyInsightsSection } from "@/components/PsychologyInsightsSection";
 import { ReviewCover } from "@/components/ReviewCover";
 import { ReviewDlsiteListPrice } from "@/components/ReviewDlsiteListPrice";
@@ -15,16 +16,29 @@ import {
 } from "@/lib/dlsite-product-catalog";
 import { isReviewNewPublication } from "@/lib/review-new-badge";
 import { reviewTitleSingleLine } from "@/lib/review-title";
-import { reviewPublicationTimeMs } from "@/lib/format-published-at";
+import {
+  formatReviewPublishedForList,
+  reviewPublicationTimeMs,
+} from "@/lib/format-published-at";
 import { getAllReviews, getBeginnerGuides } from "@/lib/reviews";
 import type { Review } from "@/lib/types";
 
 /** ピックアップに並べる最大件数（直近・高評価のうち先頭から） */
 const SPOTLIGHT_MAX = 1;
+const HOME_SIDE_LIST_MAX = 5;
+/** すぐ戻せるように: false で従来レイアウトに復帰 */
+const ENABLE_HOME_EDITORIAL_LAYOUT = true;
+/** 指定時はトップのピックアップをこのレビューに固定。`null` で ★9 以上・新しい順に自動 */
+const HOME_SPOTLIGHT_SLUG: string | null =
+  "unknown-hypno-daijobu-koe-ni-yudanete";
 
 function pickSpotlightReviews(reviews: Review[]): Review[] {
-  return reviews
-    .filter((r) => r.contentKind === "review")
+  const reviewOnly = reviews.filter((r) => r.contentKind === "review");
+  if (HOME_SPOTLIGHT_SLUG) {
+    const fixed = reviewOnly.find((r) => r.slug === HOME_SPOTLIGHT_SLUG);
+    if (fixed) return [fixed];
+  }
+  return reviewOnly
     .filter((r) =>
       isStarBucketNineOrAbove(r.ratingValue, r.ratingBest ?? RATING_BEST_DEFAULT)
     )
@@ -55,7 +69,7 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
         ピックアップレビュー
       </h2>
       <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-slate-500">
-        直近に投稿したレビューから、★9以上と評価した作品をピックアップしています。
+        直近に発売した作品から、★9以上と評価した作品をピックアップしています。
       </p>
       <ul className="mt-6 space-y-4">
         {items.map((r) => {
@@ -127,12 +141,202 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
   );
 }
 
+function latestReviews(reviews: Review[]): Review[] {
+  return reviews
+    .filter((r) => r.contentKind === "review")
+    .sort((a, b) => {
+      const tb = reviewPublicationTimeMs(b);
+      const ta = reviewPublicationTimeMs(a);
+      const diff = tb - ta;
+      if (diff !== 0) return diff;
+      return a.slug.localeCompare(b.slug);
+    })
+    .slice(0, HOME_SIDE_LIST_MAX);
+}
+
+/** セール中のレビュー（★高い順・同点は割引率→新しい順）。件数制限なし。 */
+function allSaleReviews(reviews: Review[]): Review[] {
+  return reviews
+    .filter((r) => r.contentKind === "review" && r.dlsiteProductId)
+    .filter((r) => {
+      const product = r.dlsiteProductId
+        ? getDlsiteProductById(r.dlsiteProductId)
+        : undefined;
+      return Boolean(product?.on_sale);
+    })
+    .sort((a, b) => {
+      const starDiff =
+        b.ratingValue - a.ratingValue;
+      if (starDiff !== 0) return starDiff;
+      const pa = a.dlsiteProductId
+        ? getDlsiteProductById(a.dlsiteProductId)
+        : undefined;
+      const pb = b.dlsiteProductId
+        ? getDlsiteProductById(b.dlsiteProductId)
+        : undefined;
+      const disc = (pb?.discount_rate ?? 0) - (pa?.discount_rate ?? 0);
+      if (disc !== 0) return disc;
+      return reviewPublicationTimeMs(b) - reviewPublicationTimeMs(a);
+    });
+}
+
+/** 一覧左カラム用（JST 暦日で「今日 / 昨日 / N日前」） */
+function publicationRelativeJa(review: Review): string {
+  const ms = reviewPublicationTimeMs(review);
+  if (!Number.isFinite(ms)) return formatReviewPublishedForList(review);
+  const pubDay = new Date(ms).toLocaleDateString("en-CA", {
+    timeZone: "Asia/Tokyo",
+  });
+  const now = new Date();
+  const today = now.toLocaleDateString("en-CA", { timeZone: "Asia/Tokyo" });
+  if (pubDay === today) return "今日";
+  const y = new Date(
+    now.toLocaleString("en-US", { timeZone: "Asia/Tokyo" })
+  );
+  y.setDate(y.getDate() - 1);
+  const yesterday = y.toLocaleDateString("en-CA", { timeZone: "Asia/Tokyo" });
+  if (pubDay === yesterday) return "昨日";
+  const pubNoon = new Date(`${pubDay}T12:00:00+09:00`).getTime();
+  const todayNoon = new Date(`${today}T12:00:00+09:00`).getTime();
+  const diffDays = Math.floor((todayNoon - pubNoon) / 86400000);
+  if (diffDays >= 2 && diffDays < 7) return `${diffDays}日前`;
+  return formatReviewPublishedForList(review);
+}
+
+function HomeEditorialColumns({ reviews }: { reviews: Review[] }) {
+  const spotlight = pickSpotlightReviews(reviews)[0];
+  const latest = latestReviews(reviews);
+  const onSaleAll = allSaleReviews(reviews);
+
+  if (!spotlight) return null;
+
+  const nowSpot = new Date();
+  const spotlightNew = isReviewNewPublication(spotlight, nowSpot);
+  const spotlightShinsaku = isDlsiteProductShinsaku(
+    spotlight.dlsiteProductId
+      ? getDlsiteProductById(spotlight.dlsiteProductId)
+      : undefined,
+    nowSpot
+  );
+  const spotlightBadges = spotlightNew || spotlightShinsaku;
+
+  return (
+    <section
+      className="mx-auto mt-12 max-w-7xl border-t border-slate-600/50 px-4 pt-10 sm:mt-14 sm:px-0"
+      aria-label="注目エリア"
+    >
+      <div className="grid items-start gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.55fr)_minmax(0,1fr)] lg:gap-x-10">
+        <aside className="min-w-0">
+          <header className="border-t border-slate-500/70 pt-3">
+            <h2 className="font-serif text-xl font-bold tracking-tight text-slate-50 sm:text-[1.35rem]">
+              新着
+            </h2>
+          </header>
+          <ul className="mt-5 space-y-5">
+            {latest.map((r) => {
+              const titleOne = reviewTitleSingleLine(r.title);
+              return (
+                <li key={r.slug}>
+                  <Link href={`/reviews/${r.slug}/`} className="group flex gap-3">
+                    <div className="w-[4.5rem] shrink-0 sm:w-20">
+                      <ReviewCover
+                        coverImage={r.coverImage}
+                        alt={titleOne}
+                        slug={r.slug}
+                        className="rounded-md"
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-pretty text-sm font-semibold leading-snug text-slate-100 group-hover:text-sky-300">
+                        {titleOne}
+                      </p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        {publicationRelativeJa(r)}
+                      </p>
+                      <div className="mt-1.5 min-w-0">
+                        <ReviewDlsiteListPrice review={r} size="compact" />
+                      </div>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </aside>
+
+        <article
+          className="min-w-0 lg:px-1"
+          aria-labelledby="home-pickup-review-heading"
+        >
+          <header className="border-t border-slate-500/70 pt-3">
+            <h2
+              id="home-pickup-review-heading"
+              className="font-serif text-xl font-bold tracking-tight text-slate-50 sm:text-[1.35rem]"
+            >
+              ピックアップレビュー
+            </h2>
+          </header>
+          <Link
+            href={`/reviews/${spotlight.slug}/`}
+            className="group mt-5 block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400/45"
+          >
+            <div className="relative overflow-hidden bg-slate-900">
+              {spotlightBadges ? (
+                <div className="absolute right-3 top-3 z-10 flex max-w-[min(100%,calc(100%-1.5rem))] flex-wrap justify-end gap-1.5">
+                  {spotlightNew ? <ReviewNewBadge variant="overlay" /> : null}
+                  {spotlightShinsaku ? (
+                    <ShinsakuBadge variant="overlay" />
+                  ) : null}
+                </div>
+              ) : null}
+              <ReviewCover
+                coverImage={spotlight.coverImage}
+                alt={reviewTitleSingleLine(spotlight.title)}
+                slug={spotlight.slug}
+                priority
+                variant="hero"
+                className="rounded-none"
+              />
+            </div>
+            <h3 className="mt-5 text-pretty font-serif text-2xl font-bold leading-[1.2] tracking-tight text-slate-50 group-hover:text-sky-200 sm:text-3xl lg:text-[1.85rem] xl:text-4xl">
+              {reviewTitleSingleLine(spotlight.title)}
+            </h3>
+            <div className="mt-3 line-clamp-3 min-h-0 leading-relaxed text-slate-400">
+              <SummaryMarkdown markdown={spotlight.summary} className="text-sm sm:text-[0.9375rem]" />
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+              <StarRating
+                value={spotlight.ratingValue}
+                best={spotlight.ratingBest ?? 10}
+                size="md"
+              />
+              <ReviewDlsiteListPrice review={spotlight} />
+            </div>
+          </Link>
+        </article>
+
+        <aside className="min-w-0">
+          <header className="border-t border-slate-500/70 pt-3">
+            <h2 className="font-serif text-xl font-bold tracking-tight text-slate-50 sm:text-[1.35rem]">
+              セール中
+            </h2>
+          </header>
+          <p className="mt-2 text-pretty text-xs leading-relaxed text-slate-500">
+            解析室で紹介した作品のうち、いま値下げ中のものです。
+          </p>
+          <HomeSaleColumn reviews={onSaleAll} previewMax={HOME_SIDE_LIST_MAX} />
+        </aside>
+      </div>
+    </section>
+  );
+}
+
 export default function HomePage() {
   const reviews = getAllReviews();
   const beginnerGuides = getBeginnerGuides();
 
   return (
-    <main className="mx-auto w-full max-w-6xl py-10 sm:py-14">
+    <main className="mx-auto w-full max-w-7xl py-10 sm:py-14">
       <header className="mx-auto max-w-3xl text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-400/90">
           hypnosis · ASMR · psychology
@@ -190,7 +394,11 @@ export default function HomePage() {
         ) : null}
       </header>
 
-      <SpotlightReviews reviews={reviews} />
+      {ENABLE_HOME_EDITORIAL_LAYOUT ? (
+        <HomeEditorialColumns reviews={reviews} />
+      ) : (
+        <SpotlightReviews reviews={reviews} />
+      )}
 
       <Suspense
         fallback={

@@ -14,7 +14,13 @@ function reviewListPriceEnabled(): boolean {
 /**
  * レビュー一覧カード・ピックアップなどで、DLsite 税込価格を星評価横に出す。
  */
-export function ReviewDlsiteListPrice({ review }: { review: Review }) {
+export function ReviewDlsiteListPrice({
+  review,
+  size = "default",
+}: {
+  review: Review;
+  size?: "default" | "compact";
+}) {
   if (!reviewListPriceEnabled()) return null;
   if (!shouldShowDlsitePriceOnReviewListCard(review.dlsiteProductId)) {
     return null;
@@ -22,22 +28,51 @@ export function ReviewDlsiteListPrice({ review }: { review: Review }) {
   const p = getDlsiteProductById(review.dlsiteProductId!);
   if (!p || p.current_price <= 0) return null;
 
+  const compact = size === "compact";
+
   return (
-    <span className="inline-flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0 text-base tabular-nums">
+    <span
+      className={[
+        "inline-flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0 tabular-nums",
+        compact ? "text-sm" : "text-base",
+      ].join(" ")}
+    >
       {p.on_sale ? (
         <>
-          <span className="shrink-0 rounded bg-rose-600/85 px-1.5 py-0.5 text-[11px] font-bold leading-none text-white">
+          <span
+            className={[
+              "shrink-0 rounded bg-rose-600/85 font-bold leading-none text-white",
+              compact
+                ? "px-1 py-0.5 text-[10px]"
+                : "px-1.5 py-0.5 text-[11px]",
+            ].join(" ")}
+          >
             {p.discount_rate}%OFF
           </span>
-          <span className="text-lg font-bold tracking-tight text-amber-100">
+          <span
+            className={[
+              "font-bold tracking-tight text-amber-100",
+              compact ? "text-sm" : "text-lg",
+            ].join(" ")}
+          >
             ¥{p.current_price.toLocaleString("ja-JP")}
           </span>
-          <span className="text-sm font-normal text-slate-500 line-through">
+          <span
+            className={[
+              "font-normal text-slate-500 line-through",
+              compact ? "text-xs" : "text-sm",
+            ].join(" ")}
+          >
             ¥{p.original_price.toLocaleString("ja-JP")}
           </span>
         </>
       ) : (
-        <span className="text-lg font-bold tracking-tight text-slate-100">
+        <span
+          className={[
+            "font-bold tracking-tight text-slate-100",
+            compact ? "text-sm" : "text-lg",
+          ].join(" ")}
+        >
           ¥{p.current_price.toLocaleString("ja-JP")}
         </span>
       )}
