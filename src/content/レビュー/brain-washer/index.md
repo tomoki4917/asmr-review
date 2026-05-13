@@ -1,10 +1,12 @@
 ---
+
 slug: brain-washer
 title: 【レビュー】【催○音声】ブレインウォッシャー
 summary: |
   前室で安全運用と中断導線を先に固定し、本編トラックで儀式語・応答句・耳舐めを長尺反復して深度を押し込み、専用解除で数え上げ復帰まで処理する洗脳ロールプレイ型の構成です。単一ファイル実質2本（本編＋解除）で完走させる設計になっています。
 tags:
   - 催眠音声
+  - Dot-Space
   - 洗脳
   - 脳イキ
   - 耳舐め
@@ -25,6 +27,7 @@ affiliateLinks:
     href: https://dlaf.jp/maniax/dlaf/=/t/n/link/work/aid/reviewLab/id/RJ378282.html
     label: 体験版はこちら
 dlsiteProductId: RJ378282
+
 ---
 
 ## 作品名

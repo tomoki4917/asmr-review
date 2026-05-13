@@ -1,10 +1,12 @@
 ---
+
 slug: inuka-anji-amatime-oshioki-wakarase
 title: 【レビュー】【犬化暗示】あまあまタイムだと思ってたらおしおき脳イキで徹底わからせ
 summary: |
   甘やかし導入で受容を作ったあと、犬化語尾暗示と寸止め支配へ急旋回し、単一トラック約31分のなかで温度差を強くぶつける構成ですが、深化の持続と収束設計は中位に留まる作品です。
 tags:
   - 催眠音声
+  - アイガンハウス
   - バイノーラル
   - ペットプレイ
   - 犬化
@@ -27,6 +29,7 @@ affiliateLinks:
     href: https://dlaf.jp/maniax/dlaf/=/t/n/link/work/aid/reviewLab/id/RJ01498990.html
     label: 体験版はこちら
 dlsiteProductId: RJ01498990
+
 ---
 
 ## 作品名

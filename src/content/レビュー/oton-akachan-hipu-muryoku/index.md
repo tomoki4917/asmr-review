@@ -1,10 +1,12 @@
 ---
+
 slug: oton-akachan-hipu-muryoku
 title: 【レビュー】【催○音声】おとな赤ちゃん保育所による成人男性無力化プログラム ～社会福祉法人ひぷのガーデン～
 summary: |
   保育所設定で「大人の判断」を外す前置きから入り、挨拶合図・語尾固定・命令反復で赤ちゃん化を段階定着させる構成です。収録は **01 導入／02 本編／03 解除** の三分割で、字幕終端を足した総尺は約70分に収まります。深化の持続密度と余韻収束は中位に留まる設計です。
 tags:
   - 催眠音声
+  - Dot-Space
   - バイノーラル
   - 育児退行
   - ドライオーガズム
@@ -26,6 +28,7 @@ affiliateLinks:
     href: https://dlaf.jp/maniax/dlaf/=/t/n/link/work/aid/reviewLab/id/RJ01308551.html
     label: 体験版はこちら
 dlsiteProductId: RJ01308551
+
 ---
 
 ## 作品名

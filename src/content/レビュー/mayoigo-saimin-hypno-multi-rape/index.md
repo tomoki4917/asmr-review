@@ -1,10 +1,12 @@
 ---
+
 slug: mayoigo-saimin-hypno-multi-rape
 title: 【レビュー】迷い子の催○～ヒプノマルチレ○プ～
 summary: |
   「合図を聞いた瞬間に反応が先走るほど、連続絶頂へ引き込まれたい」--その先読み連鎖へ、単独誘導からマルチ展開へ段階的に切り替え、耳舐め絶頂の反復とトリガーで回収密度を押し上げる構成になっています。
 tags:
   - 催眠音声
+  - エロトランス
   - バイノーラル
   - ヒプノマルチ
   - 連続絶頂
@@ -27,6 +29,7 @@ affiliateLinks:
     href: https://dlaf.jp/maniax/dlaf/=/t/n/link/work/aid/reviewLab/id/RJ274843.html
     label: 体験版はこちら
 dlsiteProductId: RJ274843
+
 ---
 
 ## 作品名
