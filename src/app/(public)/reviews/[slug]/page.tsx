@@ -385,7 +385,7 @@ export default async function ReviewPage({ params }: Props) {
     "kyoku-mugen-zekkyou-count-chikuni": {
       scoreLabel: "9.0 / 10",
       oneLine:
-        "双子ショー形式で定位と短文トリガーを積み、逆カウント終端で乳首ドライを連発し、脱出から後催眠・覚醒まで手続きで収束させる約56分のカウント依存型",
+        "催眠ショーとメトロノームで注意をリズム側に固定し、禁止と短文トリガーを重ねたうえで逆カウント終端に乳首ドライを連発、終端信号の再定義で合図に身体が先に反応する約56分のカウント依存型",
       inductionType: "反復刷り込み系 / カウント誘導系 / 双子定位系",
       voiceActor: "乙倉ゅい",
       tempoType: "ややゆっくり / 断続系（間が多い）",
@@ -396,7 +396,7 @@ export default async function ReviewPage({ params }: Props) {
       recommendedFor: [
         "乳首起点でドライ絶頂を深めたい方",
         "カウント終端で反応が立ち上がる感覚を味わいたい方",
-        "脱出から覚醒まで通し設計で聴きたい方",
+        "従えば従うほど乳首が先に疼き、同じ掛け声のたびにドライ絶頂までが早くなるのを追いたい方",
       ],
       notRecommendedFor: [
         "短時間で軽く済ませたい方",

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { HomeDevShortcutPanel } from "@/components/home/HomeDevShortcutPanel";
+import { HomeHeroIntro } from "@/components/home/HomeHeroIntro";
 import { HomeReviewList } from "@/components/HomeReviewList";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { HomeSaleColumn } from "@/components/HomeSaleColumn";
@@ -335,64 +337,22 @@ export default function HomePage() {
   const reviews = getAllReviews();
   const beginnerGuides = getBeginnerGuides();
 
+  const devHero = process.env.NODE_ENV === "development";
+
   return (
     <main className="mx-auto w-full max-w-7xl py-10 sm:py-14">
-      <header className="mx-auto max-w-3xl text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-400/90">
-          hypnosis · ASMR · psychology
-        </p>
-        <h1 className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">
-          催眠音声解析室
-        </h1>
-        <div className="mx-auto mt-6 flex max-w-4xl items-center justify-center gap-3 sm:gap-4">
-          <span
-            aria-hidden
-            className="h-px w-10 bg-gradient-to-r from-transparent via-sky-300/70 to-transparent sm:w-16"
-          />
-          <p className="whitespace-nowrap text-lg font-semibold leading-relaxed tracking-[0.03em] text-slate-100 sm:text-2xl">
-            <span className="bg-gradient-to-r from-sky-100 via-cyan-200 to-teal-200 bg-clip-text text-transparent [text-shadow:0_0_18px_rgba(56,189,248,0.18)]">
-              あなたに、最高の没入と、心穏やかな時間を。
-            </span>
-          </p>
-          <span
-            aria-hidden
-            className="h-px w-10 bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent sm:w-16"
-          />
+      {devHero ? (
+        <div className="mx-auto max-w-4xl rounded-2xl border border-amber-600/50 bg-gradient-to-b from-slate-900/50 to-slate-950/70 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] sm:p-8">
+          <header className="mx-auto max-w-3xl text-center">
+            <HomeHeroIntro />
+          </header>
+          <HomeDevShortcutPanel />
         </div>
-        <p className="mx-auto mt-5 max-w-2xl text-pretty text-base leading-relaxed text-slate-300 sm:text-lg">
-          業界初 音声作品を多角的なツールを用い徹底解析
-        </p>
-        <p className="mx-auto mt-2 max-w-2xl text-pretty text-base leading-relaxed text-slate-300 sm:text-lg">
-          解析結果と主観を照合しユーザーが求める最適な作品を紹介します。
-        </p>
-        {process.env.NODE_ENV === "development" ? (
-          <aside
-            className="mx-auto mt-6 max-w-xl rounded-xl border border-amber-600/50 bg-amber-950/30 px-4 py-3 text-left text-xs leading-relaxed text-amber-100/90 sm:text-sm"
-            aria-label="開発用のショートカット"
-          >
-            <p className="font-medium text-amber-200">
-              開発環境のみ：SNS 流入ページの確認
-            </p>
-            <p className="mt-1 text-amber-100/75">
-              本番ビルドでは表示されません。
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <Link
-                href="/welcome/tiktok/"
-                className="inline-flex min-h-9 items-center rounded-full border border-amber-500/40 bg-amber-900/40 px-3 text-sm font-medium text-amber-50 transition hover:border-amber-400/60 hover:bg-amber-800/50"
-              >
-                /welcome/tiktok/
-              </Link>
-              <Link
-                href="/welcome/youtube/"
-                className="inline-flex min-h-9 items-center rounded-full border border-amber-500/40 bg-amber-900/40 px-3 text-sm font-medium text-amber-50 transition hover:border-amber-400/60 hover:bg-amber-800/50"
-              >
-                /welcome/youtube/
-              </Link>
-            </div>
-          </aside>
-        ) : null}
-      </header>
+      ) : (
+        <header className="mx-auto max-w-3xl text-center">
+          <HomeHeroIntro />
+        </header>
+      )}
 
       {ENABLE_HOME_EDITORIAL_LAYOUT ? (
         <HomeEditorialColumns reviews={reviews} />
