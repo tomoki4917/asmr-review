@@ -13,6 +13,10 @@ type Props = {
   quickScoreLabel: string;
   quickDryWetCounts?: string;
   quickOneLine: string;
+  /** クイック【スペック表】先頭。`YYYY-MM-DD` をサイト側で整形済みの表示文字列 */
+  quickSaleDate: string;
+  /** クイック【スペック表】2行目 */
+  quickCircleName: string;
   quickInductionType: string;
   quickVoiceActor: string;
   quickTempoType: string;
@@ -35,6 +39,8 @@ export function ReviewModeSwitcher({
   quickScoreLabel,
   quickDryWetCounts,
   quickOneLine,
+  quickSaleDate,
+  quickCircleName,
   quickInductionType,
   quickVoiceActor,
   quickTempoType,
@@ -114,6 +120,14 @@ export function ReviewModeSwitcher({
               className="mt-3 list-none space-y-2 rounded-xl border border-slate-600/70 bg-gradient-to-br from-slate-950/95 via-slate-900/92 to-slate-950/95 px-3 py-3 text-[0.92rem] font-semibold leading-[1.55] text-slate-50 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)] sm:space-y-2.5 sm:px-4 sm:py-4 sm:text-sm sm:leading-snug"
               aria-label="視聴前提の要点"
             >
+              <li className="border-l-[3px] border-slate-500/90 pl-3">
+                <span className="text-slate-100">販売日：</span>{" "}
+                <span className="text-slate-50">{quickSaleDate}</span>
+              </li>
+              <li className="border-l-[3px] border-slate-500/90 pl-3">
+                <span className="text-slate-100">サークル：</span>{" "}
+                <span className="text-slate-50">{quickCircleName}</span>
+              </li>
               <li className="border-l-[3px] border-slate-500/90 pl-3">
                 <span className="text-slate-100">誘導タイプ：</span>{" "}
                 <span className="text-slate-50">{quickInductionType}</span>

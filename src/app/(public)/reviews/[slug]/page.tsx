@@ -19,6 +19,7 @@ import {
   articlePublishedTimeIso,
   effectiveDisplayPublishedIsoDate,
   formatPublishedAtForList,
+  formatSaleDateJapanese,
 } from "@/lib/format-published-at";
 import {
   getAllReviews,
@@ -112,6 +113,16 @@ function extractCircleName(markdown?: string): string | null {
   return m[1].replace(/\s*（.*?）\s*$/u, "").trim() || null;
 }
 
+/** フロントマター `circleName` があれば優先。なければ本文 `### 基本情報` のサークル行から抽出 */
+function effectiveCircleName(review: Review): string | null {
+  const fromFm = review.circleName?.trim();
+  if (fromFm) {
+    const cleaned = fromFm.replace(/\s*（.*?）\s*$/u, "").trim();
+    return cleaned || null;
+  }
+  return extractCircleName(review.body);
+}
+
 function extractInductionRatioVector(markdown?: string): number[] {
   if (!markdown) return [];
   const normalized = markdown.replace(/\r\n/g, "\n");
@@ -148,12 +159,12 @@ function pickRelatedReviews(current: Review): Review[] {
   if (!current.body || current.contentKind !== "review") return [];
   const all = getAllReviews().filter((r) => r.contentKind === "review" && r.slug !== current.slug);
 
-  const currentCircle = extractCircleName(current.body);
+  const currentCircle = effectiveCircleName(current);
   const currentVector = extractInductionRatioVector(current.body);
 
   return all
     .map((candidate) => {
-      const circle = extractCircleName(candidate.body);
+      const circle = effectiveCircleName(candidate);
       const vector = extractInductionRatioVector(candidate.body);
       const sameCircle = currentCircle && circle ? circle === currentCircle : false;
       return {
@@ -1164,6 +1175,10 @@ export default async function ReviewPage({ params }: Props) {
   };
   const quickGuideSpec = quickGuideBySlug[review.slug];
   const enableTwoModeReview = Boolean(quickGuideSpec);
+  const quickSaleDateLabel = review.saleDate
+    ? formatSaleDateJapanese(review.saleDate)
+    : "未記入";
+  const quickCircleNameLabel = effectiveCircleName(review) ?? "未記入";
   const quickDryWetCounts = extractDryWetCounts(review.body);
   const quickDiscountLabel = dlsiteProduct?.on_sale
     ? `今なら${dlsiteProduct.discount_rate}%OFF`
@@ -1307,6 +1322,8 @@ export default async function ReviewPage({ params }: Props) {
             quickSampleHref={quickSampleHref}
             quickScoreLabel={quickGuideSpec?.scoreLabel ?? `${review.ratingValue}.0 / ${best}`}
             quickDryWetCounts={quickDryWetCounts}
+            quickSaleDate={quickSaleDateLabel}
+            quickCircleName={quickCircleNameLabel}
             quickOneLine={
               quickGuideSpec?.oneLine ??
               "作品固有の体験を要点だけで把握できるクイック解析です。"
@@ -1694,7 +1711,7 @@ export default async function ReviewPage({ params }: Props) {
             <h2 className="text-xl font-bold tracking-tight text-slate-100">関連作品</h2>
             <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {relatedReviews.map((item) => {
-                const itemCircle = extractCircleName(item.body);
+                const itemCircle = effectiveCircleName(item);
                 const titleOne = reviewTitleSingleLine(item.title);
                 return (
                   <li key={item.slug}>

@@ -62,6 +62,16 @@ export function formatReviewPublishedForList(
 }
 
 /**
+ * 作品販売日（`YYYY-MM-DD`）を日本語表記に（暦のズレを避け文字列から組み立て）
+ */
+export function formatSaleDateJapanese(isoDate: string): string {
+  const s = isoDate.trim();
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+  if (!m) return s;
+  return `${Number(m[1])}年${Number(m[2])}月${Number(m[3])}日`;
+}
+
+/**
  * OGP 等用の公開日時（ISO 8601）。`goLiveAt` 優先。
  * 日付のみの `goLiveAt` は `reviews.ts` の公開開始と同じ UTC 0 時を付与する。
  */

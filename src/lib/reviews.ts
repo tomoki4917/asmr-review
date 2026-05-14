@@ -116,6 +116,29 @@ function goLiveStartMs(goLiveAt: string): number {
   return Date.parse(s);
 }
 
+/** 作品販売日（暦日のみ）。`publishedAt` と同じ `YYYY-MM-DD` 形式。 */
+function parseOptionalSaleDate(raw: unknown): string | undefined {
+  if (raw == null || raw === "") return undefined;
+  if (typeof raw !== "string" || !raw.trim()) return undefined;
+  const s = raw.trim();
+  if (!GO_LIVE_DATE_RE.test(s)) {
+    throw new Error(
+      `saleDate は YYYY-MM-DD のみ指定してください（作品の販売開始日）: ${s}`
+    );
+  }
+  const t = Date.parse(`${s}T00:00:00.000Z`);
+  if (Number.isNaN(t)) {
+    throw new Error(`saleDate が日付として解釈できません: ${s}`);
+  }
+  return s;
+}
+
+function parseOptionalCircleName(raw: unknown): string | undefined {
+  if (raw == null || raw === "") return undefined;
+  if (typeof raw !== "string" || !raw.trim()) return undefined;
+  return raw.trim();
+}
+
 /**
  * `goLiveAt: "YYYY-MM-DD"` … その日の UTC 午前0時から公開。
  * または ISO 8601 日時（日本時間なら `...+09:00` を推奨）。
@@ -252,6 +275,8 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
         ? d.itemDescription.trim()
         : undefined,
     authorName: asString(d.authorName, "authorName"),
+    saleDate: parseOptionalSaleDate(d.saleDate),
+    circleName: parseOptionalCircleName(d.circleName),
     publishedAt: asString(d.publishedAt, "publishedAt"),
     goLiveAt: parseOptionalGoLiveAt(d.goLiveAt),
     affiliateLinks: parseAffiliateLinks(d.affiliateLinks),

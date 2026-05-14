@@ -32,6 +32,16 @@ export type Review = {
   itemName: string;
   itemDescription?: string;
   authorName: string;
+  /**
+   * 任意（**新規レビューでは必須**・執筆ガイド）。作品の販売開始日。販売ページの発売日に準じる。
+   * `YYYY-MM-DD` のみ（`publishedAt` と同形）。
+   */
+  saleDate?: string;
+  /**
+   * 任意。明示すると「記事モード／クイック解析」のスペック表のサークル名に使う。
+   * 省略時は本文 `### 基本情報` の `- **サークル：**` 行から自動抽出。
+   */
+  circleName?: string;
   publishedAt: string;
   /**
    * 任意。本番で一覧・詳細に出す開始時刻。
