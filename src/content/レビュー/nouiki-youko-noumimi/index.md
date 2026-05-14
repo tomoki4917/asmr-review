@@ -20,6 +20,9 @@ itemDescription: |
 
   エピローグで安眠側へ収束させ、起床トラックで現実へ戻す終端手順まで含めた通し設計です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2019-09-17"
 publishedAt: "2026-04-12"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ260000/RJ259751_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ259751.html
@@ -42,6 +45,7 @@ dlsiteProductId: RJ259751
 ### 基本情報
 
 - **サークル：** 暗中模索
+- **販売日：** 2019年9月17日（販売ページ表記）
 - **種類：** 催眠音声（ASMR×催眠、R18・ドライのみ）
 - **CV（男性向け本編）：** そらまめ。
 - **CV（女性向け）：** 和水創太（旧名義：想）

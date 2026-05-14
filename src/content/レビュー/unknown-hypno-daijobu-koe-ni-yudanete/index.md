@@ -18,6 +18,9 @@ itemDescription: |
 
   安眠で終える分岐と R18 本線の二本立て、天知遥氏の語りで「未知の語り手」と身体を委ねる一本です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2026-04-18"
 publishedAt: "2026-04-18"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01595000/RJ01594429_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ01594429.html
@@ -39,6 +42,7 @@ affiliateLinks:
 ### 基本情報
 
 - **サークル：** エロトランス
+- **販売日：** 2026年4月18日（販売ページ表記）
 - **種類：** 催眠音声（バイノーラル／本番描写なし・ドライ寄りの心象快感）
 - **シナリオ：** サイミー
 - **声優：** 天知遥

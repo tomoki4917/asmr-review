@@ -21,6 +21,9 @@ itemDescription: |
 
   後半は前立腺焦らしとカウント連発でドライ山を重ね、終端でノーハンド射精へ回収して解除へ接続します。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2022-08-20"
 publishedAt: "2026-04-26"
 goLiveAt: "2026-04-26T21:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ401000/RJ400972_img_main.jpg
@@ -43,6 +46,7 @@ dlsiteProductId: RJ400972
 ### 基本情報
 
 - **サークル：** しりあるヒプノ
+- **販売日：** 2022年8月20日（販売ページ表記）
 - **種類：** 催眠音声（R18・バイノーラル）
 - **声優：** 涼花みなせ
 - **脚本・総指揮・編集：** しりあるヒプノLabo長

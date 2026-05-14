@@ -18,6 +18,9 @@ itemDescription: |
 
   後半は性感と妹関係の上書きを重ね、解除トラックで五つ数えの覚醒手順へ接続する構成です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2026-04-24"
 publishedAt: "2026-04-25"
 goLiveAt: "2026-04-25T18:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01611000/RJ01610125_img_main.jpg
@@ -40,6 +43,7 @@ dlsiteProductId: RJ01610125
 ### 基本情報
 
 - **サークル：** 百合虎魂
+- **販売日：** 2026年4月24日（販売ページ表記）
 - **種類：** 催眠音声（R18・敗北TS・本番なし妄想誘導中心）
 - **声優：** 餅梨あむ
 - **脚本：** 朱時卍時

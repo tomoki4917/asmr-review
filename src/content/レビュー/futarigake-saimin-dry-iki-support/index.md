@@ -17,6 +17,9 @@ itemDescription: |
 
   複数版トラックで負荷を調整でき、解除カウントと締め会話まで含めて一連のセッションを完結させる構成です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2019-02-08"
 publishedAt: "2026-05-01"
 goLiveAt: "2026-05-01T11:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ242000/RJ241712_img_main.jpg
@@ -39,6 +42,7 @@ dlsiteProductId: RJ241712
 ### 基本情報
 
 - **サークル：** フルトラ
+- **販売日：** 2019年2月8日（販売ページ表記）
 - **種類：** 催眠音声（バイノーラル／R18・同人ボイス）
 - **シリーズ：** 双子白（ふたりがけ）シリーズ（販売ページ表記）
 - **声優：** みもりあいの

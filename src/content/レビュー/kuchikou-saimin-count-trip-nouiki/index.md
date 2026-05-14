@@ -17,6 +17,9 @@ itemDescription: |
 
   一時覚醒で主観深度を比較させる手順を挟み、終端カウントを快感回収の信号として結合する脳イキ志向の一本です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2026-01-17"
 publishedAt: "2026-04-11"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01547000/RJ01546680_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ01546680.html
@@ -39,6 +42,7 @@ dlsiteProductId: RJ01546680
 ### 基本情報
 
 - **サークル：** 暗闇Works
+- **販売日：** 2026年1月17日（販売ページ表記）
 - **種類：** 催眠音声（脳イキ・口唇感覚のイメージ誘導）
 - **声優：** 魔暗ヤミ
 - **脚本：** 魔暗ヤミ

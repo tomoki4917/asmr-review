@@ -15,6 +15,9 @@ itemName: 耳かき催眠
 itemDescription: |
   規約説明から誘導、両耳耳かき、終盤の性的サービス、覚醒までを一筆書きで接続する催眠音声です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2014-01-15"
 publishedAt: "2026-05-11"
 goLiveAt: "2026-05-11T11:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ128000/RJ127012_img_main.jpg
@@ -31,6 +34,7 @@ dlsiteProductId: RJ127012
 ## 作品概要
 ### 基本情報
 - **サークル：** エロトランス（販売ページ表記）
+- **販売日：** 2014年1月15日（販売ページ表記）
 - **種類：** 催眠音声（バイノーラル／R18）
 - **声優：** 伊ヶ崎綾香（販売ページ「CV:」表記）
 - **シナリオ：** サイミー（販売ページ表記）

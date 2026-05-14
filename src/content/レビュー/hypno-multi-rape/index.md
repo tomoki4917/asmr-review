@@ -17,6 +17,9 @@ itemDescription: |
 
   後半は数字トリガーで快感反応を連鎖させ、覚醒トラックで暗示を解除して復帰させる構成です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2017-01-12"
 publishedAt: "2026-04-23"
 goLiveAt: "2026-04-23T13:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ191000/RJ190391_img_main.jpg
@@ -39,6 +42,7 @@ dlsiteProductId: RJ190391
 ### 基本情報
 
 - **サークル：** エロトランス
+- **販売日：** 2017年1月12日（販売ページ表記）
 - **種類：** 催眠音声（R18・バイノーラル）
 - **声優：** 沢野ぽぷら（複数ライン掛け合い）
 - **脚本：** サイミー

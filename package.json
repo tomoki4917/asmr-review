@@ -16,7 +16,9 @@
     "lint": "next lint",
     "update-prices": "node scripts/update-prices.js",
     "update-prices:stale": "node scripts/update-prices.js --stale-sale-ended",
-    "update-price:one": "node scripts/fetch-one-price.mjs"
+    "update-price:one": "node scripts/fetch-one-price.mjs",
+    "sync-review-sale-from-dlsite": "node scripts/sync-review-sale-from-dlsite.mjs",
+    "audit:reviews-dlsite": "node scripts/audit-reviews-dlsite.mjs"
   },
   "dependencies": {
     "@next/third-parties": "^16.2.2",

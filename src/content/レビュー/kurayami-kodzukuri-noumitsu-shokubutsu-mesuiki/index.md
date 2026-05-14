@@ -17,6 +17,9 @@ itemDescription: |
 
   終盤は連続メスイキの山を形成し、1〜10の覚醒手順で現実側へ復帰させる構成です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2026-02-28"
 publishedAt: "2026-04-20"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01542000/RJ01541752_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ01541752.html
@@ -38,6 +41,7 @@ dlsiteProductId: RJ01541752
 ### 基本情報
 
 - **サークル：** 暗闇Works
+- **販売日：** 2026年2月28日（販売ページ表記）
 - **種類：** 催眠音声（本編約51分／寝落ち救済版・安眠版あり）
 - **声優：** 魔暗ヤミ
 - **脚本：** 魔暗ヤミ

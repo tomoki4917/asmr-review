@@ -17,6 +17,9 @@ itemName: 人生舐めてる先輩の恋ドレイ化マインドコントロー�
 itemDescription: |
 
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2023-06-09"
 publishedAt: "2026-05-07"
 goLiveAt: "2026-05-07T14:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01058000/RJ01057134_img_main.jpg
@@ -39,6 +42,7 @@ dlsiteProductId: RJ01057134
 ### 基本情報
 
 - **サークル：** F・A・S（販売ページ表記）
+- **販売日：** 2023年6月9日（販売ページ表記）
 - **種類：** 催眠音声（R18）
 - **主題：** 先輩後輩ドラマで関係性を構築し、質問応答暗示で恋ドレイ化を進める長めの尺マインドコントロール
 - **構造特徴：** 安全告知→集中訓練→ドラマ導入→本編実行→解除の五段分離

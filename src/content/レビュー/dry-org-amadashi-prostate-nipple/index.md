@@ -17,6 +17,9 @@ itemDescription: |
   導入で技法と到達条件を明示し、催眠・深化・長めの尺実演で甘出しとドライ反応を連結する構成。乳首と前立腺の同期反復で回収再現性を高める訓練寄り作品です。
 
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2021-01-20"
 publishedAt: "2026-05-05"
 goLiveAt: "2026-05-05T12:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ312000/RJ311813_img_main.jpg
@@ -39,6 +42,7 @@ dlsiteProductId: RJ311813
 ### 基本情報
 
 - **サークル：** MayThird
+- **販売日：** 2021年1月20日（販売ページ表記）
 - **種類：** 催眠音声（R18・本番なし・甘出し訓練・オナ指示実演中心）
 - **声優：** 天音羽乃
 - **脚本：** 野村渚（同梱クレジットはイラスト・台本・編集の併記）

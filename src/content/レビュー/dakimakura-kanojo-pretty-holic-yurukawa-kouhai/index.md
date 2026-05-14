@@ -19,6 +19,9 @@ itemDescription: |
   お泊まり本番のあと、【安眠用】トラックでキス主体に帯域と情報密度を落とし、長尺本編から終端まで落差が急になりにくい締めへつなぐ設計です。
 
 authorName: 同人音声レビュー室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2026-05-01"
 publishedAt: "2026-05-06"
 goLiveAt: "2026-05-06T12:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01532000/RJ01531480_img_main.jpg
@@ -41,6 +44,7 @@ dlsiteProductId: RJ01531480
 ### 基本情報
 
 - **サークル：** オトヨメ
+- **販売日：** 2026年5月1日（販売ページ表記）
 - **種類：** 同人音声（男性向け・R18）
 - **声優：** 陽向葵ゅか（戸丸更紗）
 - **収録：** KU100（販売ページ表記）

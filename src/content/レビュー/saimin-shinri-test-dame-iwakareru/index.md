@@ -17,6 +17,9 @@ itemDescription: |
 
   本編は手コキ・フェラ・挿入へ段階遷移し、購入特典を含めてウェット回収を重ねる快楽重心の構成です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2025-06-27"
 publishedAt: "2026-04-21"
 goLiveAt: "2026-04-18T13:59:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01415000/RJ01414253_img_main.jpg
@@ -39,6 +42,7 @@ dlsiteProductId: RJ01414253
 ### 基本情報
 
 - **サークル：** ヒプノシカ
+- **販売日：** 2025年6月27日（販売ページ表記）
 - **種類：** 催眠音声（バイノーラル／本編5トラック＋購入特典1トラック）
 - **声優：** 柚木つばめ（ナビゲーター「幸村理子」）
 - **脚本：** 砂部岩延

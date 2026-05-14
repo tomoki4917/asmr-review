@@ -19,6 +19,9 @@ itemDescription: |
 
   リラックス運動で受容条件を先に整え、本編で連続ドライ絶頂を積み、終端はセルフと解除で閉じる長めの尺作品です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2018-01-05"
 publishedAt: "2026-04-15"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ214000/RJ213951_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ213951.html
@@ -40,6 +43,7 @@ dlsiteProductId: RJ213951
 ### 基本情報
 
 - **サークル：** F・A・S
+- **販売日：** 2018年1月5日（販売ページ表記）
 - **種類：** 催眠音声（バイノーラル掛け合い／連続ドライ絶頂〜終端セルフ）
 - **台本・音声編集：** tareme
 - **声優：** 野上菜月／花笠れい

@@ -18,6 +18,9 @@ itemDescription: |
 
   終盤は三者同調のピークを形成し、解除と日常会話で余韻を保護しつつ復帰させます。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2020-01-10"
 publishedAt: "2026-04-22"
 goLiveAt: "2026-04-22T17:38:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ274000/RJ273500_img_main.jpg
@@ -40,6 +43,7 @@ dlsiteProductId: RJ273500
 ### 基本情報
 
 - **サークル：** フルトラ
+- **販売日：** 2020年1月10日（販売ページ表記）
 - **種類：** ボイス・ASMR（R18）
 - **声優：** みもりあいの
 - **脚本：** フルトラ

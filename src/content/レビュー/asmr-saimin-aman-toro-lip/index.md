@@ -20,6 +20,9 @@ itemDescription: |
 
   終端トラックで暗示を手続きとして解き、幸福感だけ残す収束までを短時間で完結させるドライ特化の一本です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2020-12-29"
 publishedAt: "2026-04-13"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ313000/RJ312554_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ312554.html
@@ -42,6 +45,7 @@ dlsiteProductId: RJ312554
 ### 基本情報
 
 - **サークル：** 暗中模索
+- **販売日：** 2020年12月29日（販売ページ表記）
 - **種類：** 催眠音声（ASMR×催眠・耳舐め・ドライのみ）
 - **CV（男性向け本編）：** みもりあいの
 - **CV（女性向け）：** 和水創太（旧名義：想）

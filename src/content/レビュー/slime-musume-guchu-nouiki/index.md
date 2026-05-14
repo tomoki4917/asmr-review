@@ -19,6 +19,9 @@ itemDescription: |
 
   本編は長尺ロングコースで高密度ピークを維持し、別トラック解除で日常側へ復帰させる手順まで完備しています。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2020-05-09"
 publishedAt: "2026-04-24"
 goLiveAt: "2026-04-24T17:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ286000/RJ285530_img_main.jpg
@@ -41,6 +44,7 @@ dlsiteProductId: RJ285530
 ### 基本情報
 
 - **サークル：** キャンドルマン
+- **販売日：** 2020年5月9日（販売ページ表記）
 - **種類：** 催眠音声・ASMR（R18・ドライ中心）
 - **声優：** 琴音有波（紅月ことね）
 - **企画・執筆・編集：** キャンドルマン

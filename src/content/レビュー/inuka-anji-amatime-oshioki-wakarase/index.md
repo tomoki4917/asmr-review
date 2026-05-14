@@ -21,6 +21,9 @@ itemDescription: |
   呼吸誘導と暗示テストを経て、寸止め反復で脳イキを狙い、解除で日常へ戻す構成です。収録は単一トラック（字幕終端 **約30:56**、総尺読み **約31分** の目安）。
 
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2025-11-11"
 publishedAt: "2026-04-29"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01499000/RJ01498990_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ01498990.html
@@ -43,6 +46,7 @@ dlsiteProductId: RJ01498990
 ### 基本情報
 
 - **サークル：** アイガンハウス（Aigan House）（販売ページ表記に準拠）
+- **販売日：** 2025年11月11日（販売ページ表記）
 - **種類：** 催眠音声（バイノーラル／R18・同人ボイス）
 - **声優：** 紫雲
 - **シナリオ：** アイガンハウス（販売ページのシナリオ表記に準拠）

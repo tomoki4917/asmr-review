@@ -23,6 +23,9 @@ itemDescription: |
   双子ショー形式でメトロノーム・拮抗・狭間から「カリカリ」とカウントへ繋ぐ約56分の本編。乳首ドライを連発し、禁止と短文トリガーで期待を積み、終端信号の再定義で「ゼロ」に反応が焼き付く両性向け催眠音声。
 
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2025-12-19"
 publishedAt: "2026-04-09"
 
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01518000/RJ01517030_img_main.jpg
@@ -47,6 +50,7 @@ dlsiteProductId: RJ01517030
 ### 基本情報
 
 - **サークル：** 紳士の教養
+- **販売日：** 2025年12月19日（販売ページ表記）
 - **種類：** 催眠音声（男女両用）
 - **声優：** 乙倉ゅい
 - **シナリオ：** kuroko.

@@ -18,6 +18,9 @@ itemDescription: |
 
   kuroko.さんバージョンとサイミーバージョンの二本立てで、同じコンセプトを別運用で聴き比べられます。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2024-12-28"
 publishedAt: "2026-05-09"
 goLiveAt: "2026-05-09T12:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01308000/RJ01307430_img_main.jpg
@@ -40,6 +43,7 @@ dlsiteProductId: RJ01307430
 ### 基本情報
 
 - **サークル：** エロトランス
+- **販売日：** 2024年12月28日（販売ページ表記）
 - **種類：** 催眠音声（バイノーラル／R18・同人ボイス）
 - **声優：** 陽向葵ゅか（???役）／みたかりん（シロネ役）
 - **シナリオ：** エロトランス サイミー（共作）

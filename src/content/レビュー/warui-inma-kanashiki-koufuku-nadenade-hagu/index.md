@@ -20,6 +20,9 @@ itemDescription: |
 
   ナデナデとハグを主軸に、ドライのみで複数回の回収を行う設計です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2022-04-10"
 publishedAt: "2026-04-14"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ381000/RJ380162_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ380162.html
@@ -42,6 +45,7 @@ dlsiteProductId: RJ380162
 ### 基本情報
 
 - **サークル：** 暗中模索
+- **販売日：** 2022年4月10日（販売ページ表記）
 - **種類：** 催眠音声（幸福系の脳イキ・R18・ドライのみ）
 - **シナリオ・作者：** 暗中模索
 - **声優（男性向け本編）：** みもりあいの

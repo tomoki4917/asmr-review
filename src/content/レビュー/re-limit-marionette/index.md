@@ -17,6 +17,9 @@ itemDescription: |
 
   後半はドライ連鎖を主軸に走り、終盤で完全覚醒を明示して暗示を解除する構成です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2024-01-27"
 publishedAt: "2026-04-24"
 goLiveAt: "2026-04-27T20:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01130000/RJ01129635_img_main.jpg
@@ -39,6 +42,7 @@ dlsiteProductId: RJ01129635
 ### 基本情報
 
 - **サークル：** エロトランス
+- **販売日：** 2024年1月27日（販売ページ表記）
 - **種類：** 催眠音声（R18・本番なし・ドライ中心）
 - **声優：** 涼花みなせ
 - **脚本：** サイミー

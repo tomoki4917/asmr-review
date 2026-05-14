@@ -20,6 +20,9 @@ itemDescription: |
 
   エンドレス耳舐め絶頂の差分を含み、通常覚醒まで戻す終端トラックを別に持つ二段運用になっています。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2020-01-25"
 publishedAt: "2026-05-10"
 goLiveAt: "2026-05-10T11:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ275000/RJ274843_img_main.jpg
@@ -43,6 +46,7 @@ dlsiteProductId: RJ274843
 ### 基本情報
 
 - **サークル：** エロトランス
+- **販売日：** 2020年1月25日（販売ページ表記）
 - **種類：** 催眠音声（バイノーラル／R18・同人ボイス）
 - **声優：** 沢野ぽぷら
 - **シナリオ：** サイミー

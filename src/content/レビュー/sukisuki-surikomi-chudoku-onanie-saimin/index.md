@@ -19,6 +19,9 @@ itemDescription: |
 
   終盤はウェット回収1回のピークを置き、終端トラックで段階的に現実側へ戻す構成です。
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
+saleDate: "2026-01-23"
 publishedAt: "2026-04-16"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01524000/RJ01523980_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ01523980.html
@@ -40,6 +43,7 @@ dlsiteProductId: RJ01523980
 ### 基本情報
 
 - **サークル：** Si-A
+- **販売日：** 2026年1月23日（販売ページ表記）
 - **種類：** 催眠音声（R18・オナニー誘導・条件付け）
 - **キャラクター：** バーチャルライバー「冬木咲良」
 - **声優：** 御子柴泉
