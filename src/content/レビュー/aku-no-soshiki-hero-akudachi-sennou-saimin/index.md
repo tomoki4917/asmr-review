@@ -12,6 +12,7 @@ tags:
   - 悪堕ち
   - 洗脳
   - 触手
+  - F・A・S
   - バイノーラル
 
 ratingValue: 10
@@ -25,8 +26,13 @@ itemDescription: |
   触手SEありの本編で触覚イベントが続き、レクリエーションから解除まで通しで状態遷移が組まれています。
 
 authorName: 催眠音声解析室
+
+# 作品の販売開始日（販売ページの販売日／`data/products.json` の `regist_date` に準拠）
+saleDate: "2020-10-16"
+
 publishedAt: "2026-05-12"
 goLiveAt: "2026-05-12T11:00:00+09:00"
+circleName: "F・A・S"
 
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ300000/RJ299661_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ299661.html
@@ -49,7 +55,8 @@ dlsiteProductId: RJ299661
 
 ### 基本情報
 
-- **サークル：** エロトランス（販売ページ表記）
+- **サークル：** F・A・S（販売ページ表記）
+- **販売日：** 2020年10月16日（販売ページ表記）
 - **種類：** 催眠音声（バイノーラル／R18／触手SEあり）
 - **声優：** 陽向葵ゅか（販売ページ「CV:」表記）
 - **シナリオ：** サイミー（販売ページクレジット表記に準拠）
