@@ -102,19 +102,19 @@ const detail = parseContentsDetail(html);
 
 let current = ga4.price;
 let original = ga4.official_price;
-if (!(Number.isFinite(current) && current > 0) && detail) {
+if (!(Number.isFinite(current) && current >= 0) && detail) {
   const p = parseInt(String(detail.price ?? ""), 10);
-  if (Number.isFinite(p) && p > 0) current = p;
+  if (Number.isFinite(p) && p >= 0) current = p;
 }
-if (!(Number.isFinite(original) && original > 0) && detail) {
+if (!(Number.isFinite(original) && original >= 0) && detail) {
   const o = parseInt(String(detail.official_price ?? ""), 10);
-  if (Number.isFinite(o) && o > 0) original = o;
+  if (Number.isFinite(o) && o >= 0) original = o;
 }
-if (!(Number.isFinite(current) && current > 0)) {
+if (!(Number.isFinite(current) && current >= 0)) {
   console.error("価格を HTML から取得できませんでした");
   process.exit(1);
 }
-if (!(Number.isFinite(original) && original > 0)) original = current;
+if (!(Number.isFinite(original) && original >= 0)) original = current;
 
 const discount_rate =
   original > 0 ? Math.min(100, Math.max(0, Math.round((1 - current / original) * 100))) : 0;

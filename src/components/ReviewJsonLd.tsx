@@ -102,7 +102,12 @@ function buildGraphSchema(
     product.image = review.coverImage;
   }
 
-  if (dlsiteProduct && dlsiteProduct.current_price > 0) {
+  if (
+    dlsiteProduct &&
+    typeof dlsiteProduct.current_price === "number" &&
+    Number.isFinite(dlsiteProduct.current_price) &&
+    dlsiteProduct.current_price >= 0
+  ) {
     product.brand = { "@type": "Brand", name: "DLsite" };
     product.offers = dlsiteDigitalDownloadOffer(dlsiteProduct);
   }

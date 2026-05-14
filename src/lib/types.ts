@@ -69,4 +69,9 @@ export type Review = {
    * 18 禁に該当しない一般向け記事にだけ付与する。
    */
   safeForExternalLanding?: boolean;
+  /**
+   * `true` のとき、トップの「記事一覧」や SNS 一般向け記事一覧から除外する。
+   * ビギナーズガイド等の直リンク専用に使う。
+   */
+  excludeFromArticleIndex?: boolean;
 };

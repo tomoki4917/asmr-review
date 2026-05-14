@@ -291,7 +291,11 @@ export function HomeReviewList({ markdownReviews }: Props) {
   }, [reloadPosted]);
 
   const markdownArticles = useMemo(
-    () => markdownReviews.filter((r) => r.contentKind === "article"),
+    () =>
+      markdownReviews.filter(
+        (r) =>
+          r.contentKind === "article" && r.excludeFromArticleIndex !== true
+      ),
     [markdownReviews]
   );
 

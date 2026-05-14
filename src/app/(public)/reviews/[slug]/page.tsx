@@ -1172,6 +1172,27 @@ export default async function ReviewPage({ params }: Props) {
         "最短時間だけで片付けたい方（エロ帯が長め）",
       ],
     },
+    "numa-futari-akujo-free-hypnosis-rj01129822": {
+      scoreLabel: "8.0 / 10",
+      oneLine:
+        "約55分39秒。双子の悪女が左右から囁きと吐息で環境を組み替え、キスと耳元責めを経由して段階式のドライへ運ぶ無料の長尺バイノーラル催眠",
+      inductionType: "洗脳系 / 服従・支配系 / 双子定位系 / カウント誘導系",
+      voiceActor: "陽向葵ゅか / そらまめ。",
+      tempoType: "ややゆっくり / 断続〜連続（前半独白→後半密着）",
+      majorFetish: "双子責め / キス / 吐息 / 耳舐め / マゾ言責め / 段階ドライ",
+      kinkType: "ドM",
+      recommendedLevel: "初中級（中程度トランス＋暗示受容は可能）以上の方",
+      recording: "約55分39秒（本編通し・バイノーラル）",
+      recommendedFor: [
+        "左右から悪女に囁かれ、マゾ前提の言葉責めと甘い密着を同じ空間で味わいたい人",
+        "キス・吐息・耳舐めで定位が忙しく動き、カウント終端で身体が反応する誘導に没入したい人",
+        "「20→40→60%」の段階ラベルでドライの強度が積み上がる快感の運びを追いたい人",
+      ],
+      notRecommendedFor: [
+        "長い独白やマゾラベリングのあとに刺激が来るまで待てない人",
+        "悪女に弄ばれる屈辱系のシチュエーションや強い支配語が苦手な人",
+      ],
+    },
   };
   const quickGuideSpec = quickGuideBySlug[review.slug];
   const enableTwoModeReview = Boolean(quickGuideSpec);
@@ -1528,37 +1549,32 @@ export default async function ReviewPage({ params }: Props) {
           </ReviewModeSwitcher>
         ) : (
           <>
-            {!isArticle ? (
+            {bodyH2Headings.length > 0 ? (
               <section className="mt-6 rounded-2xl border border-slate-600/45 bg-slate-800/45 px-5 py-5 shadow-sm shadow-slate-950/20 sm:mt-7 sm:px-6 sm:py-6">
-                {bodyH2Headings.length > 0 ? (
-                  <nav
-                    className=""
-                    aria-label="本文見出し"
-                  >
-                    <p className="rounded-lg border border-slate-600/70 bg-slate-900/65 px-3 py-2.5 text-base font-bold tracking-wide text-slate-100">
-                      <span className="mr-2 align-middle text-sm font-extrabold uppercase tracking-[0.22em] text-sky-300">
-                        OUTLINE
-                      </span>
-                      <span className="text-slate-200">読みたい項目からご覧いただけます。</span>
-                    </p>
-                    <ul className="mt-3 space-y-2">
-                      {bodyH2Headings.map((h) => (
-                        <li key={h.id}>
-                          <a
-                            href={`#${h.id}`}
-                            className="group inline-flex min-h-10 items-center gap-2 rounded-md px-2 py-1 text-[0.95rem] font-medium text-slate-200 transition hover:bg-slate-900/40 hover:text-sky-200"
-                          >
-                            <span
-                              aria-hidden
-                              className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange-400 transition group-hover:bg-sky-300"
-                            />
-                            {h.label}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </nav>
-                ) : null}
+                <nav className="" aria-label="本文見出し">
+                  <p className="rounded-lg border border-slate-600/70 bg-slate-900/65 px-3 py-2.5 text-base font-bold tracking-wide text-slate-100">
+                    <span className="mr-2 align-middle text-sm font-extrabold uppercase tracking-[0.22em] text-sky-300">
+                      OUTLINE
+                    </span>
+                    <span className="text-slate-200">読みたい項目からご覧いただけます。</span>
+                  </p>
+                  <ul className="mt-3 space-y-2">
+                    {bodyH2Headings.map((h) => (
+                      <li key={h.id}>
+                        <a
+                          href={`#${h.id}`}
+                          className="group inline-flex min-h-10 items-center gap-2 rounded-md px-2 py-1 text-[0.95rem] font-medium text-slate-200 transition hover:bg-slate-900/40 hover:text-sky-200"
+                        >
+                          <span
+                            aria-hidden
+                            className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange-400 transition group-hover:bg-sky-300"
+                          />
+                          {h.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
               </section>
             ) : null}
 

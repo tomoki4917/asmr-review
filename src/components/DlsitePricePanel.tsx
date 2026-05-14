@@ -43,7 +43,11 @@ export function DlsitePricePanel({
 
   if (!show) return null;
 
-  const hasPrice = product.current_price > 0;
+  const hasListedPrice =
+    typeof product.current_price === "number" &&
+    Number.isFinite(product.current_price) &&
+    product.current_price >= 0;
+  const isFreeTaxIncluded = hasListedPrice && product.current_price === 0;
   const urgentDays =
     product.sale_end_iso && product.on_sale
       ? daysUntil(product.sale_end_iso)
@@ -75,7 +79,7 @@ export function DlsitePricePanel({
         ) : null}
       </div>
 
-      {!hasPrice ? (
+      {!hasListedPrice ? (
         <p className="mt-2 text-sm text-slate-500">
           価格データがありません。リポジトリで{" "}
           <code className="rounded bg-slate-800 px-1 py-0.5 text-xs">
@@ -118,6 +122,11 @@ export function DlsitePricePanel({
                   {formatYen(product.current_price)}
                   <span className="ml-0.5 text-base font-semibold">円</span>
                 </p>
+                {isFreeTaxIncluded ? (
+                  <p className="mt-1 text-sm font-medium text-emerald-200/95">
+                    無料作品（税込0円）
+                  </p>
+                ) : null}
               </div>
             )}
           </div>

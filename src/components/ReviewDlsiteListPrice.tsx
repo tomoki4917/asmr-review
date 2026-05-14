@@ -26,7 +26,7 @@ export function ReviewDlsiteListPrice({
     return null;
   }
   const p = getDlsiteProductById(review.dlsiteProductId!);
-  if (!p || p.current_price <= 0) return null;
+  if (!p) return null;
 
   const compact = size === "compact";
 
@@ -67,14 +67,26 @@ export function ReviewDlsiteListPrice({
           </span>
         </>
       ) : (
-        <span
-          className={[
-            "font-bold tracking-tight text-slate-100",
-            compact ? "text-sm" : "text-lg",
-          ].join(" ")}
-        >
-          ¥{p.current_price.toLocaleString("ja-JP")}
-        </span>
+        <>
+          <span
+            className={[
+              "font-bold tracking-tight text-slate-100",
+              compact ? "text-sm" : "text-lg",
+            ].join(" ")}
+          >
+            ¥{p.current_price.toLocaleString("ja-JP")}
+          </span>
+          {p.current_price === 0 ? (
+            <span
+              className={[
+                "font-medium text-emerald-200/90",
+                compact ? "text-[10px]" : "text-xs",
+              ].join(" ")}
+            >
+              （税込・無料）
+            </span>
+          ) : null}
+        </>
       )}
       <span className="sr-only">（税込）</span>
     </span>

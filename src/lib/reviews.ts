@@ -286,6 +286,8 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
       (contentKind === "review" ? DEFAULT_WORK_IMPRESSION_AVATAR_SRC : undefined),
     dlsiteProductId: parseOptionalDlsiteProductId(d.dlsiteProductId),
     safeForExternalLanding: d.safeForExternalLanding === true ? true : undefined,
+    excludeFromArticleIndex:
+      d.excludeFromArticleIndex === true ? true : undefined,
   };
 
   if (Number.isNaN(Date.parse(review.publishedAt))) {
@@ -396,8 +398,15 @@ export const getAllReviews = cache((): Review[] =>
 
 /** SNS 流入ページ用。`safeForExternalLanding: true` の記事のみ（フロントマターで明示） */
 export function getReviewsForExternalLanding(): Review[] {
-  return getAllReviews().filter((r) => r.safeForExternalLanding === true);
+  return getAllReviews().filter(
+    (r) =>
+      r.safeForExternalLanding === true && r.excludeFromArticleIndex !== true
+  );
 }
+
+/** ビギナーズガイド「作品おすすめ」欄に差し込む記事 slug（一覧・SNS 一般向けからは `excludeFromArticleIndex` で除外） */
+export const BEGINNER_GUIDE_RECOMMENDED_WORKS_ARTICLE_SLUG =
+  "beginner-hypnosis-audio-top5-2026" as const;
 
 /** トップ「催眠音声入門」と同じ 3 本（存在する slug のみ・この順） */
 const BEGINNER_GUIDE_SLUGS = [

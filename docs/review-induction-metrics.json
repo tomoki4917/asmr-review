@@ -1,0 +1,1801 @@
+{
+  "generatedAt": "2026-05-14T11:57:04.588Z",
+  "description": "誘導構成比・誘導特性は index.md の表から機械抽出。heuristicEntryEase = 論理性+身体性+浸透力 + 0.35*突破力 - 0.65*強制力（任意の「入りやすさ」近似。公式の初心者指標ではない）。rankByHeuristicAmongLv2WithShallowNote は推奨感度Lv2かつ解析結論に「浅いトランス」を含む作品に限定した同ソート。誘導特性スコアは本文どおり「逃げにくさ／機構の強さ」寄りで、数値が高い＝初心者向きとは限らない。",
+  "countTotal": 41,
+  "countWithInductionTables": 39,
+  "records": [
+    {
+      "slug": "aku-no-soshiki-hero-akudachi-sennou-saimin",
+      "itemName": "悪の組織のヒーロー悪堕ち洗脳催眠",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【イエスセット】 【ペーシング】": 1.5,
+        "強制力 【先行前提】 【直接命令】": 3.2,
+        "突破力 【反復カウント】 【軽い混乱誘導】": 2.5,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.8,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 1
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.5,
+        "強制力": 3.2,
+        "突破力": 2.5,
+        "浸透力": 1.8,
+        "身体性": 1
+      },
+      "heuristicEntryEase": 3.1,
+      "inductionTraits": [
+        {
+          "name": "エナジーカウントと無力化の同期",
+          "score": 4.9
+        },
+        {
+          "name": "敗北・抵抗の言語ループ固定",
+          "score": 4.8
+        }
+      ],
+      "inductionTraitAvg": 4.85,
+      "inductionTraitMax": 4.9,
+      "recommendedSensitivityMin": 4,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "asmr-saimin-aman-toro-lip",
+      "itemName": "【ASMR×催○音声】甘とろリップ",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【イエスセット】": 2,
+        "強制力 【直接命令】 【先行前提】": 1.9,
+        "突破力 【反復カウント】": 1.4,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 2.1,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.6
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 2,
+        "強制力": 1.9,
+        "突破力": 1.4,
+        "浸透力": 2.1,
+        "身体性": 2.6
+      },
+      "heuristicEntryEase": 5.96,
+      "inductionTraits": [
+        {
+          "name": "感覚転写連結",
+          "score": 4.6
+        },
+        {
+          "name": "反復強化",
+          "score": 4.4
+        }
+      ],
+      "inductionTraitAvg": 4.5,
+      "inductionTraitMax": 4.6,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "slug": "brain-washer",
+      "itemName": "【催○音声】ブレインウォッシャー",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.9,
+        "強制力 【直接命令】 【先行前提】": 2.1,
+        "突破力 【分画法】 【反復カウント】": 2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.8,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.2
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.9,
+        "強制力": 2.1,
+        "突破力": 2,
+        "浸透力": 1.8,
+        "身体性": 2.2
+      },
+      "heuristicEntryEase": 5.24,
+      "inductionTraits": [
+        {
+          "name": "儀式語反復の維持性",
+          "score": 4.8
+        },
+        {
+          "name": "体感入力の固定性",
+          "score": 4.5
+        }
+      ],
+      "inductionTraitAvg": 4.65,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "dakimakura-kanojo-pretty-holic-yurukawa-kouhai",
+      "itemName": "抱き枕カノジョ-Pretty Holic-～ぎゅ～っと密着しながら添い寝エッチしてくれるゆるカワ後輩ちゃん～",
+      "hasInductionDetailSection": false
+    },
+    {
+      "slug": "dry-org-amadashi-prostate-nipple",
+      "itemName": "ドライオーガズム出来ない人の為の甘出し前立腺乳首オナニー術",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.8,
+        "強制力 【直接命令】 【先行前提】": 2.2,
+        "突破力 【分画法】 【反復カウント】": 2.2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.7,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.1
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.8,
+        "強制力": 2.2,
+        "突破力": 2.2,
+        "浸透力": 1.7,
+        "身体性": 2.1
+      },
+      "heuristicEntryEase": 4.94,
+      "inductionTraits": [
+        {
+          "name": "手順固定の維持性",
+          "score": 4.6
+        },
+        {
+          "name": "カウント反復の定着性",
+          "score": 4.7
+        }
+      ],
+      "inductionTraitAvg": 4.65,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "futari-saimin-namahousou",
+      "itemName": "【バイノーラル】2人で催眠生放送【初見さん歓迎♪】",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【イエスセット】 【ペーシング】": 2.2,
+        "強制力 【先行前提】 【直接命令】": 1.8,
+        "突破力 【反復カウント】 【分岐】": 2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 2,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 2.2,
+        "強制力": 1.8,
+        "突破力": 2,
+        "浸透力": 2,
+        "身体性": 2
+      },
+      "heuristicEntryEase": 5.73,
+      "inductionTraits": [
+        {
+          "name": "二声ラジオ文脈の固定性",
+          "score": 4.4
+        },
+        {
+          "name": "分岐レーン切替の持続性",
+          "score": 4.2
+        }
+      ],
+      "inductionTraitAvg": 4.3,
+      "inductionTraitMax": 4.4,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "futarigake-saimin-coming-orgasm",
+      "itemName": "ふたりがけ催○カミングオーガズム編",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.7,
+        "強制力 【直接命令】 【先行前提】": 2,
+        "突破力 【分画法】 【反復カウント】": 2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 2.2,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.1
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.7,
+        "強制力": 2,
+        "突破力": 2,
+        "浸透力": 2.2,
+        "身体性": 2.1
+      },
+      "heuristicEntryEase": 5.4,
+      "inductionTraits": [
+        {
+          "name": "定位切替の固定性",
+          "score": 4.8
+        },
+        {
+          "name": "リップ同期の没入性",
+          "score": 4.7
+        }
+      ],
+      "inductionTraitAvg": 4.75,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "futarigake-saimin-dry-iki-support",
+      "itemName": "ふたりがけ催○ドライイキサポート編",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.7,
+        "強制力 【直接命令】 【先行前提】": 2.3,
+        "突破力 【分画法】 【反復カウント】": 2.2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.8,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.7,
+        "強制力": 2.3,
+        "突破力": 2.2,
+        "浸透力": 1.8,
+        "身体性": 2
+      },
+      "heuristicEntryEase": 4.77,
+      "inductionTraits": [
+        {
+          "name": "二声同調の安定性",
+          "score": 4.8
+        },
+        {
+          "name": "再沈降ダイヤルの維持性",
+          "score": 4.8
+        }
+      ],
+      "inductionTraitAvg": 4.8,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "futarigake-saimin-love-happy-orgasm",
+      "itemName": "ふたりがけ催眠ラブハピオーガズム編",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.9,
+        "強制力 【直接命令】 【先行前提】": 1.6,
+        "突破力 【分画法】 【反復カウント】": 1.8,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 2.2,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.5
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.9,
+        "強制力": 1.6,
+        "突破力": 1.8,
+        "浸透力": 2.2,
+        "身体性": 2.5
+      },
+      "heuristicEntryEase": 6.19,
+      "inductionTraits": [
+        {
+          "name": "承認反復の定着性",
+          "score": 4.8
+        },
+        {
+          "name": "往復深化の持続性",
+          "score": 4.6
+        }
+      ],
+      "inductionTraitAvg": 4.7,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "slug": "futarigake-saimin-melty-orgasm",
+      "itemName": "ふたりがけ催眠メルティオーガズム編",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【イエスセット】": 2.2,
+        "強制力 【先行前提】 【直接命令】": 1.6,
+        "突破力 【分画法】 【反復カウント】": 1.4,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 2,
+        "身体性 【呼吸誘導】 【筋弛緩法】": 2.8
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 2.2,
+        "強制力": 1.6,
+        "突破力": 1.4,
+        "浸透力": 2,
+        "身体性": 2.8
+      },
+      "heuristicEntryEase": 6.45,
+      "inductionTraits": [
+        {
+          "name": "段階的深化プロトコル",
+          "score": 4.7
+        },
+        {
+          "name": "関係性アンカリング",
+          "score": 4.6
+        }
+      ],
+      "inductionTraitAvg": 4.65,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "slug": "higengo-saimin-giseigo-pavlov-another",
+      "itemName": "非言語催眠-擬声語パブロフ-Another",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【イエスセット】 【ペーシング】": 1.6,
+        "強制力 【先行前提】 【直接命令】": 2.2,
+        "突破力 【反復カウント】 【条件付け】": 2.6,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.6,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.6,
+        "強制力": 2.2,
+        "突破力": 2.6,
+        "浸透力": 1.6,
+        "身体性": 2
+      },
+      "heuristicEntryEase": 4.68,
+      "inductionTraits": [
+        {
+          "name": "トリガー条件づけ",
+          "score": 4.8
+        },
+        {
+          "name": "反復強化",
+          "score": 4.7
+        }
+      ],
+      "inductionTraitAvg": 4.75,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "hypno-cloud",
+      "itemName": "ヒプノクラウド",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【イエスセット】 【ペーシング】": 2,
+        "強制力 【先行前提】 【直接命令】": 1.5,
+        "突破力 【反復カウント】 【分画法】": 2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 2.2,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.3
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 2,
+        "強制力": 1.5,
+        "突破力": 2,
+        "浸透力": 2.2,
+        "身体性": 2.3
+      },
+      "heuristicEntryEase": 6.23,
+      "inductionTraits": [
+        {
+          "name": "ジャーニー追随の固定性",
+          "score": 4.5
+        },
+        {
+          "name": "一体化カウントの深化性",
+          "score": 4.4
+        }
+      ],
+      "inductionTraitAvg": 4.45,
+      "inductionTraitMax": 4.5,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "slug": "hypno-multi-rape",
+      "itemName": "ヒプノマルチレイプ",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.8,
+        "強制力 【直接命令】 【先行前提】": 2.2,
+        "突破力 【分画法】 【反復カウント】": 2.1,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.7,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.2
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.8,
+        "強制力": 2.2,
+        "突破力": 2.1,
+        "浸透力": 1.7,
+        "身体性": 2.2
+      },
+      "heuristicEntryEase": 5.01,
+      "inductionTraits": [
+        {
+          "name": "同時入力の競合維持",
+          "score": 4.7
+        },
+        {
+          "name": "数字トリガーの定着性",
+          "score": 4.6
+        }
+      ],
+      "inductionTraitAvg": 4.65,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "inuka-anji-amatime-oshioki-wakarase",
+      "itemName": "【犬化暗示】あまあまタイムだと思ってたらおしおき脳イキで徹底わからせ",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.9,
+        "強制力 【直接命令】 【先行前提】": 2,
+        "突破力 【分画法】 【反復カウント】": 1.9,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.8,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.4
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.9,
+        "強制力": 2,
+        "突破力": 1.9,
+        "浸透力": 1.8,
+        "身体性": 2.4
+      },
+      "heuristicEntryEase": 5.47,
+      "inductionTraits": [
+        {
+          "name": "温度差切替の即効性",
+          "score": 4.2
+        },
+        {
+          "name": "寸止め滞留の持続性",
+          "score": 4.1
+        }
+      ],
+      "inductionTraitAvg": 4.15,
+      "inductionTraitMax": 4.2,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "jigoku-hypno-multi-rape",
+      "itemName": "地獄級ヒプノマルチレイプ",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.8,
+        "強制力 【直接命令】 【先行前提】": 2.2,
+        "突破力 【分画法】 【反復カウント】": 2.2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.7,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.1
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.8,
+        "強制力": 2.2,
+        "突破力": 2.2,
+        "浸透力": 1.7,
+        "身体性": 2.1
+      },
+      "heuristicEntryEase": 4.94,
+      "inductionTraits": [
+        {
+          "name": "多声拘束の維持性",
+          "score": 4.8
+        },
+        {
+          "name": "反復圧の定着性",
+          "score": 4.7
+        }
+      ],
+      "inductionTraitAvg": 4.75,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "jinsei-senpai-koi-dorei-mind-control",
+      "itemName": "人生舐めてる先輩の恋ドレイ化マインドコントロール",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【イエスセット】 【ペーシング】": 1.3,
+        "強制力 【先行前提】 【直接命令】 【バインド】": 3.6,
+        "突破力 【反復カウント】 【軽い混乱誘導】": 1.8,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.9,
+        "身体性 【呼吸誘導】 【筋弛緩法】": 1.4
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.3,
+        "強制力": 3.6,
+        "突破力": 1.8,
+        "浸透力": 1.9,
+        "身体性": 1.4
+      },
+      "heuristicEntryEase": 2.89,
+      "inductionTraits": [
+        {
+          "name": "反復強化",
+          "score": 4.8
+        },
+        {
+          "name": "応答ループ化",
+          "score": 4.7
+        }
+      ],
+      "inductionTraitAvg": 4.75,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "kuchikou-saimin-count-trip-nouiki",
+      "itemName": "【催眠誘導】口腔催眠カウントトリップ【脳イキ音声】",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.8,
+        "強制力 【直接命令】 【先行前提】": 2.2,
+        "突破力 【分画法】 【反復カウント】": 2.1,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.5,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.4
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.8,
+        "強制力": 2.2,
+        "突破力": 2.1,
+        "浸透力": 1.5,
+        "身体性": 2.4
+      },
+      "heuristicEntryEase": 5.01,
+      "inductionTraits": [
+        {
+          "name": "トリガー条件づけ",
+          "score": 4.7
+        },
+        {
+          "name": "反復強化",
+          "score": 4.6
+        }
+      ],
+      "inductionTraitAvg": 4.65,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "kurayami-kodzukuri-noumitsu-shokubutsu-mesuiki",
+      "itemName": "【催眠誘導】私と子作りしてください♡一夜限りの濃蜜孕ませ植物SEX「種孕」【連続∞メスイキ】",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.9,
+        "強制力 【直接命令】 【先行前提】": 2,
+        "突破力 【分画法】 【反復カウント】": 2.1,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.8,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.2
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.9,
+        "強制力": 2,
+        "突破力": 2.1,
+        "浸透力": 1.8,
+        "身体性": 2.2
+      },
+      "heuristicEntryEase": 5.34,
+      "inductionTraits": [
+        {
+          "name": "反復条件づけ",
+          "score": 4.8
+        },
+        {
+          "name": "連続沈下の維持性",
+          "score": 4.7
+        }
+      ],
+      "inductionTraitAvg": 4.75,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "kyoku-mugen-zekkyou-count-chikuni",
+      "itemName": "【魔改造推奨】極:無限絶頂カウントチクニー【両性向け 催眠音声】",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.4,
+        "強制力 【先行前提】 【直接命令】 【バインド】": 2.8,
+        "突破力 【パターン・インタラプト】 【分画法】": 2.1,
+        "浸透力 【埋め込み暗示】 【間接暗示】": 1.7,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.4,
+        "強制力": 2.8,
+        "突破力": 2.1,
+        "浸透力": 1.7,
+        "身体性": 2
+      },
+      "heuristicEntryEase": 4.02,
+      "inductionTraits": [
+        {
+          "name": "反復条件づけ",
+          "score": 4.9
+        },
+        {
+          "name": "トリガー条件づけ",
+          "score": 4.8
+        }
+      ],
+      "inductionTraitAvg": 4.85,
+      "inductionTraitMax": 4.9,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "mayoigo-saimin-hypno-multi-rape",
+      "itemName": "迷い子の催○～ヒプノマルチレ○プ～",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.7,
+        "強制力 【直接命令】 【先行前提】": 2.4,
+        "突破力 【分画法】 【反復カウント】": 2.1,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.8,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.7,
+        "強制力": 2.4,
+        "突破力": 2.1,
+        "浸透力": 1.8,
+        "身体性": 2
+      },
+      "heuristicEntryEase": 4.68,
+      "inductionTraits": [
+        {
+          "name": "予言トリガー固定性",
+          "score": 4.8
+        },
+        {
+          "name": "マルチ入力持続性",
+          "score": 4.7
+        }
+      ],
+      "inductionTraitAvg": 4.75,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "michikusa-natsuna4-onsen-pokipoki-seitai",
+      "itemName": "【ポキポキ整体】道草屋-なつな4- 足湯、温泉、ポキポキ按摩！【貸し切り温泉】",
+      "hasInductionDetailSection": false
+    },
+    {
+      "slug": "mimikaki-saimin",
+      "itemName": "耳かき催眠",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【イエスセット】 【ペーシング】": 1.8,
+        "強制力 【先行前提】 【直接命令】": 2,
+        "突破力 【反復カウント】 【分画法】": 1.8,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 2.2,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.2
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.8,
+        "強制力": 2,
+        "突破力": 1.8,
+        "浸透力": 2.2,
+        "身体性": 2.2
+      },
+      "heuristicEntryEase": 5.53,
+      "inductionTraits": [
+        {
+          "name": "サロン規約による受動役割の固定性",
+          "score": 4.5
+        },
+        {
+          "name": "耳性感へのセンサリー固定",
+          "score": 4.4
+        }
+      ],
+      "inductionTraitAvg": 4.45,
+      "inductionTraitMax": 4.5,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "slug": "miraiyochi-zeccho-countdown",
+      "itemName": "君の未来は決定している。～未来予知と絶頂カウントダウン～",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.8,
+        "強制力 【直接命令】 【先行前提】": 2.4,
+        "突破力 【分画法】 【反復カウント】": 2.2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.7,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 1.9
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.8,
+        "強制力": 2.4,
+        "突破力": 2.2,
+        "浸透力": 1.7,
+        "身体性": 1.9
+      },
+      "heuristicEntryEase": 4.61,
+      "inductionTraits": [
+        {
+          "name": "予言トリガー固定",
+          "score": 4.8
+        },
+        {
+          "name": "カウント連鎖の推進性",
+          "score": 4.7
+        }
+      ],
+      "inductionTraitAvg": 4.75,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "nohand-shasei-mahou-shoujo-mesuiki",
+      "itemName": "ノーハンド射精☆魔法少女 ～メスイキは神への叛逆行為～",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.8,
+        "強制力 【直接命令】 【先行前提】": 2.2,
+        "突破力 【分画法】 【反復カウント】": 2.1,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.8,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.1
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.8,
+        "強制力": 2.2,
+        "突破力": 2.1,
+        "浸透力": 1.8,
+        "身体性": 2.1
+      },
+      "heuristicEntryEase": 5.01,
+      "inductionTraits": [
+        {
+          "name": "改変受容の維持性",
+          "score": 4.6
+        },
+        {
+          "name": "カウント反復の定着性",
+          "score": 4.5
+        }
+      ],
+      "inductionTraitAvg": 4.55,
+      "inductionTraitMax": 4.6,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "nouiki-nohand-nouiki",
+      "itemName": "【失禁注意!】最新・催○式/実践!本当に気持ちイイ!『脳イキ』ノーハンドオナニー【究極の快感に内もも発汗と膝のガクガクが止まらない…】",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 2.1,
+        "強制力 【直接命令】 【先行前提】": 1.9,
+        "突破力 【分画法】 【反復カウント】": 1.8,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.8,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.4
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 2.1,
+        "強制力": 1.9,
+        "突破力": 1.8,
+        "浸透力": 1.8,
+        "身体性": 2.4
+      },
+      "heuristicEntryEase": 5.7,
+      "inductionTraits": [
+        {
+          "name": "筋制御アンカーの再現性",
+          "score": 4.7
+        },
+        {
+          "name": "訓練→空想の接続性",
+          "score": 4.6
+        }
+      ],
+      "inductionTraitAvg": 4.65,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "nouiki-trip-denpa-live",
+      "itemName": "【10周年記念作品】脳イキトリップ電波☆LIVE",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.9,
+        "強制力 【直接命令】 【先行前提】": 2,
+        "突破力 【分画法】 【反復カウント】": 2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 2.1,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.9,
+        "強制力": 2,
+        "突破力": 2,
+        "浸透力": 2.1,
+        "身体性": 2
+      },
+      "heuristicEntryEase": 5.4,
+      "inductionTraits": [
+        {
+          "name": "聴覚同期の維持性",
+          "score": 4.8
+        },
+        {
+          "name": "指トリガーの定着性",
+          "score": 4.6
+        }
+      ],
+      "inductionTraitAvg": 4.7,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "nouiki-youko-noumimi",
+      "itemName": "【ASMR×催眠音声】脳イキ妖狐～悦楽至極の脳耳絶頂～",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【ユーティライゼーション】": 1.9,
+        "強制力 【先行前提】 【直接命令】": 1.7,
+        "突破力 【分画法】 【軽混乱誘導】": 1.6,
+        "浸透力 【間接暗示】 【メタファー】": 2.3,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.5
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.9,
+        "強制力": 1.7,
+        "突破力": 1.6,
+        "浸透力": 2.3,
+        "身体性": 2.5
+      },
+      "heuristicEntryEase": 6.15,
+      "inductionTraits": [
+        {
+          "name": "感覚転写連結",
+          "score": 4.7
+        },
+        {
+          "name": "関係性アンカリング",
+          "score": 4.6
+        }
+      ],
+      "inductionTraitAvg": 4.65,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "oton-akachan-hipu-muryoku",
+      "itemName": "【催○音声】おとな赤ちゃん保育所による成人男性無力化プログラム ～社会福祉法人ひぷのガーデン～",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.9,
+        "強制力 【直接命令】 【先行前提】": 2.2,
+        "突破力 【分画法】 【反復カウント】": 1.9,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 2.1,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 1.9
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.9,
+        "強制力": 2.2,
+        "突破力": 1.9,
+        "浸透力": 2.1,
+        "身体性": 1.9
+      },
+      "heuristicEntryEase": 5.14,
+      "inductionTraits": [
+        {
+          "name": "命令反復の定着性",
+          "score": 4.3
+        },
+        {
+          "name": "役割固定の維持性",
+          "score": 4.2
+        }
+      ],
+      "inductionTraitAvg": 4.25,
+      "inductionTraitMax": 4.3,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "re-limit-marionette",
+      "itemName": "Re:リミットマリオネット",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.9,
+        "強制力 【直接命令】 【先行前提】": 2.2,
+        "突破力 【分画法】 【反復カウント】": 2.1,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.7,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.1
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.9,
+        "強制力": 2.2,
+        "突破力": 2.1,
+        "浸透力": 1.7,
+        "身体性": 2.1
+      },
+      "heuristicEntryEase": 5.01,
+      "inductionTraits": [
+        {
+          "name": "主従固定の維持性",
+          "score": 4.7
+        },
+        {
+          "name": "トリガー反復の定着性",
+          "score": 4.6
+        }
+      ],
+      "inductionTraitAvg": 4.65,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "ryomimi-bug-kinshi-anji",
+      "itemName": "両耳から脳をバグらせるダメダメ禁止暗示",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【イエスセット】 【ペーシング】": 1,
+        "強制力 【先行前提】 【直接命令】 【バインド】": 3.8,
+        "突破力 【反復カウント】 【軽い混乱誘導】": 2.3,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.8,
+        "身体性 【呼吸誘導】 【筋弛緩法】": 1.1
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1,
+        "強制力": 3.8,
+        "突破力": 2.3,
+        "浸透力": 1.8,
+        "身体性": 1.1
+      },
+      "heuristicEntryEase": 2.24,
+      "inductionTraits": [
+        {
+          "name": "反復強化",
+          "score": 4.9
+        },
+        {
+          "name": "条件刺激トリガー化",
+          "score": 4.9
+        }
+      ],
+      "inductionTraitAvg": 4.9,
+      "inductionTraitMax": 4.9,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "saimin-jutsushi-itazura-hypno-show-stage",
+      "itemName": "催眠術師の悪戯～催眠ショーのステージの上で…～",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【イエスセット】 【ペーシング】": 2.5,
+        "強制力 【先行前提】 【ルール固定】": 2,
+        "突破力 【心象誘導】 【身体部位の逐次脱力】": 2.2,
+        "浸透力 【間接暗示】": 1.8,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 1.5
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 2.5,
+        "強制力": 2,
+        "突破力": 2.2,
+        "浸透力": 1.8,
+        "身体性": 1.5
+      },
+      "heuristicEntryEase": 5.27,
+      "inductionTraits": [
+        {
+          "name": "MC フレーム固定",
+          "score": 4.7
+        },
+        {
+          "name": "公開場でのルール拘束",
+          "score": 4.5
+        }
+      ],
+      "inductionTraitAvg": 4.6,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "saimin-shinri-test-dame-iwakareru",
+      "itemName": "⚠悪用厳禁⚠催○心理テスト ～「ダメ」と言われるほど、射精したくなる。～",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.6,
+        "強制力 【直接命令】 【先行前提】": 2.4,
+        "突破力 【分画法】 【反復カウント】": 1.8,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.7,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.5
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.6,
+        "強制力": 2.4,
+        "突破力": 1.8,
+        "浸透力": 1.7,
+        "身体性": 2.5
+      },
+      "heuristicEntryEase": 4.87,
+      "inductionTraits": [
+        {
+          "name": "禁止語反転の固定性",
+          "score": 4.7
+        },
+        {
+          "name": "反復強化",
+          "score": 4.4
+        }
+      ],
+      "inductionTraitAvg": 4.55,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "slug": "slime-musume-guchu-nouiki",
+      "itemName": "【ASMR催眠音声】スライム娘のグチュクチュ失神オーガズム調教【耳穴責め・脳イキ】",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.8,
+        "強制力 【直接命令】 【先行前提】": 2.2,
+        "突破力 【分画法】 【反復カウント】": 2.3,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.8,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 1.9
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.8,
+        "強制力": 2.2,
+        "突破力": 2.3,
+        "浸透力": 1.8,
+        "身体性": 1.9
+      },
+      "heuristicEntryEase": 4.88,
+      "inductionTraits": [
+        {
+          "name": "連続沈下の持続性",
+          "score": 4.9
+        },
+        {
+          "name": "逆カウント定着性",
+          "score": 4.8
+        }
+      ],
+      "inductionTraitAvg": 4.85,
+      "inductionTraitMax": 4.9,
+      "recommendedSensitivityMin": 4,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "sukisuki-surikomi-chudoku-onanie-saimin",
+      "itemName": "スキスキ刷り込み♡ちゅーどくおなにー催眠",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.9,
+        "強制力 【直接命令】 【先行前提】": 2.1,
+        "突破力 【分画法】 【反復カウント】": 2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.8,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.2
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.9,
+        "強制力": 2.1,
+        "突破力": 2,
+        "浸透力": 1.8,
+        "身体性": 2.2
+      },
+      "heuristicEntryEase": 5.24,
+      "inductionTraits": [
+        {
+          "name": "反復条件づけ",
+          "score": 4.7
+        },
+        {
+          "name": "応答ループ化",
+          "score": 4.5
+        }
+      ],
+      "inductionTraitAvg": 4.6,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "tenshi-akuma-souhan-saimin",
+      "itemName": "天使と悪魔の相反催眠",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.8,
+        "強制力 【直接命令】 【先行前提】": 2,
+        "突破力 【分画法】 【状態遷移誘導】": 2.2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.7,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.3
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.8,
+        "強制力": 2,
+        "突破力": 2.2,
+        "浸透力": 1.7,
+        "身体性": 2.3
+      },
+      "heuristicEntryEase": 5.27,
+      "inductionTraits": [
+        {
+          "name": "二重命令の競合維持",
+          "score": 4.7
+        },
+        {
+          "name": "長尺での深度持続性",
+          "score": 4.5
+        }
+      ],
+      "inductionTraitAvg": 4.6,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "time-rotor",
+      "itemName": "タイムローター",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【イエスセット】 【ペーシング】": 2.4,
+        "強制力 【先行前提】 【直接命令】": 2,
+        "突破力 【反復】 【場面転換】": 1.8,
+        "浸透力 【間接暗示】": 2,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 1.8
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 2.4,
+        "強制力": 2,
+        "突破力": 1.8,
+        "浸透力": 2,
+        "身体性": 1.8
+      },
+      "heuristicEntryEase": 5.53,
+      "inductionTraits": [
+        {
+          "name": "羞恥コンテキストの固定性",
+          "score": 4.5
+        },
+        {
+          "name": "古典脱力の持続性",
+          "score": 4.3
+        }
+      ],
+      "inductionTraitAvg": 4.4,
+      "inductionTraitMax": 4.5,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "ts-mahou-shoujo-haiboku-shinai",
+      "itemName": "TS魔法少女は敗北しない【敗北TS催眠音声】",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.8,
+        "強制力 【直接命令】 【先行前提】": 2.3,
+        "突破力 【分画法】 【反復カウント】": 2.1,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.8,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.8,
+        "強制力": 2.3,
+        "突破力": 2.1,
+        "浸透力": 1.8,
+        "身体性": 2
+      },
+      "heuristicEntryEase": 4.84,
+      "inductionTraits": [
+        {
+          "name": "役割固定の維持性",
+          "score": 4.7
+        },
+        {
+          "name": "カウント反復の定着性",
+          "score": 4.5
+        }
+      ],
+      "inductionTraitAvg": 4.6,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "unknown-hypno-daijobu-koe-ni-yudanete",
+      "itemName": "アンノウンヒプノ ～大丈夫、私の声に委ねて～",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【イエスセット】 【ペーシング】": 2.3,
+        "強制力 【先行前提】 【直接命令】 【バインド】": 2,
+        "突破力 【反復カウント】 【軽い混乱誘導】": 1.5,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.7,
+        "身体性 【呼吸誘導】 【筋弛緩法】": 2.5
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 2.3,
+        "強制力": 2,
+        "突破力": 1.5,
+        "浸透力": 1.7,
+        "身体性": 2.5
+      },
+      "heuristicEntryEase": 5.73,
+      "inductionTraits": [
+        {
+          "name": "段階的深化プロトコル",
+          "score": 4.8
+        },
+        {
+          "name": "反復強化",
+          "score": 4.7
+        }
+      ],
+      "inductionTraitAvg": 4.75,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "slug": "unreal-hypno",
+      "itemName": "アンリアルヒプノ",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 2,
+        "強制力 【直接命令】 【先行前提】": 1.8,
+        "突破力 【分画法】 【反復カウント】": 2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 1.9,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.3
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 2,
+        "強制力": 1.8,
+        "突破力": 2,
+        "浸透力": 1.9,
+        "身体性": 2.3
+      },
+      "heuristicEntryEase": 5.73,
+      "inductionTraits": [
+        {
+          "name": "段階遷移の持続性",
+          "score": 4.7
+        },
+        {
+          "name": "音同期の定着性",
+          "score": 4.6
+        }
+      ],
+      "inductionTraitAvg": 4.65,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "slug": "warui-inma-kanashiki-koufuku-nadenade-hagu",
+      "itemName": "【催眠音声】わる～い淫魔ちゃんの甘やかし幸福調教～ナデナデ&ハグで強制幸せイキ～",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【ペーシング】 【トゥルーイズム】": 1.9,
+        "強制力 【直接命令】 【先行前提】": 1.8,
+        "突破力 【分画法】 【状態遷移誘導】": 2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 2.1,
+        "身体性 【呼吸誘導】 【センサリー・アウェアネス】": 2.2
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.9,
+        "強制力": 1.8,
+        "突破力": 2,
+        "浸透力": 2.1,
+        "身体性": 2.2
+      },
+      "heuristicEntryEase": 5.73,
+      "inductionTraits": [
+        {
+          "name": "安心先行の受容固定",
+          "score": 4.8
+        },
+        {
+          "name": "背徳遷移の滑らかさ",
+          "score": 4.6
+        }
+      ],
+      "inductionTraitAvg": 4.7,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "slug": "zeccho-furi-karakai-kouhai-mazo-mesuiki-nohand",
+      "itemName": "【初心者向けノーハンド射精催眠】『絶頂するフリ』のはずなのに♡からかい上手な後輩にマゾバレして、メスイキ&ノーハンド射精しちゃ、ダメですよ?【ルート選択あり】",
+      "hasInductionDetailSection": true,
+      "inductionRatioByLabel": {
+        "論理性 【イエスセット】 【ペーシング】": 1.8,
+        "強制力 【先行前提】 【直接命令】": 2.5,
+        "突破力 【反復カウント】 【分画法】": 2.2,
+        "浸透力 【間接暗示】 【埋め込み暗示】": 2,
+        "身体性 【呼吸誘導】 【筋弛緩法】": 1.5
+      },
+      "inductionRatioSum": 10,
+      "inductionBuckets": {
+        "論理性": 1.8,
+        "強制力": 2.5,
+        "突破力": 2.2,
+        "浸透力": 2,
+        "身体性": 1.5
+      },
+      "heuristicEntryEase": 4.45,
+      "inductionTraits": [
+        {
+          "name": "「ダメ」禁制の反復固定",
+          "score": 4.8
+        },
+        {
+          "name": "カリギュラ説明とカウントの同期",
+          "score": 4.6
+        }
+      ],
+      "inductionTraitAvg": 4.7,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    }
+  ],
+  "rankByHeuristicEntryEase": [
+    {
+      "rank": 1,
+      "slug": "futarigake-saimin-melty-orgasm",
+      "itemName": "ふたりがけ催眠メルティオーガズム編",
+      "heuristicEntryEase": 6.45,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "rank": 2,
+      "slug": "hypno-cloud",
+      "itemName": "ヒプノクラウド",
+      "heuristicEntryEase": 6.23,
+      "inductionTraitMax": 4.5,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "rank": 3,
+      "slug": "futarigake-saimin-love-happy-orgasm",
+      "itemName": "ふたりがけ催眠ラブハピオーガズム編",
+      "heuristicEntryEase": 6.19,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "rank": 4,
+      "slug": "nouiki-youko-noumimi",
+      "itemName": "【ASMR×催眠音声】脳イキ妖狐～悦楽至極の脳耳絶頂～",
+      "heuristicEntryEase": 6.15,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 5,
+      "slug": "asmr-saimin-aman-toro-lip",
+      "itemName": "【ASMR×催○音声】甘とろリップ",
+      "heuristicEntryEase": 5.96,
+      "inductionTraitMax": 4.6,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "rank": 6,
+      "slug": "futari-saimin-namahousou",
+      "itemName": "【バイノーラル】2人で催眠生放送【初見さん歓迎♪】",
+      "heuristicEntryEase": 5.73,
+      "inductionTraitMax": 4.4,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 7,
+      "slug": "unknown-hypno-daijobu-koe-ni-yudanete",
+      "itemName": "アンノウンヒプノ ～大丈夫、私の声に委ねて～",
+      "heuristicEntryEase": 5.73,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "rank": 8,
+      "slug": "unreal-hypno",
+      "itemName": "アンリアルヒプノ",
+      "heuristicEntryEase": 5.73,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 9,
+      "slug": "warui-inma-kanashiki-koufuku-nadenade-hagu",
+      "itemName": "【催眠音声】わる～い淫魔ちゃんの甘やかし幸福調教～ナデナデ&ハグで強制幸せイキ～",
+      "heuristicEntryEase": 5.73,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "rank": 10,
+      "slug": "nouiki-nohand-nouiki",
+      "itemName": "【失禁注意!】最新・催○式/実践!本当に気持ちイイ!『脳イキ』ノーハンドオナニー【究極の快感に内もも発汗と膝のガクガクが止まらない…】",
+      "heuristicEntryEase": 5.7,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 11,
+      "slug": "mimikaki-saimin",
+      "itemName": "耳かき催眠",
+      "heuristicEntryEase": 5.53,
+      "inductionTraitMax": 4.5,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "rank": 12,
+      "slug": "time-rotor",
+      "itemName": "タイムローター",
+      "heuristicEntryEase": 5.53,
+      "inductionTraitMax": 4.5,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 13,
+      "slug": "inuka-anji-amatime-oshioki-wakarase",
+      "itemName": "【犬化暗示】あまあまタイムだと思ってたらおしおき脳イキで徹底わからせ",
+      "heuristicEntryEase": 5.47,
+      "inductionTraitMax": 4.2,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 14,
+      "slug": "futarigake-saimin-coming-orgasm",
+      "itemName": "ふたりがけ催○カミングオーガズム編",
+      "heuristicEntryEase": 5.4,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 15,
+      "slug": "nouiki-trip-denpa-live",
+      "itemName": "【10周年記念作品】脳イキトリップ電波☆LIVE",
+      "heuristicEntryEase": 5.4,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 16,
+      "slug": "kurayami-kodzukuri-noumitsu-shokubutsu-mesuiki",
+      "itemName": "【催眠誘導】私と子作りしてください♡一夜限りの濃蜜孕ませ植物SEX「種孕」【連続∞メスイキ】",
+      "heuristicEntryEase": 5.34,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 17,
+      "slug": "saimin-jutsushi-itazura-hypno-show-stage",
+      "itemName": "催眠術師の悪戯～催眠ショーのステージの上で…～",
+      "heuristicEntryEase": 5.27,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 18,
+      "slug": "tenshi-akuma-souhan-saimin",
+      "itemName": "天使と悪魔の相反催眠",
+      "heuristicEntryEase": 5.27,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 19,
+      "slug": "brain-washer",
+      "itemName": "【催○音声】ブレインウォッシャー",
+      "heuristicEntryEase": 5.24,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 20,
+      "slug": "sukisuki-surikomi-chudoku-onanie-saimin",
+      "itemName": "スキスキ刷り込み♡ちゅーどくおなにー催眠",
+      "heuristicEntryEase": 5.24,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 21,
+      "slug": "oton-akachan-hipu-muryoku",
+      "itemName": "【催○音声】おとな赤ちゃん保育所による成人男性無力化プログラム ～社会福祉法人ひぷのガーデン～",
+      "heuristicEntryEase": 5.14,
+      "inductionTraitMax": 4.3,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 22,
+      "slug": "hypno-multi-rape",
+      "itemName": "ヒプノマルチレイプ",
+      "heuristicEntryEase": 5.01,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 23,
+      "slug": "kuchikou-saimin-count-trip-nouiki",
+      "itemName": "【催眠誘導】口腔催眠カウントトリップ【脳イキ音声】",
+      "heuristicEntryEase": 5.01,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 24,
+      "slug": "nohand-shasei-mahou-shoujo-mesuiki",
+      "itemName": "ノーハンド射精☆魔法少女 ～メスイキは神への叛逆行為～",
+      "heuristicEntryEase": 5.01,
+      "inductionTraitMax": 4.6,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 25,
+      "slug": "re-limit-marionette",
+      "itemName": "Re:リミットマリオネット",
+      "heuristicEntryEase": 5.01,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 26,
+      "slug": "dry-org-amadashi-prostate-nipple",
+      "itemName": "ドライオーガズム出来ない人の為の甘出し前立腺乳首オナニー術",
+      "heuristicEntryEase": 4.94,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 27,
+      "slug": "jigoku-hypno-multi-rape",
+      "itemName": "地獄級ヒプノマルチレイプ",
+      "heuristicEntryEase": 4.94,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 28,
+      "slug": "slime-musume-guchu-nouiki",
+      "itemName": "【ASMR催眠音声】スライム娘のグチュクチュ失神オーガズム調教【耳穴責め・脳イキ】",
+      "heuristicEntryEase": 4.88,
+      "inductionTraitMax": 4.9,
+      "recommendedSensitivityMin": 4,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 29,
+      "slug": "saimin-shinri-test-dame-iwakareru",
+      "itemName": "⚠悪用厳禁⚠催○心理テスト ～「ダメ」と言われるほど、射精したくなる。～",
+      "heuristicEntryEase": 4.87,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "rank": 30,
+      "slug": "ts-mahou-shoujo-haiboku-shinai",
+      "itemName": "TS魔法少女は敗北しない【敗北TS催眠音声】",
+      "heuristicEntryEase": 4.84,
+      "inductionTraitMax": 4.7,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 31,
+      "slug": "futarigake-saimin-dry-iki-support",
+      "itemName": "ふたりがけ催○ドライイキサポート編",
+      "heuristicEntryEase": 4.77,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 32,
+      "slug": "higengo-saimin-giseigo-pavlov-another",
+      "itemName": "非言語催眠-擬声語パブロフ-Another",
+      "heuristicEntryEase": 4.68,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 33,
+      "slug": "mayoigo-saimin-hypno-multi-rape",
+      "itemName": "迷い子の催○～ヒプノマルチレ○プ～",
+      "heuristicEntryEase": 4.68,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 34,
+      "slug": "miraiyochi-zeccho-countdown",
+      "itemName": "君の未来は決定している。～未来予知と絶頂カウントダウン～",
+      "heuristicEntryEase": 4.61,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 35,
+      "slug": "zeccho-furi-karakai-kouhai-mazo-mesuiki-nohand",
+      "itemName": "【初心者向けノーハンド射精催眠】『絶頂するフリ』のはずなのに♡からかい上手な後輩にマゾバレして、メスイキ&ノーハンド射精しちゃ、ダメですよ?【ルート選択あり】",
+      "heuristicEntryEase": 4.45,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 2,
+      "shallowTrancePossibleNote": true
+    },
+    {
+      "rank": 36,
+      "slug": "kyoku-mugen-zekkyou-count-chikuni",
+      "itemName": "【魔改造推奨】極:無限絶頂カウントチクニー【両性向け 催眠音声】",
+      "heuristicEntryEase": 4.02,
+      "inductionTraitMax": 4.9,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 37,
+      "slug": "aku-no-soshiki-hero-akudachi-sennou-saimin",
+      "itemName": "悪の組織のヒーロー悪堕ち洗脳催眠",
+      "heuristicEntryEase": 3.1,
+      "inductionTraitMax": 4.9,
+      "recommendedSensitivityMin": 4,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 38,
+      "slug": "jinsei-senpai-koi-dorei-mind-control",
+      "itemName": "人生舐めてる先輩の恋ドレイ化マインドコントロール",
+      "heuristicEntryEase": 2.89,
+      "inductionTraitMax": 4.8,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    },
+    {
+      "rank": 39,
+      "slug": "ryomimi-bug-kinshi-anji",
+      "itemName": "両耳から脳をバグらせるダメダメ禁止暗示",
+      "heuristicEntryEase": 2.24,
+      "inductionTraitMax": 4.9,
+      "recommendedSensitivityMin": 3,
+      "shallowTrancePossibleNote": false
+    }
+  ],
+  "rankByHeuristicAmongLv2WithShallowNote": [
+    {
+      "rank": 1,
+      "slug": "futarigake-saimin-melty-orgasm",
+      "itemName": "ふたりがけ催眠メルティオーガズム編",
+      "heuristicEntryEase": 6.45,
+      "inductionTraitMax": 4.7
+    },
+    {
+      "rank": 2,
+      "slug": "hypno-cloud",
+      "itemName": "ヒプノクラウド",
+      "heuristicEntryEase": 6.23,
+      "inductionTraitMax": 4.5
+    },
+    {
+      "rank": 3,
+      "slug": "futarigake-saimin-love-happy-orgasm",
+      "itemName": "ふたりがけ催眠ラブハピオーガズム編",
+      "heuristicEntryEase": 6.19,
+      "inductionTraitMax": 4.8
+    },
+    {
+      "rank": 4,
+      "slug": "asmr-saimin-aman-toro-lip",
+      "itemName": "【ASMR×催○音声】甘とろリップ",
+      "heuristicEntryEase": 5.96,
+      "inductionTraitMax": 4.6
+    },
+    {
+      "rank": 5,
+      "slug": "unknown-hypno-daijobu-koe-ni-yudanete",
+      "itemName": "アンノウンヒプノ ～大丈夫、私の声に委ねて～",
+      "heuristicEntryEase": 5.73,
+      "inductionTraitMax": 4.8
+    },
+    {
+      "rank": 6,
+      "slug": "warui-inma-kanashiki-koufuku-nadenade-hagu",
+      "itemName": "【催眠音声】わる～い淫魔ちゃんの甘やかし幸福調教～ナデナデ&ハグで強制幸せイキ～",
+      "heuristicEntryEase": 5.73,
+      "inductionTraitMax": 4.8
+    },
+    {
+      "rank": 7,
+      "slug": "mimikaki-saimin",
+      "itemName": "耳かき催眠",
+      "heuristicEntryEase": 5.53,
+      "inductionTraitMax": 4.5
+    },
+    {
+      "rank": 8,
+      "slug": "saimin-shinri-test-dame-iwakareru",
+      "itemName": "⚠悪用厳禁⚠催○心理テスト ～「ダメ」と言われるほど、射精したくなる。～",
+      "heuristicEntryEase": 4.87,
+      "inductionTraitMax": 4.7
+    },
+    {
+      "rank": 9,
+      "slug": "zeccho-furi-karakai-kouhai-mazo-mesuiki-nohand",
+      "itemName": "【初心者向けノーハンド射精催眠】『絶頂するフリ』のはずなのに♡からかい上手な後輩にマゾバレして、メスイキ&ノーハンド射精しちゃ、ダメですよ?【ルート選択あり】",
+      "heuristicEntryEase": 4.45,
+      "inductionTraitMax": 4.8
+    }
+  ]
+}

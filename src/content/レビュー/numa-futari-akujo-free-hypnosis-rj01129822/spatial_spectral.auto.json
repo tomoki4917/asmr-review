@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "hop_sec": 0.1,
+  "source_dir": "C:\\Users\\tomok\\Desktop\\解析後\\【無料催眠音声】沼へと誘う二人の悪女　～声と唇と舌がこじ開ける、あなたの内側にある扉～【キス・吐息・耳舐め】",
+  "tracks": [
+    {
+      "file": "本編.wav",
+      "duration_sec": 3345.0,
+      "mono": false,
+      "hop_sec": 0.1,
+      "frames": 33450,
+      "pan_linear_mean": 0.021036742255091667,
+      "pan_linear_std": 0.8186248540878296,
+      "pan_linear_mean_abs": 0.7528815865516663,
+      "centroid_hz_mean": 5427.282003365796,
+      "centroid_hz_std": 5758.641634954326,
+      "hf_ratio_ge_4khz_mean": 0.32835492491722107,
+      "hf_ratio_ge_4khz_std": 0.32351914048194885
+    }
+  ],
+  "aggregate": {
+    "tracks_n": 1,
+    "total_duration_sec": 3345.0,
+    "pan_linear_mean_abs_mean": 0.75288159,
+    "pan_linear_std_mean": 0.81862485,
+    "centroid_hz_mean_of_track_means": 5427.28200337,
+    "hf_ratio_ge_4khz_mean_of_track_means": 0.32835492,
+    "centroid_hz_std_pooled": 5758.641635
+  },
+  "usage_note": "定位の材料: pan_linear_mean_abs / pan_linear_std が大きいほど左右差の揺れが多い傾向。質感の材料: centroid と hf_ratio_ge_4khz は囁き断定ではなく、高域・息成分の相対量の目安。"
+}

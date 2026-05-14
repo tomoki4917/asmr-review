@@ -43,12 +43,15 @@ export function getDlsiteProductById(id: string): DlsiteProductRecord | undefine
 
 /**
  * 一覧カードに税込・セール価格を出す条件。
- * `data/products.json` に該当 `id` があり、`current_price` が正のとき（ホワイトリストは使わない）。
+ * `data/products.json` に該当 `id` があり、`current_price` が数値として登録されているとき（**0円＝無料含む**。ホワイトリストは使わない）。
  */
 export function shouldShowDlsitePriceOnReviewListCard(
   dlsiteProductId: string | undefined
 ): boolean {
-  if (!dlsiteProductId) return false;
-  const p = getDlsiteProductById(dlsiteProductId);
-  return Boolean(p && p.current_price > 0);
+  const id = dlsiteProductId?.trim();
+  if (!id) return false;
+  const p = getDlsiteProductById(id);
+  if (!p) return false;
+  const n = p.current_price;
+  return typeof n === "number" && Number.isFinite(n) && n >= 0;
 }

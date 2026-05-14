@@ -51,8 +51,8 @@ const CATEGORY_LINKS = [
   {
     emoji: "🔰",
     title: "ビギナーズガイド",
-    href: "/#hypnosis-intro",
-    subtitle: "催眠音声入門",
+    href: "/beginner/",
+    subtitle: "導線（ルート切替）",
   },
 ] as const;
 
