@@ -9,9 +9,8 @@ summary: |
 tags: ["ドライオーガズム", "脳イキ", "催眠音声", "記事"]
 itemName: "ドライオーガズムのメカニズム"
 authorName: "ASMR研究所 所長"
-publishedAt: "2099-12-31"
-goLiveAt: "2099-12-31T12:00:00+09:00"
-excludeFromArticleIndex: true
+publishedAt: "2026-05-15"
+goLiveAt: "2026-05-15T00:00:00+09:00"
 affiliateLinks: []
 coverImage: "/content/reviews/dry-orgasm-what-is/cover.jpg"
 ---
@@ -74,7 +73,7 @@ coverImage: "/content/reviews/dry-orgasm-what-is/cover.jpg"
 
 脳イキが **想像力（確信）** の勝負なら、ドライは **副交感神経（脱力）** の勝負です。
 
-身体が力んで強張っていると、自律神経が交感神経側に傾き、脳からの信号を遮断してしまいます。特に、次の2点を意識することが、ドライオーガズムを成功させるロジックになります。
+特定の部位に力が入っていると、そこが信号の「抵抗」になり、快感の循環が止まってしまいます。
 
 **① 徹底した脱力**
 

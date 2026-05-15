@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useId, useState } from "react";
 import Link from "next/link";
@@ -8,36 +8,128 @@ import type { Review } from "@/lib/types";
 type RouteId = 1 | 2;
 
 type Props = {
-  /** ルート1・2の「作品おすすめ記事」に共通表示（一覧からは除外された記事） */
   recommendedArticle: Review | null;
-  /** ルート1・2の「視聴環境」欄 */
   listeningEnvironmentArticle: Review | null;
+  mechanismArticle: Review | null;
+};
+
+type StepItem = {
+  title: string;
+  hint: string;
+  article: Review | null;
 };
 
 function BeginnerArticleSlot({ article }: { article: Review | null }) {
   if (article) {
     return (
-      <div className="mt-2">
+      <div className="mt-3">
         <FileMarkdownArticleCard review={article} />
       </div>
     );
   }
   return (
-    <p className="mt-2 rounded-xl border border-dashed border-amber-500/35 bg-slate-950/35 px-4 py-6 text-center text-sm leading-relaxed text-slate-400">
+    <p className="mt-3 rounded-xl border border-dashed border-amber-500/35 bg-slate-950/35 px-4 py-5 text-center text-sm leading-relaxed text-slate-400">
       記事を読み込めませんでした。記事ファイルの slug が正しいか確認してください。
     </p>
   );
 }
 
-/**
- * ビギナーズガイド：共通導入＋ルート切替（最短で没入 / 仕組みから理解）と各スロット。
- */
+function BeginnerStepList({ steps }: { steps: StepItem[] }) {
+  return (
+    <ol className="mt-6 space-y-8">
+      {steps.map((step, index) => (
+        <li key={step.title} className="relative">
+          {index < steps.length - 1 ? (
+            <span
+              aria-hidden
+              className="absolute left-4 top-10 bottom-0 w-px -translate-x-1/2 bg-gradient-to-b from-sky-500/40 to-transparent"
+            />
+          ) : null}
+          <div className="flex gap-3 sm:gap-4">
+            <span
+              aria-hidden
+              className="relative z-[1] flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-sky-400/45 bg-sky-500/15 text-sm font-bold text-sky-100"
+            >
+              {index + 1}
+            </span>
+            <div className="min-w-0 flex-1">
+              <h3 className="text-base font-bold text-slate-100 sm:text-lg">
+                {step.title}
+              </h3>
+              <p className="mt-1 text-sm leading-relaxed text-slate-400">
+                {step.hint}
+              </p>
+              <BeginnerArticleSlot article={step.article} />
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+const ROUTE_PANEL: Record<
+  RouteId,
+  { emoji: string; heading: string; lead: string; steps: (p: Props) => StepItem[] }
+> = {
+  1: {
+    emoji: "⚡",
+    heading: "最短で楽しむ",
+    lead: "環境を整えてから、おすすめの1本を選びます。上から順に進めてください。",
+    steps: ({ listeningEnvironmentArticle, recommendedArticle }) => [
+      {
+        title: "視聴環境を整える",
+        hint: "暗さ・温度・イヤホン。ここを済ませると、その後が楽になります。",
+        article: listeningEnvironmentArticle,
+      },
+      {
+        title: "おすすめ作品を選ぶ",
+        hint: "初めての1本は、評価と内容が分かりやすい作品からで大丈夫です。",
+        article: recommendedArticle,
+      },
+    ],
+  },
+  2: {
+    emoji: "🧠",
+    heading: "仕組みを理解してから",
+    lead: "なぜ効くのかを押さえてから、環境と作品へ。上から順に読み進めてください。",
+    steps: ({
+      mechanismArticle,
+      listeningEnvironmentArticle,
+      recommendedArticle,
+    }) => [
+      {
+        title: "催眠音声の仕組みを知る",
+        hint: "まず「何が起きているか」を短く把握します。",
+        article: mechanismArticle,
+      },
+      {
+        title: "視聴環境を整える",
+        hint: "理解したうえで、聴く場所とイヤホンをそろえます。",
+        article: listeningEnvironmentArticle,
+      },
+      {
+        title: "おすすめ作品を選ぶ",
+        hint: "準備ができたら、初めての1本に進みます。",
+        article: recommendedArticle,
+      },
+    ],
+  },
+};
+
 export function BeginnerGuideClient({
   recommendedArticle,
   listeningEnvironmentArticle,
+  mechanismArticle,
 }: Props) {
   const [route, setRoute] = useState<RouteId>(1);
   const panelId = useId();
+  const panel = ROUTE_PANEL[route];
+  const steps = panel.steps({
+    recommendedArticle,
+    listeningEnvironmentArticle,
+    mechanismArticle,
+  });
 
   return (
     <div className="mx-auto w-full max-w-4xl pb-16 pt-8 sm:pt-10">
@@ -103,110 +195,61 @@ export function BeginnerGuideClient({
           type="button"
           onClick={() => setRoute(1)}
           aria-pressed={route === 1}
-          aria-label="最短で没入する（ルート1）"
-          className={`inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full border px-5 py-3 text-center text-sm font-semibold leading-snug transition sm:min-h-[3.75rem] sm:text-base ${
+          className={`rounded-2xl border px-4 py-4 text-left transition sm:px-5 sm:py-5 ${
             route === 1
-              ? "border-sky-500/50 bg-sky-500/15 text-sky-100"
-              : "border-slate-500/50 bg-slate-800/50 text-slate-200 hover:border-slate-400/60 hover:bg-slate-800/70"
+              ? "border-sky-500/50 bg-sky-500/10 ring-1 ring-sky-500/25"
+              : "border-slate-600/50 bg-slate-800/40 hover:border-slate-500/60"
           }`}
         >
-          <span className="text-lg leading-none sm:text-xl" aria-hidden>
+          <span className="text-xl" aria-hidden>
             ⚡
           </span>
-          <span>最短で没入する</span>
+          <span className="mt-2 block text-base font-bold text-slate-50">
+            最短で楽しむ
+          </span>
+          <span className="mt-1 block text-sm leading-relaxed text-slate-400">
+            仕組みは後回し。環境 → 作品の2ステップ。
+          </span>
         </button>
         <button
           type="button"
           onClick={() => setRoute(2)}
           aria-pressed={route === 2}
-          aria-label="仕組みから理解する（ルート2）"
-          className={`inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full border px-5 py-3 text-center text-sm font-semibold leading-snug transition sm:min-h-[3.75rem] sm:text-base ${
+          className={`rounded-2xl border px-4 py-4 text-left transition sm:px-5 sm:py-5 ${
             route === 2
-              ? "border-sky-500/50 bg-sky-500/15 text-sky-100"
-              : "border-slate-500/50 bg-slate-800/50 text-slate-200 hover:border-slate-400/60 hover:bg-slate-800/70"
+              ? "border-sky-500/50 bg-sky-500/10 ring-1 ring-sky-500/25"
+              : "border-slate-600/50 bg-slate-800/40 hover:border-slate-500/60"
           }`}
         >
-          <span className="text-lg leading-none sm:text-xl" aria-hidden>
+          <span className="text-xl" aria-hidden>
             🧠
           </span>
-          <span>仕組みから理解する</span>
+          <span className="mt-2 block text-base font-bold text-slate-50">
+            仕組みから理解する
+          </span>
+          <span className="mt-1 block text-sm leading-relaxed text-slate-400">
+            仕組み → 環境 → 作品の3ステップ。
+          </span>
         </button>
       </div>
 
-      <div
-        className="mt-8 space-y-6"
+      <section
+        className="mt-8 rounded-2xl border border-slate-600/45 bg-slate-900/35 p-4 sm:p-6"
         role="tabpanel"
         id={`${panelId}-panel`}
+        aria-labelledby={`${panelId}-route-${route}`}
         aria-live="polite"
       >
-        {route === 1 ? (
-          <>
-            <section aria-labelledby={`${panelId}-r1-a`}>
-              <h3
-                id={`${panelId}-r1-a`}
-                className="text-sm font-bold text-slate-200 sm:text-base"
-              >
-                ルート1：視聴環境記事
-              </h3>
-              <BeginnerArticleSlot article={listeningEnvironmentArticle} />
-            </section>
-            <section aria-labelledby={`${panelId}-r1-b`}>
-              <h3
-                id={`${panelId}-r1-b`}
-                className="text-sm font-bold text-slate-200 sm:text-base"
-              >
-                ルート1：作品おすすめ記事
-              </h3>
-              <BeginnerArticleSlot article={recommendedArticle} />
-            </section>
-          </>
-        ) : (
-          <>
-            <section aria-labelledby={`${panelId}-r2-intro`}>
-              <h3
-                id={`${panelId}-r2-intro`}
-                className="text-sm font-bold text-slate-200 sm:text-base"
-              >
-                ルート2：導入
-              </h3>
-              <div
-                className="mt-2 min-h-[4rem] rounded-xl border border-dashed border-slate-600/55 bg-slate-950/35"
-                aria-hidden
-              />
-            </section>
-            <section aria-labelledby={`${panelId}-r2-a`}>
-              <h3
-                id={`${panelId}-r2-a`}
-                className="text-sm font-bold text-slate-200 sm:text-base"
-              >
-                ルート2：催眠のメカニズム
-              </h3>
-              <div
-                className="mt-2 min-h-[5rem] rounded-xl border border-dashed border-slate-600/55 bg-slate-950/35 sm:min-h-[6rem]"
-                aria-hidden
-              />
-            </section>
-            <section aria-labelledby={`${panelId}-r2-b`}>
-              <h3
-                id={`${panelId}-r2-b`}
-                className="text-sm font-bold text-slate-200 sm:text-base"
-              >
-                ルート2：視聴環境
-              </h3>
-              <BeginnerArticleSlot article={listeningEnvironmentArticle} />
-            </section>
-            <section aria-labelledby={`${panelId}-r2-c`}>
-              <h3
-                id={`${panelId}-r2-c`}
-                className="text-sm font-bold text-slate-200 sm:text-base"
-              >
-                ルート2：作品おすすめ記事
-              </h3>
-              <BeginnerArticleSlot article={recommendedArticle} />
-            </section>
-          </>
-        )}
-      </div>
+        <h2
+          id={`${panelId}-route-${route}`}
+          className="flex items-center gap-2 text-lg font-bold text-slate-50 sm:text-xl"
+        >
+          <span aria-hidden>{panel.emoji}</span>
+          {panel.heading}
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-slate-400">{panel.lead}</p>
+        <BeginnerStepList steps={steps} />
+      </section>
     </div>
   );
 }
