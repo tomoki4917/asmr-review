@@ -10,9 +10,11 @@ type RouteId = 1 | 2;
 type Props = {
   /** ルート1・2の「作品おすすめ記事」に共通表示（一覧からは除外された記事） */
   recommendedArticle: Review | null;
+  /** ルート1・2の「視聴環境」欄 */
+  listeningEnvironmentArticle: Review | null;
 };
 
-function BeginnerRecommendedArticleSlot({ article }: { article: Review | null }) {
+function BeginnerArticleSlot({ article }: { article: Review | null }) {
   if (article) {
     return (
       <div className="mt-2">
@@ -22,7 +24,7 @@ function BeginnerRecommendedArticleSlot({ article }: { article: Review | null })
   }
   return (
     <p className="mt-2 rounded-xl border border-dashed border-amber-500/35 bg-slate-950/35 px-4 py-6 text-center text-sm leading-relaxed text-slate-400">
-      おすすめ記事を読み込めませんでした。記事ファイルの slug が正しいか確認してください。
+      記事を読み込めませんでした。記事ファイルの slug が正しいか確認してください。
     </p>
   );
 }
@@ -30,7 +32,10 @@ function BeginnerRecommendedArticleSlot({ article }: { article: Review | null })
 /**
  * ビギナーズガイド：共通導入＋ルート切替（最短で没入 / 仕組みから理解）と各スロット。
  */
-export function BeginnerGuideClient({ recommendedArticle }: Props) {
+export function BeginnerGuideClient({
+  recommendedArticle,
+  listeningEnvironmentArticle,
+}: Props) {
   const [route, setRoute] = useState<RouteId>(1);
   const panelId = useId();
 
@@ -143,10 +148,7 @@ export function BeginnerGuideClient({ recommendedArticle }: Props) {
               >
                 ルート1：視聴環境記事
               </h3>
-              <div
-                className="mt-2 min-h-[5rem] rounded-xl border border-dashed border-slate-600/55 bg-slate-950/35 sm:min-h-[6rem]"
-                aria-hidden
-              />
+              <BeginnerArticleSlot article={listeningEnvironmentArticle} />
             </section>
             <section aria-labelledby={`${panelId}-r1-b`}>
               <h3
@@ -155,7 +157,7 @@ export function BeginnerGuideClient({ recommendedArticle }: Props) {
               >
                 ルート1：作品おすすめ記事
               </h3>
-              <BeginnerRecommendedArticleSlot article={recommendedArticle} />
+              <BeginnerArticleSlot article={recommendedArticle} />
             </section>
           </>
         ) : (
@@ -191,10 +193,7 @@ export function BeginnerGuideClient({ recommendedArticle }: Props) {
               >
                 ルート2：視聴環境
               </h3>
-              <div
-                className="mt-2 min-h-[5rem] rounded-xl border border-dashed border-slate-600/55 bg-slate-950/35 sm:min-h-[6rem]"
-                aria-hidden
-              />
+              <BeginnerArticleSlot article={listeningEnvironmentArticle} />
             </section>
             <section aria-labelledby={`${panelId}-r2-c`}>
               <h3
@@ -203,7 +202,7 @@ export function BeginnerGuideClient({ recommendedArticle }: Props) {
               >
                 ルート2：作品おすすめ記事
               </h3>
-              <BeginnerRecommendedArticleSlot article={recommendedArticle} />
+              <BeginnerArticleSlot article={recommendedArticle} />
             </section>
           </>
         )}
