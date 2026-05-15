@@ -94,15 +94,18 @@ function normalizeZenkakuDigits(s: string): string {
 function extractDryWetCounts(markdown?: string): string | undefined {
   if (!markdown) return undefined;
   const normalized = normalizeZenkakuDigits(markdown.replace(/\r\n/g, "\n"));
-  const dryMatch = normalized.match(/ドライ\s*([0-9]+)\s*回/);
-  const wetMatch = normalized.match(/ウェット\s*([0-9]+)\s*回/);
+  const dryMatch =
+    normalized.match(/ドライシーン\s*([0-9]+)\s*回/) ?? normalized.match(/ドライ\s*([0-9]+)\s*回/);
+  const wetMatch =
+    normalized.match(/ウェットシーン\s*([0-9]+)\s*回/) ??
+    normalized.match(/ウェット\s*([0-9]+)\s*回/);
 
   const dry = dryMatch?.[1];
   const wet = wetMatch?.[1];
   if (!dry && !wet) return undefined;
-  if (dry && wet) return `ドライ${dry}回 / ウェット${wet}回`;
-  if (dry) return `ドライ${dry}回`;
-  return `ウェット${wet}回`;
+  if (dry && wet) return `ドライシーン${dry}回 / ウェットシーン${wet}回`;
+  if (dry) return `ドライシーン${dry}回`;
+  return `ウェットシーン${wet}回`;
 }
 
 function extractCircleName(markdown?: string): string | null {
@@ -1170,6 +1173,51 @@ export default async function ReviewPage({ params }: Props) {
       notRecommendedFor: [
         "ショー体裁や公開設定が苦手な方",
         "最短時間だけで片付けたい方（エロ帯が長め）",
+      ],
+    },
+    "shoshinsha-mugen-rakka-ecstasy": {
+      scoreLabel: "10.0 / 10",
+      oneLine:
+        "共通導入のあと立ちリラックスと分割弛緩、無限落下イメージと加速カウントでドライ絶頂を反復する同梱・無限落下エクスタシールート（通し約1時間50分）",
+      inductionType:
+        "教育導入系 / 身体的誘導系 / 分割弛緩系 / 落下イメージ系 / カウント誘導系",
+      voiceActor: "恋鈴桃歌",
+      tempoType: "ややゆっくり / 断続〜連続（弛緩深化→落下加速→カウント連鎖）",
+      majorFetish:
+        "初心者向け / 分割弛緩 / 落下体感 / 立ちリラックス / カウント絶頂",
+      kinkType: "ノーマル",
+      recommendedLevel: "初心者（浅いトランス＋立ち運動・脱力受容が可能）以上の方",
+      recording: "約1時間50分56秒（共通導入＋無限落下エクスタシー）",
+      recommendedFor: [
+        "催眠音声初心者で用語と体感の例が欲しい方",
+        "身体的誘導・分割弛緩で深く落ちたい方",
+        "落下・加速の体感でトランスを深めたい方",
+        "カウント絶頂を練習として試したい方",
+      ],
+      notRecommendedFor: [
+        "短時間で強い命令・洗脳だけを一気に欲しい方（分割弛緩と落下カウントの反復が続く）",
+        "落下・加速の体感を頭で追うのが苦手な方（長いカウント連鎖が作品の中心）",
+      ],
+    },
+    "shoshinsha-nouiki-ho-whiteout": {
+      scoreLabel: "10.0 / 10",
+      oneLine:
+        "共通導入でトランスの身近さを示したうえ、双子定位と真っ白ジャーニー、「行く練習」で脳内のドライ絶頂を反復しやすい同梱・脳イキホワイトアウトルート（通し約1時間27分）",
+      inductionType: "教育導入系 / イメージ誘導系 / 双子定位系 / カウント誘導系",
+      voiceActor: "乙倉ゅい",
+      tempoType: "ややゆっくり / 断続〜連続（情景深化→カウント連鎖）",
+      majorFetish: "初心者向け / 脳イキ / 白空間ジャーニー / 双子形式 / 行く練習",
+      kinkType: "ノーマル",
+      recommendedLevel: "初心者（浅いトランス＋イメージ受容が可能）以上の方",
+      recording: "約1時間27分32秒（共通導入＋脳イキホワイトアウト）",
+      recommendedFor: [
+        "催眠音声初心者で用語と体感の例が欲しい方",
+        "イメージ誘導で深く落ちたい方",
+        "双子形式の左右定位で注意を運ばれたい方",
+        "脳イキを行く練習として試したい方",
+      ],
+      notRecommendedFor: [
+        "視覚イメージを頭で組み立てるのが苦手な方（左右定位の双子形式にも負担を感じやすい）",
       ],
     },
     "numa-futari-akujo-free-hypnosis-rj01129822": {

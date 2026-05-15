@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-解析フォルダ内の各 MP3 から、約 0.1 秒刻みのフレームで
+解析フォルダ内の各 MP3 / WAV から、約 0.1 秒刻みのフレームで
   - 左右チャンネルの RMS とその差（定位の材料）
   - 合成モノラルに対するスペクトル重心（既存 waveform.csv の centroid と同系）
   - 高域（4 kHz 以上）エネルギー比（囁き・息多めの「質感」材料の一例）
 を算出し、レビュー slug 直下に spatial_spectral.auto.json を書く。
 
-前提: pip install -r scripts/requirements-audio.txt（および MP3 再生のため ffmpeg 等が PATH にあること。librosa 依存）
+前提: pip install -r scripts/requirements-audio.txt（MP3 は ffmpeg 等が PATH にあることが多い。WAV は librosa のみで可。librosa 依存）
 
 例:
   py -3 scripts/analyze_mp3_immersive_metrics.py "C:\\Users\\tomok\\Desktop\\解析後\\投稿完了【同人】\\作品フォルダ" michikusa-natsuna4-onsen-pokipoki-seitai
@@ -33,7 +33,7 @@ def _require_librosa():
         print(
             "エラー: librosa / numpy が未インストールです。\n"
             "  py -3 -m pip install -r scripts/requirements-audio.txt\n"
-            "（MP3 には ffmpeg 等が PATH に必要な場合があります）",
+            "（MP3 には ffmpeg 等が PATH に必要な場合があります。WAV は通常不要）",
             file=sys.stderr,
         )
         raise SystemExit(1) from e
@@ -99,8 +99,8 @@ def _analyze_one(path: Path, hop_sec: float) -> dict:
 def analyze(source_dir: Path, slug: str, hop_sec: float) -> int:
     _require_librosa()
     source_dir = source_dir.resolve()
-    mp3s = sorted([p for p in source_dir.iterdir() if p.suffix in _AUDIO_SUFFIXES])
-    if not mp3s:
+    audio_files = sorted([p for p in source_dir.iterdir() if p.suffix in _AUDIO_SUFFIXES])
+    if not audio_files:
         print(f"エラー: {source_dir} に .mp3 または .wav がありません。", file=sys.stderr)
         return 1
 
@@ -108,7 +108,7 @@ def analyze(source_dir: Path, slug: str, hop_sec: float) -> int:
     review_dir.mkdir(parents=True, exist_ok=True)
 
     tracks: list[dict] = []
-    for p in mp3s:
+    for p in audio_files:
         tracks.append(_analyze_one(p, hop_sec=hop_sec))
 
     def _agg(key: str) -> float | None:
@@ -148,9 +148,9 @@ def analyze(source_dir: Path, slug: str, hop_sec: float) -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser(
-        description="MP3 から 0.1s 前後のフレームで左右 RMS 差・スペクトル特徴を抽出し spatial_spectral.auto.json を書く。"
+        description="MP3 / WAV から 0.1s 前後のフレームで左右 RMS 差・スペクトル特徴を抽出し spatial_spectral.auto.json を書く。"
     )
-    ap.add_argument("source", type=Path, help="解析フォルダ（.mp3 を含む）")
+    ap.add_argument("source", type=Path, help="解析フォルダ（.mp3 または .wav を含む）")
     ap.add_argument("slug", help="レビュー slug（src/content/レビュー/<slug>/ へ出力）")
     ap.add_argument(
         "--hop-sec",
