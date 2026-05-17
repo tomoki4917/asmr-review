@@ -416,6 +416,13 @@ export const BEGINNER_GUIDE_LISTENING_ENVIRONMENT_ARTICLE_SLUG =
 export const BEGINNER_GUIDE_MECHANISM_ARTICLE_SLUG =
   "hypnosis-mechanism-01" as const;
 
+/** ビギナーズガイド「脳イキ」欄（ルート2） */
+export const BEGINNER_GUIDE_NOU_IKI_ARTICLE_SLUG = "nou-iki-toha" as const;
+
+/** ビギナーズガイド「ドライオーガズム」欄（ルート2） */
+export const BEGINNER_GUIDE_DRY_ORGASM_ARTICLE_SLUG =
+  "dry-orgasm-what-is" as const;
+
 /** トップ「催眠音声入門」と同じ 3 本（存在する slug のみ・この順） */
 const BEGINNER_GUIDE_SLUGS = [
   "hypnosis-mechanism-01",

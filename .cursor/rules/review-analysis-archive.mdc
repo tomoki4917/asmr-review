@@ -28,6 +28,6 @@ alwaysApply: false
 
 ## 注意
 
-- 原則、解析データは `analysis/` に置くだけでもよい。**心拍セッション画像**（例 `身体活動.jpg`）を**レビュー本文に載せる**場合は、`src/content/記事/_最強サンプルレビュー執筆ガイド.md` の **warui 型**に従い、`index.md` に `### 聴取時の身体反応（心拍）` を書く。画像は **`src/content/レビュー/<slug>/polar_h10_heart_rate_session.jpg`** にコピーしてから本文で参照する（`analysis/` に別名のままでもよいが、URL は直下の ASCII 名を使う）。
+- 原則、解析データは `analysis/` に置くだけでもよい。**心拍セッション画像**（例 `身体活動.jpg`）があるときは **`docs/真催眠音声執筆ガイド.md` §1.5** に従い、`index.md` の **`## 総合評価` 内**に `### 聴取時の身体反応（心拍）` を書く。画像は **`src/content/レビュー/<slug>/polar_h10_heart_rate_session.jpg`** にコピーしてから本文で参照する。
 - `*.json` や `*_waveform.csv` は容量が大きい。**本文には貼らず**ファイルとして `analysis/` に保存する。
 - 「記事に保存」は **`src/content/レビュー/<slug>/` フォルダに同梱する**意味（主に `analysis/`）でよい。

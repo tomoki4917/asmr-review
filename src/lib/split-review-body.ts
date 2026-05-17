@@ -67,6 +67,17 @@ export function splitBeforeAtRecommendedAudience(before: string): {
   if (n.startsWith("## どんな人におすすめか\n")) {
     return { prefix: "", audience: n.trimStart() };
   }
+  const audienceLead = "\n**おすすめしたい方**";
+  const leadIdx = n.indexOf(audienceLead);
+  if (leadIdx !== -1) {
+    return {
+      prefix: n.slice(0, leadIdx).trimEnd(),
+      audience: n.slice(leadIdx + 1).trimStart(),
+    };
+  }
+  if (n.startsWith("**おすすめしたい方**")) {
+    return { prefix: "", audience: n.trimStart() };
+  }
   return null;
 }
 
@@ -246,6 +257,24 @@ export function partitionMarkdownAtWorkImpressionHeadings(
   }
 
   return segments.length > 0 ? segments : [{ kind: "markdown", source: n }];
+}
+
+/**
+ * 最初のレベル2見出し `## ` 手前で分割する（記事のリード文と本文）。
+ * 先頭から `## ` が始まる場合は `lead` は空、`main` は全文。
+ */
+export function splitBodyAtFirstH2(body: string): { lead: string; main: string } {
+  const normalized = body.replace(/\r\n/g, "\n");
+  const firstH2 = normalized.search(/(?:^|\n)## (?![#])/);
+  if (firstH2 === -1) {
+    return { lead: normalized.trimEnd(), main: "" };
+  }
+  if (firstH2 === 0) {
+    return { lead: "", main: normalized.trim() };
+  }
+  const lead = normalized.slice(0, firstH2).trimEnd();
+  const main = normalized.slice(firstH2 + 1).trimStart();
+  return { lead, main };
 }
 
 export function splitBodyAtFinalRating(

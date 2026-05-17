@@ -1,4 +1,4 @@
-{
+﻿{
   "schemaVersion": 1,
   "workName": "【バイノーラル】2人で催眠生放送【初見さん歓迎♪】（RJ205378）",
   "scores": {
@@ -6,7 +6,7 @@
     "pleasure": 8,
     "satisfaction": 8
   },
-  "orgasmSummary": "ドライ2回（スイ帯・メロ帯のピーク回収／分岐で体感は変動）／ウェット0回（音声のみ）",
+  "orgasmSummary": "ドライ2回（スイ帯・メロ帯の絶頂シーン／分岐で体感は変動）／ウェット0回（音声のみ）",
   "notes": [
     "評価は docs/レビュー三軸評価定義.md に準拠（鑑賞用・臨床非保証）。",
     "通し尺は作品ページ「※約95分（分岐パート含め）」の表記に準拠。解析フォルダに各トラックの .srt と *_waveform.csv を置き、import-review-analysis.py → analyze_review_auto.py を再実行すると derived_metrics・events・パート別の秒が揃う。",

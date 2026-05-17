@@ -26,8 +26,12 @@ type Props = {
   quickRecording: string;
   quickRecommendedFor: string[];
   quickNotRecommendedFor: string[];
+  /** 詳細の `### 体験感度Lv（一覧）` へ誘導するリンクを「おすすめ催眠Lv」直後に出す */
+  quickShowSensitivityLevelListLink?: boolean;
   children: ReactNode;
 };
+
+const EXPERIENCE_SENSITIVITY_LV_LIST_ID = "experience-sensitivity-lv-list";
 
 export function ReviewModeSwitcher({
   quickTitle,
@@ -50,9 +54,20 @@ export function ReviewModeSwitcher({
   quickRecording,
   quickRecommendedFor,
   quickNotRecommendedFor,
+  quickShowSensitivityLevelListLink = false,
   children,
 }: Props) {
   const [mode, setMode] = useState<"quick" | "detail">("quick");
+
+  function openDetailAndScrollToSensitivityList() {
+    setMode("detail");
+    window.setTimeout(() => {
+      document.getElementById(EXPERIENCE_SENSITIVITY_LV_LIST_ID)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 0);
+  }
   const showQuick = mode === "quick";
   const hasVoiceActor = quickVoiceActor.trim().length > 0 && !/確認中|未設定|不明/.test(quickVoiceActor);
   const showSampleLink =
@@ -162,7 +177,20 @@ export function ReviewModeSwitcher({
                 性癖タイプ： {quickKinkType}
               </li>
               <li className="border-l-[3px] border-slate-500/90 pl-3">
-                おすすめ催眠Lv：{quickRecommendedLevel}
+                <span className="text-slate-100">おすすめ催眠Lv：</span>
+                <span className="text-slate-50">{quickRecommendedLevel}</span>
+                {quickShowSensitivityLevelListLink ? (
+                  <>
+                    {" "}
+                    <button
+                      type="button"
+                      onClick={openDetailAndScrollToSensitivityList}
+                      className="text-sky-300 underline decoration-sky-500/60 underline-offset-2 transition hover:text-sky-200"
+                    >
+                      レベル一覧表はこちら
+                    </button>
+                  </>
+                ) : null}
               </li>
               <li className="border-l-[3px] border-slate-500/90 pl-3">
                 <span className="text-slate-100">収録時間：</span>{" "}

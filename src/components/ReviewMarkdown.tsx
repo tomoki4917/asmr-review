@@ -51,6 +51,18 @@ function isReviewAxisScoresListItem(children: ReactNode): boolean {
   return /^(トランス度|快楽度|没入度|刺激度|満足度)\s*\d+\b/.test(text);
 }
 
+/** 解析結論の体験感度Lv一覧表（3列・Lv1〜5） */
+function isExperienceSensitivityLvTable(children: ReactNode): boolean {
+  const text = nodeToPlainText(children).replace(/\u00a0/g, " ");
+  return (
+    /\bLv\b/.test(text) &&
+    /区分/.test(text) &&
+    /(到達できる状態|できること)/.test(text) &&
+    /Lv1/.test(text) &&
+    /Lv5/.test(text)
+  );
+}
+
 /**
  * パート解説のセリフ一行など。長い分析引用と見分けやすくアクセント表示する。
  * （「で始まらないセリフ」や **キャラ：**「…」形式も拾う）
@@ -100,16 +112,23 @@ function buildMarkdownComponents(o: BuildOpts): Components {
     h3: ({ children }) => {
       const label = nodeToPlainText(children).replace(/\u00a0/g, " ").trim();
       const isWorkIntroLabel = label === "作品解説と感想";
+      const isRecommendedSensitivity = /【推奨感度Lv[：:]/.test(label);
+      const isExperienceSensitivityLvList = label === "体験感度Lv（一覧）";
       const starTrackH3 =
-        starReviewReadingComfort && !articleReading && !isWorkIntroLabel;
+        starReviewReadingComfort && !articleReading && !isWorkIntroLabel && !isRecommendedSensitivity;
       return (
         <h3
+          id={isExperienceSensitivityLvList ? "experience-sensitivity-lv-list" : undefined}
           className={
-            isWorkIntroLabel
-              ? `mb-2 mt-8 scroll-mt-24 text-xl font-semibold tracking-tight text-slate-100 ${h3Comfort} ${starReviewReadingComfort ? "review-h3--work-intro-star" : ""}`
-              : starTrackH3
-                ? `review-h3--star-track mb-2.5 mt-8 scroll-mt-24 text-[1.0625rem] font-medium leading-snug tracking-tight text-slate-200/95 sm:text-lg ${h3Comfort}`
-                : `mb-2 mt-8 scroll-mt-24 text-lg font-semibold tracking-tight text-slate-100 ${h3Comfort}`
+            isRecommendedSensitivity
+              ? `review-h3--recommended-sensitivity mb-0 mt-6 scroll-mt-24 text-lg font-bold tracking-tight text-sky-50 sm:text-xl ${h3Comfort}`
+              : isExperienceSensitivityLvList
+                ? `mb-2 mt-4 scroll-mt-24 text-lg font-semibold tracking-tight text-slate-100 ${h3Comfort}`
+              : isWorkIntroLabel
+                ? `mb-2 mt-8 scroll-mt-24 text-xl font-semibold tracking-tight text-slate-100 ${h3Comfort} ${starReviewReadingComfort ? "review-h3--work-intro-star" : ""}`
+                : starTrackH3
+                  ? `review-h3--star-track mb-2.5 mt-8 scroll-mt-24 text-[1.0625rem] font-medium leading-snug tracking-tight text-slate-200/95 sm:text-lg ${h3Comfort}`
+                  : `mb-2 mt-8 scroll-mt-24 text-lg font-semibold tracking-tight text-slate-100 ${h3Comfort}`
           }
         >
           {children}
@@ -177,24 +196,43 @@ function buildMarkdownComponents(o: BuildOpts): Components {
       );
     },
     p: ({ children }) => {
-      const plain = nodeToPlainText(children).replace(/\u00a0/g, " ").trimStart();
+      const plain = nodeToPlainText(children).replace(/\u00a0/g, " ").trim();
       const pullSummary =
         starReviewReadingComfort && /^一言で言えば[:：\uFF1A]/.test(plain);
+      const audienceSubhead =
+        plain === "おすすめしたい方"
+          ? "recommended"
+          : plain === "合わない可能性がある方" || plain === "合わない人"
+            ? "not-recommended"
+            : null;
       return (
         <p
-          className={`review-md-p mb-5 leading-[1.75] last:mb-0 ${pComfort} ${articleReading ? "text-slate-200/95" : "text-slate-300"} ${pullSummary ? "review-md-p--pull-summary" : ""}`}
+          className={`review-md-p mb-5 leading-[1.75] last:mb-0 ${pComfort} ${articleReading ? "text-slate-200/95" : "text-slate-300"} ${pullSummary ? "review-md-p--pull-summary" : ""} ${audienceSubhead ? `review-audience-subhead review-audience-subhead--${audienceSubhead}` : ""}`}
         >
           {children}
         </p>
       );
     },
-    ul: ({ children }) => (
-      <ul
-        className={`mb-4 list-disc pl-5 ${listGap} ${articleReading ? "article-md-list text-slate-200/92" : "text-slate-300"}`}
-      >
-        {children}
-      </ul>
-    ),
+    ul: ({ children, node }) => {
+      const classNames = node?.properties?.className;
+      const isRecommendedSensitivityList = Array.isArray(classNames)
+        ? classNames.includes("review-recommended-sensitivity-panel__list")
+        : false;
+      if (isRecommendedSensitivityList) {
+        return (
+          <ul className="review-recommended-sensitivity-panel__list m-0 list-none p-0">
+            {children}
+          </ul>
+        );
+      }
+      return (
+        <ul
+          className={`mb-4 list-disc pl-5 ${listGap} ${articleReading ? "article-md-list text-slate-200/92" : "text-slate-300"}`}
+        >
+          {children}
+        </ul>
+      );
+    },
     ol: ({ children }) => (
       <ol
         className={`mb-4 list-decimal pl-5 ${listGap} ${articleReading ? "article-md-list text-slate-200/92" : "text-slate-300"}`}
@@ -296,19 +334,22 @@ function buildMarkdownComponents(o: BuildOpts): Components {
         }
       />
     ),
-    table: ({ children }) => (
-      <div
-        className={`review-md-table-wrap my-6 overflow-x-auto rounded-xl border ring-1 ${
-          articleReading
-            ? "article-md-table-wrap border-sky-500/20 bg-slate-950/40 ring-sky-500/10"
-            : "border-slate-600/40 bg-slate-900/35 ring-slate-700/35"
-        } ${readingComfort ? "max-sm:my-5" : ""}`}
-      >
-        <table className="w-full min-w-[16rem] border-collapse text-left text-sm text-slate-300">
-          {children}
-        </table>
-      </div>
-    ),
+    table: ({ children }) => {
+      const sensitivityLvTable = isExperienceSensitivityLvTable(children);
+      return (
+        <div
+          className={`review-md-table-wrap my-6 overflow-x-auto rounded-xl border ring-1 ${
+            articleReading
+              ? "article-md-table-wrap border-sky-500/20 bg-slate-950/40 ring-sky-500/10"
+              : "border-slate-600/40 bg-slate-900/35 ring-slate-700/35"
+          } ${readingComfort ? "max-sm:my-5" : ""} ${sensitivityLvTable ? "review-sensitivity-lv-table" : ""}`}
+        >
+          <table className="w-full min-w-[16rem] border-collapse text-left text-sm text-slate-300">
+            {children}
+          </table>
+        </div>
+      );
+    },
     thead: ({ children }) => (
       <thead
         className={`border-b ${articleReading ? "border-sky-500/20 bg-sky-500/[0.09]" : "border-slate-600/50 bg-slate-800/55"}`}

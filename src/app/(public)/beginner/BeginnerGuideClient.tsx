@@ -11,6 +11,8 @@ type Props = {
   recommendedArticle: Review | null;
   listeningEnvironmentArticle: Review | null;
   mechanismArticle: Review | null;
+  nouIkiArticle: Review | null;
+  dryOrgasmArticle: Review | null;
 };
 
 type StepItem = {
@@ -92,9 +94,11 @@ const ROUTE_PANEL: Record<
   2: {
     emoji: "🧠",
     heading: "仕組みを理解してから",
-    lead: "なぜ効くのかを押さえてから、環境と作品へ。上から順に読み進めてください。",
+    lead: "仕組み → 脳イキ → ドライの順で理解してから、環境と作品へ。上から順に読み進めてください。",
     steps: ({
       mechanismArticle,
+      nouIkiArticle,
+      dryOrgasmArticle,
       listeningEnvironmentArticle,
       recommendedArticle,
     }) => [
@@ -102,6 +106,16 @@ const ROUTE_PANEL: Record<
         title: "催眠音声の仕組みを知る",
         hint: "まず「何が起きているか」を短く把握します。",
         article: mechanismArticle,
+      },
+      {
+        title: "脳イキの正体を知る",
+        hint: "頭の中で快感が立ち上がる仕組み（トップダウン）を整理します。",
+        article: nouIkiArticle,
+      },
+      {
+        title: "ドライオーガズムの正体を知る",
+        hint: "射精の区切りを越えた、全身の快感の波を整理します。",
+        article: dryOrgasmArticle,
       },
       {
         title: "視聴環境を整える",
@@ -121,6 +135,8 @@ export function BeginnerGuideClient({
   recommendedArticle,
   listeningEnvironmentArticle,
   mechanismArticle,
+  nouIkiArticle,
+  dryOrgasmArticle,
 }: Props) {
   const [route, setRoute] = useState<RouteId>(1);
   const panelId = useId();
@@ -129,6 +145,8 @@ export function BeginnerGuideClient({
     recommendedArticle,
     listeningEnvironmentArticle,
     mechanismArticle,
+    nouIkiArticle,
+    dryOrgasmArticle,
   });
 
   return (
@@ -228,7 +246,7 @@ export function BeginnerGuideClient({
             仕組みから理解する
           </span>
           <span className="mt-1 block text-sm leading-relaxed text-slate-400">
-            仕組み → 環境 → 作品の3ステップ。
+            仕組み → 脳イキ → ドライ → 環境 → 作品の5ステップ。
           </span>
         </button>
       </div>

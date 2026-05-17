@@ -7,6 +7,6 @@ alwaysApply: true
 
 詳細ページの **記事モード**（**1分で判断！クイック解析**／**しっかり見たい人向け！作品詳細解析**）は、`src/app/(public)/reviews/[slug]/page.tsx` の **`quickGuideBySlug`** に **`index.md` の `slug` と同一キー**のオブジェクトが無いと **出ない**（他レビューと見た目が揃わない）。
 
-**新規で作品レビュー**（`src/content/レビュー/<slug>/index.md`・`contentKind` 省略または `review`）を追加するときは **必ず:** `quickGuideBySlug` に **1 件追加**する。フィールドは既存エントリに合わせる（`scoreLabel` / `oneLine` / `inductionType` / `voiceActor` / `tempoType` / `majorFetish` / `kinkType` / `recommendedLevel` / `recording` / `recommendedFor` / `notRecommendedFor`）。
+**新規で作品レビュー**（`src/content/レビュー/<slug>/index.md`・`contentKind` 省略または `review`）を追加するときは **必ず:** `quickGuideBySlug` に **1 件追加**する。フィールドは既存エントリに合わせる（`scoreLabel` / `oneLine` / `inductionType` / `voiceActor` / `tempoType` / `majorFetish` / `kinkType` / `recommendedLevel` / `recording` / `recommendedFor` / `notRecommendedFor`）。**`recommendedLevel`** は **`docs/真催眠音声執筆ガイド.md` §1.6.4**（`{grade}（{descを1重化}）以上の方`・§11.6 の推奨行と一致・括弧は1組）。
 
 **完了前の確認:** `http://localhost:3000/reviews/<slug>/` で記事モードの 2 ボタンが表示されること（公開前チェックは `.cursor/rules/review-post-ship-checklist.mdc` 項目 6 と同一要件）。

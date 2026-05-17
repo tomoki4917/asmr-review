@@ -373,6 +373,266 @@ body {
    * レビュー本文：`## 作品像` と `## パート解説` の視覚的区別。
    * 作品像は次の h2 までの段落に左ガイド（散文の塊をほどく）。パート解説は見出しアクセントのみ（引用ブロックが主役）。
    */
+  /**
+   * 解析結論：推奨感度Lvパネル（1ボックス・枠線連続）。
+   */
+  .review-md .review-recommended-sensitivity-panel {
+    --review-sens-accent: rgba(56, 189, 248, 0.95);
+    margin: 0.5rem 0 1.75rem;
+    border: 1px solid rgba(56, 189, 248, 0.32);
+    border-left: 4px solid var(--review-sens-accent);
+    border-radius: 0.75rem;
+    background: linear-gradient(
+      90deg,
+      rgba(56, 189, 248, 0.18) 0%,
+      rgba(56, 189, 248, 0.06) 48%,
+      rgba(15, 23, 42, 0.42) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.07),
+      0 4px 18px rgba(2, 6, 23, 0.35);
+    overflow: hidden;
+  }
+
+  .review-md .review-recommended-sensitivity-panel__title {
+    margin: 0;
+    padding: 0.9rem 1rem 0.55rem;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.22);
+    font-size: clamp(1.05rem, 0.2vw + 1rem, 1.2rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    color: rgb(240 249 255);
+    text-shadow: 0 0 18px rgba(56, 189, 248, 0.2);
+  }
+
+  .review-md .review-recommended-sensitivity-panel__lead {
+    margin: 0;
+    padding: 0.65rem 1rem 0.75rem;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.22);
+    color: rgb(203 213 225);
+    font-size: 0.9375rem;
+    font-weight: 450;
+    line-height: 1.72;
+  }
+
+  .review-md .review-recommended-sensitivity-panel__lead strong {
+    color: rgb(241 245 249);
+    font-weight: 600;
+  }
+
+  .review-md .review-recommended-sensitivity-panel__body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .review-md .review-recommended-sensitivity-panel__row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid rgba(56, 189, 248, 0.2);
+  }
+
+  .review-md .review-recommended-sensitivity-panel__row:first-child {
+    border-top: none;
+  }
+
+  .review-md .review-recommended-sensitivity-panel__label,
+  .review-md .review-recommended-sensitivity-panel__text {
+    margin: 0;
+    padding: 0;
+    line-break: strict;
+    overflow-wrap: break-word;
+    word-break: normal;
+  }
+
+  .review-md .review-recommended-sensitivity-panel__label {
+    font-size: 0.8125rem;
+    font-weight: 650;
+    line-height: 1.55;
+    letter-spacing: 0.03em;
+    color: rgb(186 230 253);
+  }
+
+  .review-md .review-recommended-sensitivity-panel__text {
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.68;
+    color: rgb(226 232 240);
+  }
+
+  @media (min-width: 36rem) {
+    .review-md .review-recommended-sensitivity-panel__row {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0.85rem;
+    }
+
+    .review-md .review-recommended-sensitivity-panel__label {
+      flex: 0 0 7.25rem;
+      max-width: 7.25rem;
+    }
+
+    .review-md .review-recommended-sensitivity-panel__text {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+
+  .review-reading .review-md .review-recommended-sensitivity-panel {
+    margin-bottom: 2rem;
+  }
+
+  .review-reading .review-md .review-recommended-sensitivity-panel__row {
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+  }
+
+  .review-reading .review-md .review-recommended-sensitivity-panel__text {
+    font-size: 0.9375rem;
+    line-height: 1.74;
+  }
+
+  /** 旧 ul 型（互換） */
+  .review-md .review-recommended-sensitivity-panel__list {
+    margin: 0;
+    padding: 0;
+    list-style: none !important;
+  }
+
+  .review-md .review-recommended-sensitivity-panel__list > li {
+    list-style: none !important;
+    padding-left: 0 !important;
+  }
+
+  .review-md .review-recommended-sensitivity-panel__list > li::marker {
+    content: none;
+  }
+
+  /** 旧Markdown見出し型（他記事互換） */
+  .review-md h3.review-h3--recommended-sensitivity {
+    --review-sens-accent: rgba(56, 189, 248, 0.95);
+    margin-bottom: 0;
+    padding: 0.9rem 1rem 0.45rem 0.95rem;
+    border: 1px solid rgba(56, 189, 248, 0.32);
+    border-left: 4px solid var(--review-sens-accent);
+    border-radius: 0.75rem 0.75rem 0 0;
+    background: linear-gradient(
+      90deg,
+      rgba(56, 189, 248, 0.18) 0%,
+      rgba(15, 23, 42, 0.42) 100%
+    );
+    font-size: clamp(1.05rem, 0.2vw + 1rem, 1.2rem);
+    font-weight: 700;
+    color: rgb(240 249 255);
+  }
+
+  .review-md h3.review-h3--recommended-sensitivity + p.review-md-p {
+    margin-top: 0;
+    margin-bottom: 1.75rem;
+    padding: 0.65rem 1rem 1rem;
+    border: 1px solid rgba(56, 189, 248, 0.32);
+    border-top: none;
+    border-left: 4px solid var(--review-sens-accent);
+    border-radius: 0 0 0.75rem 0.75rem;
+    background: linear-gradient(
+      90deg,
+      rgba(56, 189, 248, 0.12) 0%,
+      rgba(15, 23, 42, 0.42) 100%
+    );
+    color: rgb(203 213 225);
+    line-height: 1.72;
+    text-align: center;
+    text-justify: auto;
+  }
+
+  .review-reading .review-md h3.review-h3--recommended-sensitivity + p.review-md-p {
+    text-align: center;
+  }
+
+  /**
+   * 体験感度Lv一覧（解析結論）— カード型。表の列潰れ・文字欠けを避ける。
+   */
+  .review-md .review-sensitivity-lv-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0.85rem 0 1.75rem;
+    border: 1px solid rgba(56, 189, 248, 0.24);
+    border-radius: 0.75rem;
+    background: rgba(15, 23, 42, 0.5);
+    overflow: hidden;
+  }
+
+  .review-md .review-sensitivity-lv-card {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    column-gap: 0.75rem;
+    align-items: start;
+    padding: 0.8rem 0.9rem;
+    border-top: 1px solid rgba(56, 189, 248, 0.14);
+  }
+
+  .review-md .review-sensitivity-lv-card:first-child {
+    border-top: none;
+  }
+
+  .review-md .review-sensitivity-lv-card--pick {
+    background: linear-gradient(
+      90deg,
+      rgba(56, 189, 248, 0.18) 0%,
+      rgba(56, 189, 248, 0.05) 100%
+    );
+    box-shadow: inset 3px 0 0 rgba(56, 189, 248, 0.92);
+  }
+
+  .review-md .review-sensitivity-lv-card__lv {
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: rgb(186 230 253);
+  }
+
+  .review-md .review-sensitivity-lv-card__lv small {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgb(125 211 252);
+  }
+
+  .review-md .review-sensitivity-lv-card__main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+  }
+
+  .review-md .review-sensitivity-lv-card__grade {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.45;
+    color: rgb(241 245 249);
+  }
+
+  .review-md .review-sensitivity-lv-card__desc {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.68;
+    color: rgb(203 213 225);
+  }
+
+  .review-reading .review-md .review-sensitivity-lv-card {
+    padding: 0.85rem 0.95rem;
+  }
+
+  .review-reading .review-md .review-sensitivity-lv-card__desc {
+    font-size: 0.9rem;
+  }
+
   .review-md h2.review-h2--work-overview {
     margin-bottom: 1rem;
     padding-bottom: 0.35rem;
@@ -462,8 +722,31 @@ body {
     color: rgb(226 232 240 / 0.93);
   }
 
-  /** おすすめリスト直下のサブ見出し（`**おすすめしたい方**` など：直後が最初の `ul`） */
-  .review-recommended-panel .review-md > p.review-md-p:has(+ ul:first-of-type) {
+  /**
+   * おすすめ／合わないのサブ見出し（`**おすすめしたい方**` 等）。
+   * `ReviewMarkdown` が `review-audience-subhead` を付与（`:has(+ ul)` だけでは合わない見出しに線が付かないことがある）。
+   */
+  .review-recommended-panel .review-md > p.review-audience-subhead {
+    margin-bottom: 0.55rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.28);
+    font-size: clamp(1.0625rem, 0.42vw + 0.95rem, 1.22rem);
+    font-weight: 700;
+    letter-spacing: 0.045em;
+  }
+
+  .review-recommended-panel .review-md > p.review-audience-subhead--recommended {
+    margin-top: 0.35rem;
+    color: rgb(240 249 255);
+  }
+
+  .review-recommended-panel .review-md > p.review-audience-subhead--not-recommended {
+    margin-top: 1.05rem;
+    color: rgb(253 224 71);
+  }
+
+  /** 後方互換：クラス未付与の旧 DOM 用 */
+  .review-recommended-panel .review-md > p.review-md-p:has(+ ul:first-of-type):not(.review-audience-subhead) {
     margin-top: 0.35rem;
     margin-bottom: 0.55rem;
     padding-bottom: 0.4rem;
@@ -472,18 +755,6 @@ body {
     font-weight: 700;
     letter-spacing: 0.045em;
     color: rgb(240 249 255);
-  }
-
-  /** 合わない側リスト直上のサブ見出し（`**合わない可能性がある方**`／`**合わない人**`：最初のおすすめ `ul` のあと） */
-  .review-recommended-panel .review-md > ul:first-of-type ~ p.review-md-p:has(+ ul) {
-    margin-top: 1.05rem;
-    margin-bottom: 0.45rem;
-    padding-bottom: 0.32rem;
-    border-bottom: 1px solid rgba(253 224 71, 0.28);
-    font-size: clamp(1.02rem, 0.36vw + 0.93rem, 1.14rem);
-    font-weight: 700;
-    letter-spacing: 0.045em;
-    color: rgb(253 224 71);
   }
 
   @media (max-width: 639px) {
@@ -580,8 +851,8 @@ body {
     }
 
     /**
-     * レビュー解析テーブル（3列）をスマホで読みやすくする。
-     * 2列目を絞り、3列目（読者が得る体験）に十分な幅を確保する。
+     * レビュー解析テーブル（3列 or 4列）をスマホで読みやすくする。
+     * 2列目を絞り、最終列（技法詳細）に十分な幅を確保する。
      */
     .review-reading .review-md table th:nth-child(2),
     .review-reading .review-md table td:nth-child(2) {
@@ -613,6 +884,29 @@ body {
     }
 
     .review-reading .review-md table td:nth-child(3) {
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    /* 構成比4列（項目 / 数値 / 使用技法 / 技法詳細） */
+    .review-reading .review-md table:has(th:nth-child(4)) {
+      min-width: 32rem;
+    }
+
+    .review-reading .review-md table:has(th:nth-child(4)) th:nth-child(3),
+    .review-reading .review-md table:has(th:nth-child(4)) td:nth-child(3) {
+      min-width: 9.5rem;
+      max-width: 12rem;
+      white-space: normal;
+      word-break: keep-all;
+      overflow-wrap: normal;
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    .review-reading .review-md table:has(th:nth-child(4)) th:nth-child(4),
+    .review-reading .review-md table:has(th:nth-child(4)) td:nth-child(4) {
+      min-width: 14rem;
       font-size: 0.95rem;
       line-height: 1.8;
     }

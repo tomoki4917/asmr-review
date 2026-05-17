@@ -18,7 +18,8 @@
     "update-prices:stale": "node scripts/update-prices.js --stale-sale-ended",
     "update-price:one": "node scripts/fetch-one-price.mjs",
     "sync-review-sale-from-dlsite": "node scripts/sync-review-sale-from-dlsite.mjs",
-    "audit:reviews-dlsite": "node scripts/audit-reviews-dlsite.mjs"
+    "audit:reviews-dlsite": "node scripts/audit-reviews-dlsite.mjs",
+    "review:audit-kansei": "node scripts/audit-review-kansei.mjs"
   },
   "dependencies": {
     "@next/third-parties": "^16.2.2",

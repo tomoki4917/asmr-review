@@ -1,0 +1,30 @@
+---
+description: ユーザーが「完成系」「次の1本」「kansei」と言ったら review-kansei-update スキルで1 slug だけ改稿し、audit で検証する。
+globs:
+  - src/content/レビュー/**/index.md
+  - src/app/(public)/reviews/[slug]/page.tsx
+alwaysApply: false
+---
+
+# 完成系・次の1本
+
+## 起動
+
+次のいずれかなら **`.cursor/skills/review-kansei-update/SKILL.md` を最初に読み、手順どおり1本だけ**実行する。
+
+- `次の1本` / `完成系: 次` / `kansei 次`
+- `完成系: <slug>`
+
+## slug の決め方
+
+`npm run review:audit-kansei -- --next` の出力をその slug とする（`ALL_DONE` なら報告して終了）。
+
+## 精度
+
+- 正本 `kuchikou-saimin-count-trip-nouiki` + `docs/真催眠音声執筆ガイド.md`
+- `_分析データ.json` を採点・絶頂行の根拠にする
+- 終了前に `npm run review:audit-kansei` で当該 slug が合格すること
+
+## ユーザー向け一言
+
+改稿後はブラウザで `/reviews/<slug>/` を30秒見れば十分（カード崩れ・記事モード2ボタン）。
