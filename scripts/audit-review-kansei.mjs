@@ -19,11 +19,18 @@ const args = new Set(process.argv.slice(2));
 const flagNext = args.has("--next");
 const flagWrite = args.has("--write-status");
 
+function isDoujinReview(text) {
+  return (
+    /\n\s+-\s+同人音声\n/.test(text) ||
+    /authorName:\s*同人音声レビュー室/.test(text)
+  );
+}
+
 const CHECKS = [
   {
     id: "cards",
     label: "感度Lvカードなし",
-    fail: (t) => !t.includes("### 体験感度Lv（一覧）"),
+    fail: (t) => !isDoujinReview(t) && !t.includes("### 体験感度Lv（一覧）"),
   },
   {
     id: "osusume_h2",
