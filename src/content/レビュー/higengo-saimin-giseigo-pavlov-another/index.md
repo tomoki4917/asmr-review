@@ -28,7 +28,7 @@ saleDate: "2022-03-30"
 
 publishedAt: "2026-05-18"
 
-goLiveAt: "2026-05-18T12:00:00+09:00"
+goLiveAt: "2026-05-18T18:00:00+09:00"
 
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ328000/RJ327478_img_main.jpg
 
