@@ -29,6 +29,12 @@ export const SITE_CATEGORY_LINKS: SiteCategoryLink[] = [
     subtitle: "レビュー一覧へ",
   },
   {
+    emoji: "🎧",
+    title: "視聴環境",
+    href: "/listening-environment/",
+    subtitle: "部屋・イヤホン・記事一覧",
+  },
+  {
     emoji: "📚",
     title: "知識・コラム",
     href: "/#author-posts-heading",
