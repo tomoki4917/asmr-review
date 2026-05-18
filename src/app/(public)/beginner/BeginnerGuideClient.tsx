@@ -19,18 +19,41 @@ type StepItem = {
   title: string;
   hint: string;
   article: Review | null;
+  /** ステップ見出し上に出すカテゴリ（例: 視聴環境） */
+  categoryEmoji?: string;
+  categoryLabel?: string;
 };
+
+function BeginnerCategoryMark({
+  emoji,
+  label,
+}: {
+  emoji: string;
+  label: string;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-2 text-center sm:items-start sm:text-left">
+      <span
+        className="flex h-16 w-16 select-none items-center justify-center rounded-2xl border border-slate-600/40 bg-slate-900/45 text-[1.95rem] leading-none shadow-md shadow-slate-950/35"
+        aria-hidden
+      >
+        {emoji}
+      </span>
+      <span className="text-base font-bold text-slate-100 sm:text-lg">{label}</span>
+    </div>
+  );
+}
 
 function BeginnerArticleSlot({ article }: { article: Review | null }) {
   if (article) {
     return (
-      <div className="mt-3">
+      <div className="mt-4">
         <FileMarkdownArticleCard review={article} />
       </div>
     );
   }
   return (
-    <p className="mt-3 rounded-xl border border-dashed border-amber-500/35 bg-slate-950/35 px-4 py-5 text-center text-sm leading-relaxed text-slate-400">
+    <p className="mt-4 rounded-xl border border-dashed border-amber-500/35 bg-slate-950/35 px-4 py-5 text-center text-sm leading-relaxed text-slate-400">
       記事を読み込めませんでした。記事ファイルの slug が正しいか確認してください。
     </p>
   );
@@ -40,7 +63,7 @@ function BeginnerStepList({ steps }: { steps: StepItem[] }) {
   return (
     <ol className="mt-6 space-y-8">
       {steps.map((step, index) => (
-        <li key={step.title} className="relative">
+        <li key={step.categoryLabel ?? step.title} className="relative">
           {index < steps.length - 1 ? (
             <span
               aria-hidden
@@ -55,10 +78,20 @@ function BeginnerStepList({ steps }: { steps: StepItem[] }) {
               {index + 1}
             </span>
             <div className="min-w-0 flex-1">
-              <h3 className="text-base font-bold text-slate-100 sm:text-lg">
-                {step.title}
-              </h3>
-              <p className="mt-1 text-sm leading-relaxed text-slate-400">
+              {step.categoryLabel ? (
+                <>
+                  <span className="sr-only">{step.title}</span>
+                  <BeginnerCategoryMark
+                    emoji={step.categoryEmoji ?? "🎧"}
+                    label={step.categoryLabel}
+                  />
+                </>
+              ) : (
+                <h3 className="text-base font-bold text-slate-100 sm:text-lg">
+                  {step.title}
+                </h3>
+              )}
+              <p className="mt-2 text-sm leading-relaxed text-slate-400">
                 {step.hint}
               </p>
               <BeginnerArticleSlot article={step.article} />
@@ -81,6 +114,8 @@ const ROUTE_PANEL: Record<
     steps: ({ listeningEnvironmentArticle, recommendedArticle }) => [
       {
         title: "視聴環境を整える",
+        categoryEmoji: "🎧",
+        categoryLabel: "視聴環境",
         hint: "暗さ・温度・イヤホン。ここを済ませると、その後が楽になります。",
         article: listeningEnvironmentArticle,
       },
@@ -119,6 +154,8 @@ const ROUTE_PANEL: Record<
       },
       {
         title: "視聴環境を整える",
+        categoryEmoji: "🎧",
+        categoryLabel: "視聴環境",
         hint: "理解したうえで、聴く場所とイヤホンをそろえます。",
         article: listeningEnvironmentArticle,
       },
@@ -166,14 +203,17 @@ export function BeginnerGuideClient({
       >
         <span className="sr-only">共通：導入</span>
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-400/90">
-          beginner · hypnosis · guide
+          hypnosis audio · beginner guide
         </p>
         <h1
           id={`${panelId}-hero`}
-          className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl"
+          className="mt-3 whitespace-nowrap text-2xl font-bold tracking-tight text-slate-50 sm:text-4xl"
         >
-          「ようこそ、最高の没入体験へ」
+          催眠音声ビギナーズガイド
         </h1>
+        <p className="mt-4 text-balance text-xl font-bold tracking-tight text-slate-100 sm:text-2xl">
+          「ようこそ、最高の没入体験へ」
+        </p>
         <div className="mx-auto mt-6 flex max-w-4xl flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:gap-4">
           <span
             aria-hidden

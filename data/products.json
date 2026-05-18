@@ -538,5 +538,17 @@
     "sale_end_iso": "2026-06-11T15:00:00.000Z",
     "release_date_iso": "2026-05-14T15:00:00.000Z",
     "fetched_at": "2026-05-16T18:42:27.922Z"
+  },
+  {
+    "id": "RJ231054",
+    "url": "https://www.dlsite.com/home/work/=/product_id/RJ231054.html",
+    "current_price": 1210,
+    "original_price": 1210,
+    "discount_rate": 0,
+    "on_sale": false,
+    "sale_limit": "",
+    "sale_end_iso": "",
+    "release_date_iso": "2018-09-14T15:00:00.000Z",
+    "fetched_at": "2026-05-18T05:47:37.090Z"
   }
 ]

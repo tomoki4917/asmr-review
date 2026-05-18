@@ -71,7 +71,7 @@ export type Review = {
   safeForExternalLanding?: boolean;
   /**
    * `true` のとき、トップの「記事一覧」や SNS 一般向け記事一覧から除外する。
-   * ビギナーズガイド等の直リンク専用に使う。
+   * 催眠音声ビギナーズガイド等の直リンク専用に使う。
    */
   excludeFromArticleIndex?: boolean;
 };

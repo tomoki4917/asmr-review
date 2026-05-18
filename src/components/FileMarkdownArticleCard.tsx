@@ -50,6 +50,11 @@ export function FileMarkdownArticleCard({
             slug={review.slug}
             priority={priorityImage}
             className="rounded-t-3xl group-focus-visible:rounded-t-3xl"
+            imageClassName={
+              review.slug === "beginner-hypnosis-audio-top5-2026"
+                ? "object-cover object-center"
+                : undefined
+            }
           />
         </div>
         <div className="p-5 sm:p-6">

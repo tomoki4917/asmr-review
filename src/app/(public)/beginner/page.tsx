@@ -10,7 +10,7 @@ import {
 import { BeginnerGuideClient } from "./BeginnerGuideClient";
 
 export const metadata: Metadata = {
-  title: "ビギナーズガイド",
+  title: "催眠音声ビギナーズガイド",
 };
 
 export default function BeginnerPage() {

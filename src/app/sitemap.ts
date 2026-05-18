@@ -53,6 +53,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.55,
     },
+    {
+      url: `${BASE_URL}/listening-environment/`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${BASE_URL}/evaluation-method/`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
   ];
 
   const reviewEntries: MetadataRoute.Sitemap = reviews.map((r) => ({

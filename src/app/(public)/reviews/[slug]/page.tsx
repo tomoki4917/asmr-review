@@ -312,6 +312,11 @@ export default async function ReviewPage({ params }: Props) {
       priority
       variant="hero"
       className="rounded-none"
+      imageClassName={
+        review.slug === "beginner-hypnosis-audio-top5-2026"
+          ? "object-cover object-center"
+          : undefined
+      }
     />
   );
 
@@ -1216,6 +1221,29 @@ export default async function ReviewPage({ params }: Props) {
       notRecommendedFor: [
         "公開・ショー体裁が苦手な方",
         "連続描写の負荷が高いと感じる方",
+      ],
+    },
+    "saimin-school-hypnosis-training": {
+      scoreLabel: "8.0 / 10",
+      oneLine:
+        "催眠の定義整理と分割弛緩・三種の誘導・五イメージでかかり方を学ぶ教育型構成（通し約1時間58分）",
+      inductionType:
+        "教育導入系 / 分割弛緩系 / イメージ誘導系 / 反復カウント系",
+      voiceActor: "かの仔、みもりあいの、あきら ほか（同一台本）",
+      tempoType: "ややゆっくり / 断続〜連続（講義→誘導→情景深化）",
+      majorFetish:
+        "初心者向け / 分割弛緩 / イメージ誘導 / 階段深化 / 教育",
+      kinkType: "ノーマル",
+      recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
+      recording: "約1時間58分27秒（字幕終端）",
+      recommendedFor: [
+        "催眠スクール・先生役シチュが好きな方",
+        "催眠にかかりづらいと感じる方",
+        "分割弛緩やイメージ誘導で深く落ちたい方",
+      ],
+      notRecommendedFor: [
+        "短時間で強い洗脳・堕落だけを一気に欲しい方",
+        "性的描写や絶頂回収を主目的にする方",
       ],
     },
     "shoshinsha-mugen-rakka-ecstasy": {

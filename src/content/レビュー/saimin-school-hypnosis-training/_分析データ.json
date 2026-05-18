@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "workName": "催眠スクール",
+  "scores": {
+    "trance": 9,
+    "pleasure": 7,
+    "satisfaction": 8
+  },
+  "orgasmSummary": "ドライシーン0回・ウェットシーン0回（絶頂到達の明示なし・トランス深化の山のみ）",
+  "notes": [
+    "評価は docs/レビュー三軸評価定義.md に準拠。採点は聴き込んだ本編音声のみ（講義・誘導・イメージ・覚醒。実践用振り子・手硬めは補助収録）。",
+    "同一台本・複数声優収録。尺・構成の計測は解析素材1本分（通し約1時間58分）に基づく。",
+    "主軸は『催眠の定義と誤解の整理』『分割弛緩＋三種の誘導』『五つのイメージ誘導』『数え上げ覚醒とおさらい』。",
+    "比較アンカー: 初心者教育として shoshinsha 同梱の共通導入に近いが、性的回収は設計上ほぼ無し。",
+    "【自動補助根拠】derived_metrics.json: duration=7107.037s / silence_ratio=0.4144 / surge_events_per_min=30.19。",
+    "【自動補助根拠】keyword_counts: 暗示=10, 気持ちいい=18 / event_counts: countdown=11, trigger=22, release=7。"
+  ]
+}

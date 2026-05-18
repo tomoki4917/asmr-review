@@ -404,22 +404,52 @@ export function getReviewsForExternalLanding(): Review[] {
   );
 }
 
-/** ビギナーズガイド「作品おすすめ」欄に差し込む記事 slug（一覧・SNS 一般向けからは `excludeFromArticleIndex` で除外） */
+/** 催眠音声ビギナーズガイド「作品おすすめ」欄に差し込む記事 slug（一覧・SNS 一般向けからは `excludeFromArticleIndex` で除外） */
 export const BEGINNER_GUIDE_RECOMMENDED_WORKS_ARTICLE_SLUG =
   "beginner-hypnosis-audio-top5-2026" as const;
 
-/** ビギナーズガイド「視聴環境」欄（ルート1・ルート2） */
+/** 催眠音声ビギナーズガイド「視聴環境」欄（ルート1・ルート2） */
 export const BEGINNER_GUIDE_LISTENING_ENVIRONMENT_ARTICLE_SLUG =
   "listening-environment-room-setup" as const;
 
-/** ビギナーズガイド「催眠のメカニズム」欄（ルート2） */
+/** 評価メソッド記事（視聴環境ハブには含めない） */
+export const EVALUATION_METHOD_ARTICLE_SLUG = "evaluation-method" as const;
+
+/** `/evaluation-method/` ハブで表示する評価メソッド記事 */
+export function getEvaluationMethodHubArticle(): Review | undefined {
+  return getReviewBySlug(EVALUATION_METHOD_ARTICLE_SLUG);
+}
+
+/** `/listening-environment/` で一覧するタグ */
+export const LISTENING_ENVIRONMENT_HUB_TAG = "視聴環境" as const;
+
+/** 視聴環境ハブ用記事（タグ一致・評価メソッド除外・新しい順） */
+export function getListeningEnvironmentHubArticles(): Review[] {
+  const all = getAllReviews();
+  return all
+    .filter(
+      (r) =>
+        r.contentKind === "article" &&
+        r.slug !== EVALUATION_METHOD_ARTICLE_SLUG &&
+        r.tags.includes(LISTENING_ENVIRONMENT_HUB_TAG)
+    )
+    .sort((a, b) => {
+      const tb = Date.parse(b.publishedAt);
+      const ta = Date.parse(a.publishedAt);
+      const diff = (Number.isNaN(tb) ? 0 : tb) - (Number.isNaN(ta) ? 0 : ta);
+      if (diff !== 0) return diff;
+      return a.slug.localeCompare(b.slug);
+    });
+}
+
+/** 催眠音声ビギナーズガイド「催眠のメカニズム」欄（ルート2） */
 export const BEGINNER_GUIDE_MECHANISM_ARTICLE_SLUG =
   "hypnosis-mechanism-01" as const;
 
-/** ビギナーズガイド「脳イキ」欄（ルート2） */
+/** 催眠音声ビギナーズガイド「脳イキ」欄（ルート2） */
 export const BEGINNER_GUIDE_NOU_IKI_ARTICLE_SLUG = "nou-iki-toha" as const;
 
-/** ビギナーズガイド「ドライオーガズム」欄（ルート2） */
+/** 催眠音声ビギナーズガイド「ドライオーガズム」欄（ルート2） */
 export const BEGINNER_GUIDE_DRY_ORGASM_ARTICLE_SLUG =
   "dry-orgasm-what-is" as const;
 

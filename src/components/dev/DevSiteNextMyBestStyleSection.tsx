@@ -23,38 +23,9 @@ function CategoryEmoji({ emoji }: { emoji: string }) {
   );
 }
 
-const CATEGORY_LINKS = [
-  {
-    emoji: "👑",
-    title: "ランキング",
-    href: "/?stars=10#reviews-heading",
-    subtitle: "★10・並び替え",
-  },
-  {
-    emoji: "🔍",
-    title: "作品一覧",
-    href: "/#reviews-heading",
-    subtitle: "レビュー一覧へ",
-  },
-  {
-    emoji: "🎧",
-    title: "視聴環境",
-    href: "/reviews/evaluation-method/",
-    subtitle: "聴取・解析の前提",
-  },
-  {
-    emoji: "📚",
-    title: "知識・コラム",
-    href: "/#author-posts-heading",
-    subtitle: "解説・用語・記事",
-  },
-  {
-    emoji: "🔰",
-    title: "ビギナーズガイド",
-    href: "/beginner/",
-    subtitle: "導線（ルート切替）",
-  },
-] as const;
+import { SITE_CATEGORY_LINKS } from "@/lib/site-category-links";
+
+const CATEGORY_LINKS = SITE_CATEGORY_LINKS;
 
 type Props = {
   unknownHypno: Review | undefined;
@@ -163,21 +134,27 @@ export function DevSiteNextMyBestStyleSection({ unknownHypno }: Props) {
               aria-label="カテゴリから移動"
             >
               <CategoryMobileSearch />
-              <ul className="mt-5 grid grid-cols-3 gap-x-2 gap-y-8 px-0.5 sm:gap-x-3">
-                {CATEGORY_LINKS.map(({ emoji, title, href }) => (
-                  <li key={href} className="min-w-0">
+              <ul className="mt-5 grid auto-rows-fr grid-cols-3 gap-x-2 gap-y-6 px-0.5 sm:gap-x-3 sm:gap-y-7">
+                {CATEGORY_LINKS.map(({ emoji, title, href, mobileTitleLines }) => (
+                  <li key={href} className="flex min-w-0">
                     <Link
                       href={href}
-                      className="group flex min-h-[6rem] flex-col items-center justify-start gap-2.5 rounded-xl px-1.5 py-3 text-center transition hover:bg-slate-700/35 active:bg-slate-700/50"
+                      className="group flex h-full min-h-[6.75rem] w-full flex-col items-center justify-start gap-2 rounded-xl px-1 py-2.5 text-center transition hover:bg-slate-700/35 active:bg-slate-700/50"
                     >
                       <span
-                        className="flex h-16 w-16 shrink-0 select-none items-center justify-center rounded-2xl border border-slate-600/40 bg-slate-900/45 text-[1.95rem] leading-none shadow-md shadow-slate-950/35 transition group-hover:border-sky-500/35 group-hover:bg-slate-900/65 sm:h-[4.5rem] sm:w-[4.5rem] sm:text-[2.1rem]"
+                        className="flex h-14 w-14 shrink-0 select-none items-center justify-center rounded-2xl border border-slate-600/40 bg-slate-900/45 text-[1.65rem] leading-none shadow-md shadow-slate-950/35 transition group-hover:border-sky-500/35 group-hover:bg-slate-900/65 sm:h-16 sm:w-16 sm:text-[1.95rem]"
                         aria-hidden
                       >
                         {emoji}
                       </span>
-                      <span className="line-clamp-3 text-xs font-semibold leading-snug text-slate-200 group-hover:text-sky-200">
-                        {title}
+                      <span className="flex min-h-[2.35rem] w-full flex-col items-center justify-center text-[10px] font-semibold leading-tight text-slate-200 group-hover:text-sky-200 sm:min-h-[2.5rem] sm:text-[11px]">
+                        {mobileTitleLines ? (
+                          mobileTitleLines.map((line) => (
+                            <span key={line}>{line}</span>
+                          ))
+                        ) : (
+                          <span className="leading-snug">{title}</span>
+                        )}
                       </span>
                     </Link>
                   </li>

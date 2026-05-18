@@ -5,6 +5,7 @@ import type { Components } from "react-markdown";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+import { ArticleDlsitePriceEmbed } from "@/components/ArticleDlsitePriceEmbed";
 import { MarkdownSafeImage } from "@/components/MarkdownSafeImage";
 import {
   partitionStarReviewMarkdown,
@@ -378,6 +379,35 @@ function buildMarkdownComponents(o: BuildOpts): Components {
         {children}
       </td>
     ),
+    div: ({ children, className, ...rest }) => {
+      if (!articleReading) {
+        return (
+          <div className={className} {...rest}>
+            {children}
+          </div>
+        );
+      }
+      const props = rest as Record<string, unknown>;
+      const productId =
+        props["data-dlsite-product-id"] ?? props.dataDlsiteProductId;
+      const affiliateHref =
+        props["data-dlsite-affiliate-href"] ?? props.dataDlsiteAffiliateHref;
+      if (typeof productId === "string" && productId.trim()) {
+        return (
+          <ArticleDlsitePriceEmbed
+            productId={productId}
+            affiliateHref={
+              typeof affiliateHref === "string" ? affiliateHref : undefined
+            }
+          />
+        );
+      }
+      return (
+        <div className={className} {...rest}>
+          {children}
+        </div>
+      );
+    },
   };
 }
 
@@ -428,7 +458,8 @@ export function ReviewMarkdown({
     pComfort,
   });
 
-  const rehypePlugins = starReviewReadingComfort ? [rehypeRaw] : [];
+  const rehypePlugins =
+    starReviewReadingComfort || articleReading ? [rehypeRaw] : [];
 
   return (
     <div
