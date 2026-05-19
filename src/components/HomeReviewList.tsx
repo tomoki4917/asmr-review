@@ -18,8 +18,16 @@ import {
   reviewPublicationTimeMs,
 } from "@/lib/format-published-at";
 import { reviewTitleSingleLine } from "@/lib/review-title";
+import {
+  getDlsiteProductById,
+  isDlsitePriceFetched,
+} from "@/lib/dlsite-product-catalog";
 import { ratingFilterBucket } from "@/lib/rating-scale";
 import { isReviewNewPublication } from "@/lib/review-new-badge";
+import {
+  REVIEWS_LIST_FILTERS_ID,
+  REVIEWS_LIST_SECTION_ID,
+} from "@/lib/review-list-href";
 import type { Review } from "@/lib/types";
 import { FileMarkdownArticleCard } from "@/components/FileMarkdownArticleCard";
 import { ReviewCard } from "@/components/ReviewCard";
@@ -103,6 +111,35 @@ function matchesGenreFilter(
   return tags.includes("同人音声");
 }
 
+function isFileReviewOnSale(item: MergedReviewItem): boolean {
+  if (item.kind !== "file") return false;
+  const id = item.review.dlsiteProductId?.trim();
+  if (!id) return false;
+  const product = getDlsiteProductById(id);
+  if (!product || !isDlsitePriceFetched(product)) return false;
+  return product.on_sale === true;
+}
+
+function sortMergedForSaleFilter(items: MergedReviewItem[]): MergedReviewItem[] {
+  return [...items].sort((a, b) => {
+    const starDiff =
+      (b.kind === "file" ? b.review.ratingValue : b.review.ratingValue) -
+      (a.kind === "file" ? a.review.ratingValue : a.review.ratingValue);
+    if (starDiff !== 0) return starDiff;
+    const pa =
+      a.kind === "file" && a.review.dlsiteProductId
+        ? getDlsiteProductById(a.review.dlsiteProductId)
+        : undefined;
+    const pb =
+      b.kind === "file" && b.review.dlsiteProductId
+        ? getDlsiteProductById(b.review.dlsiteProductId)
+        : undefined;
+    const disc = (pb?.discount_rate ?? 0) - (pa?.discount_rate ?? 0);
+    if (disc !== 0) return disc;
+    return publishedAtMs(b) - publishedAtMs(a);
+  });
+}
+
 function countByGenre(
   merged: MergedReviewItem[],
   genre: "hypnosis" | "doujin" | null
@@ -129,6 +166,8 @@ function buildSearchHref(
     genre?: "hypnosis" | "doujin" | null;
     stars?: string | null;
     clearStars?: boolean;
+    sale?: boolean | null;
+    clearSale?: boolean;
     sort?: "new" | "old";
   }
 ): string {
@@ -142,6 +181,12 @@ function buildSearchHref(
   } else if (patch.stars !== undefined && patch.stars !== null) {
     p.set("stars", patch.stars);
   }
+  if (patch.clearSale === true || patch.sale === false) {
+    p.delete("sale");
+  } else if (patch.sale === true) {
+    p.set("sale", "1");
+    p.delete("stars");
+  }
   if (patch.sort === "old") p.set("sort", "old");
   else if (patch.sort === "new") p.delete("sort");
   const qs = p.toString();
@@ -151,11 +196,19 @@ function buildSearchHref(
 
 /** 並び順と評価を同時に持たない（どちらか一方だけ） */
 function hrefListSortNew(basePath: string, sp: URLSearchParams): string {
-  return buildSearchHref(basePath, sp, { clearStars: true, sort: "new" });
+  return buildSearchHref(basePath, sp, {
+    clearStars: true,
+    clearSale: true,
+    sort: "new",
+  });
 }
 
 function hrefListSortOld(basePath: string, sp: URLSearchParams): string {
-  return buildSearchHref(basePath, sp, { clearStars: true, sort: "old" });
+  return buildSearchHref(basePath, sp, {
+    clearStars: true,
+    clearSale: true,
+    sort: "old",
+  });
 }
 
 function hrefListStarOnly(
@@ -163,7 +216,19 @@ function hrefListStarOnly(
   sp: URLSearchParams,
   stars: string
 ): string {
-  return buildSearchHref(basePath, sp, { stars, sort: "new" });
+  return buildSearchHref(basePath, sp, {
+    stars,
+    sort: "new",
+    clearSale: true,
+  });
+}
+
+function hrefListSaleOnly(basePath: string, sp: URLSearchParams): string {
+  return buildSearchHref(basePath, sp, {
+    sale: true,
+    clearStars: true,
+    sort: "new",
+  });
 }
 
 /** 現在のジャンル（未選択は全件）に対する評価別件数（絞り込みバー用） */
@@ -283,11 +348,39 @@ export function HomeReviewList({
   const sortOrder: "new" | "old" =
     searchParams.get("sort") === "old" ? "old" : "new";
 
+  const saleFilter = searchParams.get("sale") === "1";
+
   const [posted, setPosted] = useState<PostedReview[]>([]);
 
   const reloadPosted = useCallback(() => {
     setPosted(readPostedReviewsFromStorage());
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash.slice(1);
+    const hasListQuery =
+      searchParams.get("sale") === "1" ||
+      Boolean(searchParams.get("stars")) ||
+      Boolean(searchParams.get("sort")) ||
+      Boolean(searchParams.get("genre"));
+    const shouldScrollToFilters =
+      hasListQuery ||
+      hash === REVIEWS_LIST_FILTERS_ID ||
+      hash === REVIEWS_LIST_SECTION_ID;
+    if (!shouldScrollToFilters) return;
+
+    const scrollToFilters = () => {
+      document.getElementById(REVIEWS_LIST_FILTERS_ID)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    };
+    requestAnimationFrame(() => {
+      scrollToFilters();
+      window.setTimeout(scrollToFilters, 120);
+    });
+  }, [searchParams]);
 
   useEffect(() => {
     reloadPosted();
@@ -321,17 +414,31 @@ export function HomeReviewList({
     [markdownReviews, posted]
   );
 
+  const saleScopeCount = useMemo(
+    () =>
+      mergedReviews.filter(
+        (i) => matchesGenreFilter(i, genreFilter) && isFileReviewOnSale(i)
+      ).length,
+    [mergedReviews, genreFilter]
+  );
+
   const filteredReviews = useMemo(() => {
     let list = mergedReviews.filter((item) =>
       matchesGenreFilter(item, genreFilter)
     );
+    if (saleFilter) {
+      list = list.filter((item) => isFileReviewOnSale(item));
+    }
     if (starFilter !== null) {
       list = list.filter((item) => matchesStarFilter(item, starFilter));
+    }
+    if (saleFilter) {
+      return sortMergedForSaleFilter(list);
     }
     const effectiveSort: "new" | "old" =
       starFilter !== null ? "new" : sortOrder;
     return sortMergedByPublishedAt(list, effectiveSort);
-  }, [mergedReviews, genreFilter, starFilter, sortOrder]);
+  }, [mergedReviews, genreFilter, starFilter, sortOrder, saleFilter]);
 
   const starCountsForFilter = useMemo(
     () => countsByStarFilter(mergedReviews, genreFilter),
@@ -420,8 +527,13 @@ export function HomeReviewList({
     "shrink-0 text-sm font-medium text-slate-300 sm:text-[0.9375rem]";
   const selectBase =
     "min-h-9 rounded-full border border-violet-400/45 bg-slate-900/70 px-3.5 py-1.5 text-sm font-medium text-violet-100 shadow-sm shadow-slate-950/20 transition hover:border-fuchsia-400/50 hover:bg-slate-800/90 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/45";
-  const currentSortKey =
-    starFilter === null ? (sortOrder === "old" ? "old" : "new") : String(starsRaw);
+  const currentSortKey = saleFilter
+    ? "sale"
+    : starFilter === null
+      ? sortOrder === "old"
+        ? "old"
+        : "new"
+      : String(starsRaw);
   const currentGenreKey = genreFilter ?? "all";
 
   const outerClass = compact
@@ -435,7 +547,8 @@ export function HomeReviewList({
         <section aria-labelledby="reviews-heading">
           <div className={compact ? "mb-4 space-y-3" : "mb-6 space-y-3 sm:mb-7 sm:space-y-3.5"}>
             <div
-              className={filterBarWrap}
+              id={REVIEWS_LIST_FILTERS_ID}
+              className={`scroll-mt-24 sm:scroll-mt-28 ${filterBarWrap}`}
               role="group"
               aria-label="絞り込みとジャンル"
             >
@@ -451,12 +564,15 @@ export function HomeReviewList({
                       ? hrefListSortNew(basePath, searchParams)
                       : next === "old"
                         ? hrefListSortOld(basePath, searchParams)
-                        : hrefListStarOnly(basePath, searchParams, next);
+                        : next === "sale"
+                          ? hrefListSaleOnly(basePath, searchParams)
+                          : hrefListStarOnly(basePath, searchParams, next);
                   router.push(href, { scroll: false });
                 }}
               >
                 <option value="new">新しい順（{listScopeCount}）</option>
                 <option value="old">古い順（{listScopeCount}）</option>
+                <option value="sale">セール中（{saleScopeCount}）</option>
                 {STAR_FILTER_LINKS.map(({ param, label }) => {
                   const countKey =
                     param === "lte5"
@@ -528,7 +644,8 @@ export function HomeReviewList({
                 const parts: string[] = [];
                 if (genreFilter === "hypnosis") parts.push("催眠音声");
                 if (genreFilter === "doujin") parts.push("同人音声");
-                if (sortOrder === "old" && starFilter === null) {
+                if (saleFilter) parts.push("セール中");
+                if (sortOrder === "old" && starFilter === null && !saleFilter) {
                   parts.push("古い順");
                 }
                 if (starFilter !== null) {
@@ -549,6 +666,7 @@ export function HomeReviewList({
               {filteredReviews.length} 件
               {(starFilter !== null ||
                 genreFilter !== null ||
+                saleFilter ||
                 sortOrder === "old") &&
               mergedReviews.length > 0
                 ? ` / 全レビュー ${mergedReviews.length} 件`
@@ -558,11 +676,13 @@ export function HomeReviewList({
 
           {filteredReviews.length === 0 ? (
             <p className="rounded-2xl border border-dashed border-slate-600/50 bg-slate-800/40 px-4 py-10 text-center text-sm text-slate-500">
-              {starFilter !== null
-                ? `${
-                    starFilter === "lte5" ? "★5〜" : `★${starFilter}`
-                  }のレビューはまだありません。上の「絞り込み」で「新しい順」「古い順」または別の星を選ぶと表示件数が変わります。`
-                : "レビューがありません。"}
+              {saleFilter
+                ? "セール中の掲載はまだありません。上の「絞り込み」で「新しい順」などを選ぶと一覧が変わります。"
+                : starFilter !== null
+                  ? `${
+                      starFilter === "lte5" ? "★5〜" : `★${starFilter}`
+                    }のレビューはまだありません。上の「絞り込み」で「新しい順」「古い順」または別の星を選ぶと表示件数が変わります。`
+                  : "レビューがありません。"}
             </p>
           ) : (
             <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:gap-10">

@@ -22,6 +22,7 @@ import {
   formatReviewPublishedForList,
   reviewPublicationTimeMs,
 } from "@/lib/format-published-at";
+import { buildReviewListHref, HOME_REVIEW_LIST_BASE } from "@/lib/review-list-href";
 import { getAllReviews, getBeginnerGuides } from "@/lib/reviews";
 import type { Review } from "@/lib/types";
 
@@ -231,7 +232,12 @@ function HomeEditorialColumns({ reviews }: { reviews: Review[] }) {
         <aside className="min-w-0">
           <header className="border-t border-slate-500/70 pt-3">
             <h2 className="font-serif text-xl font-bold tracking-tight text-slate-50 sm:text-[1.35rem]">
-              新着
+              <Link
+                href={buildReviewListHref(HOME_REVIEW_LIST_BASE, { sort: "new" })}
+                className="transition hover:text-sky-200"
+              >
+                新着
+              </Link>
             </h2>
           </header>
           <ul className="mt-5 space-y-5">
@@ -320,7 +326,12 @@ function HomeEditorialColumns({ reviews }: { reviews: Review[] }) {
         <aside className="min-w-0">
           <header className="border-t border-slate-500/70 pt-3">
             <h2 className="font-serif text-xl font-bold tracking-tight text-slate-50 sm:text-[1.35rem]">
-              セール中
+              <Link
+                href={buildReviewListHref(HOME_REVIEW_LIST_BASE, { sale: true })}
+                className="transition hover:text-sky-200"
+              >
+                セール中
+              </Link>
             </h2>
           </header>
           <p className="mt-2 text-pretty text-xs leading-relaxed text-slate-500">

@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ReviewCover } from "@/components/ReviewCover";
+import {
+  buildReviewListHref,
+  HOME_REVIEW_LIST_BASE,
+} from "@/lib/review-list-href";
 import { getDlsiteProductById } from "@/lib/dlsite-product-catalog";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import type { Review } from "@/lib/types";
@@ -100,6 +104,14 @@ export function HomeSaleColumn({ reviews, previewMax }: Props) {
           );
         })}
       </ul>
+      <p className="mt-5 text-center">
+        <Link
+          href={buildReviewListHref(HOME_REVIEW_LIST_BASE, { sale: true })}
+          className="text-sm font-medium text-sky-300 underline-offset-2 hover:text-sky-200 hover:underline"
+        >
+          セール中一覧へ（絞り込み付き）
+        </Link>
+      </p>
     </>
   );
 }

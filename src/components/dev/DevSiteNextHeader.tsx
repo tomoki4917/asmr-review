@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useId, useState } from "react";
+import { buildReviewListHref, DEV_SITE_NEXT_LIST_BASE } from "@/lib/review-list-href";
 import { SITE_NEXT_DRAWER_LINKS } from "@/lib/site-next-draft-links";
 
 function SearchIcon({ className }: { className?: string }) {
@@ -78,7 +79,7 @@ export function DevSiteNextHeader() {
         </p>
         <div className="flex shrink-0 items-center gap-0.5">
           <Link
-            href="/#reviews-heading"
+            href={buildReviewListHref(DEV_SITE_NEXT_LIST_BASE, { sort: "new" })}
             className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-800/80 hover:text-sky-200"
             aria-label="検索・一覧へ"
           >

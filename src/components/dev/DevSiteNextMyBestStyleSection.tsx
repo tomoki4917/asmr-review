@@ -5,6 +5,10 @@ import { ReviewCover } from "@/components/ReviewCover";
 import { reviewPublicationTimeMs } from "@/lib/format-published-at";
 import { RATING_BEST_DEFAULT, isStarBucketNineOrAbove } from "@/lib/rating-scale";
 import { reviewTitleSingleLine } from "@/lib/review-title";
+import {
+  buildReviewListHref,
+  DEV_SITE_NEXT_LIST_BASE,
+} from "@/lib/review-list-href";
 import { SITE_NEXT_CATEGORY_GRID } from "@/lib/site-next-draft-links";
 import type { Review } from "@/lib/types";
 
@@ -34,18 +38,30 @@ function pickLatest(reviews: Review[]): Review | undefined {
 function ReviewTeaserCard({
   label,
   review,
+  listHref,
 }: {
   label: string;
   review: Review | undefined;
+  /** カード全体のリンク先（省略時はレビュー詳細） */
+  listHref?: string;
 }) {
+  const detailHref = review ? `/reviews/${review.slug}/` : undefined;
+  const cardHref = listHref ?? detailHref;
+
   return (
     <article className="flex min-h-[10.5rem] flex-col rounded-xl border border-slate-600/50 bg-slate-800/35 p-3.5 shadow-md shadow-slate-950/20 ring-1 ring-white/[0.04] sm:min-h-[11.5rem] sm:p-4">
       <h2 className="text-center text-sm font-bold tracking-wide text-slate-200">
-        {label}
+        {cardHref ? (
+          <Link href={cardHref} className="hover:text-sky-200">
+            {label}
+          </Link>
+        ) : (
+          label
+        )}
       </h2>
       {review ? (
         <Link
-          href={`/reviews/${review.slug}/`}
+          href={cardHref ?? detailHref!}
           className="group mt-3 flex min-h-0 flex-1 flex-col"
         >
           <div className="mx-auto w-full max-w-[7.25rem] sm:max-w-[8rem]">
@@ -81,7 +97,11 @@ export function DevSiteNextMyBestStyleSection({ reviews }: Props) {
     <section className="mx-auto w-full max-w-lg px-3 pb-10 pt-5 sm:max-w-xl sm:px-4" aria-label="次サイト草案メイン">
       <div className="grid grid-cols-2 gap-3.5 sm:gap-4">
         <ReviewTeaserCard label="ピックアップレビュー" review={spotlight} />
-        <ReviewTeaserCard label="新着レビュー" review={latest} />
+        <ReviewTeaserCard
+          label="新着レビュー"
+          review={latest}
+          listHref={buildReviewListHref(DEV_SITE_NEXT_LIST_BASE, { sort: "new" })}
+        />
       </div>
 
       <nav
@@ -113,7 +133,7 @@ export function DevSiteNextMyBestStyleSection({ reviews }: Props) {
           ))}
         </ul>
         <Link
-          href="#reviews-heading"
+          href={buildReviewListHref(DEV_SITE_NEXT_LIST_BASE, { sort: "new" })}
           className="mt-6 flex w-full items-center justify-center rounded-xl border border-slate-600/45 bg-slate-900/30 py-3.5 text-sm font-medium text-slate-200 shadow-sm shadow-slate-950/20 transition hover:border-sky-500/30 hover:bg-slate-800/70 hover:text-sky-100"
         >
           全て見る
