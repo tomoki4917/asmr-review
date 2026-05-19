@@ -1,4 +1,5 @@
 import {
+  isDlsitePriceFetched,
   isDlsiteProductShinsaku,
   type DlsiteProductRecord,
 } from "@/lib/dlsite-product-catalog";
@@ -43,7 +44,9 @@ export function DlsitePricePanel({
 
   if (!show) return null;
 
+  const priceFetched = isDlsitePriceFetched(product);
   const hasListedPrice =
+    priceFetched &&
     typeof product.current_price === "number" &&
     Number.isFinite(product.current_price) &&
     product.current_price >= 0;
@@ -81,9 +84,12 @@ export function DlsitePricePanel({
 
       {!hasListedPrice ? (
         <p className="mt-2 text-sm text-slate-500">
-          価格データがありません。リポジトリで{" "}
+          {priceFetched
+            ? "価格データがありません。"
+            : "価格はまだ取得されていません（プレースホルダーの 0 円は無料ではありません）。"}
+          リポジトリで{" "}
           <code className="rounded bg-slate-800 px-1 py-0.5 text-xs">
-            npm run update-prices
+            npm run update-price:one {product.id}
           </code>{" "}
           を実行してください。
         </p>

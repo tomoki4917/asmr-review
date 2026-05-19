@@ -5,7 +5,8 @@ DLsite 作品ごとの **税込現在価格・定価・セール率** など。
 
 - **新規レビューで `dlsiteProductId` を付けたら（今後の記事も同じ）**、まず **同じ `id` と作品ページの `url`** を持つオブジェクトを **1 件追加**する。
 - 続けてリポジトリルートで **`npm run update-prices`** を実行し、DLsite から税込・セール・期限を取り込む（`package.json` のスクリプト。実体は `scripts/update-prices.mjs`）。手入力だけにせず、**この手順を既定にする**。
-- **追加した行だけすぐ反映したいとき** … `node scripts/fetch-one-price.mjs RJ01234567` または `npm run update-price:one -- RJ01234567`（1 作品のみ GET。`current_price` が 0 のままだと一覧・詳細の税込表示と JSON-LD の `offers` が出ない）。
+- **追加した行だけすぐ反映したいとき** … `node scripts/fetch-one-price.mjs RJ01234567` または `npm run update-price:one -- RJ01234567`（1 作品のみ GET。**`fetched_at` が空の `current_price: 0` はプレースホルダーで、無料ではない** — 必ず本コマンドで取り込む）。
+- **ビルド前チェック** … `npm run validate:dlsite-prices`（`prebuild` に含む。`fetched_at` 未設定のレビューがあると失敗）。
 - セール終了後に表示だけ古いときは `npm run update-prices:stale` で期限切れ行のみ再取得。
 - フィールド: `id`, `url`, `current_price`, `original_price`, `discount_rate`, `on_sale`, `sale_limit`, `sale_end_iso`, **`release_date_iso`**（DLsite `regist_date` 由来。発売から7日以内は一覧・詳細で「新作」バッジ）, `fetched_at`
 

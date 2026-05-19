@@ -94,6 +94,8 @@ function normalizeZenkakuDigits(s: string): string {
 function extractDryWetCounts(markdown?: string): string | undefined {
   if (!markdown) return undefined;
   const normalized = normalizeZenkakuDigits(markdown.replace(/\r\n/g, "\n"));
+  const dryPlural =
+    /ドライシーン\s*複数回/.test(normalized) || /ドライ\s*複数回/.test(normalized);
   const dryMatch =
     normalized.match(/ドライシーン\s*([0-9]+)\s*回/) ?? normalized.match(/ドライ\s*([0-9]+)\s*回/);
   const wetMatch =
@@ -102,10 +104,12 @@ function extractDryWetCounts(markdown?: string): string | undefined {
 
   const dry = dryMatch?.[1];
   const wet = wetMatch?.[1];
-  if (!dry && !wet) return undefined;
-  if (dry && wet) return `ドライシーン${dry}回 / ウェットシーン${wet}回`;
-  if (dry) return `ドライシーン${dry}回`;
-  return `ウェットシーン${wet}回`;
+  if (!dry && !wet && !dryPlural) return undefined;
+  const dryLabel = dry ? `ドライシーン${dry}回` : dryPlural ? "ドライシーン複数回" : undefined;
+  const wetLabel = wet ? `ウェットシーン${wet}回` : undefined;
+  if (dryLabel && wetLabel) return `${dryLabel} / ${wetLabel}`;
+  if (dryLabel) return dryLabel;
+  return wetLabel;
 }
 
 function extractCircleName(markdown?: string): string | null {
@@ -714,6 +718,30 @@ export default async function ReviewPage({ params }: Props) {
       notRecommendedFor: [
         "短尺で済ませたい方",
         "回避不能感が苦手な方",
+      ],
+    },
+    "ijigen-trip-saimin": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "異次元フェスのクラブビートに意識を溶かし、本編後半の連続ドライへ落とすM向けトリップ催眠（リラックス運動・事前誘導は任意）",
+      inductionType:
+        "教育導入系 / 身体的誘導系 / 分割弛緩系 / 音楽同期系 / 集合的トランス系",
+      voiceActor: "沢野ぽぷら・野上菜月",
+      tempoType: "ややゆっくり（弛緩）／中速〜連続（クラブ本編・連続ドライ帯）",
+      majorFetish:
+        "クラブミュージック / フェス没入 / 分割弛緩 / 連続ドライ / M向け羞恥・公開",
+      kinkType: "M向け",
+      recommendedLevel:
+        "上級トランス（脳イキは可能・ドライ絶頂は未達）以上の方",
+      recording: "約2時間19分（販売ページ総再生時間）",
+      recommendedFor: [
+        "音楽フェス没入シチュが好きな方",
+        "分割弛緩・音楽同期の誘導が好きな方",
+        "音のトランス感で深い没入（変性意識）を求める音モノ好きの方",
+      ],
+      notRecommendedFor: [
+        "甘々な癒し系・優しい誘導だけ欲しい方",
+        "短時間で一度だけ済ませたい方",
       ],
     },
     "mayoigo-saimin-hypno-multi-rape": {

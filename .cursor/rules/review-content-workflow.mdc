@@ -11,7 +11,7 @@ alwaysApply: false
 **ユーザーから解析フォルダ（`.mp3` または `.wav`・`.srt`・`*_waveform.csv` 等）を渡されて新規執筆・大きく書き直すとき**（`index.md` に手を入れる前）、`docs/真催眠音声執筆ガイド.md` §1（補・解析パイプライン）のとおり **`analyze_mp3_immersive_metrics.py`（MP3/WAV 対応）→ `import-review-analysis.py` → `analyze_review_auto.py`** を実行する。**.wav のみ**のフォルダでも手順1をスキップしない。生成物を**採点材料**とし、本文にスクリプト名や生数値列を晒さない。
 
 1. `npm run sync:content-assets` を実行する（画像・表紙の反映）。
-2. **新規レビューで `dlsiteProductId` を付けた／変えたとき** … リポジトリ直下 **`data/products.json`** に、**`id`（`RJ…`）と作品ページの `url`** を持つオブジェクトを1件追加する。続けて **`npm run update-price:one RJ…`**（または **`npm run update-prices`**）で税込・セール・期限を DLsite から取り込む（一覧・詳細の価格表示の正本）。**無料（税込0円）作品**は `current_price: 0` でも一覧の星横に **¥0（税込・無料）**、詳細パネルに **0円表記**が出る（0 を未取得と誤らない）。手動を省略する場合は週次 CI の更新を待ってもよい。
+2. **新規レビューで `dlsiteProductId` を付けた／変えたとき** … **`data/products.json`** に **`id` + `url`** を1件追加したら、**直後に必ず `npm run update-price:one RJ…`**（`fetched_at` が埋まるまで完了としない）。**`current_price: 0` の手書きプレースホルダー禁止**（未取得 0 は「無料」と誤表示される）。無料作品も先に `update-price:one` で 0 を取り込む。機械チェック: **`npm run validate:dlsite-prices`**（`.cursor/rules/review-dlsite-price-placeholder.mdc`）。
 2a. **同じタイミングで必須（公開前）:** 販売ページを開き **`<title>` の `[サークル名]`** と **`### 基本情報` の `- **サークル：**`**（および任意の **`circleName`**）が一致すること。あわせて **`saleDate`**（`YYYY-MM-DD`）と **`- **販売日：**`** を、ページの **販売日／`regist_date`** に合わせる（詳細は **`docs/真催眠音声執筆ガイド.md` §1（補・サークル名・販売日）**）。既存記事の一括整備は **`npm run sync-review-sale-from-dlsite`**（販売日のみ自動）を使ってよい。
 2b. **新規の作品レビュー**（`contentKind` 省略または `review`）で **`slug` を新設したとき** … **`src/app/(public)/reviews/[slug]/page.tsx`** の **`quickGuideBySlug`** に **`slug` と同一キー**を追加する（未追加だと **記事モード**の切替が出ない。常時ルール: `.cursor/rules/review-article-mode-quickguide.mdc`）。
 3. 開発サーバーを再起動する（`npm run dev`。既存プロセスがあればポート 3000 を空けてから）。

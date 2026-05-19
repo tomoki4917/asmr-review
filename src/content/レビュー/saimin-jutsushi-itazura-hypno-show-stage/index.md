@@ -29,8 +29,8 @@ circleName: エロトランス
 
 # 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
 saleDate: "2018-01-18"
-publishedAt: "2026-05-19"
-goLiveAt: "2026-05-19T12:00:00+09:00"
+publishedAt: "2026-06-01"
+goLiveAt: "2026-06-01T12:00:00+09:00"
 
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ215000/RJ214295_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ214295.html

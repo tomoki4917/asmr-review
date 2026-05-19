@@ -1,4 +1,7 @@
-import type { DlsiteProductRecord } from "@/lib/dlsite-product-catalog";
+import {
+  isDlsitePriceFetched,
+  type DlsiteProductRecord,
+} from "@/lib/dlsite-product-catalog";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import { effectiveDisplayPublishedIsoDate } from "@/lib/format-published-at";
 import type { Review } from "@/lib/types";
@@ -104,6 +107,7 @@ function buildGraphSchema(
 
   if (
     dlsiteProduct &&
+    isDlsitePriceFetched(dlsiteProduct) &&
     typeof dlsiteProduct.current_price === "number" &&
     Number.isFinite(dlsiteProduct.current_price) &&
     dlsiteProduct.current_price >= 0

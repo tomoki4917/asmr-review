@@ -5,8 +5,9 @@
   "scripts": {
     "clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true}); console.log('removed .next')\"",
     "validate:content-data": "node scripts/validate-content-data.mjs",
+    "validate:dlsite-prices": "node scripts/validate-dlsite-prices.mjs",
     "sync:content-assets": "node scripts/sync-content-assets.mjs",
-    "prebuild": "npm run validate:content-data && npm run sync:content-assets",
+    "prebuild": "npm run validate:content-data && npm run validate:dlsite-prices && npm run sync:content-assets",
     "dev": "npm run sync:content-assets && next dev",
     "dev:lan": "npm run sync:content-assets && next dev -H 0.0.0.0",
     "build": "next build",

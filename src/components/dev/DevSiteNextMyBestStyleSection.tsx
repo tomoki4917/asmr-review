@@ -1,208 +1,133 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import { DevSiteNextReviewList } from "@/components/dev/DevSiteNextReviewList";
+import { ReviewCover } from "@/components/ReviewCover";
+import { reviewPublicationTimeMs } from "@/lib/format-published-at";
+import { RATING_BEST_DEFAULT, isStarBucketNineOrAbove } from "@/lib/rating-scale";
+import { reviewTitleSingleLine } from "@/lib/review-title";
+import { SITE_NEXT_CATEGORY_GRID } from "@/lib/site-next-draft-links";
 import type { Review } from "@/lib/types";
 
-function Chevron() {
-  return (
-    <span
-      className="shrink-0 text-lg font-light text-slate-500 transition group-hover:text-sky-400/90"
-      aria-hidden
-    >
-      ›
-    </span>
-  );
-}
-
-function CategoryEmoji({ emoji }: { emoji: string }) {
-  return (
-    <span
-      className="flex h-10 w-10 shrink-0 select-none items-center justify-center rounded-lg border border-slate-600/40 bg-slate-900/50 text-[1.25rem] leading-none"
-      aria-hidden
-    >
-      {emoji}
-    </span>
-  );
-}
-
-import { SITE_CATEGORY_LINKS } from "@/lib/site-category-links";
-
-const CATEGORY_LINKS = SITE_CATEGORY_LINKS;
+const SPOTLIGHT_SLUG = "unknown-hypno-daijobu-koe-ni-yudanete";
 
 type Props = {
-  unknownHypno: Review | undefined;
+  reviews: Review[];
 };
 
-function SearchMagnifierIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.75}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden
-    >
-      <circle cx="10.5" cy="10.5" r="6.25" />
-      <path d="M20 20l-4.35-4.35" />
-    </svg>
-  );
+function pickSpotlight(reviews: Review[]): Review | undefined {
+  const reviewOnly = reviews.filter((r) => r.contentKind === "review");
+  const fixed = reviewOnly.find((r) => r.slug === SPOTLIGHT_SLUG);
+  if (fixed) return fixed;
+  return reviewOnly
+    .filter((r) =>
+      isStarBucketNineOrAbove(r.ratingValue, r.ratingBest ?? RATING_BEST_DEFAULT)
+    )
+    .sort((a, b) => reviewPublicationTimeMs(b) - reviewPublicationTimeMs(a))[0];
 }
 
-/** モバイル用：セクションと同系色のピル型検索バー */
-function CategoryMobileSearch() {
+function pickLatest(reviews: Review[]): Review | undefined {
+  return reviews
+    .filter((r) => r.contentKind === "review")
+    .sort((a, b) => reviewPublicationTimeMs(b) - reviewPublicationTimeMs(a))[0];
+}
+
+function ReviewTeaserCard({
+  label,
+  review,
+}: {
+  label: string;
+  review: Review | undefined;
+}) {
   return (
-    <Link
-      href="/#reviews-heading"
-      className="group flex items-center gap-3 rounded-full border border-slate-600/50 bg-slate-900/35 px-4 py-3 text-sm text-slate-400 shadow-inner shadow-slate-950/30 ring-1 ring-white/[0.04] transition hover:border-sky-500/35 hover:bg-slate-900/55 hover:text-slate-200 hover:ring-sky-500/10"
-    >
-      <SearchMagnifierIcon className="h-[1.125rem] w-[1.125rem] shrink-0 text-slate-500 transition group-hover:text-sky-400/80" />
-      <span className="truncate">何をお探しですか？</span>
-    </Link>
+    <article className="flex min-h-[10.5rem] flex-col rounded-xl border border-slate-600/50 bg-slate-800/35 p-3.5 shadow-md shadow-slate-950/20 ring-1 ring-white/[0.04] sm:min-h-[11.5rem] sm:p-4">
+      <h2 className="text-center text-sm font-bold tracking-wide text-slate-200">
+        {label}
+      </h2>
+      {review ? (
+        <Link
+          href={`/reviews/${review.slug}/`}
+          className="group mt-3 flex min-h-0 flex-1 flex-col"
+        >
+          <div className="mx-auto w-full max-w-[7.25rem] sm:max-w-[8rem]">
+            <ReviewCover
+              coverImage={review.coverImage}
+              alt={reviewTitleSingleLine(review.title)}
+              slug={review.slug}
+              className="rounded-md"
+            />
+          </div>
+          <p className="mt-2.5 line-clamp-3 text-center text-xs font-semibold leading-snug text-slate-100 group-hover:text-sky-200 sm:text-[13px]">
+            {reviewTitleSingleLine(review.title)}
+          </p>
+        </Link>
+      ) : (
+        <p className="mt-5 flex flex-1 items-center justify-center text-center text-sm text-slate-500">
+          表示するレビューがありません
+        </p>
+      )}
+    </article>
   );
 }
 
 /**
- * 開発用 `/dev/site-next/` のみで使用。サイトのダークトーンに合わせた2カラム（狭い幅ではカテゴリを先頭）。
- * カテゴリは狭い幅でもダークトーンのまま、ピル検索＋3列グリッド。lg 以上はサイドバー型リスト。
+ * 開発用 `/dev/site-next/` — ワイヤーフォーム準拠（ヘッダーは `DevSiteNextHeader`）。
+ * ピックアップ／新着の2枠 → 3×3カテゴリ → 全て見る。
  */
-export function DevSiteNextMyBestStyleSection({ unknownHypno }: Props) {
-  const cover = unknownHypno?.coverImage;
-  const slug = unknownHypno?.slug ?? "unknown-hypno-daijobu-koe-ni-yudanete";
+export function DevSiteNextMyBestStyleSection({ reviews }: Props) {
+  const spotlight = pickSpotlight(reviews);
+  const latest = pickLatest(reviews);
 
   return (
-    <section
-      className="mt-10 rounded-2xl border border-slate-600/45 bg-slate-800/35 px-4 py-8 shadow-lg shadow-slate-950/25 ring-1 ring-sky-900/20 backdrop-blur-md sm:px-6 sm:py-10"
-      aria-labelledby="dev-pick-heading"
-    >
-      <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1.92fr)_minmax(0,1fr)] lg:gap-12">
-        {/* 運営が選ぶおすすめ（lg では左列・モバイルでは下） */}
-        <div className="order-2 min-w-0 lg:order-1">
-          <p className="text-sm leading-relaxed text-slate-400">
-            実際に商品を購入して自社施設で徹底的に比較・検証
-          </p>
-          <h2
-            id="dev-pick-heading"
-            className="mt-1 text-2xl font-bold tracking-tight text-slate-50 sm:text-[1.65rem]"
-          >
-            運営が選ぶおすすめ
-          </h2>
+    <section className="mx-auto w-full max-w-lg px-3 pb-10 pt-5 sm:max-w-xl sm:px-4" aria-label="次サイト草案メイン">
+      <div className="grid grid-cols-2 gap-3.5 sm:gap-4">
+        <ReviewTeaserCard label="ピックアップレビュー" review={spotlight} />
+        <ReviewTeaserCard label="新着レビュー" review={latest} />
+      </div>
 
-          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-3">
-            {unknownHypno ? (
+      <nav
+        className="mt-6 rounded-2xl border border-slate-600/45 bg-slate-800/40 p-4 shadow-md shadow-slate-950/25 ring-1 ring-white/5"
+        aria-label="カテゴリから移動"
+      >
+        <ul className="grid auto-rows-fr grid-cols-3 gap-x-2 gap-y-6 px-0.5 sm:gap-x-3 sm:gap-y-7">
+          {SITE_NEXT_CATEGORY_GRID.map(({ emoji, title, href, mobileTitleLines }) => (
+            <li key={href + title} className="flex min-w-0">
               <Link
-                href={`/reviews/${slug}/`}
-                className="group flex min-h-[5.25rem] items-center gap-3 rounded-xl border border-slate-600/45 bg-slate-800/50 px-3 py-3 shadow-md shadow-slate-950/20 ring-1 ring-white/5 transition hover:border-sky-500/35 hover:bg-slate-800/80 hover:ring-sky-500/15"
+                href={href}
+                className="group flex h-full min-h-[6.75rem] w-full flex-col items-center justify-start gap-2 rounded-xl px-1 py-2.5 text-center transition hover:bg-slate-700/35 active:bg-slate-700/50"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element -- 外部 DLsite 表紙 URL */}
-                <img
-                  src={cover}
-                  alt=""
-                  width={64}
-                  height={64}
-                  className="h-16 w-16 shrink-0 rounded-md border border-slate-600/40 object-cover"
-                />
-                <div className="min-w-0 flex-1">
-                  <p className="text-[15px] font-bold leading-snug text-slate-50 group-hover:text-sky-200">
-                    アンノウンヒプノ
-                  </p>
-                  <span className="mt-1.5 inline-block rounded bg-amber-400/95 px-1.5 py-0.5 text-[10px] font-bold leading-none text-slate-950 shadow-sm ring-1 ring-amber-500/25">
-                    徹底比較
-                  </span>
-                </div>
-                <Chevron />
-              </Link>
-            ) : (
-              <p className="text-sm text-slate-500">
-                レビュー「アンノウンヒプノ」のデータが見つかりません（slug:
-                unknown-hypno-daijobu-koe-ni-yudanete）。
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* カテゴリ（モバイルでは先頭・lg では右列） */}
-        <div className="order-1 min-w-0 lg:order-2 lg:pt-1">
-          {/* スマホ：ダーク内パネル＋ピル検索＋3列グリッド（レイアウトは参照、配色はサイト準拠） */}
-          <div className="lg:hidden">
-            <h2 className="text-lg font-bold tracking-tight text-slate-50">
-              カテゴリ
-            </h2>
-            <nav
-              className="mt-3 rounded-2xl border border-slate-600/45 bg-slate-800/40 p-4 pb-4 shadow-md shadow-slate-950/25 ring-1 ring-white/5"
-              aria-label="カテゴリから移動"
-            >
-              <CategoryMobileSearch />
-              <ul className="mt-5 grid auto-rows-fr grid-cols-3 gap-x-2 gap-y-6 px-0.5 sm:gap-x-3 sm:gap-y-7">
-                {CATEGORY_LINKS.map(({ emoji, title, href, mobileTitleLines }) => (
-                  <li key={href} className="flex min-w-0">
-                    <Link
-                      href={href}
-                      className="group flex h-full min-h-[6.75rem] w-full flex-col items-center justify-start gap-2 rounded-xl px-1 py-2.5 text-center transition hover:bg-slate-700/35 active:bg-slate-700/50"
-                    >
-                      <span
-                        className="flex h-14 w-14 shrink-0 select-none items-center justify-center rounded-2xl border border-slate-600/40 bg-slate-900/45 text-[1.65rem] leading-none shadow-md shadow-slate-950/35 transition group-hover:border-sky-500/35 group-hover:bg-slate-900/65 sm:h-16 sm:w-16 sm:text-[1.95rem]"
-                        aria-hidden
-                      >
-                        {emoji}
-                      </span>
-                      <span className="flex min-h-[2.35rem] w-full flex-col items-center justify-center text-[10px] font-semibold leading-tight text-slate-200 group-hover:text-sky-200 sm:min-h-[2.5rem] sm:text-[11px]">
-                        {mobileTitleLines ? (
-                          mobileTitleLines.map((line) => (
-                            <span key={line}>{line}</span>
-                          ))
-                        ) : (
-                          <span className="leading-snug">{title}</span>
-                        )}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/#reviews-heading"
-                className="group mt-6 flex w-full items-center justify-center gap-1.5 rounded-xl border border-slate-600/45 bg-slate-900/30 py-3.5 text-sm font-medium text-slate-300 shadow-sm shadow-slate-950/20 transition hover:border-sky-500/30 hover:bg-slate-800/70 hover:text-sky-100"
-              >
-                すべてを見る
                 <span
-                  className="inline-block translate-y-px text-[0.65rem] font-light text-slate-500 transition group-hover:text-sky-400/90"
+                  className="flex h-14 w-14 shrink-0 select-none items-center justify-center rounded-2xl border border-slate-600/40 bg-slate-900/45 text-[1.65rem] leading-none shadow-md shadow-slate-950/35 transition group-hover:border-sky-500/35 group-hover:bg-slate-900/65 sm:h-16 sm:w-16 sm:text-[1.95rem]"
                   aria-hidden
                 >
-                  ∨
+                  {emoji}
+                </span>
+                <span className="flex min-h-[2.35rem] w-full flex-col items-center justify-center text-[10px] font-semibold leading-tight text-slate-200 group-hover:text-sky-200 sm:min-h-[2.5rem] sm:text-[11px]">
+                  {mobileTitleLines ? (
+                    mobileTitleLines.map((line) => <span key={line}>{line}</span>)
+                  ) : (
+                    <span className="leading-snug">{title}</span>
+                  )}
                 </span>
               </Link>
-            </nav>
-          </div>
+            </li>
+          ))}
+        </ul>
+        <Link
+          href="#reviews-heading"
+          className="mt-6 flex w-full items-center justify-center rounded-xl border border-slate-600/45 bg-slate-900/30 py-3.5 text-sm font-medium text-slate-200 shadow-sm shadow-slate-950/20 transition hover:border-sky-500/30 hover:bg-slate-800/70 hover:text-sky-100"
+        >
+          全て見る
+        </Link>
+      </nav>
 
-          {/* PC：サイドバー型リスト */}
-          <div className="hidden lg:block">
-            <h2 className="text-xl font-bold tracking-tight text-slate-50 sm:text-[1.35rem]">
-              カテゴリ
-            </h2>
-            <ul className="mt-4 divide-y divide-slate-600/40 border-y border-slate-600/45">
-              {CATEGORY_LINKS.map(({ emoji, title, href, subtitle }) => (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    className="group flex items-center gap-3 rounded-lg py-3.5 pr-1 transition hover:bg-slate-700/40"
-                  >
-                    <CategoryEmoji emoji={emoji} />
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[15px] font-bold text-slate-100 group-hover:text-sky-200">
-                        {title}
-                      </p>
-                      <p className="mt-0.5 text-xs leading-snug text-slate-500 group-hover:text-slate-400">
-                        {subtitle}
-                      </p>
-                    </div>
-                    <Chevron />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+      <div className="mt-6 border-t border-slate-600/35 pt-6">
+        <Suspense
+          fallback={
+            <p className="text-center text-sm text-slate-500">一覧を読み込んでいます…</p>
+          }
+        >
+          <DevSiteNextReviewList markdownReviews={reviews} />
+        </Suspense>
       </div>
     </section>
   );

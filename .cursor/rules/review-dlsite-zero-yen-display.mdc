@@ -6,9 +6,11 @@ alwaysApply: false
 
 # 無料（0円）DLsite 作品の価格表示
 
-**再発防止:** `current_price: 0` を「価格未取得」と同扱いにしない。**一覧カード（星横）**に **¥0（税込・無料）**、**レビュー詳細の DLsite 価格パネル**に **0円と「無料作品（税込0円）」**が出るのが正。
+**再発防止（取得済みの 0 円）:** `fetched_at` が入ったうえでの `current_price: 0` を「価格未取得」と同扱いにしない。**一覧カード（星横）**に **¥0（税込・無料）**、**詳細パネル**に **0円と「無料作品（税込0円）」**が出るのが正。
 
-- 新規・変更で **`dlsiteProductId`** を付けたら **`data/products.json`** に同一 `RJ` 行を置き、**`npm run update-price:one RJ…`**（HTMLの `price: 0` を取り込める）または **`current_price`・`original_price` を 0** の手動行で揃える。
+**プレースホルダー 0 円（`fetched_at` 空）は別問題** … 無料ではない。手書き `0` 禁止・取得手順は **`.cursor/rules/review-dlsite-price-placeholder.mdc`**。
+
+- 新規・変更で **`dlsiteProductId`** を付けたら **`data/products.json`** に同一 `RJ` 行を置き、必ず **`npm run update-price:one RJ…`** で取り込む（無料も HTML から `0` を取得する）。
 - 公開前にトップと該当 **`/reviews/<slug>/`** で **0円表記**を目視確認する。
 
 正本の説明は **`docs/真催眠音声執筆ガイド.md` §1（補・DLsite 税込価格）**・**`.cursor/rules/review-content-workflow.mdc`** の該当箇所に従う。

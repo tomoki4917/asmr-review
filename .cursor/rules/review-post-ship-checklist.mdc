@@ -16,7 +16,7 @@ alwaysApply: false
 0. **解析フォルダ起点で書いた／書き直す場合:** `docs/真催眠音声執筆ガイド.md` §1（補・解析パイプライン）どおり **`analyze_mp3_immersive_metrics.py` → `import-review-analysis.py` → `analyze_review_auto.py`** を実行済みか（`.mp3` が無い案件のみ MP3 計測はスキップ可）。`spatial_spectral.auto.json` と `derived_metrics.json` の `immersive_audio_mp3` を材料にしたうえで採点しているか。
 1. **`_分析データ.json`** の `scores.trance` / `pleasure` / `satisfaction` が本文の三軸・`review_triangle.png` と一致している。
 2. **`review_triangle.png`** を `py -3 scripts/generate_review_triangle.py <slug>` で生成済み。**`npm run sync:content-assets`** で `public/content/reviews/` にミラー済み。
-3. **`dlsiteProductId`** を付けた場合は **`data/products.json`** に **`id` と `url`** を追加し、**`npm run update-prices`** で税込・セール等を取得済み（またはユーザーが後続 CI に任せる旨を共有）。
+3. **`dlsiteProductId`** を付けた場合は **`data/products.json`** に **`id` と `url`** を追加し、**`npm run update-price:one RJ…`** で **`fetched_at` 込みの価格取得済み**（プレースホルダー `0` 禁止）。**`npm run validate:dlsite-prices`** が通ること（`.cursor/rules/review-dlsite-price-placeholder.mdc`）。
 4. **心拍ログが無い**ときは **`### 聴取時の身体反応（心拍）`** を本文に置かない。
 5. **`npm run build`** が成功することを確認する。
 6. **（再発防止・必須）新規の作品レビュー**（`contentKind` 省略または `review`）を追加したら、**`src/app/(public)/reviews/[slug]/page.tsx`** の **`quickGuideBySlug`** に、**フロントマターの `slug` と同一キー**のオブジェクトを **1 件追加**する。未登録だと **記事モード**（「1分で判断！クイック解析」／「しっかり見たい人向け！作品詳細解析」）が出ず、他レビューと UI が揃わない。意図の説明は **`.cursor/rules/review-article-mode-quickguide.mdc`**（`alwaysApply`）に集約。

@@ -12,6 +12,7 @@ import path from "node:path";
 
 const repoRoot = process.cwd();
 const reviewsDir = path.join(repoRoot, "src", "content", "レビュー");
+const productsPath = path.join(repoRoot, "data", "products.json");
 const pageTsx = path.join(repoRoot, "src", "app", "(public)", "reviews", "[slug]", "page.tsx");
 const statusPath = path.join(repoRoot, "docs", "kansei-migration-status.md");
 
@@ -74,6 +75,27 @@ const CHECKS = [
   },
 ];
 
+function isDlsitePriceFetched(row) {
+  const raw = String(row?.fetched_at ?? "").trim();
+  if (!raw) return false;
+  return !Number.isNaN(Date.parse(raw));
+}
+
+async function loadProductsById() {
+  try {
+    const raw = await readFile(productsPath, "utf8");
+    const list = JSON.parse(raw);
+    return new Map(
+      (Array.isArray(list) ? list : []).map((r) => [
+        String(r.id).toUpperCase(),
+        r,
+      ])
+    );
+  } catch {
+    return new Map();
+  }
+}
+
 async function loadQuickGuideSlugs() {
   try {
     const src = await readFile(pageTsx, "utf8");
@@ -92,6 +114,7 @@ async function auditAll() {
     .sort((a, b) => a.localeCompare(b, "ja"));
 
   const quickGuide = await loadQuickGuideSlugs();
+  const productsById = await loadProductsById();
   const rows = [];
 
   for (const slug of slugs) {
@@ -106,12 +129,32 @@ async function auditAll() {
     const failed = CHECKS.filter((c) => c.fail(text));
     const noQuickGuide = quickGuide.size > 0 && !quickGuide.has(slug);
 
+    const contentKind =
+      (text.match(/^contentKind:\s*(.+)$/m) || [])[1]?.trim() || "review";
+    const dlsiteId = (
+      text.match(/^dlsiteProductId:\s*(?:"([^"]*)"|([^\n#]+))\s*$/m) || []
+    )
+      .slice(1)
+      .find(Boolean)
+      ?.trim()
+      .replace(/^["']|["']$/g, "")
+      .toUpperCase();
+    let dlsitePriceIssue = "";
+    if (contentKind !== "article" && dlsiteId) {
+      const prod = productsById.get(dlsiteId);
+      if (!prod) dlsitePriceIssue = "products.json 未登録";
+      else if (!isDlsitePriceFetched(prod))
+        dlsitePriceIssue = "DLsite 価格未取得";
+    }
+
     rows.push({
       slug,
       title: (text.match(/^title:\s*(.+)$/m) || [])[1]?.trim() ?? slug,
-      ok: failed.length === 0 && !noQuickGuide,
+      ok:
+        failed.length === 0 && !noQuickGuide && !dlsitePriceIssue,
       failed,
       noQuickGuide,
+      dlsitePriceIssue: dlsitePriceIssue || undefined,
     });
   }
 
@@ -141,6 +184,7 @@ function formatReport(rows) {
       const issues = [
         ...r.failed.map((f) => f.label),
         ...(r.noQuickGuide ? ["quickGuide 未登録"] : []),
+        ...(r.dlsitePriceIssue ? [r.dlsitePriceIssue] : []),
       ];
       lines.push(`- **\`${r.slug}\`** — ${issues.join("、")}`);
     }
@@ -177,6 +221,7 @@ function printConsole(rows) {
       const issues = [
         ...r.failed.map((f) => f.id),
         ...(r.noQuickGuide ? ["no_quickguide"] : []),
+        ...(r.dlsitePriceIssue ? ["dlsite_price"] : []),
       ];
       console.log(`  ${r.slug}  (${issues.join(", ")})`);
     }

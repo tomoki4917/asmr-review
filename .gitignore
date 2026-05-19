@@ -90,6 +90,10 @@ out
 # Vercel CLI (`vercel link` — org/project id は Secret 用にローカルだけで保持)
 .vercel
 
+# 解析取り込みの生音声（リポジトリ・GitHub には入れない。解析は PC 上の解析フォルダで行う）
+src/content/レビュー/**/analysis/*.wav
+src/content/レビュー/**/analysis/*.mp3
+
 # src/content/{レビュー,記事} から同期（原本は src 側のみコミット）
 /public/content/レビュー/
 /public/content/記事/

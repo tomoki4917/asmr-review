@@ -1,0 +1,29 @@
+---
+description: DLsite 価格のプレースホルダー0円禁止（無料誤表示の再発防止）
+globs: src/content/レビュー/**/index.md,data/products.json
+alwaysApply: false
+---
+
+# DLsite 価格：プレースホルダー 0 円禁止
+
+**再発事例:** `products.json` に `current_price: 0`・`original_price: 0`・**`fetched_at: ""`** のままレビューを公開 → サイトが **「無料作品（税込0円）」** と表示した（実際は有料）。
+
+## 禁止
+
+- `dlsiteProductId` 用の行を **`fetched_at` 空のまま**コミットする。
+- 価格取得前に **`current_price: 0` を手書き**する（無料作品でも、先に **`npm run update-price:one RJ…`** で HTML から 0 を取り込む）。
+
+## 必須手順（新規・変更）
+
+1. `data/products.json` に **`id` + `url`** のみ追加してよい（価格フィールドはスクリプト任せ）。
+2. 直後に **`npm run update-price:one RJ…`**（= `node scripts/fetch-one-price.mjs RJ…`）を実行し、**`fetched_at` が ISO 日時で埋まる**ことを確認する。
+3. コミット前に **`npm run validate:dlsite-prices`** が通ること（`prebuild` にも含まれる）。
+
+## 0 円と未取得の区別
+
+| 状態 | `fetched_at` | UI |
+|------|----------------|-----|
+| **未取得（プレースホルダー）** | 空 | 価格パネルは取得促し。**無料表記しない** |
+| **無料作品（取得済み）** | あり | `current_price: 0` → 「無料作品（税込0円）」 |
+
+無料の扱いは **`.cursor/rules/review-dlsite-zero-yen-display.mdc`**（取得**後**の 0 円表示）。

@@ -59,6 +59,14 @@ npm run review:audit-kansei
 
 `src/app/(public)/reviews/[slug]/page.tsx` の `<slug>` エントリを index と同期（`recommendedLevel` / `recommendedFor` / `notRecommendedFor` / `recording`）。
 
+### 3b. DLsite 価格（`dlsiteProductId` があるとき）
+
+1. `data/products.json` に `id` + `url`
+2. **`npm run update-price:one RJ…`**（`fetched_at` 必須。`current_price: 0` 手書き禁止）
+3. **`npm run validate:dlsite-prices`**
+
+`.cursor/rules/review-dlsite-price-placeholder.mdc` 参照。
+
 ### 4. 検査（必須）
 
 ```bash

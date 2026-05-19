@@ -540,6 +540,18 @@
     "fetched_at": "2026-05-16T18:42:27.922Z"
   },
   {
+    "id": "RJ189197",
+    "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ189197.html",
+    "current_price": 550,
+    "original_price": 1100,
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "",
+    "sale_end_iso": "2026-05-26T14:00:00+09:00",
+    "release_date_iso": "2017-01-04T15:00:00.000Z",
+    "fetched_at": "2026-05-19T04:45:45.081Z"
+  },
+  {
     "id": "RJ231054",
     "url": "https://www.dlsite.com/home/work/=/product_id/RJ231054.html",
     "current_price": 1210,

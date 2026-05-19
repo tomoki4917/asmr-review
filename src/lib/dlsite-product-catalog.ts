@@ -41,9 +41,18 @@ export function getDlsiteProductById(id: string): DlsiteProductRecord | undefine
   return rows.find((p) => p.id === id);
 }
 
+/** `npm run update-price:one` 等で DLsite から取り込み済みか（空の `fetched_at` は未取得プレースホルダー） */
+export function isDlsitePriceFetched(
+  product: DlsiteProductRecord | undefined
+): boolean {
+  const raw = product?.fetched_at?.trim();
+  if (!raw) return false;
+  return !Number.isNaN(Date.parse(raw));
+}
+
 /**
  * 一覧カードに税込・セール価格を出す条件。
- * `data/products.json` に該当 `id` があり、`current_price` が数値として登録されているとき（**0円＝無料含む**。ホワイトリストは使わない）。
+ * 該当 `id` があり **`fetched_at` 済み**で `current_price` が数値（**0円＝無料は取得後のみ表示**）。
  */
 export function shouldShowDlsitePriceOnReviewListCard(
   dlsiteProductId: string | undefined
@@ -51,7 +60,7 @@ export function shouldShowDlsitePriceOnReviewListCard(
   const id = dlsiteProductId?.trim();
   if (!id) return false;
   const p = getDlsiteProductById(id);
-  if (!p) return false;
+  if (!p || !isDlsitePriceFetched(p)) return false;
   const n = p.current_price;
   return typeof n === "number" && Number.isFinite(n) && n >= 0;
 }

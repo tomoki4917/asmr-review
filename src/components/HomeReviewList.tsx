@@ -122,7 +122,8 @@ const STAR_FILTER_LINKS = [
   { param: "lte5", label: "★5〜" },
 ] as const;
 
-function buildHomeSearchHref(
+function buildSearchHref(
+  basePath: string,
   sp: URLSearchParams,
   patch: {
     genre?: "hypnosis" | "doujin" | null;
@@ -144,20 +145,25 @@ function buildHomeSearchHref(
   if (patch.sort === "old") p.set("sort", "old");
   else if (patch.sort === "new") p.delete("sort");
   const qs = p.toString();
-  return qs ? `/?${qs}` : "/";
+  const prefix = basePath === "/" ? "/" : basePath.replace(/\/?$/, "/");
+  return qs ? `${prefix}?${qs}` : prefix;
 }
 
 /** 並び順と評価を同時に持たない（どちらか一方だけ） */
-function hrefListSortNew(sp: URLSearchParams): string {
-  return buildHomeSearchHref(sp, { clearStars: true, sort: "new" });
+function hrefListSortNew(basePath: string, sp: URLSearchParams): string {
+  return buildSearchHref(basePath, sp, { clearStars: true, sort: "new" });
 }
 
-function hrefListSortOld(sp: URLSearchParams): string {
-  return buildHomeSearchHref(sp, { clearStars: true, sort: "old" });
+function hrefListSortOld(basePath: string, sp: URLSearchParams): string {
+  return buildSearchHref(basePath, sp, { clearStars: true, sort: "old" });
 }
 
-function hrefListStarOnly(sp: URLSearchParams, stars: string): string {
-  return buildHomeSearchHref(sp, { stars, sort: "new" });
+function hrefListStarOnly(
+  basePath: string,
+  sp: URLSearchParams,
+  stars: string
+): string {
+  return buildSearchHref(basePath, sp, { stars, sort: "new" });
 }
 
 /** 現在のジャンル（未選択は全件）に対する評価別件数（絞り込みバー用） */
@@ -246,9 +252,20 @@ function LocalPostedCard({ review }: { review: PostedReview }) {
 
 type Props = {
   markdownReviews: Review[];
+  /** 絞り込みの URL 基点（既定 `/`） */
+  basePath?: string;
+  /** レビュー一覧のみ（記事ブロック・ページ内リンクを非表示） */
+  reviewsOnly?: boolean;
+  /** 上マージンを抑える */
+  compact?: boolean;
 };
 
-export function HomeReviewList({ markdownReviews }: Props) {
+export function HomeReviewList({
+  markdownReviews,
+  basePath = "/",
+  reviewsOnly = false,
+  compact = false,
+}: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const starsRaw = searchParams.get("stars");
@@ -367,10 +384,11 @@ export function HomeReviewList({ markdownReviews }: Props) {
     [mergedReviews]
   );
 
-  const hasAnyContent =
-    mergedReviews.length > 0 ||
-    markdownArticles.length > 0 ||
-    articlePosts.length > 0;
+  const hasAnyContent = reviewsOnly
+    ? mergedReviews.length > 0
+    : mergedReviews.length > 0 ||
+      markdownArticles.length > 0 ||
+      articlePosts.length > 0;
 
   if (!hasAnyContent) {
     return (
@@ -406,11 +424,16 @@ export function HomeReviewList({ markdownReviews }: Props) {
     starFilter === null ? (sortOrder === "old" ? "old" : "new") : String(starsRaw);
   const currentGenreKey = genreFilter ?? "all";
 
+  const outerClass = compact
+    ? "mt-0 space-y-0"
+    : "mt-14 space-y-16 sm:mt-16 sm:space-y-20";
+  const innerClass = compact ? "min-w-0 space-y-0" : "min-w-0 space-y-16 sm:space-y-20";
+
   return (
-    <div className="mt-14 space-y-16 sm:mt-16 sm:space-y-20">
-      <div className="min-w-0 space-y-16 sm:space-y-20">
+    <div className={outerClass}>
+      <div className={innerClass}>
         <section aria-labelledby="reviews-heading">
-          <div className="mb-6 space-y-3 sm:mb-7 sm:space-y-3.5">
+          <div className={compact ? "mb-4 space-y-3" : "mb-6 space-y-3 sm:mb-7 sm:space-y-3.5"}>
             <div
               className={filterBarWrap}
               role="group"
@@ -425,10 +448,10 @@ export function HomeReviewList({ markdownReviews }: Props) {
                   const next = e.currentTarget.value;
                   const href =
                     next === "new"
-                      ? hrefListSortNew(searchParams)
+                      ? hrefListSortNew(basePath, searchParams)
                       : next === "old"
-                        ? hrefListSortOld(searchParams)
-                        : hrefListStarOnly(searchParams, next);
+                        ? hrefListSortOld(basePath, searchParams)
+                        : hrefListStarOnly(basePath, searchParams, next);
                   router.push(href, { scroll: false });
                 }}
               >
@@ -454,7 +477,7 @@ export function HomeReviewList({ markdownReviews }: Props) {
                 value={currentGenreKey}
                 onChange={(e) => {
                   const next = e.currentTarget.value;
-                  const href = buildHomeSearchHref(searchParams, {
+                  const href = buildSearchHref(basePath, searchParams, {
                     genre:
                       next === "hypnosis" || next === "doujin" ? next : null,
                   });
@@ -471,28 +494,34 @@ export function HomeReviewList({ markdownReviews }: Props) {
               </select>
             </div>
 
-            <p className="text-xs leading-relaxed text-slate-500">
-              <span className="text-slate-400">ページ内:</span>{" "}
-              <Link
-                href={`/#${SECTION_HYPNOSIS_INTRO}`}
-                className="text-sky-400/95 underline-offset-2 hover:text-sky-300 hover:underline"
-              >
-                催眠音声入門
-              </Link>
-              {" · "}
-              <Link
-                href={`/#${SECTION_AUTHOR_POSTS}`}
-                className="text-sky-400/95 underline-offset-2 hover:text-sky-300 hover:underline"
-              >
-                記事一覧
-              </Link>
-            </p>
+            {!reviewsOnly ? (
+              <p className="text-xs leading-relaxed text-slate-500">
+                <span className="text-slate-400">ページ内:</span>{" "}
+                <Link
+                  href={`/#${SECTION_HYPNOSIS_INTRO}`}
+                  className="text-sky-400/95 underline-offset-2 hover:text-sky-300 hover:underline"
+                >
+                  催眠音声入門
+                </Link>
+                {" · "}
+                <Link
+                  href={`/#${SECTION_AUTHOR_POSTS}`}
+                  className="text-sky-400/95 underline-offset-2 hover:text-sky-300 hover:underline"
+                >
+                  記事一覧
+                </Link>
+              </p>
+            ) : null}
           </div>
 
-          <div className="mb-8 sm:mb-10">
+          <div className={compact ? "mb-5" : "mb-8 sm:mb-10"}>
             <h2
               id="reviews-heading"
-              className="scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 sm:scroll-mt-28 sm:text-2xl"
+              className={
+                compact
+                  ? "scroll-mt-20 text-lg font-bold tracking-tight text-slate-50"
+                  : "scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 sm:scroll-mt-28 sm:text-2xl"
+              }
             >
               レビュー一覧
               {(() => {
@@ -557,6 +586,7 @@ export function HomeReviewList({ markdownReviews }: Props) {
           )}
         </section>
 
+        {!reviewsOnly ? (
         <section aria-labelledby="author-posts-heading">
           <div className="mb-8 sm:mb-10">
             <h2
@@ -603,6 +633,7 @@ export function HomeReviewList({ markdownReviews }: Props) {
             </ul>
           )}
         </section>
+        ) : null}
       </div>
     </div>
   );

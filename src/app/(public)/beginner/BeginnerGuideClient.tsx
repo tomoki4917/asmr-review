@@ -110,15 +110,8 @@ const ROUTE_PANEL: Record<
   1: {
     emoji: "⚡",
     heading: "最短で楽しむ",
-    lead: "環境を整えてから、おすすめの1本を選びます。上から順に進めてください。",
-    steps: ({ listeningEnvironmentArticle, recommendedArticle }) => [
-      {
-        title: "視聴環境を整える",
-        categoryEmoji: "🎧",
-        categoryLabel: "視聴環境",
-        hint: "暗さ・温度・イヤホン。ここを済ませると、その後が楽になります。",
-        article: listeningEnvironmentArticle,
-      },
+    lead: "おすすめの1本を選んで、すぐ聴き始められます。",
+    steps: ({ recommendedArticle }) => [
       {
         title: "おすすめ作品を選ぶ",
         hint: "初めての1本は、評価と内容が分かりやすい作品からで大丈夫です。",
@@ -266,7 +259,7 @@ export function BeginnerGuideClient({
             最短で楽しむ
           </span>
           <span className="mt-1 block text-sm leading-relaxed text-slate-400">
-            仕組みは後回し。環境 → 作品の2ステップ。
+            仕組みは後回し。おすすめ作品から始めます。
           </span>
         </button>
         <button

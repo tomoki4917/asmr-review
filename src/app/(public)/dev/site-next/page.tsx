@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { DevSiteNextHeader } from "@/components/dev/DevSiteNextHeader";
 import { DevSiteNextMyBestStyleSection } from "@/components/dev/DevSiteNextMyBestStyleSection";
 import { HomeHeroIntro } from "@/components/home/HomeHeroIntro";
-import { getReviewBySlug } from "@/lib/reviews";
+import { getAllReviews } from "@/lib/reviews";
 
 export const metadata: Metadata = {
   title: "次サイト（草案・開発のみ）",
@@ -32,32 +33,36 @@ export default function DevSiteNextPage() {
     );
   }
 
-  const unknownHypno = getReviewBySlug("unknown-hypno-daijobu-koe-ni-yudanete");
+  const reviews = getAllReviews();
 
   return (
-    <main className="mx-auto w-full max-w-7xl py-10 sm:py-14">
-      <div className="mx-auto max-w-4xl rounded-2xl border border-sky-500/25 bg-slate-900/35 px-5 py-8 shadow-inner ring-1 ring-white/5 sm:px-10 sm:py-10">
-        <p className="text-center text-xs font-medium uppercase tracking-[0.2em] text-amber-200/90">
-          dev / 次サイトの芽
-        </p>
-        <header className="mx-auto mt-4 max-w-3xl text-center">
-          <HomeHeroIntro />
-        </header>
-      </div>
+    <main className="mx-auto w-full max-w-xl pb-8">
+      <p className="border-b border-amber-600/30 bg-amber-950/20 px-4 py-2 text-center text-[11px] font-medium tracking-wide text-amber-200/90">
+        dev / 次サイトの芽（ワイヤーフォーム準拠）
+      </p>
 
-      <DevSiteNextMyBestStyleSection unknownHypno={unknownHypno} />
+      <DevSiteNextHeader />
 
-      <section className="mx-auto mt-12 max-w-3xl border-t border-slate-600/50 pt-8 text-center text-sm text-slate-500">
-        <p className="text-pretty">
-          上記は現行トップと同じ「冒頭」ブロックです。この下にセクションを足して、新しいトップや別ランディングへ育てていけます。
+      <section
+        className="border-b border-slate-600/35 px-4 py-7 text-center sm:py-8"
+        aria-label="サイト紹介"
+      >
+        <HomeHeroIntro />
+      </section>
+
+      <DevSiteNextMyBestStyleSection reviews={reviews} />
+
+      <footer className="mx-auto max-w-lg px-4 pt-4 text-center text-xs text-slate-500">
+        <p>
+          サークル紹介・声優別など未実装のリンクは一覧へ仮接続しています。
         </p>
         <Link
           href="/"
-          className="mt-6 inline-block font-medium text-sky-400 underline-offset-4 hover:text-sky-300 hover:underline"
+          className="mt-4 inline-block font-medium text-sky-400 underline-offset-4 hover:text-sky-300 hover:underline"
         >
           現行トップへ戻る
         </Link>
-      </section>
+      </footer>
     </main>
   );
 }
