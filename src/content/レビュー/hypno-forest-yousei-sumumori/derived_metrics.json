@@ -1,0 +1,46 @@
+{
+  "version": "v0.1-auto",
+  "source": {
+    "waveforms": [
+      "hyonoforest 1_waveform.csv",
+      "hyonoforest 2_waveform.csv"
+    ],
+    "srts": [
+      "hyonoforest 1.srt",
+      "hyonoforest 2.srt"
+    ]
+  },
+  "duration_sec": 2112.283,
+  "rms_mean": 0.00527479,
+  "rms_std": 0.00940788,
+  "rms_p95": 0.02515124,
+  "centroid_mean_hz": 6051.968,
+  "centroid_std_hz": 3558.684,
+  "silence_ratio_rms_lt_0_002": 0.5975,
+  "surge_events_per_min_rms_gt_p95": 30.053,
+  "keyword_counts": {
+    "可愛い": 1,
+    "泣": 1,
+    "気持ちいい": 1,
+    "暗示": 0,
+    "解除": 0,
+    "ワン": 1,
+    "行け": 1,
+    "お仕置き": 0
+  },
+  "keyword_density_per_min": {
+    "可愛い": 0.028,
+    "泣": 0.028,
+    "気持ちいい": 0.028,
+    "暗示": 0.0,
+    "解除": 0.0,
+    "ワン": 0.028,
+    "行け": 0.028,
+    "お仕置き": 0.0
+  },
+  "event_counts": {
+    "countdown": 2,
+    "trigger": 8,
+    "release": 4
+  }
+}

@@ -678,6 +678,27 @@ export default async function ReviewPage({ params }: Props) {
         "強い支配語を求める方",
       ],
     },
+    "hypno-forest-yousei-sumumori": {
+      scoreLabel: "7.0 / 10",
+      oneLine:
+        "草原ジャーニーと分画法で幻想世界へ沈み、妖精の香りと言葉の振動で敏感化するツインキャスト催眠",
+      inductionType: "リラックス系 / ジャーニー誘導系 / 分画法・カウント系",
+      voiceActor: "紅月ことね・椎那天",
+      tempoType: "ややゆっくり / 往復深化（覚醒確認あり）",
+      majorFetish: "ツインキャスト / 妖精・香り / 言葉の振動 / 飼い犬比喩 / イメージ絶頂",
+      kinkType: "M向け",
+      recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
+      recording: "約35分12秒（本編・字幕終端）",
+      recommendedFor: [
+        "ファンタジー森シチュが好きな方",
+        "ジャーニー誘導・分画法が好きな方",
+        "妖精・お兄ちゃん呼びが好きな方",
+      ],
+      notRecommendedFor: [
+        "誘導を飛ばして快感帯だけを即食いしたい方",
+        "単一声の一対一誘導だけを求める方",
+      ],
+    },
     "hypno-cloud": {
       scoreLabel: "8.0 / 10",
       oneLine:

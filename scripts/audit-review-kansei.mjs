@@ -73,7 +73,41 @@ const CHECKS = [
     label: "禁止見出し「段取り通りの催眠」",
     fail: (t) => /段取り通りの(?:催眠|宗眠)が好きな方/.test(t),
   },
+  {
+    id: "tai_part_zone",
+    label: "禁止語「〜帯」（パート区間）",
+    fail: (t) => hasForbiddenTaiPartZone(t),
+  },
+  {
+    id: "tachiagari",
+    label: "禁止語「立ち上が」系",
+    fail: (t) => hasForbiddenTachiagari(t),
+  },
 ];
+
+/** 収録パートを「帯」と呼ぶ用法のみ禁止（性感帯・肩甲帯・熱を帯び・時間帯・帯域は可） */
+function hasForbiddenTaiPartZone(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const stripped = body
+    .replace(/性感帯/g, "")
+    .replace(/肩甲帯/g, "")
+    .replace(/熱を帯び/g, "")
+    .replace(/時間帯/g, "")
+    .replace(/帯域/g, "");
+  const partZonePrefix =
+    "(?:快感|快楽|誘導|解除|エロ|深化|暗示|エッチ|本編|連続|巣穴|幻想|ピーク|実行|電車|屋外|密着|スイ|メロ|手コキ|中出し|購入特典|フェラ|R18|公開|催眠誘導|エロパート|ノーハンド|耳舐め|授乳|キス|歌唱|安眠|連続エロ|連続ドライ|心象|MC|密着|回収)";
+  if (new RegExp(`${partZonePrefix}帯`).test(stripped)) return true;
+  if (/帯が(?:採用|閉じ|確保|続き|主軸)/.test(stripped)) return true;
+  if (/(?:帯より|帯だけ|帯末|帯中心|帯配分|帯幅)/.test(stripped)) return true;
+  return false;
+}
+
+/** `立ち上がる` `立ち上がってきます` `立ち上がり` 等（§3h 項5）。台詞引用（> 行）は除外 */
+function hasForbiddenTachiagari(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  return /立ち上が/.test(withoutQuotes);
+}
 
 function isDlsitePriceFetched(row) {
   const raw = String(row?.fetched_at ?? "").trim();
