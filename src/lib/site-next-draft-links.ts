@@ -3,6 +3,7 @@
 import {
   buildReviewListHref,
   DEV_SITE_NEXT_LIST_BASE,
+  VOICE_ACTORS_HUB_PATH,
 } from "@/lib/review-list-href";
 
 export type SiteNextDraftCategory = {
@@ -29,7 +30,7 @@ export const SITE_NEXT_DRAWER_LINKS: { title: string; href: string }[] = [
   },
   {
     title: "声優別おすすめ作品",
-    href: buildReviewListHref(DEV_SITE_NEXT_LIST_BASE, { sort: "new" }),
+    href: VOICE_ACTORS_HUB_PATH,
   },
 ];
 
@@ -84,6 +85,6 @@ export const SITE_NEXT_CATEGORY_GRID: SiteNextDraftCategory[] = [
     emoji: "🎤",
     title: "声優別おすすめ作品",
     mobileTitleLines: ["声優別", "おすすめ作品"],
-    href: buildReviewListHref(DEV_SITE_NEXT_LIST_BASE, { sort: "new" }),
+    href: VOICE_ACTORS_HUB_PATH,
   },
 ];

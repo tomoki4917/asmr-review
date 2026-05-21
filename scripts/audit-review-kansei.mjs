@@ -83,6 +83,11 @@ const CHECKS = [
     label: "禁止語「立ち上が」系",
     fail: (t) => hasForbiddenTachiagari(t),
   },
+  {
+    id: "toriniikitai",
+    label: "禁止見出し「取りにいきたい方」",
+    fail: (t) => hasForbiddenToriniikitai(t),
+  },
 ];
 
 /** 収録パートを「帯」と呼ぶ用法のみ禁止（性感帯・肩甲帯・熱を帯び・時間帯・帯域は可） */
@@ -109,6 +114,16 @@ function hasForbiddenTachiagari(text) {
   return /立ち上が/.test(withoutQuotes);
 }
 
+/** おすすめ／合わないの太字見出しで `取りにいきたい方`（§2.2・§2.3） */
+function hasForbiddenToriniikitai(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const m = body.match(
+    /\*\*おすすめしたい方\*\*[\s\S]*?(?=\n## |\n\*\*総合評価\*\*|\n---\s*$|$)/
+  );
+  if (!m) return false;
+  return /取りに(?:い|行)きたい/.test(m[0]);
+}
+
 function isDlsitePriceFetched(row) {
   const raw = String(row?.fetched_at ?? "").trim();
   if (!raw) return false;
@@ -131,13 +146,33 @@ async function loadProductsById() {
 }
 
 async function loadQuickGuideSlugs() {
+  const map = await loadQuickGuideInductionBySlug();
+  return new Set(map.keys());
+}
+
+/** `quickGuideBySlug` 各 slug の `inductionType` 文字列 */
+async function loadQuickGuideInductionBySlug() {
   try {
     const src = await readFile(pageTsx, "utf8");
-    const slugs = [...src.matchAll(/^\s+"([a-z0-9-]+)":\s*\{/gm)].map((m) => m[1]);
-    return new Set(slugs);
+    const map = new Map();
+    const starts = [...src.matchAll(/^\s+"([a-z0-9-]+)":\s*\{/gm)];
+    for (let i = 0; i < starts.length; i++) {
+      const slug = starts[i][1];
+      const start = starts[i].index;
+      const end = i + 1 < starts.length ? starts[i + 1].index : src.length;
+      const block = src.slice(start, end);
+      const m = block.match(/inductionType:\s*\n?\s*"([^"]+)"/);
+      if (m) map.set(slug, m[1]);
+    }
+    return map;
   } catch {
-    return new Set();
+    return new Map();
   }
+}
+
+/** 誘導タイプにシチュラベルを入れない（ガイド §1（補）項4） */
+function hasShituInInductionType(value) {
+  return /シチュ(?:ボイス)?系|シチュエーション系/.test(value);
 }
 
 async function auditAll() {
@@ -148,6 +183,7 @@ async function auditAll() {
     .sort((a, b) => a.localeCompare(b, "ja"));
 
   const quickGuide = await loadQuickGuideSlugs();
+  const inductionBySlug = await loadQuickGuideInductionBySlug();
   const productsById = await loadProductsById();
   const rows = [];
 
@@ -162,6 +198,9 @@ async function auditAll() {
 
     const failed = CHECKS.filter((c) => c.fail(text));
     const noQuickGuide = quickGuide.size > 0 && !quickGuide.has(slug);
+    const inductionType = inductionBySlug.get(slug);
+    const inductionShitu =
+      inductionType && hasShituInInductionType(inductionType);
 
     const contentKind =
       (text.match(/^contentKind:\s*(.+)$/m) || [])[1]?.trim() || "review";
@@ -185,9 +224,13 @@ async function auditAll() {
       slug,
       title: (text.match(/^title:\s*(.+)$/m) || [])[1]?.trim() ?? slug,
       ok:
-        failed.length === 0 && !noQuickGuide && !dlsitePriceIssue,
+        failed.length === 0 &&
+        !noQuickGuide &&
+        !dlsitePriceIssue &&
+        !inductionShitu,
       failed,
       noQuickGuide,
+      inductionShitu: inductionShitu || undefined,
       dlsitePriceIssue: dlsitePriceIssue || undefined,
     });
   }
@@ -218,6 +261,7 @@ function formatReport(rows) {
       const issues = [
         ...r.failed.map((f) => f.label),
         ...(r.noQuickGuide ? ["quickGuide 未登録"] : []),
+        ...(r.inductionShitu ? ["誘導タイプにシチュ系"] : []),
         ...(r.dlsitePriceIssue ? [r.dlsitePriceIssue] : []),
       ];
       lines.push(`- **\`${r.slug}\`** — ${issues.join("、")}`);

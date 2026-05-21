@@ -895,7 +895,7 @@ export default async function ReviewPage({ params }: Props) {
       scoreLabel: "9.0 / 10",
       oneLine:
         "KU100近接と抱き枕宣言から関係進行を積み、本編後に【安眠用】キスで帯域を落として終端へつなぐ長尺シチュボイス",
-      inductionType: "近接録音系 / シチュボイス系 / 関係進行系",
+      inductionType: "近接録音系 / 段階深化系 / 関係進行系",
       voiceActor: "陽向葵ゅか",
       tempoType: "ややゆっくり / 断続〜連続（関係進行型・長尺）",
       majorFetish: "抱き枕 / 添い寝 / 後輩 / 恋人進行 / KU100",
@@ -1191,7 +1191,7 @@ export default async function ReviewPage({ params }: Props) {
       scoreLabel: "10.0 / 10",
       oneLine:
         "足湯で安心を積み、貸切温泉で大人帯へ載せ替え、ポキポキと歯磨き・耳かきで睡眠導入へ収束する道草屋三本立て長編",
-      inductionType: "情景ASMR系 / シチュボイス系 / 効果音主役系",
+      inductionType: "リラックス系 / 効果音主役系 / 段階深化系",
       voiceActor: "丹羽うさぎ / ルナ ほか",
       tempoType: "ややゆっくり / 断続系（三本立て・長尺）",
       majorFetish: "温泉 / 足湯 / 道草屋 / ポキポキ / 耳かき",
@@ -1338,6 +1338,29 @@ export default async function ReviewPage({ params }: Props) {
       ],
       notRecommendedFor: [
         "視覚イメージを頭で組み立てるのが苦手な方（左右定位の双子形式にも負担を感じやすい）",
+      ],
+    },
+    "dandan-gehin-ni-naru-saimin": {
+      scoreLabel: "8.0 / 10",
+      oneLine:
+        "こと玉融合と「下品になるほど気持ちいい」で語彙が段階的に下品化し、手を止めたドライ絶頂を複数回、最後はカウント射精まで運ぶ長尺言語責め催眠（通し約2時間14分）",
+      inductionType: "論理説得系 / 言霊体感化系 / 段階カウント系",
+      voiceActor: "逢坂成美",
+      tempoType: "ゆっくり / 長尺連続（レクリエーション→本編→解除）",
+      majorFetish:
+        "言葉責め / 下品語段階化 / カウント絶頂 / ドライ→ウェット / M向け",
+      kinkType: "ドM",
+      recommendedLevel:
+        "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
+      recording: "約2時間14分（4パート通し）",
+      recommendedFor: [
+        "実験室・研究者シチュが好きな方",
+        "言霊・段階カウントの条件付けが好きな方",
+        "長尺でドライから射精まで追い込まれたい方",
+      ],
+      notRecommendedFor: [
+        "下品語・マゾ言責めが苦手な方",
+        "言葉責めの追込だけを主役にしたい方",
       ],
     },
     "numa-futari-akujo-free-hypnosis-rj01129822": {

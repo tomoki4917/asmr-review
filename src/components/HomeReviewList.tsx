@@ -28,6 +28,16 @@ import {
   REVIEWS_LIST_FILTERS_ID,
   REVIEWS_LIST_SECTION_ID,
 } from "@/lib/review-list-href";
+import {
+  featuredSlugsForVoiceActor,
+  sortReviewSlugsWithFeatured,
+} from "@/lib/voice-actor-hub-picks";
+import { reviewMatchesVoiceActorName } from "@/lib/review-voice-actors";
+import {
+  parseVoiceActorToneId,
+  reviewMatchesVoiceActorTone,
+  VOICE_ACTOR_TONE_LABELS,
+} from "@/lib/voice-actor-tone";
 import type { Review } from "@/lib/types";
 import { FileMarkdownArticleCard } from "@/components/FileMarkdownArticleCard";
 import { ReviewCard } from "@/components/ReviewCard";
@@ -350,6 +360,9 @@ export function HomeReviewList({
 
   const saleFilter = searchParams.get("sale") === "1";
 
+  const voiceFilter = searchParams.get("voice");
+  const toneFilter = parseVoiceActorToneId(searchParams.get("tone"));
+
   const [posted, setPosted] = useState<PostedReview[]>([]);
 
   const reloadPosted = useCallback(() => {
@@ -363,7 +376,9 @@ export function HomeReviewList({
       searchParams.get("sale") === "1" ||
       Boolean(searchParams.get("stars")) ||
       Boolean(searchParams.get("sort")) ||
-      Boolean(searchParams.get("genre"));
+      Boolean(searchParams.get("genre")) ||
+      Boolean(searchParams.get("voice")) ||
+      Boolean(searchParams.get("tone"));
     const shouldScrollToFilters =
       hasListQuery ||
       hash === REVIEWS_LIST_FILTERS_ID ||
@@ -432,13 +447,62 @@ export function HomeReviewList({
     if (starFilter !== null) {
       list = list.filter((item) => matchesStarFilter(item, starFilter));
     }
+    if (voiceFilter) {
+      list = list.filter(
+        (item) =>
+          item.kind === "file" &&
+          reviewMatchesVoiceActorName(item.review, voiceFilter)
+      );
+    }
+    if (toneFilter) {
+      list = list.filter(
+        (item) =>
+          item.kind === "file" &&
+          reviewMatchesVoiceActorTone(item.review, toneFilter)
+      );
+    }
     if (saleFilter) {
       return sortMergedForSaleFilter(list);
     }
     const effectiveSort: "new" | "old" =
       starFilter !== null ? "new" : sortOrder;
-    return sortMergedByPublishedAt(list, effectiveSort);
-  }, [mergedReviews, genreFilter, starFilter, sortOrder, saleFilter]);
+    let sorted = sortMergedByPublishedAt(list, effectiveSort);
+    if (voiceFilter) {
+      let voiceName = voiceFilter;
+      try {
+        voiceName = decodeURIComponent(voiceFilter);
+      } catch {
+        /* keep raw */
+      }
+      const featured = featuredSlugsForVoiceActor(voiceName);
+      if (featured.length > 0) {
+        const order = sortReviewSlugsWithFeatured(
+          sorted
+            .filter((i) => i.kind === "file")
+            .map((i) => i.review.slug),
+          featured
+        );
+        const rank = new Map(order.map((slug, i) => [slug, i]));
+        sorted = [...sorted].sort((a, b) => {
+          const sa = a.kind === "file" ? rank.get(a.review.slug) : undefined;
+          const sb = b.kind === "file" ? rank.get(b.review.slug) : undefined;
+          if (sa != null && sb != null) return sa - sb;
+          if (sa != null) return -1;
+          if (sb != null) return 1;
+          return 0;
+        });
+      }
+    }
+    return sorted;
+  }, [
+    mergedReviews,
+    genreFilter,
+    starFilter,
+    sortOrder,
+    saleFilter,
+    voiceFilter,
+    toneFilter,
+  ]);
 
   const starCountsForFilter = useMemo(
     () => countsByStarFilter(mergedReviews, genreFilter),
@@ -653,6 +717,16 @@ export function HomeReviewList({
                     starFilter === "lte5" ? "★5〜" : `★${starFilter}`
                   );
                 }
+                if (voiceFilter) {
+                  try {
+                    parts.push(decodeURIComponent(voiceFilter));
+                  } catch {
+                    parts.push(voiceFilter);
+                  }
+                }
+                if (toneFilter) {
+                  parts.push(VOICE_ACTOR_TONE_LABELS[toneFilter]);
+                }
                 if (parts.length === 0) return null;
                 return (
                   <span className="text-lg font-semibold text-sky-300">
@@ -667,6 +741,8 @@ export function HomeReviewList({
               {(starFilter !== null ||
                 genreFilter !== null ||
                 saleFilter ||
+                voiceFilter ||
+                toneFilter ||
                 sortOrder === "old") &&
               mergedReviews.length > 0
                 ? ` / 全レビュー ${mergedReviews.length} 件`

@@ -125,7 +125,7 @@ export function ReviewModeSwitcher({
               <p className="text-sm font-semibold text-slate-200">{quickDryWetCounts}</p>
             ) : null}
             <p className="text-sm leading-relaxed text-slate-200">
-              一言で： 「{quickOneLine}」
+              「{quickOneLine}」
             </p>
           </div>
 

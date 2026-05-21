@@ -54,7 +54,7 @@ export default function DevSiteNextPage() {
 
       <footer className="mx-auto max-w-lg px-4 pt-4 text-center text-xs text-slate-500">
         <p>
-          サークル紹介・声優別など未実装のリンクは一覧へ仮接続しています。
+          サークル紹介は一覧へ仮接続。声優別は専用ハブへ接続済みです。
         </p>
         <Link
           href="/"

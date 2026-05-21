@@ -13,7 +13,17 @@ export type ReviewListHrefOptions = {
   /** セール中のみ（`products.json` の `on_sale`） */
   sale?: boolean;
   genre?: "hypnosis" | "doujin";
+  /** 声優名（`index.md` の声優行・部分一致） */
+  voice?: string;
+  /** 声優ハブの系統（`ama` / `ds` / `dm`） */
+  tone?: "ama" | "ds" | "dm";
 };
+
+/** 声優別おすすめハブ（次サイトグリッド・メニューから） */
+export const VOICE_ACTORS_HUB_PATH = "/voice-actors/";
+
+/** @deprecated `VOICE_ACTORS_HUB_PATH` へリダイレクト */
+export const DEV_SITE_NEXT_VOICE_ACTORS_PATH = "/dev/site-next/voice-actors/";
 
 /** トップ／次サイト草案のレビュー一覧へ（クエリ＋`#reviews-heading`） */
 export function buildReviewListHref(
@@ -25,6 +35,8 @@ export function buildReviewListHref(
   if (options.stars) p.set("stars", options.stars);
   if (options.sale) p.set("sale", "1");
   if (options.genre) p.set("genre", options.genre);
+  if (options.voice) p.set("voice", options.voice);
+  if (options.tone) p.set("tone", options.tone);
   const prefix = basePath === "/" ? "/" : basePath.replace(/\/?$/, "/");
   const qs = p.toString();
   const hash = `#${REVIEWS_LIST_FILTERS_ID}`;

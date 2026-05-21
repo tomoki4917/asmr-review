@@ -1,4 +1,8 @@
-import { buildReviewListHref, HOME_REVIEW_LIST_BASE } from "@/lib/review-list-href";
+import {
+  buildReviewListHref,
+  HOME_REVIEW_LIST_BASE,
+  VOICE_ACTORS_HUB_PATH,
+} from "@/lib/review-list-href";
 
 /** トップ／次サイト草案のカテゴリナビ */
 export type SiteCategoryLink = {
@@ -54,5 +58,12 @@ export const SITE_CATEGORY_LINKS: SiteCategoryLink[] = [
     title: "知識・コラム",
     href: "/#author-posts-heading",
     subtitle: "解説・用語・記事",
+  },
+  {
+    emoji: "🎤",
+    title: "声優別おすすめ作品",
+    mobileTitleLines: ["声優別", "おすすめ作品"],
+    href: VOICE_ACTORS_HUB_PATH,
+    subtitle: "声優名・系統から探す",
   },
 ];

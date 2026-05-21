@@ -574,5 +574,17 @@
     "sale_end_iso": "2026-05-26T14:00:00+09:00",
     "release_date_iso": "2010-07-23T15:00:00.000Z",
     "fetched_at": "2026-05-20T07:25:08.126Z"
+  },
+  {
+    "id": "RJ01244786",
+    "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01244786.html",
+    "current_price": 660,
+    "original_price": 1320,
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "",
+    "sale_end_iso": "2026-05-26T14:00:00+09:00",
+    "release_date_iso": "2024-10-18T15:00:00.000Z",
+    "fetched_at": "2026-05-20T08:55:33.709Z"
   }
 ]
