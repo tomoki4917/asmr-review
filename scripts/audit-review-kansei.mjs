@@ -9,6 +9,7 @@
  */
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { extractDryWetCounts } from "./lib/extract-dry-wet-counts.mjs";
 
 const repoRoot = process.cwd();
 const reviewsDir = path.join(repoRoot, "src", "content", "レビュー");
@@ -59,6 +60,15 @@ const CHECKS = [
     fail: (t) => /ウェット\d+回/.test(t) && !/ウェットシーン/.test(t),
   },
   {
+    id: "quick_wet_plural",
+    label: "クイック: ウェットシーン複数回が欠落",
+    fail: (t) => {
+      if (!/ウェットシーン\s*複数回/.test(t)) return false;
+      const out = extractDryWetCounts(t);
+      return !out || !/ウェット/.test(out);
+    },
+  },
+  {
     id: "motion_tag",
     label: "HTML誤タグ </motion>",
     fail: (t) => t.includes("</motion>"),
@@ -82,6 +92,11 @@ const CHECKS = [
     id: "tachiagari",
     label: "禁止語「立ち上が」系",
     fail: (t) => hasForbiddenTachiagari(t),
+  },
+  {
+    id: "tachi_fragment",
+    label: "禁止語「立ち」切れ（立つ欠落）",
+    fail: (t) => hasForbiddenTachiFragment(t),
   },
   {
     id: "toriniikitai",
@@ -112,6 +127,27 @@ function hasForbiddenTachiagari(text) {
   const body = text.replace(/^---[\s\S]*?---\n?/, "");
   const withoutQuotes = body.replace(/^>.*$/gm, "");
   return /立ち上が/.test(withoutQuotes);
+}
+
+/** `立つ` を `立ち` だけで済ませる切れ（§1（補）B-1）。台詞引用（> 行）は除外 */
+function hasForbiddenTachiFragment(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  const stripped = withoutQuotes
+    .replace(/立ち上が/g, "")
+    .replace(/立ちやすい/g, "")
+    .replace(/立ちにくい/g, "")
+    .replace(/立ちリラックス/g, "")
+    .replace(/立ち位置/g, "")
+    .replace(/立ち姿勢/g, "")
+    .replace(/立ち疲労/g, "")
+    .replace(/立ち止/g, "")
+    .replace(/立ち会/g, "")
+    .replace(/立ち回/g, "")
+    .replace(/立ち見/g, "")
+    .replace(/粟立ち/g, "")
+    .replace(/際立ち/g, "");
+  return /(?:が|に)立ち[、。]/.test(stripped) || /(?:が|に)立ち\s/.test(stripped);
 }
 
 /** おすすめ／合わないの太字見出しで `取りにいきたい方`（§2.2・§2.3） */

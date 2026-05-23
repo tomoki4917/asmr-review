@@ -27,6 +27,7 @@ import {
   getReviewBySlug,
   isReviewVisibleOnSite,
 } from "@/lib/reviews";
+import { extractDryWetCounts } from "@/lib/extractDryWetCounts";
 import {
   splitBeforeAtRecommendedAudience,
   splitBodyAtFinalRating,
@@ -89,27 +90,6 @@ function normalizeZenkakuDigits(s: string): string {
   return s.replace(/[０-９]/g, (c) =>
     String.fromCharCode(c.charCodeAt(0) - 0xfee0)
   );
-}
-
-function extractDryWetCounts(markdown?: string): string | undefined {
-  if (!markdown) return undefined;
-  const normalized = normalizeZenkakuDigits(markdown.replace(/\r\n/g, "\n"));
-  const dryPlural =
-    /ドライシーン\s*複数回/.test(normalized) || /ドライ\s*複数回/.test(normalized);
-  const dryMatch =
-    normalized.match(/ドライシーン\s*([0-9]+)\s*回/) ?? normalized.match(/ドライ\s*([0-9]+)\s*回/);
-  const wetMatch =
-    normalized.match(/ウェットシーン\s*([0-9]+)\s*回/) ??
-    normalized.match(/ウェット\s*([0-9]+)\s*回/);
-
-  const dry = dryMatch?.[1];
-  const wet = wetMatch?.[1];
-  if (!dry && !wet && !dryPlural) return undefined;
-  const dryLabel = dry ? `ドライシーン${dry}回` : dryPlural ? "ドライシーン複数回" : undefined;
-  const wetLabel = wet ? `ウェットシーン${wet}回` : undefined;
-  if (dryLabel && wetLabel) return `${dryLabel} / ${wetLabel}`;
-  if (dryLabel) return dryLabel;
-  return wetLabel;
 }
 
 function extractCircleName(markdown?: string): string | null {
@@ -428,6 +408,28 @@ export default async function ReviewPage({ params }: Props) {
       notRecommendedFor: [
         "短時間で軽く済ませたい方",
         "後催眠の持ち越し感を避けたい方",
+      ],
+    },
+    "futago-saimin-kanojo": {
+      scoreLabel: "8.0 / 10",
+      oneLine:
+        "双子がバイノーラルで挟み、寝たふり・無反応の禁止暗示のあと耳責めで感度を上げ、3カウント解禁と10→0で約65分、反応許可の快感へ回収する構成",
+      inductionType: "リラックス系 / 禁止暗示系 / 反復カウント系",
+      voiceActor: "音撫屋 かの仔",
+      tempoType: "ゆっくり / 断続系（間が多い）",
+      majorFetish: "双子責め / 耳舐め / バイノーラル / 寝たふり / 感度上昇",
+      kinkType: "ノーマル〜M向け（我慢・禁止）",
+      recommendedLevel:
+        "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
+      recording: "約1時間5分（本編5パート・バイノーラル）",
+      recommendedFor: [
+        "双子彼女に挟まれながら寝たふり我慢したい方",
+        "左右同時の耳責めバイノーラルが好きな方",
+        "禁止暗示とカウント回収の設計が好きな方",
+      ],
+      notRecommendedFor: [
+        "物語の起伏や掛け合いを重視する方",
+        "全身・複数部位の刺激を求める方",
       ],
     },
     "futarigake-saimin-melty-orgasm": {
@@ -788,6 +790,50 @@ export default async function ReviewPage({ params }: Props) {
       notRecommendedFor: [
         "穏やかな単声催眠を求める方",
         "差分運用なしで短時間完結を重視する方",
+      ],
+    },
+    "usotsuki-kouhai-suki-suki-seishin-shihai": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "演劇部後輩の演技好きで脱力と恋心を固定し、嘘告白の脳イキ連鎖と寸止め自動手コキのあとカウント射精まで追い込む長尺M精神支配催眠",
+      inductionType: "好き条件づけ系 / 逆カウント系 / 自己暗示ループ系",
+      voiceActor: "陽向葵ゅか",
+      tempoType: "ややゆっくり / 断続〜連続（レクリ→ドラマ→好き攻撃追込）",
+      majorFetish: "好き攻撃 / 嘘告白 / 寸止め / 自動手コキ / M煽り",
+      kinkType: "M向け",
+      recommendedLevel:
+        "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
+      recording: "約2時間3分（注意＋レクリ＋ドラマ＋本編＋解除）",
+      recommendedFor: [
+        "演劇部・嘘つき後輩シチュが好きな方",
+        "好きループ・嘘告白反転が好きな方",
+        "寸止め・自動手コキ追込が好きな方",
+      ],
+      notRecommendedFor: [
+        "本気の純愛告白だけを求める方",
+        "嘘弄り・寸止め屈辱に抵抗がある方",
+      ],
+    },
+    "nisemono-genjitsu-anji": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "管理AIの逆進行解除で仮想と現実をリンクし、解放トリガーと触手多峰のあと家畜化反転まで追い込む長尺破滅願望M精神支配催眠",
+      inductionType: "逆進行解除系 / 現実リンク系 / 解放トリガー反転系",
+      voiceActor: "逢坂成美",
+      tempoType: "ややゆっくり / 段階解除〜連続（レクリ→プロローグ→逆進行追込）",
+      majorFetish: "逆催眠 / 触手 / 解放トリガー / 連続絶頂 / 家畜化 / M煽り",
+      kinkType: "M向け",
+      recommendedLevel:
+        "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
+      recording: "約2時間2分（注意＋レクリ＋プロローグ＋本編＋解除）",
+      recommendedFor: [
+        "逆進行解除・現実リンク誘導が好きな方",
+        "解放トリガー・触手多峰が好きな方",
+        "破滅願望・家畜化反転シチュが好きな方",
+      ],
+      notRecommendedFor: [
+        "救済・ハッピーエンドだけを求める方",
+        "触手・搾取・背徳屈辱に抵抗がある方",
       ],
     },
     "unreal-hypno": {
@@ -1233,6 +1279,28 @@ export default async function ReviewPage({ params }: Props) {
         "短尺完結のみを好む方",
       ],
     },
+    "mesugaki-succubus-onee-nntr-saimin": {
+      scoreLabel: "8.0 / 10",
+      oneLine:
+        "彼女の妹サキュバスとの我慢ゲームで抵抗が快感へ反転し、半覚醒の羞恥とドライ連鎖のあとごめんなさい射精まで追い込む長尺の寝取り催眠",
+      inductionType: "恋の魔法系 / 半覚醒往復系 / 我慢カウント系",
+      voiceActor: "そらまめ。",
+      tempoType: "ややゆっくり / 断続〜連続（レクリ→ドラマ→ゲーム追込）",
+      majorFetish: "メスガキ / NTR / 我慢ゲーム / 乳首カウント / M煽り",
+      kinkType: "M向け〜寝取り",
+      recommendedLevel:
+        "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
+      recording: "約2時間50分（注意＋世界観＋レクリ＋ドラマ＋本編＋解除）",
+      recommendedFor: [
+        "彼女の妹・メスガキサキュバス寝取りシチュが好きな方",
+        "抵抗→快感変換と半覚醒往復が好きな方",
+        "我慢ゲーム・乳首カウント・M煽りが好きな方",
+      ],
+      notRecommendedFor: [
+        "寝取り・浮気羞恥・メスガキ煽りに抵抗がある方",
+        "短い尺ですぐ終わらせたい方",
+      ],
+    },
     "mimikaki-saimin": {
       scoreLabel: "9.0 / 10",
       oneLine:
@@ -1297,27 +1365,72 @@ export default async function ReviewPage({ params }: Props) {
         "連続描写の負荷が高いと感じる方",
       ],
     },
+    "low-tension-inma-uikkari-miyo-saimin": {
+      scoreLabel: "8.0 / 10",
+      oneLine:
+        "低テンションサキュバスとキャンプ肝試しで魅了事故→未了状態、言葉のドライ絶頂とサキュバス解放後の射精まで、通し約1時間53分の恋愛疑似体験催眠",
+      inductionType: "物語導入系 / 未了状態系 / 反復カウント系",
+      voiceActor: "そらまめ。",
+      tempoType: "ややゆっくり / 断続〜連続（レクリ→ドラマ→追込）",
+      majorFetish: "サキュバス / ドライ絶頂 / 好き宣言 / 尻尾責め / M煽り",
+      kinkType: "M向け〜恋愛疑似体験",
+      recommendedLevel:
+        "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
+      recording: "約1時間53分（レクリ＋ドラマ＋本編＋解除）",
+      recommendedFor: [
+        "サキュバス同級生・恋愛疑似体験シチュが好きな方",
+        "ドライ絶頂・好き宣言カウントが好きな方",
+        "M向け煽りとサキュバス解放後の追込が好きな方",
+      ],
+      notRecommendedFor: [
+        "ストーリーを飛ばして即エロだけ欲しい方",
+        "サキュバス煽り・連続絶頂に抵抗がある方",
+      ],
+    },
+    "saimin-yousei-surround-mugen-iki-mahou": {
+      scoreLabel: "8.0 / 10",
+      oneLine:
+        "三人妖精のサラウンド定位と宣言・ゼロ待機で脳を空にし、重ね掛け快楽魔法と裏筋指魔法まで追い込む通し約1時間49分の長尺催眠",
+      inductionType: "サラウンド定位系 / 宣言トリガー系 / 反復カウント系",
+      voiceActor: "音撫屋 かの仔",
+      tempoType: "ややゆっくり / 断続〜連続（レクリ→追込→連鎖回収）",
+      majorFetish: "妖精 / ゼロカウント / 前立腺 / 脳イキ / 裏筋責め",
+      kinkType: "M向け〜変態煽り",
+      recommendedLevel:
+        "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
+      recording: "約1時間49分（レクリ＋本編＋解除・バイノーラル）",
+      recommendedFor: [
+        "妖精・魔法陣召喚シチュが好きな方",
+        "サラウンド定位と声追い誘導が好きな方",
+        "ゼロカウントと重ね掛けドライが好きな方",
+      ],
+      notRecommendedFor: [
+        "穏やかな甘々だけ・短い尺で済ませたい方",
+        "M煽り・無限絶頂に抵抗がある方",
+      ],
+    },
     "saimin-school-hypnosis-training": {
       scoreLabel: "8.0 / 10",
       oneLine:
-        "催眠の定義整理と分割弛緩・三種の誘導・五イメージでかかり方を学ぶ教育型構成（通し約1時間58分）",
+        "9名声優が同一台本を読む専門学校型入門。かからない・インチキ層向けに体験実感へ全振りした教育構成",
       inductionType:
         "教育導入系 / 分割弛緩系 / イメージ誘導系 / 反復カウント系",
-      voiceActor: "かの仔、みもりあいの、あきら ほか（同一台本）",
+      voiceActor:
+        "かの仔、みもりあいの、陽向葵ゅか、あきら、一条ひらめ、ユメノシオリ、山田じぇみ子、月村望、御上みみ（9名・同一台本）",
       tempoType: "ややゆっくり / 断続〜連続（講義→誘導→情景深化）",
       majorFetish:
-        "初心者向け / 分割弛緩 / イメージ誘導 / 階段深化 / 教育",
+        "初心者向け / 9声優比較 / 分割弛緩 / イメージ誘導 / 教育",
       kinkType: "ノーマル",
       recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
-      recording: "約1時間58分27秒（字幕終端）",
+      recording: "約1時間58分27秒（字幕終端・1声優分）",
       recommendedFor: [
-        "催眠スクール・先生役シチュが好きな方",
-        "催眠にかかりづらいと感じる方",
-        "分割弛緩やイメージ誘導で深く落ちたい方",
+        "どうしてもかからない壁にぶつかっている方",
+        "催眠はインチキでは？と感じている方",
+        "9名声優の聴き比べで好きな声優さんを探したい方",
       ],
       notRecommendedFor: [
-        "短時間で強い洗脳・堕落だけを一気に欲しい方",
-        "性的描写や絶頂回収を主目的にする方",
+        "すでに問題なく催眠にかかれる方",
+        "快楽・性的絶頂を主目的にする方",
       ],
     },
     "shoshinsha-mugen-rakka-ecstasy": {
@@ -1363,6 +1476,28 @@ export default async function ReviewPage({ params }: Props) {
       ],
       notRecommendedFor: [
         "視覚イメージを頭で組み立てるのが苦手な方（左右定位の双子形式にも負担を感じやすい）",
+      ],
+    },
+    "edm-trip-orgasm-saimin": {
+      scoreLabel: "8.0 / 10",
+      oneLine:
+        "音分離と魂の階段深化で深層スタジオへ落とし、EDMビート連動のドライ連鎖から夢精連鎖まで追い込む通し約2時間2分のクラブ系長尺催眠",
+      inductionType: "音分離集中系 / 階段カウント系 / ビート同期系",
+      voiceActor: "野上菜月",
+      tempoType: "ややゆっくり導入→断続〜連続（運動→深化→EDM追込）",
+      majorFetish: "EDM / ドライ絶頂 / 夢精連鎖 / 双子DJ / 羞恥配信",
+      kinkType: "M向け〜従順化",
+      recommendedLevel:
+        "上級トランス（脳イキは可能・ドライ絶頂は未達）以上の方",
+      recording: "約2時間2分（注意＋運動＋本編＋解除）",
+      recommendedFor: [
+        "EDM・ビート同期の快感が好きな方",
+        "音分離誘導と階段カウント深化が好きな方",
+        "双子DJ・ライブ配信羞恥シチュが好きな方",
+      ],
+      notRecommendedFor: [
+        "短い尺ですぐ終わらせたい方",
+        "音楽刺激・連続絶頂に抵抗がある方",
       ],
     },
     "dandan-gehin-ni-naru-saimin": {

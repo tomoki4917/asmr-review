@@ -1,0 +1,52 @@
+{
+  "version": "v0.1-auto",
+  "source": {
+    "waveforms": [
+      "01.注意事項_waveform.csv",
+      "02.深く音を感じるためのレクリエーション_waveform.csv",
+      "03.プロローグ_waveform.csv",
+      "04.ニセモノの現実暗示_waveform.csv",
+      "05.解除_waveform.csv"
+    ],
+    "srts": [
+      "01.注意事項.srt",
+      "02.深く音を感じるためのレクリエーション.srt",
+      "03.プロローグ.srt",
+      "04.ニセモノの現実暗示.srt",
+      "05.解除.srt"
+    ]
+  },
+  "duration_sec": 7268.445,
+  "rms_mean": 0.02100796,
+  "rms_std": 0.0226846,
+  "rms_p95": 0.06707027,
+  "centroid_mean_hz": 3192.612,
+  "centroid_std_hz": 1905.381,
+  "silence_ratio_rms_lt_0_002": 0.0548,
+  "surge_events_per_min_rms_gt_p95": 30.221,
+  "keyword_counts": {
+    "可愛い": 0,
+    "泣": 1,
+    "気持ちいい": 25,
+    "暗示": 4,
+    "解除": 49,
+    "ワン": 0,
+    "行け": 1,
+    "お仕置き": 0
+  },
+  "keyword_density_per_min": {
+    "可愛い": 0.0,
+    "泣": 0.008,
+    "気持ちいい": 0.206,
+    "暗示": 0.033,
+    "解除": 0.404,
+    "ワン": 0.0,
+    "行け": 0.008,
+    "お仕置き": 0.0
+  },
+  "event_counts": {
+    "countdown": 4,
+    "trigger": 16,
+    "release": 40
+  }
+}
