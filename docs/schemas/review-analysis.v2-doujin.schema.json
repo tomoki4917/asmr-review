@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://asmr-review.local/schemas/review-analysis.v2-doujin.schema.json",
+  "title": "レビュー — 分析データ（v2・同人音声5軸）",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "workName", "scores"],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 2,
+  "description": "同人5軸レーダー用。十サブ見出し（index.md グラフ評価内訳）はガイド2固定：シナリオ＝リアリティ／展開の必然性、音響＝マイク・録音品質／環境音、没入度＝空間定位・音像／距離感・密着度、快楽度＝演技力／刺激のテンポ・緩急、満足度＝コンセプトの達成度／余韻の質。"
+    },
+    "workName": { "type": "string", "minLength": 1 },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["immersion", "scenario", "pleasure", "acoustic", "satisfaction"],
+      "properties": {
+        "immersion": { "type": "number", "minimum": 0, "maximum": 10, "description": "没入度" },
+        "scenario": { "type": "number", "minimum": 0, "maximum": 10, "description": "シナリオ" },
+        "pleasure": { "type": "number", "minimum": 0, "maximum": 10, "description": "快楽度" },
+        "acoustic": { "type": "number", "minimum": 0, "maximum": 10, "description": "音響" },
+        "satisfaction": { "type": "number", "minimum": 0, "maximum": 10, "description": "満足度" }
+      }
+    },
+    "radarAxisLabels": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "immersion": { "type": "string" },
+        "scenario": { "type": "string" },
+        "pleasure": { "type": "string" },
+        "acoustic": { "type": "string" },
+        "satisfaction": { "type": "string" }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

@@ -17,12 +17,16 @@ type Props = {
   quickSaleDate: string;
   /** クイック【スペック表】2行目 */
   quickCircleName: string;
+  /** スペック表のラベル（催眠既定: 誘導タイプ / 同人: シチュエーション） */
+  quickTypeLabel?: string;
   quickInductionType: string;
   quickVoiceActor: string;
   quickTempoType: string;
   quickMajorFetish: string;
   quickKinkType: string;
-  quickRecommendedLevel: string;
+  quickRecommendedLevel?: string;
+  /** 同人など催眠Lvを出さないレビューでは false */
+  quickShowRecommendedLevel?: boolean;
   quickRecording: string;
   quickRecommendedFor: string[];
   quickNotRecommendedFor: string[];
@@ -45,12 +49,14 @@ export function ReviewModeSwitcher({
   quickOneLine,
   quickSaleDate,
   quickCircleName,
+  quickTypeLabel = "誘導タイプ",
   quickInductionType,
   quickVoiceActor,
   quickTempoType,
   quickMajorFetish,
   quickKinkType,
-  quickRecommendedLevel,
+  quickRecommendedLevel = "",
+  quickShowRecommendedLevel = true,
   quickRecording,
   quickRecommendedFor,
   quickNotRecommendedFor,
@@ -144,7 +150,7 @@ export function ReviewModeSwitcher({
                 <span className="text-slate-50">{quickCircleName}</span>
               </li>
               <li className="border-l-[3px] border-slate-500/90 pl-3">
-                <span className="text-slate-100">誘導タイプ：</span>{" "}
+                <span className="text-slate-100">{quickTypeLabel}：</span>{" "}
                 <span className="text-slate-50">{quickInductionType}</span>
               </li>
               {hasVoiceActor ? (
@@ -176,22 +182,24 @@ export function ReviewModeSwitcher({
               <li className="border-l-[3px] border-slate-500/90 pl-3">
                 性癖タイプ： {quickKinkType}
               </li>
-              <li className="border-l-[3px] border-slate-500/90 pl-3">
-                <span className="text-slate-100">おすすめ催眠Lv：</span>
-                <span className="text-slate-50">{quickRecommendedLevel}</span>
-                {quickShowSensitivityLevelListLink ? (
-                  <>
-                    {" "}
-                    <button
-                      type="button"
-                      onClick={openDetailAndScrollToSensitivityList}
-                      className="text-sky-300 underline decoration-sky-500/60 underline-offset-2 transition hover:text-sky-200"
-                    >
-                      レベル一覧表はこちら
-                    </button>
-                  </>
-                ) : null}
-              </li>
+              {quickShowRecommendedLevel ? (
+                <li className="border-l-[3px] border-slate-500/90 pl-3">
+                  <span className="text-slate-100">おすすめ催眠Lv：</span>
+                  <span className="text-slate-50">{quickRecommendedLevel}</span>
+                  {quickShowSensitivityLevelListLink ? (
+                    <>
+                      {" "}
+                      <button
+                        type="button"
+                        onClick={openDetailAndScrollToSensitivityList}
+                        className="text-sky-300 underline decoration-sky-500/60 underline-offset-2 transition hover:text-sky-200"
+                      >
+                        レベル一覧表はこちら
+                      </button>
+                    </>
+                  ) : null}
+                </li>
+              ) : null}
               <li className="border-l-[3px] border-slate-500/90 pl-3">
                 <span className="text-slate-100">収録時間：</span>{" "}
                 <span className="text-slate-50">{quickRecording}</span>

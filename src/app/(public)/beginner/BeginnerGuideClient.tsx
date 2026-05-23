@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useId, useState } from "react";
 import Link from "next/link";
@@ -17,7 +17,7 @@ type Props = {
 
 type StepItem = {
   title: string;
-  hint: string;
+  hint?: string;
   article: Review | null;
   /** ステップ見出し上に出すカテゴリ（例: 視聴環境） */
   categoryEmoji?: string;
@@ -91,9 +91,11 @@ function BeginnerStepList({ steps }: { steps: StepItem[] }) {
                   {step.title}
                 </h3>
               )}
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                {step.hint}
-              </p>
+              {step.hint ? (
+                <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                  {step.hint}
+                </p>
+              ) : null}
               <BeginnerArticleSlot article={step.article} />
             </div>
           </div>
@@ -110,8 +112,14 @@ const ROUTE_PANEL: Record<
   1: {
     emoji: "⚡",
     heading: "最短で楽しむ",
-    lead: "おすすめの1本を選んで、すぐ聴き始められます。",
-    steps: ({ recommendedArticle }) => [
+    lead: "視聴環境を整えてから、おすすめの1本に進みます。上から順に読み進めてください。",
+    steps: ({ listeningEnvironmentArticle, recommendedArticle }) => [
+      {
+        title: "視聴環境を整える",
+        categoryEmoji: "🎧",
+        categoryLabel: "視聴環境",
+        article: listeningEnvironmentArticle,
+      },
       {
         title: "おすすめ作品を選ぶ",
         hint: "初めての1本は、評価と内容が分かりやすい作品からで大丈夫です。",
@@ -149,7 +157,6 @@ const ROUTE_PANEL: Record<
         title: "視聴環境を整える",
         categoryEmoji: "🎧",
         categoryLabel: "視聴環境",
-        hint: "理解したうえで、聴く場所とイヤホンをそろえます。",
         article: listeningEnvironmentArticle,
       },
       {
@@ -259,7 +266,7 @@ export function BeginnerGuideClient({
             最短で楽しむ
           </span>
           <span className="mt-1 block text-sm leading-relaxed text-slate-400">
-            仕組みは後回し。おすすめ作品から始めます。
+            仕組みは後回し。環境 → おすすめ作品の2ステップ。
           </span>
         </button>
         <button

@@ -1,0 +1,69 @@
+{
+  "version": "v0.1-auto",
+  "source": {
+    "waveforms": [
+      "Tr_01_プロローグ_「私が抱き枕になってあげますよ♡」_waveform.csv",
+      "Tr_02_「変態さんなんですね、先輩は♡」_waveform.csv",
+      "Tr_03_「私のこと、独り占めしたくないですか？」_waveform.csv",
+      "Tr_04_「はじめてのお家デートです…♡」_waveform.csv",
+      "Tr_05_「もちろん、お風呂も一緒に入りますよね？♡」_waveform.csv",
+      "Tr_06_「明日の夜まで…ず～っと二人きりですね♡」_waveform.csv",
+      "Tr_07_「【安眠用】先輩が眠くなるまで…ぎゅ～っとしながらキスしてあげます…♡」_waveform.csv"
+    ],
+    "srts": [
+      "Tr_01_プロローグ_「私が抱き枕になってあげますよ♡」.srt",
+      "Tr_02_「変態さんなんですね、先輩は♡」.srt",
+      "Tr_03_「私のこと、独り占めしたくないですか？」.srt",
+      "Tr_04_「はじめてのお家デートです…♡」.srt",
+      "Tr_05_「もちろん、お風呂も一緒に入りますよね？♡」.srt",
+      "Tr_06_「明日の夜まで…ず～っと二人きりですね♡」.srt",
+      "Tr_07_「【安眠用】先輩が眠くなるまで…ぎゅ～っとしながらキスしてあげます…♡」.srt"
+    ]
+  },
+  "duration_sec": 9687.113,
+  "rms_mean": 0.00844122,
+  "rms_std": 0.01633432,
+  "rms_p95": 0.03990958,
+  "centroid_mean_hz": 3594.387,
+  "centroid_std_hz": 3299.692,
+  "silence_ratio_rms_lt_0_002": 0.4977,
+  "surge_events_per_min_rms_gt_p95": 30.467,
+  "keyword_counts": {
+    "可愛い": 16,
+    "泣": 1,
+    "気持ちいい": 9,
+    "暗示": 0,
+    "解除": 0,
+    "ワン": 0,
+    "行け": 0,
+    "お仕置き": 0
+  },
+  "keyword_density_per_min": {
+    "可愛い": 0.099,
+    "泣": 0.006,
+    "気持ちいい": 0.056,
+    "暗示": 0.0,
+    "解除": 0.0,
+    "ワン": 0.0,
+    "行け": 0.0,
+    "お仕置き": 0.0
+  },
+  "event_counts": {
+    "countdown": 1,
+    "trigger": 25,
+    "release": 3
+  },
+  "immersive_audio_mp3": {
+    "source_file": "spatial_spectral.auto.json",
+    "hop_sec": 0.1,
+    "aggregate": {
+      "tracks_n": 7,
+      "total_duration_sec": 9836.921,
+      "pan_linear_mean_abs_mean": 0.44633693,
+      "pan_linear_std_mean": 0.55814028,
+      "centroid_hz_mean_of_track_means": 3455.01148289,
+      "hf_ratio_ge_4khz_mean_of_track_means": 0.24577095,
+      "centroid_hz_std_pooled": 717.174015
+    }
+  }
+}

@@ -291,6 +291,10 @@ export default async function ReviewPage({ params }: Props) {
   const best = review.ratingBest ?? 10;
 
   const isArticle = review.contentKind === "article";
+  const isDoujinReview =
+    review.authorName === "同人音声レビュー室" ||
+    review.tags?.includes("同人音声") === true;
+  const quickSpecTypeLabel = isDoujinReview ? "シチュエーション" : "誘導タイプ";
   const titleHasBreak = review.title.includes("\n");
   const nextReview = review.nextSlug
     ? getReviewBySlug(review.nextSlug)
@@ -357,7 +361,7 @@ export default async function ReviewPage({ params }: Props) {
       tempoType: string;
       majorFetish: string;
       kinkType: string;
-      recommendedLevel: string;
+      recommendedLevel?: string;
       recording: string;
       recommendedFor: string[];
       notRecommendedFor: string[];
@@ -894,22 +898,21 @@ export default async function ReviewPage({ params }: Props) {
     "dakimakura-kanojo-pretty-holic-yurukawa-kouhai": {
       scoreLabel: "9.0 / 10",
       oneLine:
-        "KU100近接と抱き枕宣言から関係進行を積み、本編後に【安眠用】キスで帯域を落として終端へつなぐ長尺シチュボイス",
-      inductionType: "近接録音系 / 段階深化系 / 関係進行系",
+        "抱き枕から恋人まで一本道。小悪魔後輩のあまあま純愛イチャラブが、キス・耳舐めの密着のまま本編約2時間8分続く密着・添い寝ボイス",
+      inductionType: "生徒会 / 抱き枕 / 後輩",
       voiceActor: "陽向葵ゅか",
-      tempoType: "ややゆっくり / 断続〜連続（関係進行型・長尺）",
-      majorFetish: "抱き枕 / 添い寝 / 後輩 / 恋人進行 / KU100",
+      tempoType: "ややゆっくり / 断続〜連続（関係進行型）",
+      majorFetish: "抱き枕 / 生徒会 / 後輩 / 恋人",
       kinkType: "ノーマル〜M向け",
-      recommendedLevel: "静かな環境でイヤホン視聴を前提とした方",
-      recording: "約2時間42分（7トラック通し・KU100）",
+      recording: "本編約2時間8分（6パート）／【安眠用】約35分（総再生約2時間43分）",
       recommendedFor: [
-        "抱き枕・添い寝シチュが好きな方",
-        "近接録音・KU100定位が好きな方",
-        "長尺でも同じ距離感を保ちたい方",
+        "あまあま・純愛の甘さを長尺で味わいたい方",
+        "小悪魔後輩のからかいから恋人への関係の変化が好きな方",
+        "キス・耳舐め・密着スキンシップを主役にしたい方",
       ],
       notRecommendedFor: [
-        "ノイズに敏感な方",
-        "急展開テンポを求める方",
+        "オホ声や過激な喘ぎで一発の高揚だけを求める方",
+        "最後まで一気通貫で刺激だけ追い続けたい方",
       ],
     },
     "dry-org-amadashi-prostate-nipple": {
@@ -1123,6 +1126,29 @@ export default async function ReviewPage({ params }: Props) {
         "反復単調さを避けたい方",
       ],
     },
+    "osananajimi-m-sei-mazo-saimin-play": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "呼び方トリガーと半覚醒分画法で深く落とし、パウダー責めから脳イキ・前立腺まで幼馴染M性感館で追い込む通し約2時間12分の催眠+Mプレイ",
+      inductionType: "リラックス系 / 半覚醒分画法系 / 反復刷り込み系",
+      voiceActor: "そらまめ。",
+      tempoType: "ややゆっくり / 長尺連続（レクリ→ドラマ→本編）",
+      majorFetish:
+        "幼馴染 / M性感 / パウダー責め / 脳イキ / 前立腺 / 半覚醒",
+      kinkType: "ドM",
+      recommendedLevel:
+        "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
+      recording: "約2時間12分（4パート通し）",
+      recommendedFor: [
+        "幼馴染M性感館シチュが好きな方",
+        "半覚醒分画法・呼び方トリガー誘導が好きな方",
+        "パウダー責め・脳イキ・前立腺責めが好きな方",
+      ],
+      notRecommendedFor: [
+        "純愛だけ・穏やかな甘々が好きな方",
+        "支配・羞恥プレイに抵抗がある方",
+      ],
+    },
     "miraiyochi-zeccho-countdown": {
       scoreLabel: "9.0 / 10",
       oneLine:
@@ -1191,12 +1217,11 @@ export default async function ReviewPage({ params }: Props) {
       scoreLabel: "10.0 / 10",
       oneLine:
         "足湯で安心を積み、貸切温泉で大人帯へ載せ替え、ポキポキと歯磨き・耳かきで睡眠導入へ収束する道草屋三本立て長編",
-      inductionType: "リラックス系 / 効果音主役系 / 段階深化系",
+      inductionType: "温泉 / 足湯 / ポキポキ",
       voiceActor: "丹羽うさぎ / ルナ ほか",
-      tempoType: "ややゆっくり / 断続系（三本立て・長尺）",
-      majorFetish: "温泉 / 足湯 / 道草屋 / ポキポキ / 耳かき",
+      tempoType: "ややゆっくり / 断続系（三本立て）",
+      majorFetish: "温泉 / 足湯 / ポキポキ / 耳かき",
       kinkType: "ノーマル〜M向け",
-      recommendedLevel: "静かな環境でイヤホン視聴を前提とした方",
       recording: "約2時間30分強（三本立て・27トラック）",
       recommendedFor: [
         "お泊まり・旅館シチュが好きな方",
@@ -1541,12 +1566,16 @@ export default async function ReviewPage({ params }: Props) {
               quickGuideSpec?.oneLine ??
               "作品固有の体験を要点だけで把握できるクイック解析です。"
             }
+            quickTypeLabel={quickSpecTypeLabel}
             quickInductionType={quickGuideSpec?.inductionType ?? "分析中"}
             quickVoiceActor={quickGuideSpec?.voiceActor ?? ""}
             quickTempoType={quickGuideSpec?.tempoType ?? "分析中"}
             quickMajorFetish={quickGuideSpec?.majorFetish ?? "分析中"}
             quickKinkType={quickGuideSpec?.kinkType ?? "ノーマル"}
-            quickRecommendedLevel={quickGuideSpec?.recommendedLevel ?? "初中級（中程度トランス＋暗示受容）"}
+            quickShowRecommendedLevel={!isDoujinReview}
+            quickRecommendedLevel={
+              quickGuideSpec?.recommendedLevel ?? "初中級（中程度トランス＋暗示受容）"
+            }
             quickRecording={quickGuideSpec?.recording ?? "収録時間を確認中"}
             quickRecommendedFor={
               quickGuideSpec?.recommendedFor ?? ["作品ごとの相性要件を整理中です。"]

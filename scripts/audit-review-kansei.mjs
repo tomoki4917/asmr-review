@@ -200,7 +200,9 @@ async function auditAll() {
     const noQuickGuide = quickGuide.size > 0 && !quickGuide.has(slug);
     const inductionType = inductionBySlug.get(slug);
     const inductionShitu =
-      inductionType && hasShituInInductionType(inductionType);
+      !isDoujinReview(text) &&
+      inductionType &&
+      hasShituInInductionType(inductionType);
 
     const contentKind =
       (text.match(/^contentKind:\s*(.+)$/m) || [])[1]?.trim() || "review";

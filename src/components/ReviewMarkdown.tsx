@@ -49,7 +49,7 @@ function isTenOutOfTenRating(text: string): boolean {
 /** 「グラフ評価内訳」の `- **トランス度 8** …` / `- **没入度 8** …` 形式を検出（表示を見出し風にする用） */
 function isReviewAxisScoresListItem(children: ReactNode): boolean {
   const text = nodeToPlainText(children).replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
-  return /^(トランス度|快楽度|没入度|刺激度|満足度)\s*\d+\b/.test(text);
+  return /^(トランス度|シナリオ|音響|快楽度|没入度|刺激度|満足度)\s*\d+\b/.test(text);
 }
 
 /** 解析結論の体験感度Lv一覧表（3列・Lv1〜5） */

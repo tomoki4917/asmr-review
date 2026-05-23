@@ -1,0 +1,71 @@
+{
+  "fetchedAt": "2026-05-23T05:19:24.951Z",
+  "source": "review_text_only",
+  "total": 4,
+  "textReviewCount": 4,
+  "recurringThemes": [
+    {
+      "label": "イチャラブ・あまあま",
+      "count": 5
+    },
+    {
+      "label": "ディープキス・ベロチュー",
+      "count": 5
+    },
+    {
+      "label": "抱き枕・後輩",
+      "count": 5
+    },
+    {
+      "label": "添い寝・安眠",
+      "count": 5
+    },
+    {
+      "label": "耳舐め",
+      "count": 4
+    },
+    {
+      "label": "密着・耳元",
+      "count": 4
+    },
+    {
+      "label": "小悪魔・からかい",
+      "count": 3
+    },
+    {
+      "label": "穏やか・オホ声なし",
+      "count": 3
+    }
+  ],
+  "axisHints": [
+    {
+      "axis": "pleasure",
+      "count": 10
+    },
+    {
+      "axis": "scenario",
+      "count": 6
+    },
+    {
+      "axis": "immersion",
+      "count": 2
+    },
+    {
+      "axis": "satisfaction",
+      "count": 2
+    },
+    {
+      "axis": "acoustic",
+      "count": 1
+    }
+  ],
+  "recommendedForHints": [
+    "あまあま・純愛の甘さを長尺で味わいたい層",
+    "キス・耳舐め・密着スキンシップを主役にしたい層",
+    "添い寝・安眠寄りの聴き方もしたい層"
+  ],
+  "notRecommendedForHints": [
+    "オホ声・過激喘ぎ一発高揚を主目的にする層",
+    "最後まで一気通貫で刺激だけ追い続けたい層（寝落ちしやすい）"
+  ]
+}
