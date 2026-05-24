@@ -300,11 +300,6 @@ export default async function ReviewPage({ params }: Props) {
       priority
       variant="hero"
       className="rounded-none"
-      imageClassName={
-        review.slug === "beginner-hypnosis-audio-top5-2026"
-          ? "object-cover object-center"
-          : undefined
-      }
     />
   );
 
