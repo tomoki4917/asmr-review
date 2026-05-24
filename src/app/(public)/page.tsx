@@ -31,16 +31,16 @@ const SPOTLIGHT_MAX = 1;
 const HOME_SIDE_LIST_MAX = 5;
 /** すぐ戻せるように: false で従来レイアウトに復帰 */
 const ENABLE_HOME_EDITORIAL_LAYOUT = true;
-/** 指定時はトップのピックアップをこのレビューに固定。`null` で ★9 以上・新しい順に自動 */
+/** 指定時はトップのピックアップをこの slug に固定。`null` で ★9 以上・新しい順に自動 */
 const HOME_SPOTLIGHT_SLUG: string | null =
-  "unknown-hypno-daijobu-koe-ni-yudanete";
+  "beginner-hypnosis-audio-top5-2026";
 
 function pickSpotlightReviews(reviews: Review[]): Review[] {
-  const reviewOnly = reviews.filter((r) => r.contentKind === "review");
   if (HOME_SPOTLIGHT_SLUG) {
-    const fixed = reviewOnly.find((r) => r.slug === HOME_SPOTLIGHT_SLUG);
+    const fixed = reviews.find((r) => r.slug === HOME_SPOTLIGHT_SLUG);
     if (fixed) return [fixed];
   }
+  const reviewOnly = reviews.filter((r) => r.contentKind === "review");
   return reviewOnly
     .filter((r) =>
       isStarBucketNineOrAbove(r.ratingValue, r.ratingBest ?? RATING_BEST_DEFAULT)
@@ -115,7 +115,7 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
                 <div className="flex flex-col gap-3 px-5 py-5 sm:flex-row sm:items-start sm:justify-between sm:gap-6 sm:px-6 sm:py-6">
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-semibold uppercase tracking-wider text-sky-400/90">
-                      作品レビュー
+                      {r.contentKind === "article" ? "記事" : "作品レビュー"}
                     </p>
                     <h3 className="mt-1 text-balance text-lg font-bold leading-snug text-slate-50 group-hover:text-sky-200 sm:text-xl">
                       {titleOne}
@@ -125,10 +125,14 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
                     </div>
                   </div>
                   <div className="flex shrink-0 flex-col items-start gap-2 sm:items-end">
-                    <StarRating value={r.ratingValue} best={best} size="md" />
-                    <ReviewDlsiteListPrice review={r} />
+                    {r.contentKind === "review" ? (
+                      <>
+                        <StarRating value={r.ratingValue} best={best} size="md" />
+                        <ReviewDlsiteListPrice review={r} />
+                      </>
+                    ) : null}
                     <span className="text-sm font-semibold text-sky-300 transition group-hover:text-sky-200">
-                      レビューを読む
+                      {r.contentKind === "article" ? "記事を読む" : "レビューを読む"}
                       <span aria-hidden className="ml-1 inline-block transition group-hover:translate-x-0.5">
                         →
                       </span>
@@ -312,14 +316,16 @@ function HomeEditorialColumns({ reviews }: { reviews: Review[] }) {
             <div className="mt-3 line-clamp-3 min-h-0 leading-relaxed text-slate-400">
               <SummaryMarkdown markdown={spotlight.summary} className="text-sm sm:text-[0.9375rem]" />
             </div>
-            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-              <StarRating
-                value={spotlight.ratingValue}
-                best={spotlight.ratingBest ?? 10}
-                size="md"
-              />
-              <ReviewDlsiteListPrice review={spotlight} />
-            </div>
+            {spotlight.contentKind === "review" ? (
+              <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+                <StarRating
+                  value={spotlight.ratingValue}
+                  best={spotlight.ratingBest ?? 10}
+                  size="md"
+                />
+                <ReviewDlsiteListPrice review={spotlight} />
+              </div>
+            ) : null}
           </Link>
         </article>
 

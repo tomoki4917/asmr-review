@@ -1410,9 +1410,9 @@ export default async function ReviewPage({ params }: Props) {
       ],
     },
     "saimin-school-hypnosis-training": {
-      scoreLabel: "8.0 / 10",
+      scoreLabel: "10.0 / 10",
       oneLine:
-        "9名声優が同一台本を読む専門学校型入門。かからない・インチキ層向けに体験実感へ全振りした教育構成",
+        "9名声優が台本を読む専門学校型入門作品。かからない人向けに体験実感へ全振りした教育構成",
       inductionType:
         "教育導入系 / 分割弛緩系 / イメージ誘導系 / 反復カウント系",
       voiceActor:

@@ -2,7 +2,6 @@
 slug: "beginner-hypnosis-audio-top5-2026"
 contentKind: article
 safeForExternalLanding: false
-excludeFromArticleIndex: true
 title: "【2026年最新】初心者用催眠音声おすすめ5選"
 summary: |
   「催眠の感覚を味わってみたいけれど、何を選べばいいかわからない」
@@ -16,7 +15,7 @@ tags:
   - 記事
 itemName: "初心者用催眠音声おすすめ5選（2026）"
 authorName: "催眠音声解析室"
-publishedAt: "2026-05-14"
+publishedAt: "2026-05-24"
 coverImage: "/content/記事/beginner-hypnosis-audio-top5-2026/cover.jpg"
 affiliateLinks: []
 ---
