@@ -1,0 +1,78 @@
+{
+  "generatedAt": "2026-05-24T15:46:08.414Z",
+  "tracks": [
+    {
+      "file": "01.快眠エステサロンにようこそ",
+      "segment_count": 22,
+      "low_confidence_segments": 0,
+      "filler_segments": 0,
+      "low_word_ratio": 0.44,
+      "reliability": 8.7,
+      "flagged_samples": []
+    },
+    {
+      "file": "02.耳かきと添い寝で癒やします",
+      "segment_count": 50,
+      "low_confidence_segments": 0,
+      "filler_segments": 0,
+      "low_word_ratio": 0.388,
+      "reliability": 8.8,
+      "flagged_samples": []
+    },
+    {
+      "file": "03.健全なお店なのに…",
+      "segment_count": 44,
+      "low_confidence_segments": 1,
+      "filler_segments": 2,
+      "low_word_ratio": 0.38,
+      "reliability": 8.5,
+      "flagged_samples": [
+        {
+          "start": 1122.766,
+          "end": 1122.991,
+          "text": "しこしこ",
+          "meanScore": 0.339
+        }
+      ]
+    },
+    {
+      "file": "04a.蘭とイイコト「ヘコヘコがんばって」",
+      "segment_count": 44,
+      "low_confidence_segments": 0,
+      "filler_segments": 1,
+      "low_word_ratio": 0.382,
+      "reliability": 8.9,
+      "flagged_samples": []
+    },
+    {
+      "file": "04b.杏とイイコト「私が全部やります」",
+      "segment_count": 53,
+      "low_confidence_segments": 3,
+      "filler_segments": 0,
+      "low_word_ratio": 0.362,
+      "reliability": 8.1,
+      "flagged_samples": [
+        {
+          "start": 846.785,
+          "end": 847.895,
+          "text": "物足りないな",
+          "meanScore": 0.32
+        },
+        {
+          "start": 1591.563,
+          "end": 1591.917,
+          "text": "ご視聴ありがとうございました",
+          "meanScore": 0.083
+        },
+        {
+          "start": 1883.838,
+          "end": 1884.918,
+          "text": "ご視聴ありがとうございました",
+          "meanScore": 0.236
+        }
+      ]
+    }
+  ],
+  "recommendations": [],
+  "global_reliability": 8.6
+}

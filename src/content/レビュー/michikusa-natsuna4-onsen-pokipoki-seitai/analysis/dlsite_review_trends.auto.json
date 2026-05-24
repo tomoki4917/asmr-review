@@ -1,0 +1,79 @@
+{
+  "fetchedAt": "2026-05-24T12:31:20.256Z",
+  "source": "review_text_only",
+  "total": 20,
+  "textReviewCount": 20,
+  "recurringThemes": [
+    {
+      "label": "癒し・ほっこり・疲労回復",
+      "count": 14
+    },
+    {
+      "label": "没入・空気感・立体定位",
+      "count": 9
+    },
+    {
+      "label": "三本立て・三幕構成",
+      "count": 8
+    },
+    {
+      "label": "足湯・身体がポカポカ",
+      "count": 6
+    },
+    {
+      "label": "お客同士ロマン・なっちゃん距離",
+      "count": 6
+    },
+    {
+      "label": "一線抑制・焦らし",
+      "count": 5
+    },
+    {
+      "label": "初見でも成立・シリーズ継続でより刺さる",
+      "count": 4
+    },
+    {
+      "label": "ポキポキ・歯磨き・耳かき",
+      "count": 4
+    },
+    {
+      "label": "AI一部利用への不満",
+      "count": 3
+    },
+    {
+      "label": "抻き主目的には合わない",
+      "count": 2
+    }
+  ],
+  "axisHints": [
+    {
+      "axis": "immersion",
+      "count": 9
+    },
+    {
+      "axis": "scenario",
+      "count": 8
+    },
+    {
+      "axis": "pleasure",
+      "count": 7
+    },
+    {
+      "axis": "acoustic",
+      "count": 6
+    },
+    {
+      "axis": "satisfaction",
+      "count": 5
+    }
+  ],
+  "recommendedForHints": [
+    "疲れた夜に旅館・足湯でほっこり癒されたい層",
+    "道草屋の空気感とお客同士だからこその距離感が好きな層",
+    "足湯・ポキポキ・三本立ての効果音勾配を通しで楽しみたい層"
+  ],
+  "notRecommendedForHints": [
+    "性的描写のない純睡眠ASMRのみを求める層",
+    "抻き・過激展開だけを主目的にする層、または短尺・単独キャラのみを好む層"
+  ]
+}

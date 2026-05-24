@@ -405,6 +405,26 @@ export default async function ReviewPage({ params }: Props) {
         "後催眠の持ち越し感を避けたい方",
       ],
     },
+    "kyokuon-hikyo-kaimin-esthe-salon": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "秘境の快眠エステで施術→耳かき添い寝→二人共通→蘭／杏指名分岐。極音監修の密着と耳舐めが軸で、安眠寄りの聴き方も残せる二人体制長編",
+      inductionType: "エステ / 安眠 / 添い寝",
+      voiceActor: "一之瀬りと / 陽向葵ゅか",
+      tempoType: "ややゆっくり / 段階型（施術→密着→指名）",
+      majorFetish: "エステ / 耳かき / 添い寝 / 密着 / 耳舐め",
+      kinkType: "ノーマル〜M向け",
+      recording: "共通約1時間34分〜1時間44分＋指名1本／全5トラック約2時間8分",
+      recommendedFor: [
+        "キス・耳舐め・密着スキンシップを主役にしたい方",
+        "添い寝・安眠寄りの聴き方もしたい方",
+        "二人体制・指名分岐で蘭／杏の違いを楽しみたい方",
+      ],
+      notRecommendedFor: [
+        "最後まで一気通貫で刺激だけ追い続けたい方",
+        "単独キャラ一本道のみを好む方",
+      ],
+    },
     "futago-saimin-kanojo": {
       scoreLabel: "8.0 / 10",
       oneLine:
@@ -1257,21 +1277,21 @@ export default async function ReviewPage({ params }: Props) {
     "michikusa-natsuna4-onsen-pokipoki-seitai": {
       scoreLabel: "10.0 / 10",
       oneLine:
-        "足湯で安心を積み、貸切温泉で大人帯へ載せ替え、ポキポキと歯磨き・耳かきで睡眠導入へ収束する道草屋三本立て長編",
+        "足湯で安心を先に置き、貸切温泉で大人向け洗いっこへ載せ替え、ポキポキと歯磨き・耳かきで睡眠導入へ収束する道草屋三本立て長編",
       inductionType: "温泉 / 足湯 / ポキポキ",
       voiceActor: "丹羽うさぎ / ルナ ほか",
       tempoType: "ややゆっくり / 断続系（三本立て）",
       majorFetish: "温泉 / 足湯 / ポキポキ / 耳かき",
       kinkType: "ノーマル〜M向け",
-      recording: "約2時間30分強（三本立て・27トラック）",
+      recording: "足湯＋貸切温泉＋ポキポキ／歯磨き・耳かき",
       recommendedFor: [
-        "お泊まり・旅館シチュが好きな方",
-        "足湯・ポキポキなど効果音主役が好きな方",
-        "三本立ての勾配を通しで楽しみたい方",
+        "疲れた夜に旅館・足湯でほっこり癒されたい方",
+        "道草屋の空気感とお客同士だからこその距離感が好きな方",
+        "足湯・ポキポキ・三本立ての効果音勾配を通しで楽しみたい方",
       ],
       notRecommendedFor: [
         "純睡眠ASMRのみを求める方",
-        "短尺完結のみを好む方",
+        "抻き・過激展開だけを主目的にする方、または短尺・単独キャラのみを好む方",
       ],
     },
     "mesugaki-succubus-onee-nntr-saimin": {

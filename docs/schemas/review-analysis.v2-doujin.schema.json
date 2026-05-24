@@ -38,6 +38,58 @@
     "notes": {
       "type": "array",
       "items": { "type": "string" }
+    },
+    "subScores": {
+      "type": "object",
+      "description": "十サブ代理採点（score-graph-features.auto.json と同期）",
+      "additionalProperties": false,
+      "properties": {
+        "scenario": {
+          "type": "object",
+          "properties": {
+            "reality": { "type": "number", "minimum": 0, "maximum": 10 },
+            "inevitability": { "type": "number", "minimum": 0, "maximum": 10 }
+          }
+        },
+        "acoustic": {
+          "type": "object",
+          "properties": {
+            "recording": { "type": "number", "minimum": 0, "maximum": 10 },
+            "environment": { "type": "number", "minimum": 0, "maximum": 10 }
+          }
+        },
+        "immersion": {
+          "type": "object",
+          "properties": {
+            "spatial": { "type": "number", "minimum": 0, "maximum": 10 },
+            "distance": { "type": "number", "minimum": 0, "maximum": 10 }
+          }
+        },
+        "pleasure": {
+          "type": "object",
+          "properties": {
+            "acting": { "type": "number", "minimum": 0, "maximum": 10 },
+            "tempo": { "type": "number", "minimum": 0, "maximum": 10 }
+          }
+        },
+        "satisfaction": {
+          "type": "object",
+          "properties": {
+            "concept": { "type": "number", "minimum": 0, "maximum": 10 },
+            "yoin": { "type": "number", "minimum": 0, "maximum": 10 }
+          }
+        }
+      }
+    },
+    "scoreMeta": {
+      "type": "object",
+      "properties": {
+        "computedAt": { "type": "string" },
+        "method": { "type": "string" },
+        "listenFree": { "type": "boolean" },
+        "whisperReliability": { "type": "number" },
+        "confidence": { "type": "object" }
+      }
     }
   }
 }

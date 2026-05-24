@@ -1,0 +1,1019 @@
+{
+  "version": "v0.2.2-listen-free",
+  "slug": "kyokuon-hikyo-kaimin-esthe-salon",
+  "computedAt": "2026-05-24T15:46:08.511Z",
+  "method": "Whisper監査＋文字起こし＋waveform＋spatial＋DLsite傾向＋indexメタからの代理採点。音声未聴取。公開確定値ではない。",
+  "subScores": {
+    "recording": 8.3,
+    "environment": 8.3,
+    "spatial": 9,
+    "distance": 7.8,
+    "reality": 8.3,
+    "inevitability": 9.1,
+    "acting": 7.1,
+    "tempo": 8.8,
+    "concept": 8.6,
+    "yoin": 7.5
+  },
+  "axisScores": {
+    "scenario": 8.7,
+    "acoustic": 8.3,
+    "immersion": 8.4,
+    "pleasure": 8,
+    "satisfaction": 8.1
+  },
+  "confidence": {
+    "recording": "medium",
+    "environment": "medium",
+    "spatial": "medium",
+    "distance": "medium",
+    "reality": "medium",
+    "inevitability": "medium",
+    "acting": "medium",
+    "tempo": "medium",
+    "concept": "medium",
+    "yoin": "low"
+  },
+  "whisperAudit": {
+    "global_reliability": 8.6,
+    "recommendations": []
+  },
+  "evidence": {
+    "recording": "clip=0.000071, sfx/min=0.109, clip_sfx_overlap=0.2, clip_mode=normal, snr_proxy=6.13, silence=0.6561",
+    "environment": "non_speech=0.411, se_rms=0.006841",
+    "spatial": "pan_abs=0.41422564, pan_std=0.42515549",
+    "distance": "intimacy/min=0.35, hf=0.34099166, lf=0.10202058, cent=4102.69417778, prox=hf",
+    "reality": "senpai/min=0, whisper_rel=8.6",
+    "inevitability": "intimacy_mono=0.667, rms_mono=0.667",
+    "acting": "emotion/min=0.497, whisper_rel=8.6",
+    "tempo": "surge/min=30.148, rms_mono=0.667",
+    "concept": "concept_hits=4/5, lex=11",
+    "yoin": "sleep=2006.9s, tail_ratio=2.095"
+  },
+  "features": {
+    "tracks": [
+      {
+        "name": "01.快眠エステサロンにようこそ",
+        "duration_sec": 854.2,
+        "speech_sec": 489.857,
+        "non_speech_ratio": 0.427,
+        "se_rms_mean": 0.00425,
+        "speech_rms_mean": 0.004971,
+        "snr_proxy": 6.816,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 0,
+            "キス": 0,
+            "耳": 4,
+            "添い寝": 0,
+            "抱き枕": 0,
+            "好き": 1,
+            "甘": 0,
+            "密着": 0,
+            "ぎゅ": 0,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 0
+          },
+          "total": 5
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 0,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 0,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 1,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0
+          },
+          "total": 1
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 0,
+            "好き": 1,
+            "嬉し": 1,
+            "恥": 0,
+            "可愛い": 0,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 0
+          },
+          "total": 2
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 1,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 1
+        },
+        "sfx_hits": {
+          "hits": {
+            "ふぅ": 0,
+            "フュ": 0,
+            "はぁ": 0,
+            "ハァ": 0,
+            "はー": 0,
+            "んちゅ": 0,
+            "ちゅ": 0,
+            "チュ": 0,
+            "ちゅっ": 0,
+            "ぱちゅ": 0,
+            "じゅる": 0,
+            "ジュル": 0,
+            "レロ": 0,
+            "ぺろ": 0,
+            "ペロ": 0,
+            "べろ": 0,
+            "ぐちゅ": 0,
+            "ぐちょ": 0,
+            "ぬちゅ": 0,
+            "くちゅ": 0,
+            "ヌル": 0,
+            "ねちょ": 1,
+            "耳舐": 0,
+            "耳なめ": 0,
+            "舐め": 0,
+            "ズリュ": 0
+          },
+          "total": 1
+        },
+        "senpai_count": 0,
+        "rms_mean": 0.003491,
+        "rms_p50": 0.000873,
+        "rms_p95": 0.016995,
+        "clip_ratio": 0.000117,
+        "clip_sfx_overlap_ratio": 0,
+        "clip_sfx_frames": 1,
+        "centroid_mean_hz": 4833.76,
+        "tail_rms_ratio": 2.428,
+        "head_to_tail_rms": 1.408,
+        "pan_mean_abs": 0.20157983899116516,
+        "pan_std": 0.266573429107666,
+        "lf_ratio_100_250hz_mean": 0.07980985939502716,
+        "hf_ratio_ge_4khz_mean": 0.4133743345737457,
+        "whisper": {
+          "segment_count": 22,
+          "low_confidence_segments": 0,
+          "filler_segments": 0,
+          "low_word_ratio": 0.44,
+          "reliability": 8.7,
+          "flagged_samples": []
+        },
+        "is_sleep": true,
+        "dialogue_segments": 22
+      },
+      {
+        "name": "02.耳かきと添い寝で癒やします",
+        "duration_sec": 1815.1,
+        "speech_sec": 1128.114,
+        "non_speech_ratio": 0.378,
+        "se_rms_mean": 0.004519,
+        "speech_rms_mean": 0.002037,
+        "snr_proxy": 5.449,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 0,
+            "キス": 0,
+            "耳": 8,
+            "添い寝": 2,
+            "抱き枕": 0,
+            "好き": 5,
+            "甘": 0,
+            "密着": 0,
+            "ぎゅ": 0,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 0
+          },
+          "total": 15
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 2,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 0,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 0,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0
+          },
+          "total": 2
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 0,
+            "好き": 5,
+            "嬉し": 7,
+            "恥": 0,
+            "可愛い": 9,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 0
+          },
+          "total": 21
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 1,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 1
+        },
+        "sfx_hits": {
+          "hits": {
+            "ふぅ": 0,
+            "フュ": 0,
+            "はぁ": 0,
+            "ハァ": 0,
+            "はー": 2,
+            "んちゅ": 0,
+            "ちゅ": 0,
+            "チュ": 0,
+            "ちゅっ": 0,
+            "ぱちゅ": 0,
+            "じゅる": 0,
+            "ジュル": 0,
+            "レロ": 0,
+            "ぺろ": 0,
+            "ペロ": 0,
+            "べろ": 0,
+            "ぐちゅ": 0,
+            "ぐちょ": 0,
+            "ぬちゅ": 0,
+            "くちゅ": 0,
+            "ヌル": 0,
+            "ねちょ": 0,
+            "耳舐": 0,
+            "耳なめ": 0,
+            "舐め": 0,
+            "ズリュ": 0
+          },
+          "total": 2
+        },
+        "senpai_count": 0,
+        "rms_mean": 0.001584,
+        "rms_p50": 0.000377,
+        "rms_p95": 0.007449,
+        "clip_ratio": 0.000055,
+        "clip_sfx_overlap_ratio": 1,
+        "clip_sfx_frames": 1,
+        "centroid_mean_hz": 4122.67,
+        "tail_rms_ratio": 0.554,
+        "head_to_tail_rms": 0.304,
+        "pan_mean_abs": 0.43490755558013916,
+        "pan_std": 0.43416479229927063,
+        "lf_ratio_100_250hz_mean": 0.13718809187412262,
+        "hf_ratio_ge_4khz_mean": 0.33583182096481323,
+        "whisper": {
+          "segment_count": 50,
+          "low_confidence_segments": 0,
+          "filler_segments": 0,
+          "low_word_ratio": 0.388,
+          "reliability": 8.8,
+          "flagged_samples": []
+        },
+        "is_sleep": false,
+        "dialogue_segments": 50
+      },
+      {
+        "name": "03.健全なお店なのに…",
+        "duration_sec": 1572.5,
+        "speech_sec": 904.928,
+        "non_speech_ratio": 0.425,
+        "se_rms_mean": 0.008919,
+        "speech_rms_mean": 0.003611,
+        "snr_proxy": 6.162,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 0,
+            "キス": 0,
+            "耳": 2,
+            "添い寝": 1,
+            "抱き枕": 0,
+            "好き": 2,
+            "甘": 1,
+            "密着": 0,
+            "ぎゅ": 0,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 0
+          },
+          "total": 6
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 1,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 0,
+            "耳舐": 1,
+            "安眠": 0,
+            "眠": 0,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0
+          },
+          "total": 2
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 1,
+            "好き": 2,
+            "嬉し": 2,
+            "恥": 4,
+            "可愛い": 2,
+            "やん": 0,
+            "んっ": 1,
+            "はぁ": 0
+          },
+          "total": 12
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 0
+        },
+        "sfx_hits": {
+          "hits": {
+            "ふぅ": 0,
+            "フュ": 0,
+            "はぁ": 0,
+            "ハァ": 0,
+            "はー": 1,
+            "んちゅ": 0,
+            "ちゅ": 0,
+            "チュ": 0,
+            "ちゅっ": 0,
+            "ぱちゅ": 0,
+            "じゅる": 0,
+            "ジュル": 0,
+            "レロ": 0,
+            "ぺろ": 0,
+            "ペロ": 0,
+            "べろ": 0,
+            "ぐちゅ": 0,
+            "ぐちょ": 0,
+            "ぬちゅ": 0,
+            "くちゅ": 0,
+            "ヌル": 0,
+            "ねちょ": 0,
+            "耳舐": 1,
+            "耳なめ": 0,
+            "舐め": 1,
+            "ズリュ": 0
+          },
+          "total": 3
+        },
+        "senpai_count": 0,
+        "rms_mean": 0.003677,
+        "rms_p50": 0.001166,
+        "rms_p95": 0.015052,
+        "clip_ratio": 0.000064,
+        "clip_sfx_overlap_ratio": 0,
+        "clip_sfx_frames": 1,
+        "centroid_mean_hz": 3553.65,
+        "tail_rms_ratio": 3.279,
+        "head_to_tail_rms": 1.694,
+        "pan_mean_abs": 0.5608360767364502,
+        "pan_std": 0.5592423677444458,
+        "lf_ratio_100_250hz_mean": 0.11744172871112823,
+        "hf_ratio_ge_4khz_mean": 0.2925705909729004,
+        "whisper": {
+          "segment_count": 44,
+          "low_confidence_segments": 1,
+          "filler_segments": 2,
+          "low_word_ratio": 0.38,
+          "reliability": 8.5,
+          "flagged_samples": [
+            {
+              "start": 1122.766,
+              "end": 1122.991,
+              "text": "しこしこ",
+              "meanScore": 0.339
+            }
+          ]
+        },
+        "is_sleep": false,
+        "dialogue_segments": 44
+      },
+      {
+        "name": "04a.蘭とイイコト「ヘコヘコがんばって」",
+        "duration_sec": 1474.3,
+        "speech_sec": 933.02,
+        "non_speech_ratio": 0.367,
+        "se_rms_mean": 0.008936,
+        "speech_rms_mean": 0.004784,
+        "snr_proxy": 7.314,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 0,
+            "キス": 1,
+            "耳": 1,
+            "添い寝": 1,
+            "抱き枕": 0,
+            "好き": 3,
+            "甘": 0,
+            "密着": 0,
+            "ぎゅ": 0,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 2
+          },
+          "total": 8
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 1,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 1,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 2,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0
+          },
+          "total": 4
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 0,
+            "好き": 3,
+            "嬉し": 3,
+            "恥": 1,
+            "可愛い": 4,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 0
+          },
+          "total": 11
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 0
+        },
+        "sfx_hits": {
+          "hits": {
+            "ふぅ": 0,
+            "フュ": 0,
+            "はぁ": 0,
+            "ハァ": 0,
+            "はー": 0,
+            "んちゅ": 0,
+            "ちゅ": 2,
+            "チュ": 1,
+            "ちゅっ": 0,
+            "ぱちゅ": 0,
+            "じゅる": 0,
+            "ジュル": 0,
+            "レロ": 0,
+            "ぺろ": 0,
+            "ペロ": 0,
+            "べろ": 0,
+            "ぐちゅ": 0,
+            "ぐちょ": 0,
+            "ぬちゅ": 0,
+            "くちゅ": 2,
+            "ヌル": 0,
+            "ねちょ": 1,
+            "耳舐": 0,
+            "耳なめ": 0,
+            "舐め": 1,
+            "ズリュ": 0
+          },
+          "total": 7
+        },
+        "senpai_count": 0,
+        "rms_mean": 0.004453,
+        "rms_p50": 0.001479,
+        "rms_p95": 0.018933,
+        "clip_ratio": 0.000068,
+        "clip_sfx_overlap_ratio": 0,
+        "clip_sfx_frames": 1,
+        "centroid_mean_hz": 4152.02,
+        "tail_rms_ratio": 3.759,
+        "head_to_tail_rms": 1.669,
+        "pan_mean_abs": 0.3858083188533783,
+        "pan_std": 0.42823731899261475,
+        "lf_ratio_100_250hz_mean": 0.08458445221185684,
+        "hf_ratio_ge_4khz_mean": 0.34997642040252686,
+        "whisper": {
+          "segment_count": 44,
+          "low_confidence_segments": 0,
+          "filler_segments": 1,
+          "low_word_ratio": 0.382,
+          "reliability": 8.9,
+          "flagged_samples": []
+        },
+        "is_sleep": false,
+        "dialogue_segments": 44
+      },
+      {
+        "name": "04b.杏とイイコト「私が全部やります」",
+        "duration_sec": 2006.9,
+        "speech_sec": 1089.626,
+        "non_speech_ratio": 0.457,
+        "se_rms_mean": 0.007582,
+        "speech_rms_mean": 0.003048,
+        "snr_proxy": 4.907,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 0,
+            "キス": 2,
+            "耳": 5,
+            "添い寝": 0,
+            "抱き枕": 0,
+            "好き": 4,
+            "甘": 0,
+            "密着": 0,
+            "ぎゅ": 0,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 0
+          },
+          "total": 11
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 0,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 2,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 0,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0
+          },
+          "total": 2
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 0,
+            "好き": 4,
+            "嬉し": 5,
+            "恥": 3,
+            "可愛い": 5,
+            "やん": 0,
+            "んっ": 1,
+            "はぁ": 0
+          },
+          "total": 18
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 0
+        },
+        "sfx_hits": {
+          "hits": {
+            "ふぅ": 0,
+            "フュ": 0,
+            "はぁ": 0,
+            "ハァ": 0,
+            "はー": 1,
+            "んちゅ": 0,
+            "ちゅ": 0,
+            "チュ": 0,
+            "ちゅっ": 0,
+            "ぱちゅ": 0,
+            "じゅる": 0,
+            "ジュル": 0,
+            "レロ": 0,
+            "ぺろ": 0,
+            "ペロ": 0,
+            "べろ": 0,
+            "ぐちゅ": 0,
+            "ぐちょ": 0,
+            "ぬちゅ": 0,
+            "くちゅ": 0,
+            "ヌル": 0,
+            "ねちょ": 0,
+            "耳舐": 0,
+            "耳なめ": 0,
+            "舐め": 0,
+            "ズリュ": 0
+          },
+          "total": 1
+        },
+        "senpai_count": 0,
+        "rms_mean": 0.002954,
+        "rms_p50": 0.000984,
+        "rms_p95": 0.011837,
+        "clip_ratio": 0.00005,
+        "clip_sfx_overlap_ratio": 0,
+        "clip_sfx_frames": 1,
+        "centroid_mean_hz": 3887.85,
+        "tail_rms_ratio": 2.095,
+        "head_to_tail_rms": 3.124,
+        "pan_mean_abs": 0.4879963994026184,
+        "pan_std": 0.4375595450401306,
+        "lf_ratio_100_250hz_mean": 0.09107878059148788,
+        "hf_ratio_ge_4khz_mean": 0.31320512294769287,
+        "whisper": {
+          "segment_count": 53,
+          "low_confidence_segments": 3,
+          "filler_segments": 0,
+          "low_word_ratio": 0.362,
+          "reliability": 8.1,
+          "flagged_samples": [
+            {
+              "start": 846.785,
+              "end": 847.895,
+              "text": "物足りないな",
+              "meanScore": 0.32
+            },
+            {
+              "start": 1591.563,
+              "end": 1591.917,
+              "text": "ご視聴ありがとうございました",
+              "meanScore": 0.083
+            },
+            {
+              "start": 1883.838,
+              "end": 1884.918,
+              "text": "ご視聴ありがとうございました",
+              "meanScore": 0.236
+            }
+          ]
+        },
+        "is_sleep": false,
+        "dialogue_segments": 53
+      }
+    ],
+    "global": {
+      "duration_sec": 7723,
+      "speech_sec": 1089.626,
+      "silence_ratio": 0.6561,
+      "rms_mean": 0.00312464,
+      "rms_cv": 2.0153745711505966,
+      "surge_per_min": 30.148,
+      "centroid_mean_hz": 4023.726,
+      "centroid_std_hz": 1991.338,
+      "clip_ratio_mean": 0.000071,
+      "clip_sfx_overlap_mean": 0.2,
+      "sfx_density_per_min": 0.109,
+      "snr_proxy_mean": 6.13,
+      "non_speech_ratio_mean": 0.411,
+      "se_rms_mean": 0.006841,
+      "intimacy_density_per_min": 0.35,
+      "senpai_ratio": 0,
+      "concept_lex_total": 11,
+      "concept_hit_tracks": 4,
+      "emotion_lex_density": 0.497,
+      "intimacy_monotonic": 0.667,
+      "rms_monotonic": 0.667,
+      "whisper_reliability": 8.6,
+      "dlsite_review_count": 4
+    },
+    "spatial": {
+      "tracks_n": 5,
+      "total_duration_sec": 7722.839,
+      "pan_linear_mean_abs_mean": 0.41422564,
+      "pan_linear_std_mean": 0.42515549,
+      "centroid_hz_mean_of_track_means": 4102.69417778,
+      "hf_ratio_ge_4khz_mean_of_track_means": 0.34099166,
+      "lf_ratio_100_250hz_mean_of_track_means": 0.10202058,
+      "centroid_hz_std_pooled": 49.70892
+    },
+    "spatialTracks": [
+      {
+        "file": "01.快眠エステサロンにようこそ.mp3",
+        "duration_sec": 854.175,
+        "mono": false,
+        "hop_sec": 0.1,
+        "frames": 8542,
+        "pan_linear_mean": -0.04175717756152153,
+        "pan_linear_std": 0.266573429107666,
+        "pan_linear_mean_abs": 0.20157983899116516,
+        "centroid_hz_mean": 4809.2929920248025,
+        "centroid_hz_std": 1979.6039404392964,
+        "hf_ratio_ge_4khz_mean": 0.4133743345737457,
+        "hf_ratio_ge_4khz_std": 0.19387397170066833,
+        "lf_ratio_100_250hz_mean": 0.07980985939502716,
+        "lf_ratio_100_250hz_std": 0.10407964140176773
+      },
+      {
+        "file": "02.耳かきと添い寝で癒やします.mp3",
+        "duration_sec": 1815.025,
+        "mono": false,
+        "hop_sec": 0.1,
+        "frames": 18151,
+        "pan_linear_mean": 0.26241999864578247,
+        "pan_linear_std": 0.43416479229927063,
+        "pan_linear_mean_abs": 0.43490755558013916,
+        "centroid_hz_mean": 4111.39282311147,
+        "centroid_hz_std": 1951.5268294206794,
+        "hf_ratio_ge_4khz_mean": 0.33583182096481323,
+        "hf_ratio_ge_4khz_std": 0.18622320890426636,
+        "lf_ratio_100_250hz_mean": 0.13718809187412262,
+        "lf_ratio_100_250hz_std": 0.1168571338057518
+      },
+      {
+        "file": "03.健全なお店なのに….mp3",
+        "duration_sec": 1572.496,
+        "mono": false,
+        "hop_sec": 0.1,
+        "frames": 15725,
+        "pan_linear_mean": -0.2786678373813629,
+        "pan_linear_std": 0.5592423677444458,
+        "pan_linear_mean_abs": 0.5608360767364502,
+        "centroid_hz_mean": 3552.8269870270265,
+        "centroid_hz_std": 2043.1775624956013,
+        "hf_ratio_ge_4khz_mean": 0.2925705909729004,
+        "hf_ratio_ge_4khz_std": 0.191681906580925,
+        "lf_ratio_100_250hz_mean": 0.11744172871112823,
+        "lf_ratio_100_250hz_std": 0.0993785411119461
+      },
+      {
+        "file": "04a.蘭とイイコト「ヘコヘコがんばって」.mp3",
+        "duration_sec": 1474.276,
+        "mono": false,
+        "hop_sec": 0.1,
+        "frames": 14743,
+        "pan_linear_mean": 0.28793901205062866,
+        "pan_linear_std": 0.42823731899261475,
+        "pan_linear_mean_abs": 0.3858083188533783,
+        "centroid_hz_mean": 4154.479143192235,
+        "centroid_hz_std": 1895.3404982891295,
+        "hf_ratio_ge_4khz_mean": 0.34997642040252686,
+        "hf_ratio_ge_4khz_std": 0.1822350025177002,
+        "lf_ratio_100_250hz_mean": 0.08458445221185684,
+        "lf_ratio_100_250hz_std": 0.09188657253980637
+      },
+      {
+        "file": "04b.杏とイイコト「私が全部やります」.mp3",
+        "duration_sec": 2006.867,
+        "mono": false,
+        "hop_sec": 0.1,
+        "frames": 20069,
+        "pan_linear_mean": -0.39368999004364014,
+        "pan_linear_std": 0.4375595450401306,
+        "pan_linear_mean_abs": 0.4879963994026184,
+        "centroid_hz_mean": 3885.4789435385937,
+        "centroid_hz_std": 1931.7194281522013,
+        "hf_ratio_ge_4khz_mean": 0.31320512294769287,
+        "hf_ratio_ge_4khz_std": 0.1773480325937271,
+        "lf_ratio_100_250hz_mean": 0.09107878059148788,
+        "lf_ratio_100_250hz_std": 0.0755809023976326
+      }
+    ],
+    "whisperAudits": [
+      {
+        "track": "01.快眠エステサロンにようこそ",
+        "segment_count": 22,
+        "low_confidence_segments": 0,
+        "filler_segments": 0,
+        "low_word_ratio": 0.44,
+        "reliability": 8.7,
+        "flagged_samples": []
+      },
+      {
+        "track": "02.耳かきと添い寝で癒やします",
+        "segment_count": 50,
+        "low_confidence_segments": 0,
+        "filler_segments": 0,
+        "low_word_ratio": 0.388,
+        "reliability": 8.8,
+        "flagged_samples": []
+      },
+      {
+        "track": "03.健全なお店なのに…",
+        "segment_count": 44,
+        "low_confidence_segments": 1,
+        "filler_segments": 2,
+        "low_word_ratio": 0.38,
+        "reliability": 8.5,
+        "flagged_samples": [
+          {
+            "start": 1122.766,
+            "end": 1122.991,
+            "text": "しこしこ",
+            "meanScore": 0.339
+          }
+        ]
+      },
+      {
+        "track": "04a.蘭とイイコト「ヘコヘコがんばって」",
+        "segment_count": 44,
+        "low_confidence_segments": 0,
+        "filler_segments": 1,
+        "low_word_ratio": 0.382,
+        "reliability": 8.9,
+        "flagged_samples": []
+      },
+      {
+        "track": "04b.杏とイイコト「私が全部やります」",
+        "segment_count": 53,
+        "low_confidence_segments": 3,
+        "filler_segments": 0,
+        "low_word_ratio": 0.362,
+        "reliability": 8.1,
+        "flagged_samples": [
+          {
+            "start": 846.785,
+            "end": 847.895,
+            "text": "物足りないな",
+            "meanScore": 0.32
+          },
+          {
+            "start": 1591.563,
+            "end": 1591.917,
+            "text": "ご視聴ありがとうございました",
+            "meanScore": 0.083
+          },
+          {
+            "start": 1883.838,
+            "end": 1884.918,
+            "text": "ご視聴ありがとうございました",
+            "meanScore": 0.236
+          }
+        ]
+      }
+    ],
+    "caveats": {
+      "manual": null,
+      "auto": {
+        "generatedAt": "2026-05-24T15:46:08.414Z",
+        "tracks": [
+          {
+            "file": "01.快眠エステサロンにようこそ",
+            "segment_count": 22,
+            "low_confidence_segments": 0,
+            "filler_segments": 0,
+            "low_word_ratio": 0.44,
+            "reliability": 8.7,
+            "flagged_samples": []
+          },
+          {
+            "file": "02.耳かきと添い寝で癒やします",
+            "segment_count": 50,
+            "low_confidence_segments": 0,
+            "filler_segments": 0,
+            "low_word_ratio": 0.388,
+            "reliability": 8.8,
+            "flagged_samples": []
+          },
+          {
+            "file": "03.健全なお店なのに…",
+            "segment_count": 44,
+            "low_confidence_segments": 1,
+            "filler_segments": 2,
+            "low_word_ratio": 0.38,
+            "reliability": 8.5,
+            "flagged_samples": [
+              {
+                "start": 1122.766,
+                "end": 1122.991,
+                "text": "しこしこ",
+                "meanScore": 0.339
+              }
+            ]
+          },
+          {
+            "file": "04a.蘭とイイコト「ヘコヘコがんばって」",
+            "segment_count": 44,
+            "low_confidence_segments": 0,
+            "filler_segments": 1,
+            "low_word_ratio": 0.382,
+            "reliability": 8.9,
+            "flagged_samples": []
+          },
+          {
+            "file": "04b.杏とイイコト「私が全部やります」",
+            "segment_count": 53,
+            "low_confidence_segments": 3,
+            "filler_segments": 0,
+            "low_word_ratio": 0.362,
+            "reliability": 8.1,
+            "flagged_samples": [
+              {
+                "start": 846.785,
+                "end": 847.895,
+                "text": "物足りないな",
+                "meanScore": 0.32
+              },
+              {
+                "start": 1591.563,
+                "end": 1591.917,
+                "text": "ご視聴ありがとうございました",
+                "meanScore": 0.083
+              },
+              {
+                "start": 1883.838,
+                "end": 1884.918,
+                "text": "ご視聴ありがとうございました",
+                "meanScore": 0.236
+              }
+            ]
+          }
+        ],
+        "recommendations": [],
+        "global_reliability": 8.6
+      }
+    },
+    "meta": {
+      "conceptKeywords": [
+        "添い寝",
+        "密着",
+        "キス",
+        "耳舐",
+        "安眠",
+        "眠"
+      ],
+      "sourceText": "【極音】秘境の快眠エステサロンへようこそ～清楚セラピストたちとの内緒の密着極上コース～\n和室の快眠エステサロンを舞台に、蘭（一之瀬りと）が施術で距離を縮め、杏（陽向葵ゅか）が耳かきと添い寝で入眠側へ寄せます。二人が揃うパートでは「健全なお店」の体裁を保ちながら内緒の本番へ踏み込み、最後は指名ルートで蘭の「ヘコヘコがんばって」か杏の「私が全部やります」へ分岐します。\n\n  極音・妄想研究所監修のバイノーラルで、キス・耳舐め・密着スキンシップが主役。添い寝パートは横になって聴くと眠気も起こしやすい設計で、刺激と安眠の両方を一本の商品に載せた二人体制の長編です。\n【レビュー】【極音】秘境の快眠エステサロンへようこそ～清楚セラピストたちとの内緒の密着極上コース～\n同人音声\nバイノーラル\nエステ\n安眠\n耳かき\n添い寝\nいちのや\n一之瀬りと\n陽向葵ゅか\nvendor: dlsite"
+    },
+    "conceptLex": [
+      "抱き枕",
+      "添い寝",
+      "後輩",
+      "密着",
+      "恋人",
+      "キス",
+      "耳舐",
+      "安眠",
+      "眠",
+      "告白",
+      "ラブホ",
+      "お泊"
+    ]
+  }
+}

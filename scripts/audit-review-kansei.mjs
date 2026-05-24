@@ -94,6 +94,11 @@ const CHECKS = [
     fail: (t) => hasForbiddenTachiagari(t),
   },
   {
+    id: "tsumi",
+    label: "禁止語「積み」系",
+    fail: (t) => hasForbiddenTsumi(t),
+  },
+  {
     id: "tachi_fragment",
     label: "禁止語「立ち」切れ（立つ欠落）",
     fail: (t) => hasForbiddenTachiFragment(t),
@@ -102,6 +107,11 @@ const CHECKS = [
     id: "toriniikitai",
     label: "禁止見出し「取りにいきたい方」",
     fail: (t) => hasForbiddenToriniikitai(t),
+  },
+  {
+    id: "doujin_subtrack_table",
+    label: "同人: サブトラック明細表（パートの長さ）",
+    fail: (t) => hasDoujinSubtrackTable(t),
   },
 ];
 
@@ -127,6 +137,13 @@ function hasForbiddenTachiagari(text) {
   const body = text.replace(/^---[\s\S]*?---\n?/, "");
   const withoutQuotes = body.replace(/^>.*$/gm, "");
   return /立ち上が/.test(withoutQuotes);
+}
+
+/** `積み` `積み上げ` `積み上が` `積み重ね` 等（§1（補）・同人ガイド2）。台詞引用（> 行）は除外 */
+function hasForbiddenTsumi(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  return /積み/.test(withoutQuotes);
 }
 
 /** `立つ` を `立ち` だけで済ませる切れ（§1（補）B-1）。台詞引用（> 行）は除外 */
@@ -158,6 +175,17 @@ function hasForbiddenToriniikitai(text) {
   );
   if (!m) return false;
   return /取りに(?:い|行)きたい/.test(m[0]);
+}
+
+/** 同人：`### パートの長さ` 内のサブトラック明細表（DLsite 全行転記） */
+function hasDoujinSubtrackTable(text) {
+  if (!isDoujinReview(text)) return false;
+  const m = text.match(/### パートの長さ[\s\S]*?(?=\n## |$)/);
+  if (!m) return false;
+  const section = m[0];
+  if (/####\s/.test(section)) return true;
+  if (/\| 0[0-9] \|/.test(section) && !/\| # \|/.test(section)) return true;
+  return false;
 }
 
 function isDlsitePriceFetched(row) {

@@ -4,6 +4,7 @@
   - 左右チャンネルの RMS とその差（定位の材料）
   - 合成モノラルに対するスペクトル重心（既存 waveform.csv の centroid と同系）
   - 高域（4 kHz 以上）エネルギー比（囁き・息多めの「質感」材料の一例）
+  - 低域（100–250 Hz）エネルギー比（近接効果・低音ボイス密着の材料）
 を算出し、レビュー slug 直下に spatial_spectral.auto.json を書く。
 
 前提: pip install -r scripts/requirements-audio.txt（MP3 は ffmpeg 等が PATH にあることが多い。WAV は librosa のみで可。librosa 依存）
@@ -75,10 +76,12 @@ def _analyze_one(path: Path, hop_sec: float) -> dict:
     freqs = librosa.fft_frequencies(sr=sr, n_fft=n_fft)
     total = S.sum(axis=0) + 1e-12
     hf = S[freqs >= 4000.0, :].sum(axis=0) / total
-    m = min(len(pan), len(cent), len(hf))
+    lf = S[(freqs >= 100.0) & (freqs <= 250.0), :].sum(axis=0) / total
+    m = min(len(pan), len(cent), len(hf), len(lf))
     pan = pan[:m]
     cent = cent[:m]
     hf = hf[:m]
+    lf = lf[:m]
 
     return {
         "file": path.name,
@@ -93,6 +96,8 @@ def _analyze_one(path: Path, hop_sec: float) -> dict:
         "centroid_hz_std": float(np.std(cent)),
         "hf_ratio_ge_4khz_mean": float(np.mean(hf)),
         "hf_ratio_ge_4khz_std": float(np.std(hf)),
+        "lf_ratio_100_250hz_mean": float(np.mean(lf)),
+        "lf_ratio_100_250hz_std": float(np.std(lf)),
     }
 
 
@@ -124,6 +129,7 @@ def analyze(source_dir: Path, slug: str, hop_sec: float) -> int:
         "pan_linear_std_mean": _agg("pan_linear_std"),
         "centroid_hz_mean_of_track_means": _agg("centroid_hz_mean"),
         "hf_ratio_ge_4khz_mean_of_track_means": _agg("hf_ratio_ge_4khz_mean"),
+        "lf_ratio_100_250hz_mean_of_track_means": _agg("lf_ratio_100_250hz_mean"),
     }
     cstds = [t["centroid_hz_std"] for t in tracks if "centroid_hz_std" in t and isinstance(t["centroid_hz_std"], (int, float))]
     if cstds:
@@ -137,7 +143,8 @@ def analyze(source_dir: Path, slug: str, hop_sec: float) -> int:
         "aggregate": agg,
         "usage_note": (
             "定位の材料: pan_linear_mean_abs / pan_linear_std が大きいほど左右差の揺れが多い傾向。"
-            "質感の材料: centroid と hf_ratio_ge_4khz は囁き断定ではなく、高域・息成分の相対量の目安。"
+            "質感の材料: centroid / hf_ratio_ge_4khz は高域・息成分の目安。"
+            "lf_ratio_100_250hz は近接効果・低音ボイス密着の目安（HF だけでは距離感を過小評価しうる）。"
         ),
     }
     dest = review_dir / "spatial_spectral.auto.json"

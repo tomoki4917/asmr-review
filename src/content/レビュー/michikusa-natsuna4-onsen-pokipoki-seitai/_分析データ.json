@@ -17,6 +17,48 @@
   },
   "notes": [
     "同人五軸（_同人音声執筆ガイド2.md）。十サブ：リアリティ／展開の必然性、マイク・録音品質／環境音、空間定位・音像／距離感・密着度、演技力／刺激のテンポ・緩急、コンセプトの達成度／余韻の質。",
-    "シナリオ：足湯→温泉→お休みの必然性。音響：録音品質・環境音。没入度：音像・旅の距離感。快楽度：演技・三幕テンポ。満足度：コンセプト回収・余韻。"
-  ]
+    "シナリオ：足湯→温泉→お休みの必然性。音響：録音品質・環境音。没入度：音像・旅の距離感。快楽度：演技・三幕テンポ。満足度：コンセプト回収・余韻。",
+    "【DLsite購入者レビュー（文章）】全20件。繰り返し: 癒し・疲労回復・ほっこり(多数)、没入・空気感・立体定位(多数)、三本立て(多数)、足湯ポカポカ(複数)、お客同士ロマン・なっちゃん距離(複数)、一線抑制・焦らし(複数)、AI一部利用への不満(2〜3)、初見でも成立・シリーズ継続でより刺さる(複数)。反映: おすすめ=癒し／道草屋空気・お客同士／効果音三本立て。合わない=純睡眠／抻き主目的・短尺。原文コピペ禁止。",
+    "【十サブ代理採点 v0.2】2026-05-24 … rec=8.3 env=8.1 spatial=8.8 dist=7.8 reality=8.3 inev=7.6 acting=7.1 tempo=8.8 concept=7.4 yoin=8.3。Whisper信頼=7.5。低確信:yoin。"
+  ],
+  "subScores": {
+    "scenario": {
+      "reality": 8.3,
+      "inevitability": 7.6
+    },
+    "acoustic": {
+      "recording": 8.3,
+      "environment": 8.1
+    },
+    "immersion": {
+      "spatial": 8.8,
+      "distance": 7.8
+    },
+    "pleasure": {
+      "acting": 7.1,
+      "tempo": 8.8
+    },
+    "satisfaction": {
+      "concept": 7.4,
+      "yoin": 8.3
+    }
+  },
+  "scoreMeta": {
+    "computedAt": "2026-05-24T13:55:36.177Z",
+    "method": "score-doujin-graph-features.mjs v0.2",
+    "listenFree": true,
+    "confidence": {
+      "recording": "medium",
+      "environment": "medium",
+      "spatial": "medium",
+      "distance": "medium",
+      "reality": "medium",
+      "inevitability": "medium",
+      "acting": "medium",
+      "tempo": "medium",
+      "concept": "medium",
+      "yoin": "low"
+    },
+    "whisperReliability": 7.5
+  }
 }

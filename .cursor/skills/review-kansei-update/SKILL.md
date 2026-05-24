@@ -1,7 +1,7 @@
 ---
 name: review-kansei-update
 description: >-
-  レビュー index.md を完成系（正本 kuchikou + docs/真催眠音声執筆ガイド.md）へ1本ずつ更新する。
+  レビュー index.md を完成系へ1本ずつ更新する（催眠＝kuchikou＋真執筆ガイド／同人＝抱き枕＋同人ガイド2）。
   ユーザーが「完成系」「次の1本」「kansei」+ slug と言ったとき、または review:audit-kansei の未完了を直すときに使う。
 ---
 
@@ -24,11 +24,22 @@ description: >-
 
 ## 参照（毎回読む）
 
+**同人音声**（`tags` に `同人音声` または `authorName: 同人音声レビュー室`）のとき:
+
+1. 正本記事: `src/content/レビュー/dakimakura-kanojo-pretty-holic-yurukawa-kouhai/index.md`
+2. `src/content/記事/_同人音声執筆ガイド2.md`
+3. `.cursor/rules/review-doujin-canon.mdc`
+
+**催眠音声**（上記以外）のとき:
+
 1. 正本: `src/content/レビュー/kuchikou-saimin-count-trip-nouiki/index.md`
 2. `docs/真催眠音声執筆ガイド.md`（§1.6, §2, §3g, §3h, §3b-2, §4b, §11）
-3. 対象: `src/content/レビュー/<slug>/index.md`
-4. 採点根拠: 同フォルダの `_分析データ.json`（無ければユーザーに確認）
-5. `.cursor/rules/review-prose-voice.mdc` / `review-audio-work-only-scoring.mdc`
+
+**共通:**
+
+- 対象: `src/content/レビュー/<slug>/index.md`
+- 採点根拠: 同フォルダの `_分析データ.json`（無ければユーザーに確認）
+- `.cursor/rules/review-prose-voice.mdc` / `review-audio-work-only-scoring.mdc`
 
 ## 作業手順（1 slug）
 

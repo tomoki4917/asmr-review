@@ -1,0 +1,1401 @@
+{
+  "version": "v0.2-listen-free",
+  "slug": "dakimakura-kanojo-pretty-holic-yurukawa-kouhai",
+  "computedAt": "2026-05-24T13:55:35.762Z",
+  "method": "Whisper監査＋文字起こし＋waveform＋spatial＋DLsite傾向＋indexメタからの代理採点。音声未聴取。公開確定値ではない。",
+  "subScores": {
+    "recording": 9.6,
+    "environment": 8.8,
+    "spatial": 9,
+    "distance": 9.2,
+    "reality": 8.3,
+    "inevitability": 9.1,
+    "acting": 8.3,
+    "tempo": 8.8,
+    "concept": 9.2,
+    "yoin": 9.2
+  },
+  "axisScores": {
+    "scenario": 8.7,
+    "acoustic": 9.2,
+    "immersion": 9.1,
+    "pleasure": 8.6,
+    "satisfaction": 9.2
+  },
+  "confidence": {
+    "recording": "medium",
+    "environment": "medium",
+    "spatial": "medium",
+    "distance": "medium",
+    "reality": "medium",
+    "inevitability": "medium",
+    "acting": "medium",
+    "tempo": "medium",
+    "concept": "medium",
+    "yoin": "medium"
+  },
+  "whisperAudit": {
+    "global_reliability": 7.214,
+    "recommendations": [
+      {
+        "track": "Tr_07_「【安眠用】先輩が眠くなるまで…ぎゅ～っとしながらキスしてあげます…♡」",
+        "action": "se_hallucination_suspect",
+        "reason": "フィラー/息のみセグメント 7件"
+      }
+    ]
+  },
+  "evidence": {
+    "recording": "clip=0.000086, snr_proxy=15.789, silence=0.4977",
+    "environment": "non_speech=0.346, se_rms=0.015363",
+    "spatial": "pan_abs=0.44633693, pan_std=0.55814028",
+    "distance": "intimacy/min=1.671, hf=0.24577095",
+    "reality": "senpai/min=0.311, whisper_rel=7.214",
+    "inevitability": "intimacy_mono=0.8, rms_mono=0.6",
+    "acting": "emotion/min=0.592, whisper_rel=7.214",
+    "tempo": "surge/min=30.467, rms_mono=0.6",
+    "concept": "concept_hits=6/7, lex=32",
+    "yoin": "sleep=2117.9s, tail_ratio=0.525"
+  },
+  "features": {
+    "tracks": [
+      {
+        "name": "Tr_01_プロローグ_「私が抱き枕になってあげますよ♡」",
+        "duration_sec": 1545.4,
+        "speech_sec": 964.537,
+        "non_speech_ratio": 0.376,
+        "se_rms_mean": 0.02298,
+        "speech_rms_mean": 0.013908,
+        "snr_proxy": 27.232,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 26,
+            "キス": 0,
+            "耳": 7,
+            "添い寝": 2,
+            "抱き枕": 2,
+            "好き": 3,
+            "甘": 1,
+            "密着": 1,
+            "ぎゅ": 12,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 1
+          },
+          "total": 55
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 2,
+            "添い寝": 2,
+            "後輩": 4,
+            "密着": 1,
+            "恋人": 0,
+            "キス": 0,
+            "耳舐": 1,
+            "安眠": 0,
+            "眠": 0,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0,
+            "イチャラブ": 0
+          },
+          "total": 10
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 1,
+            "好き": 3,
+            "嬉し": 0,
+            "恥": 0,
+            "可愛い": 5,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 7
+          },
+          "total": 16
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 0
+        },
+        "senpai_count": 26,
+        "rms_mean": 0.014482,
+        "rms_p50": 0.005398,
+        "rms_p95": 0.061491,
+        "clip_ratio": 0.000065,
+        "centroid_mean_hz": 3067.76,
+        "tail_rms_ratio": 0.59,
+        "head_to_tail_rms": 2.653,
+        "pan_mean_abs": 0.7004228234291077,
+        "pan_std": 0.7888200879096985,
+        "whisper": {
+          "segment_count": 45,
+          "low_confidence_segments": 2,
+          "filler_segments": 1,
+          "low_word_ratio": 0.46,
+          "reliability": 8,
+          "flagged_samples": [
+            {
+              "start": 567.797,
+              "end": 593.432,
+              "text": "女の子に好き放題お耳ペロペロされて気持ちよくなるなんて年上の威厳なくなっちゃいま",
+              "meanScore": 0.329
+            },
+            {
+              "start": 1497.376,
+              "end": 1519.388,
+              "text": "気持ちよかったですか?もう、こんなにたくさん出しちゃって、エッチーな先輩です。も",
+              "meanScore": 0.291
+            }
+          ]
+        },
+        "is_sleep": false,
+        "dialogue_segments": 45
+      },
+      {
+        "name": "Tr_02_「変態さんなんですね、先輩は♡」",
+        "duration_sec": 1198.5,
+        "speech_sec": 916.173,
+        "non_speech_ratio": 0.236,
+        "se_rms_mean": 0.014688,
+        "speech_rms_mean": 0.005455,
+        "snr_proxy": 10.051,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 26,
+            "キス": 4,
+            "耳": 3,
+            "添い寝": 0,
+            "抱き枕": 1,
+            "好き": 0,
+            "甘": 1,
+            "密着": 0,
+            "ぎゅ": 2,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 0
+          },
+          "total": 37
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 1,
+            "添い寝": 0,
+            "後輩": 2,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 4,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 1,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0,
+            "イチャラブ": 0
+          },
+          "total": 8
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 1,
+            "好き": 0,
+            "嬉し": 0,
+            "恥": 0,
+            "可愛い": 2,
+            "やん": 0,
+            "んっ": 3,
+            "はぁ": 0
+          },
+          "total": 6
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 0
+        },
+        "senpai_count": 26,
+        "rms_mean": 0.005864,
+        "rms_p50": 0.001571,
+        "rms_p95": 0.027295,
+        "clip_ratio": 0.000083,
+        "centroid_mean_hz": 3559.95,
+        "tail_rms_ratio": 1.259,
+        "head_to_tail_rms": 0.795,
+        "pan_mean_abs": 0.3424657881259918,
+        "pan_std": 0.498969703912735,
+        "whisper": {
+          "segment_count": 38,
+          "low_confidence_segments": 5,
+          "filler_segments": 0,
+          "low_word_ratio": 0.466,
+          "reliability": 6.6,
+          "flagged_samples": [
+            {
+              "start": 66.164,
+              "end": 95.248,
+              "text": "はい、今日も可愛い後輩ちゃんが先輩の抱き枕になってあげますおっと、それじゃあ…え",
+              "meanScore": 0.343
+            },
+            {
+              "start": 291.948,
+              "end": 300.796,
+              "text": "でした 先輩は敏感さんですねでもその方がいじめがいがあって",
+              "meanScore": 0.347
+            },
+            {
+              "start": 326.684,
+              "end": 336.938,
+              "text": "力、抜けてきましたねいいですよーこのまま、とろけちゃってくださーい",
+              "meanScore": 0.251
+            },
+            {
+              "start": 688.177,
+              "end": 717.867,
+              "text": "私の体勝手に使っちゃうくらいおちんちん限界なんですか?素直で可愛いもうしょうがな",
+              "meanScore": 0.325
+            },
+            {
+              "start": 720.307,
+              "end": 749.939,
+              "text": "口で、気持ちよくしてあげますねそうですよーふーんふーんふーんふーんふーんふーんふ",
+              "meanScore": 0.199
+            }
+          ]
+        },
+        "is_sleep": false,
+        "dialogue_segments": 38
+      },
+      {
+        "name": "Tr_03_「私のこと、独り占めしたくないですか？」",
+        "duration_sec": 1519.8,
+        "speech_sec": 1104.844,
+        "non_speech_ratio": 0.273,
+        "se_rms_mean": 0.010919,
+        "speech_rms_mean": 0.007867,
+        "snr_proxy": 14.444,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 31,
+            "キス": 2,
+            "耳": 0,
+            "添い寝": 0,
+            "抱き枕": 0,
+            "好き": 11,
+            "甘": 0,
+            "密着": 0,
+            "ぎゅ": 1,
+            "恋人": 1,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 2
+          },
+          "total": 48
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 0,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 1,
+            "キス": 2,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 0,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0,
+            "イチャラブ": 0
+          },
+          "total": 3
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 0,
+            "好き": 11,
+            "嬉し": 2,
+            "恥": 1,
+            "可愛い": 1,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 0
+          },
+          "total": 15
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 1,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 1
+        },
+        "senpai_count": 31,
+        "rms_mean": 0.007121,
+        "rms_p50": 0.002279,
+        "rms_p95": 0.028279,
+        "clip_ratio": 0.000066,
+        "centroid_mean_hz": 3423.31,
+        "tail_rms_ratio": 2.058,
+        "head_to_tail_rms": 5.419,
+        "pan_mean_abs": 0.3993113040924072,
+        "pan_std": 0.5040648579597473,
+        "whisper": {
+          "segment_count": 48,
+          "low_confidence_segments": 2,
+          "filler_segments": 0,
+          "low_word_ratio": 0.406,
+          "reliability": 8.2,
+          "flagged_samples": [
+            {
+              "start": 350.879,
+              "end": 376.934,
+              "text": "これで…恋人同士ですね…センパイ…私…もう…我慢できないです…よいしょっと…",
+              "meanScore": 0.316
+            },
+            {
+              "start": 872.215,
+              "end": 892.302,
+              "text": "じゃあちょっとだけぎゅーってしてくれますか?ほらぎゅーぎゅーぎゅーぎゅー",
+              "meanScore": 0.347
+            }
+          ]
+        },
+        "is_sleep": false,
+        "dialogue_segments": 47
+      },
+      {
+        "name": "Tr_04_「はじめてのお家デートです…♡」",
+        "duration_sec": 1146.5,
+        "speech_sec": 837.244,
+        "non_speech_ratio": 0.27,
+        "se_rms_mean": 0.013955,
+        "speech_rms_mean": 0.008636,
+        "snr_proxy": 15.064,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 27,
+            "キス": 1,
+            "耳": 0,
+            "添い寝": 0,
+            "抱き枕": 0,
+            "好き": 15,
+            "甘": 0,
+            "密着": 0,
+            "ぎゅ": 3,
+            "恋人": 0,
+            "デート": 1,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 0
+          },
+          "total": 47
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 0,
+            "後輩": 1,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 1,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 0,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 1,
+            "イチャラブ": 0
+          },
+          "total": 3
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 0,
+            "好き": 15,
+            "嬉し": 0,
+            "恥": 1,
+            "可愛い": 2,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 0
+          },
+          "total": 18
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 0
+        },
+        "senpai_count": 27,
+        "rms_mean": 0.008384,
+        "rms_p50": 0.003017,
+        "rms_p95": 0.036442,
+        "clip_ratio": 0.000087,
+        "centroid_mean_hz": 3461.7,
+        "tail_rms_ratio": 2.584,
+        "head_to_tail_rms": 2.579,
+        "pan_mean_abs": 0.42949363589286804,
+        "pan_std": 0.5469105243682861,
+        "whisper": {
+          "segment_count": 36,
+          "low_confidence_segments": 2,
+          "filler_segments": 1,
+          "low_word_ratio": 0.522,
+          "reliability": 7.6,
+          "flagged_samples": [
+            {
+              "start": 281.127,
+              "end": 310.058,
+              "text": "先輩の家に着いた時から…ずっと…おまんこ…濡れちゃってました…ほら、先輩、服脱い",
+              "meanScore": 0.257
+            },
+            {
+              "start": 382.047,
+              "end": 408.199,
+              "text": "ぎゅーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー",
+              "meanScore": 0.124
+            }
+          ]
+        },
+        "is_sleep": false,
+        "dialogue_segments": 36
+      },
+      {
+        "name": "Tr_05_「もちろん、お風呂も一緒に入りますよね？♡」",
+        "duration_sec": 1287.1,
+        "speech_sec": 866.223,
+        "non_speech_ratio": 0.327,
+        "se_rms_mean": 0.021395,
+        "speech_rms_mean": 0.013159,
+        "snr_proxy": 19.194,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 18,
+            "キス": 3,
+            "耳": 1,
+            "添い寝": 0,
+            "抱き枕": 0,
+            "好き": 2,
+            "甘": 1,
+            "密着": 0,
+            "ぎゅ": 6,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 1
+          },
+          "total": 32
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 0,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 3,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 0,
+            "告白": 0,
+            "ラブホ": 1,
+            "お泊": 0,
+            "イチャラブ": 0
+          },
+          "total": 4
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 1,
+            "好き": 2,
+            "嬉し": 0,
+            "恥": 0,
+            "可愛い": 1,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 0
+          },
+          "total": 4
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 0
+        },
+        "senpai_count": 18,
+        "rms_mean": 0.013462,
+        "rms_p50": 0.005561,
+        "rms_p95": 0.056786,
+        "clip_ratio": 0.000155,
+        "centroid_mean_hz": 2665.63,
+        "tail_rms_ratio": 0.701,
+        "head_to_tail_rms": 2.098,
+        "pan_mean_abs": 0.5621143579483032,
+        "pan_std": 0.6323416829109192,
+        "whisper": {
+          "segment_count": 38,
+          "low_confidence_segments": 2,
+          "filler_segments": 0,
+          "low_word_ratio": 0.431,
+          "reliability": 7.9,
+          "flagged_samples": [
+            {
+              "start": 291.375,
+              "end": 301.351,
+              "text": "はぁ…すごい…おっぱいぬるぬる…動かした…勝手に…",
+              "meanScore": 0.288
+            },
+            {
+              "start": 764.165,
+              "end": 790.773,
+              "text": "先輩お風呂だからってすっごい出ましたねいつもならこのままお掃除フェラしちゃうんで",
+              "meanScore": 0.33
+            }
+          ]
+        },
+        "is_sleep": false,
+        "dialogue_segments": 37
+      },
+      {
+        "name": "Tr_06_「明日の夜まで…ず～っと二人きりですね♡」",
+        "duration_sec": 1022.1,
+        "speech_sec": 712.527,
+        "non_speech_ratio": 0.303,
+        "se_rms_mean": 0.014942,
+        "speech_rms_mean": 0.011064,
+        "snr_proxy": 16.775,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 15,
+            "キス": 0,
+            "耳": 3,
+            "添い寝": 0,
+            "抱き枕": 0,
+            "好き": 26,
+            "甘": 0,
+            "密着": 0,
+            "ぎゅ": 0,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 0
+          },
+          "total": 44
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 0,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 0,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 0,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 1,
+            "イチャラブ": 0
+          },
+          "total": 1
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 0,
+            "好き": 26,
+            "嬉し": 0,
+            "恥": 0,
+            "可愛い": 0,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 4
+          },
+          "total": 30
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 0
+        },
+        "senpai_count": 15,
+        "rms_mean": 0.01066,
+        "rms_p50": 0.004649,
+        "rms_p95": 0.043133,
+        "clip_ratio": 0.000098,
+        "centroid_mean_hz": 3265.45,
+        "tail_rms_ratio": 0.731,
+        "head_to_tail_rms": 2.006,
+        "pan_mean_abs": 0.41561734676361084,
+        "pan_std": 0.5421004295349121,
+        "whisper": {
+          "segment_count": 32,
+          "low_confidence_segments": 4,
+          "filler_segments": 2,
+          "low_word_ratio": 0.446,
+          "reliability": 6.8,
+          "flagged_samples": [
+            {
+              "start": 643.517,
+              "end": 649.85,
+              "text": "いいたくさん感じちゃってくださいねねえ",
+              "meanScore": 0.303
+            },
+            {
+              "start": 842.684,
+              "end": 871.54,
+              "text": "好き…好き…好きぃ…好きぃ…好きぃ…好きぃ…好きぃ…好きぃ…好きぃ…好きぃ…好き",
+              "meanScore": 0.331
+            },
+            {
+              "start": 916.107,
+              "end": 944.187,
+              "text": "はぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁ",
+              "meanScore": 0.316
+            },
+            {
+              "start": 1011.603,
+              "end": 1012.025,
+              "text": "チャンネル登録よろしくお願いします",
+              "meanScore": 0.044
+            }
+          ]
+        },
+        "is_sleep": false,
+        "dialogue_segments": 32
+      },
+      {
+        "name": "Tr_07_「【安眠用】先輩が眠くなるまで…ぎゅ～っとしながらキスしてあげます…♡」",
+        "duration_sec": 2117.9,
+        "speech_sec": 770.672,
+        "non_speech_ratio": 0.636,
+        "se_rms_mean": 0.008659,
+        "speech_rms_mean": 0.003558,
+        "snr_proxy": 7.761,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 4,
+            "キス": 0,
+            "耳": 0,
+            "添い寝": 1,
+            "抱き枕": 0,
+            "好き": 4,
+            "甘": 1,
+            "密着": 0,
+            "ぎゅ": 1,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 0
+          },
+          "total": 11
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 1,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 0,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 2,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0,
+            "イチャラブ": 0
+          },
+          "total": 3
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 1,
+            "好き": 4,
+            "嬉し": 0,
+            "恥": 0,
+            "可愛い": 3,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 0
+          },
+          "total": 8
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 0
+        },
+        "senpai_count": 4,
+        "rms_mean": 0.002348,
+        "rms_p50": 0.000453,
+        "rms_p95": 0.009642,
+        "clip_ratio": 0.000047,
+        "centroid_mean_hz": 5196.78,
+        "tail_rms_ratio": 0.525,
+        "head_to_tail_rms": 0.101,
+        "pan_mean_abs": 0.27493324875831604,
+        "pan_std": 0.3937746584415436,
+        "whisper": {
+          "segment_count": 43,
+          "low_confidence_segments": 9,
+          "filler_segments": 7,
+          "low_word_ratio": 0.474,
+          "reliability": 5.4,
+          "flagged_samples": [
+            {
+              "start": 111.743,
+              "end": 127.765,
+              "text": "ゆっくり…リロックスしてください…気を…",
+              "meanScore": 0.291
+            },
+            {
+              "start": 164.998,
+              "end": 169.439,
+              "text": "あったかいですねお肌とお肌が触れ合って安心しますね",
+              "meanScore": 0.322
+            },
+            {
+              "start": 172.375,
+              "end": 198.61,
+              "text": "こうやってぎゅーってしてポカポカになれば眠たくなりますよ先輩…目開けたままじゃ寝",
+              "meanScore": 0.296
+            },
+            {
+              "start": 450.526,
+              "end": 466.795,
+              "text": "履き心地はいかがですか?ぎゅーぎゅーぎゅーぎゅー",
+              "meanScore": 0.338
+            },
+            {
+              "start": 484.799,
+              "end": 507.361,
+              "text": "おやすみなさい",
+              "meanScore": 0.285
+            },
+            {
+              "start": 824.51,
+              "end": 838.432,
+              "text": "休みの時間ですよゆっくり深く息しましょうね",
+              "meanScore": 0.304
+            },
+            {
+              "start": 1278.43,
+              "end": 1283.56,
+              "text": "ご視聴ありがとうございました",
+              "meanScore": 0.315
+            },
+            {
+              "start": 1766.975,
+              "end": 1766.995,
+              "text": "ん",
+              "meanScore": 0
+            }
+          ]
+        },
+        "is_sleep": true,
+        "dialogue_segments": 40
+      }
+    ],
+    "global": {
+      "duration_sec": 9837.3,
+      "speech_sec": 770.672,
+      "silence_ratio": 0.4977,
+      "rms_mean": 0.00844122,
+      "rms_cv": 1.9350662581949056,
+      "surge_per_min": 30.467,
+      "centroid_mean_hz": 3594.387,
+      "centroid_std_hz": 3299.692,
+      "clip_ratio_mean": 0.000086,
+      "snr_proxy_mean": 15.789,
+      "non_speech_ratio_mean": 0.346,
+      "se_rms_mean": 0.015363,
+      "intimacy_density_per_min": 1.671,
+      "senpai_ratio": 0.311,
+      "concept_lex_total": 32,
+      "concept_hit_tracks": 6,
+      "emotion_lex_density": 0.592,
+      "intimacy_monotonic": 0.8,
+      "rms_monotonic": 0.6,
+      "whisper_reliability": 7.214,
+      "dlsite_review_count": 4
+    },
+    "spatial": {
+      "tracks_n": 7,
+      "total_duration_sec": 9836.921,
+      "pan_linear_mean_abs_mean": 0.44633693,
+      "pan_linear_std_mean": 0.55814028,
+      "centroid_hz_mean_of_track_means": 3455.01148289,
+      "hf_ratio_ge_4khz_mean_of_track_means": 0.24577095,
+      "centroid_hz_std_pooled": 717.174015
+    },
+    "whisperAudits": [
+      {
+        "track": "Tr_01_プロローグ_「私が抱き枕になってあげますよ♡」",
+        "segment_count": 45,
+        "low_confidence_segments": 2,
+        "filler_segments": 1,
+        "low_word_ratio": 0.46,
+        "reliability": 8,
+        "flagged_samples": [
+          {
+            "start": 567.797,
+            "end": 593.432,
+            "text": "女の子に好き放題お耳ペロペロされて気持ちよくなるなんて年上の威厳なくなっちゃいま",
+            "meanScore": 0.329
+          },
+          {
+            "start": 1497.376,
+            "end": 1519.388,
+            "text": "気持ちよかったですか?もう、こんなにたくさん出しちゃって、エッチーな先輩です。も",
+            "meanScore": 0.291
+          }
+        ]
+      },
+      {
+        "track": "Tr_02_「変態さんなんですね、先輩は♡」",
+        "segment_count": 38,
+        "low_confidence_segments": 5,
+        "filler_segments": 0,
+        "low_word_ratio": 0.466,
+        "reliability": 6.6,
+        "flagged_samples": [
+          {
+            "start": 66.164,
+            "end": 95.248,
+            "text": "はい、今日も可愛い後輩ちゃんが先輩の抱き枕になってあげますおっと、それじゃあ…え",
+            "meanScore": 0.343
+          },
+          {
+            "start": 291.948,
+            "end": 300.796,
+            "text": "でした 先輩は敏感さんですねでもその方がいじめがいがあって",
+            "meanScore": 0.347
+          },
+          {
+            "start": 326.684,
+            "end": 336.938,
+            "text": "力、抜けてきましたねいいですよーこのまま、とろけちゃってくださーい",
+            "meanScore": 0.251
+          },
+          {
+            "start": 688.177,
+            "end": 717.867,
+            "text": "私の体勝手に使っちゃうくらいおちんちん限界なんですか?素直で可愛いもうしょうがな",
+            "meanScore": 0.325
+          },
+          {
+            "start": 720.307,
+            "end": 749.939,
+            "text": "口で、気持ちよくしてあげますねそうですよーふーんふーんふーんふーんふーんふーんふ",
+            "meanScore": 0.199
+          }
+        ]
+      },
+      {
+        "track": "Tr_03_「私のこと、独り占めしたくないですか？」",
+        "segment_count": 48,
+        "low_confidence_segments": 2,
+        "filler_segments": 0,
+        "low_word_ratio": 0.406,
+        "reliability": 8.2,
+        "flagged_samples": [
+          {
+            "start": 350.879,
+            "end": 376.934,
+            "text": "これで…恋人同士ですね…センパイ…私…もう…我慢できないです…よいしょっと…",
+            "meanScore": 0.316
+          },
+          {
+            "start": 872.215,
+            "end": 892.302,
+            "text": "じゃあちょっとだけぎゅーってしてくれますか?ほらぎゅーぎゅーぎゅーぎゅー",
+            "meanScore": 0.347
+          }
+        ]
+      },
+      {
+        "track": "Tr_04_「はじめてのお家デートです…♡」",
+        "segment_count": 36,
+        "low_confidence_segments": 2,
+        "filler_segments": 1,
+        "low_word_ratio": 0.522,
+        "reliability": 7.6,
+        "flagged_samples": [
+          {
+            "start": 281.127,
+            "end": 310.058,
+            "text": "先輩の家に着いた時から…ずっと…おまんこ…濡れちゃってました…ほら、先輩、服脱い",
+            "meanScore": 0.257
+          },
+          {
+            "start": 382.047,
+            "end": 408.199,
+            "text": "ぎゅーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー",
+            "meanScore": 0.124
+          }
+        ]
+      },
+      {
+        "track": "Tr_05_「もちろん、お風呂も一緒に入りますよね？♡」",
+        "segment_count": 38,
+        "low_confidence_segments": 2,
+        "filler_segments": 0,
+        "low_word_ratio": 0.431,
+        "reliability": 7.9,
+        "flagged_samples": [
+          {
+            "start": 291.375,
+            "end": 301.351,
+            "text": "はぁ…すごい…おっぱいぬるぬる…動かした…勝手に…",
+            "meanScore": 0.288
+          },
+          {
+            "start": 764.165,
+            "end": 790.773,
+            "text": "先輩お風呂だからってすっごい出ましたねいつもならこのままお掃除フェラしちゃうんで",
+            "meanScore": 0.33
+          }
+        ]
+      },
+      {
+        "track": "Tr_06_「明日の夜まで…ず～っと二人きりですね♡」",
+        "segment_count": 32,
+        "low_confidence_segments": 4,
+        "filler_segments": 2,
+        "low_word_ratio": 0.446,
+        "reliability": 6.8,
+        "flagged_samples": [
+          {
+            "start": 643.517,
+            "end": 649.85,
+            "text": "いいたくさん感じちゃってくださいねねえ",
+            "meanScore": 0.303
+          },
+          {
+            "start": 842.684,
+            "end": 871.54,
+            "text": "好き…好き…好きぃ…好きぃ…好きぃ…好きぃ…好きぃ…好きぃ…好きぃ…好きぃ…好き",
+            "meanScore": 0.331
+          },
+          {
+            "start": 916.107,
+            "end": 944.187,
+            "text": "はぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁ",
+            "meanScore": 0.316
+          },
+          {
+            "start": 1011.603,
+            "end": 1012.025,
+            "text": "チャンネル登録よろしくお願いします",
+            "meanScore": 0.044
+          }
+        ]
+      },
+      {
+        "track": "Tr_07_「【安眠用】先輩が眠くなるまで…ぎゅ～っとしながらキスしてあげます…♡」",
+        "segment_count": 43,
+        "low_confidence_segments": 9,
+        "filler_segments": 7,
+        "low_word_ratio": 0.474,
+        "reliability": 5.4,
+        "flagged_samples": [
+          {
+            "start": 111.743,
+            "end": 127.765,
+            "text": "ゆっくり…リロックスしてください…気を…",
+            "meanScore": 0.291
+          },
+          {
+            "start": 164.998,
+            "end": 169.439,
+            "text": "あったかいですねお肌とお肌が触れ合って安心しますね",
+            "meanScore": 0.322
+          },
+          {
+            "start": 172.375,
+            "end": 198.61,
+            "text": "こうやってぎゅーってしてポカポカになれば眠たくなりますよ先輩…目開けたままじゃ寝",
+            "meanScore": 0.296
+          },
+          {
+            "start": 450.526,
+            "end": 466.795,
+            "text": "履き心地はいかがですか?ぎゅーぎゅーぎゅーぎゅー",
+            "meanScore": 0.338
+          },
+          {
+            "start": 484.799,
+            "end": 507.361,
+            "text": "おやすみなさい",
+            "meanScore": 0.285
+          },
+          {
+            "start": 824.51,
+            "end": 838.432,
+            "text": "休みの時間ですよゆっくり深く息しましょうね",
+            "meanScore": 0.304
+          },
+          {
+            "start": 1278.43,
+            "end": 1283.56,
+            "text": "ご視聴ありがとうございました",
+            "meanScore": 0.315
+          },
+          {
+            "start": 1766.975,
+            "end": 1766.995,
+            "text": "ん",
+            "meanScore": 0
+          }
+        ]
+      }
+    ],
+    "caveats": {
+      "manual": null,
+      "auto": {
+        "generatedAt": "2026-05-24T13:55:35.635Z",
+        "tracks": [
+          {
+            "file": "Tr_01_プロローグ_「私が抱き枕になってあげますよ♡」",
+            "segment_count": 45,
+            "low_confidence_segments": 2,
+            "filler_segments": 1,
+            "low_word_ratio": 0.46,
+            "reliability": 8,
+            "flagged_samples": [
+              {
+                "start": 567.797,
+                "end": 593.432,
+                "text": "女の子に好き放題お耳ペロペロされて気持ちよくなるなんて年上の威厳なくなっちゃいま",
+                "meanScore": 0.329
+              },
+              {
+                "start": 1497.376,
+                "end": 1519.388,
+                "text": "気持ちよかったですか?もう、こんなにたくさん出しちゃって、エッチーな先輩です。も",
+                "meanScore": 0.291
+              }
+            ]
+          },
+          {
+            "file": "Tr_02_「変態さんなんですね、先輩は♡」",
+            "segment_count": 38,
+            "low_confidence_segments": 5,
+            "filler_segments": 0,
+            "low_word_ratio": 0.466,
+            "reliability": 6.6,
+            "flagged_samples": [
+              {
+                "start": 66.164,
+                "end": 95.248,
+                "text": "はい、今日も可愛い後輩ちゃんが先輩の抱き枕になってあげますおっと、それじゃあ…え",
+                "meanScore": 0.343
+              },
+              {
+                "start": 291.948,
+                "end": 300.796,
+                "text": "でした 先輩は敏感さんですねでもその方がいじめがいがあって",
+                "meanScore": 0.347
+              },
+              {
+                "start": 326.684,
+                "end": 336.938,
+                "text": "力、抜けてきましたねいいですよーこのまま、とろけちゃってくださーい",
+                "meanScore": 0.251
+              },
+              {
+                "start": 688.177,
+                "end": 717.867,
+                "text": "私の体勝手に使っちゃうくらいおちんちん限界なんですか?素直で可愛いもうしょうがな",
+                "meanScore": 0.325
+              },
+              {
+                "start": 720.307,
+                "end": 749.939,
+                "text": "口で、気持ちよくしてあげますねそうですよーふーんふーんふーんふーんふーんふーんふ",
+                "meanScore": 0.199
+              }
+            ]
+          },
+          {
+            "file": "Tr_03_「私のこと、独り占めしたくないですか？」",
+            "segment_count": 48,
+            "low_confidence_segments": 2,
+            "filler_segments": 0,
+            "low_word_ratio": 0.406,
+            "reliability": 8.2,
+            "flagged_samples": [
+              {
+                "start": 350.879,
+                "end": 376.934,
+                "text": "これで…恋人同士ですね…センパイ…私…もう…我慢できないです…よいしょっと…",
+                "meanScore": 0.316
+              },
+              {
+                "start": 872.215,
+                "end": 892.302,
+                "text": "じゃあちょっとだけぎゅーってしてくれますか?ほらぎゅーぎゅーぎゅーぎゅー",
+                "meanScore": 0.347
+              }
+            ]
+          },
+          {
+            "file": "Tr_04_「はじめてのお家デートです…♡」",
+            "segment_count": 36,
+            "low_confidence_segments": 2,
+            "filler_segments": 1,
+            "low_word_ratio": 0.522,
+            "reliability": 7.6,
+            "flagged_samples": [
+              {
+                "start": 281.127,
+                "end": 310.058,
+                "text": "先輩の家に着いた時から…ずっと…おまんこ…濡れちゃってました…ほら、先輩、服脱い",
+                "meanScore": 0.257
+              },
+              {
+                "start": 382.047,
+                "end": 408.199,
+                "text": "ぎゅーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー",
+                "meanScore": 0.124
+              }
+            ]
+          },
+          {
+            "file": "Tr_05_「もちろん、お風呂も一緒に入りますよね？♡」",
+            "segment_count": 38,
+            "low_confidence_segments": 2,
+            "filler_segments": 0,
+            "low_word_ratio": 0.431,
+            "reliability": 7.9,
+            "flagged_samples": [
+              {
+                "start": 291.375,
+                "end": 301.351,
+                "text": "はぁ…すごい…おっぱいぬるぬる…動かした…勝手に…",
+                "meanScore": 0.288
+              },
+              {
+                "start": 764.165,
+                "end": 790.773,
+                "text": "先輩お風呂だからってすっごい出ましたねいつもならこのままお掃除フェラしちゃうんで",
+                "meanScore": 0.33
+              }
+            ]
+          },
+          {
+            "file": "Tr_06_「明日の夜まで…ず～っと二人きりですね♡」",
+            "segment_count": 32,
+            "low_confidence_segments": 4,
+            "filler_segments": 2,
+            "low_word_ratio": 0.446,
+            "reliability": 6.8,
+            "flagged_samples": [
+              {
+                "start": 643.517,
+                "end": 649.85,
+                "text": "いいたくさん感じちゃってくださいねねえ",
+                "meanScore": 0.303
+              },
+              {
+                "start": 842.684,
+                "end": 871.54,
+                "text": "好き…好き…好きぃ…好きぃ…好きぃ…好きぃ…好きぃ…好きぃ…好きぃ…好きぃ…好き",
+                "meanScore": 0.331
+              },
+              {
+                "start": 916.107,
+                "end": 944.187,
+                "text": "はぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁはぁ",
+                "meanScore": 0.316
+              },
+              {
+                "start": 1011.603,
+                "end": 1012.025,
+                "text": "チャンネル登録よろしくお願いします",
+                "meanScore": 0.044
+              }
+            ]
+          },
+          {
+            "file": "Tr_07_「【安眠用】先輩が眠くなるまで…ぎゅ～っとしながらキスしてあげます…♡」",
+            "segment_count": 43,
+            "low_confidence_segments": 9,
+            "filler_segments": 7,
+            "low_word_ratio": 0.474,
+            "reliability": 5.4,
+            "flagged_samples": [
+              {
+                "start": 111.743,
+                "end": 127.765,
+                "text": "ゆっくり…リロックスしてください…気を…",
+                "meanScore": 0.291
+              },
+              {
+                "start": 164.998,
+                "end": 169.439,
+                "text": "あったかいですねお肌とお肌が触れ合って安心しますね",
+                "meanScore": 0.322
+              },
+              {
+                "start": 172.375,
+                "end": 198.61,
+                "text": "こうやってぎゅーってしてポカポカになれば眠たくなりますよ先輩…目開けたままじゃ寝",
+                "meanScore": 0.296
+              },
+              {
+                "start": 450.526,
+                "end": 466.795,
+                "text": "履き心地はいかがですか?ぎゅーぎゅーぎゅーぎゅー",
+                "meanScore": 0.338
+              },
+              {
+                "start": 484.799,
+                "end": 507.361,
+                "text": "おやすみなさい",
+                "meanScore": 0.285
+              },
+              {
+                "start": 824.51,
+                "end": 838.432,
+                "text": "休みの時間ですよゆっくり深く息しましょうね",
+                "meanScore": 0.304
+              },
+              {
+                "start": 1278.43,
+                "end": 1283.56,
+                "text": "ご視聴ありがとうございました",
+                "meanScore": 0.315
+              },
+              {
+                "start": 1766.975,
+                "end": 1766.995,
+                "text": "ん",
+                "meanScore": 0
+              }
+            ]
+          }
+        ],
+        "recommendations": [
+          {
+            "track": "Tr_07_「【安眠用】先輩が眠くなるまで…ぎゅ～っとしながらキスしてあげます…♡」",
+            "action": "se_hallucination_suspect",
+            "reason": "フィラー/息のみセグメント 7件"
+          }
+        ],
+        "global_reliability": 7.214
+      }
+    },
+    "meta": {
+      "conceptKeywords": [
+        "抱き枕",
+        "添い寝",
+        "後輩",
+        "密着",
+        "恋人",
+        "キス",
+        "耳舐",
+        "安眠",
+        "眠",
+        "告白",
+        "ラブホ",
+        "お泊",
+        "イチャラブ"
+      ],
+      "sourceText": "抱き枕カノジョ-Pretty Holic-～ぎゅ～っと密着しながら添い寝エッチしてくれるゆるカワ後輩ちゃん～\n全部この後輩と過ごす一本道――生徒会書記・戸丸更紗（陽向葵ゅか）が、先輩専用の抱き枕として添い寝から告白・デート・ラブホ・お泊まりへ進みます。からかい交じりの小悪魔トーンに、耳舐めとキスのKU100近接が重なり、距離だけが縮んでいきます。\n\n  恋人になってからは「好き好き」のイチャラブと肯定が増え、純愛寄りでオホ声に頼らないあまあまさが本編6パート約2時間8分続きます。【安眠用】キスは購入パッケージに同梱され、就寝導線として別枠で機能します。\n【レビュー】抱き枕カノジョ-Pretty Holic-～ぎゅ～っと密着しながら添い寝エッチしてくれるゆるカワ後輩ちゃん～\n同人音声\nバイノーラル\n抱き枕\n添い寝\n後輩\n恋人\n生徒会\n陽向葵ゅか\nオトヨメ\nvendor: dlsite"
+    },
+    "conceptLex": [
+      "抱き枕",
+      "添い寝",
+      "後輩",
+      "密着",
+      "恋人",
+      "キス",
+      "耳舐",
+      "安眠",
+      "眠",
+      "告白",
+      "ラブホ",
+      "お泊",
+      "イチャラブ"
+    ]
+  }
+}

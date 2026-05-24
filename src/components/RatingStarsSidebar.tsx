@@ -19,7 +19,6 @@ export type ReviewStarFilterCounts = Record<
 >;
 
 const SECTION_HYPNOSIS_INTRO = "hypnosis-intro";
-const SECTION_AUTHOR = "author-posts-heading";
 
 function buildHomeHref(opts: {
   genre?: string | null;
@@ -252,9 +251,8 @@ export function RatingStarsSidebar({ starCounts, sortOrder }: Props) {
           </li>
           <li>
             <Link
-              href={`/#${SECTION_AUTHOR}`}
-              className={linkClass(hash === SECTION_AUTHOR)}
-              scroll={true}
+              href="/articles/"
+              className={linkClass(false)}
             >
               記事一覧
             </Link>

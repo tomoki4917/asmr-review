@@ -22,7 +22,7 @@ export default function VoiceActorsPage() {
   const useDevChrome = process.env.NODE_ENV === "development";
 
   return (
-    <main className="mx-auto w-full max-w-2xl pb-10">
+    <main className="mx-auto w-full max-w-3xl pb-10">
       {useDevChrome ? (
         <>
           <p className="border-b border-amber-600/30 bg-amber-950/20 px-4 py-2 text-center text-[11px] font-medium tracking-wide text-amber-200/90">
@@ -36,10 +36,7 @@ export default function VoiceActorsPage() {
         voiceActors={voiceActors}
         reviewBySlug={reviewBySlug}
         listBasePath={useDevChrome ? DEV_SITE_NEXT_LIST_BASE : "/"}
-        homeHref={useDevChrome ? "/dev/site-next/" : "/"}
-        homeLabel={
-          useDevChrome ? "次サイト草案トップへ戻る" : "トップへ戻る"
-        }
+        breadcrumbHref={useDevChrome ? DEV_SITE_NEXT_LIST_BASE : "/"}
       />
     </main>
   );

@@ -3,7 +3,10 @@
 import {
   buildReviewListHref,
   DEV_SITE_NEXT_LIST_BASE,
+  FEATURED_PICKS_HUB_PATH,
+  KNOWLEDGE_COLUMNS_HUB_PATH,
   VOICE_ACTORS_HUB_PATH,
+  WORKS_LIST_HUB_PATH,
 } from "@/lib/review-list-href";
 
 export type SiteNextDraftCategory = {
@@ -17,16 +20,16 @@ export type SiteNextDraftCategory = {
 export const SITE_NEXT_DRAWER_LINKS: { title: string; href: string }[] = [
   { title: "催眠音声ビギナーズガイド", href: "/beginner/" },
   {
-    title: "新着記事一覧",
-    href: buildReviewListHref(DEV_SITE_NEXT_LIST_BASE, { sort: "new" }),
+    title: "作品一覧",
+    href: WORKS_LIST_HUB_PATH,
   },
   {
     title: "厳選・おすすめ",
-    href: buildReviewListHref(DEV_SITE_NEXT_LIST_BASE, { stars: "10" }),
+    href: FEATURED_PICKS_HUB_PATH,
   },
   {
     title: "セール中",
-    href: buildReviewListHref(DEV_SITE_NEXT_LIST_BASE, { sale: true }),
+    href: buildReviewListHref(WORKS_LIST_HUB_PATH, { sale: true }),
   },
   {
     title: "声優別おすすめ作品",
@@ -43,21 +46,21 @@ export const SITE_NEXT_CATEGORY_GRID: SiteNextDraftCategory[] = [
     href: "/beginner/",
   },
   {
-    emoji: "📰",
-    title: "新着記事一覧",
-    mobileTitleLines: ["新着記事", "一覧"],
-    href: buildReviewListHref(DEV_SITE_NEXT_LIST_BASE, { sort: "new" }),
+    emoji: "🔍",
+    title: "作品一覧",
+    mobileTitleLines: ["作品", "一覧"],
+    href: WORKS_LIST_HUB_PATH,
   },
   {
     emoji: "🏷️",
     title: "セール中",
-    href: buildReviewListHref(DEV_SITE_NEXT_LIST_BASE, { sale: true }),
+    href: buildReviewListHref(WORKS_LIST_HUB_PATH, { sale: true }),
   },
   {
     emoji: "👑",
     title: "厳選・おすすめ",
     mobileTitleLines: ["厳選・", "おすすめ"],
-    href: buildReviewListHref(DEV_SITE_NEXT_LIST_BASE, { stars: "10" }),
+    href: FEATURED_PICKS_HUB_PATH,
   },
   {
     emoji: "🎧",
@@ -73,7 +76,7 @@ export const SITE_NEXT_CATEGORY_GRID: SiteNextDraftCategory[] = [
     emoji: "📚",
     title: "知識・コラム",
     mobileTitleLines: ["知識・", "コラム"],
-    href: "/#author-posts-heading",
+    href: KNOWLEDGE_COLUMNS_HUB_PATH,
   },
   {
     emoji: "⭕",

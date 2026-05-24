@@ -38,6 +38,12 @@ import {
   reviewMatchesVoiceActorTone,
   VOICE_ACTOR_TONE_LABELS,
 } from "@/lib/voice-actor-tone";
+import {
+  ARTICLE_LIST_CATEGORY_LABELS,
+  articleTagsMatchCategory,
+  parseArticleListCategory,
+  type ArticleListCategory,
+} from "@/lib/article-list-category";
 import type { Review } from "@/lib/types";
 import { FileMarkdownArticleCard } from "@/components/FileMarkdownArticleCard";
 import { ReviewCard } from "@/components/ReviewCard";
@@ -179,12 +185,17 @@ function buildSearchHref(
     sale?: boolean | null;
     clearSale?: boolean;
     sort?: "new" | "old";
+    category?: ArticleListCategory | null;
   }
 ): string {
   const p = new URLSearchParams(sp.toString());
   if (patch.genre !== undefined) {
     if (patch.genre === null) p.delete("genre");
     else p.set("genre", patch.genre);
+  }
+  if (patch.category !== undefined) {
+    if (patch.category === null) p.delete("category");
+    else p.set("category", patch.category);
   }
   if (patch.clearStars === true) {
     p.delete("stars");
@@ -331,15 +342,24 @@ type Props = {
   basePath?: string;
   /** レビュー一覧のみ（記事ブロック・ページ内リンクを非表示） */
   reviewsOnly?: boolean;
+  /** 記事一覧のみ（レビューブロック非表示） */
+  articlesOnly?: boolean;
+  /** 記事一覧の見出し（articlesOnly 時） */
+  listHeading?: string;
   /** 上マージンを抑える */
   compact?: boolean;
+  /** 専用ハブで CategoryHubHeader を使うとき、一覧の h2 を隠す */
+  hideListHeading?: boolean;
 };
 
 export function HomeReviewList({
   markdownReviews,
   basePath = "/",
   reviewsOnly = false,
+  articlesOnly = false,
+  listHeading = "記事一覧",
   compact = false,
+  hideListHeading = false,
 }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -363,6 +383,8 @@ export function HomeReviewList({
   const voiceFilter = searchParams.get("voice");
   const toneFilter = parseVoiceActorToneId(searchParams.get("tone"));
 
+  const categoryFilter = parseArticleListCategory(searchParams.get("category"));
+
   const [posted, setPosted] = useState<PostedReview[]>([]);
 
   const reloadPosted = useCallback(() => {
@@ -378,7 +400,8 @@ export function HomeReviewList({
       Boolean(searchParams.get("sort")) ||
       Boolean(searchParams.get("genre")) ||
       Boolean(searchParams.get("voice")) ||
-      Boolean(searchParams.get("tone"));
+      Boolean(searchParams.get("tone")) ||
+      Boolean(searchParams.get("category"));
     const shouldScrollToFilters =
       hasListQuery ||
       hash === REVIEWS_LIST_FILTERS_ID ||
@@ -546,6 +569,52 @@ export function HomeReviewList({
     );
   }, [markdownArticles, articlePosts]);
 
+  type ArticleEntry =
+    | { source: "file"; review: Review; t: number }
+    | { source: "local"; post: PostedReview; t: number };
+
+  const filteredArticleEntries = useMemo(() => {
+    const matchesCategory = (tags: string[]) =>
+      articleTagsMatchCategory(tags, categoryFilter);
+
+    let list: ArticleEntry[] = combinedArticleEntries.filter((entry) => {
+      const tags =
+        entry.source === "file" ? entry.review.tags : entry.post.tags;
+      return matchesCategory(tags);
+    });
+
+    list = [...list].sort((a, b) => {
+      const diff = (Number.isNaN(b.t) ? 0 : b.t) - (Number.isNaN(a.t) ? 0 : a.t);
+      return sortOrder === "old" ? -diff : diff;
+    });
+
+    return list;
+  }, [combinedArticleEntries, categoryFilter, sortOrder]);
+
+  const articleCategoryCounts = useMemo(() => {
+    const countFor = (cat: ArticleListCategory | null) =>
+      combinedArticleEntries.filter((entry) => {
+        const tags =
+          entry.source === "file" ? entry.review.tags : entry.post.tags;
+        return articleTagsMatchCategory(tags, cat);
+      }).length;
+
+    return {
+      all: combinedArticleEntries.length,
+      listening: countFor("listening"),
+      guide: countFor("guide"),
+      recommend: countFor("recommend"),
+    };
+  }, [combinedArticleEntries]);
+
+  const articleScopeCount = useMemo(() => {
+    return combinedArticleEntries.filter((entry) => {
+      const tags =
+        entry.source === "file" ? entry.review.tags : entry.post.tags;
+      return articleTagsMatchCategory(tags, categoryFilter);
+    }).length;
+  }, [combinedArticleEntries, categoryFilter]);
+
   const genrePillCounts = useMemo(
     () => ({
       all: mergedReviews.length,
@@ -555,11 +624,13 @@ export function HomeReviewList({
     [mergedReviews]
   );
 
-  const hasAnyContent = reviewsOnly
-    ? mergedReviews.length > 0
-    : mergedReviews.length > 0 ||
-      markdownArticles.length > 0 ||
-      articlePosts.length > 0;
+  const hasAnyContent = articlesOnly
+    ? markdownArticles.length > 0 || articlePosts.length > 0
+    : reviewsOnly
+      ? mergedReviews.length > 0
+      : mergedReviews.length > 0 ||
+        markdownArticles.length > 0 ||
+        articlePosts.length > 0;
 
   if (!hasAnyContent) {
     return (
@@ -591,14 +662,21 @@ export function HomeReviewList({
     "shrink-0 text-sm font-medium text-slate-300 sm:text-[0.9375rem]";
   const selectBase =
     "min-h-9 rounded-full border border-violet-400/45 bg-slate-900/70 px-3.5 py-1.5 text-sm font-medium text-violet-100 shadow-sm shadow-slate-950/20 transition hover:border-fuchsia-400/50 hover:bg-slate-800/90 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/45";
-  const currentSortKey = saleFilter
-    ? "sale"
-    : starFilter === null
-      ? sortOrder === "old"
-        ? "old"
-        : "new"
-      : String(starsRaw);
+  const currentSortKey = articlesOnly
+    ? sortOrder === "old"
+      ? "old"
+      : "new"
+    : saleFilter
+      ? "sale"
+      : starFilter === null
+        ? sortOrder === "old"
+          ? "old"
+          : "new"
+        : String(starsRaw);
   const currentGenreKey = genreFilter ?? "all";
+  const currentArticleCategoryKey = categoryFilter ?? "all";
+  const listSectionId = articlesOnly ? "articles-heading" : "reviews-heading";
+  const listSectionTitle = articlesOnly ? listHeading : "レビュー一覧";
 
   const outerClass = compact
     ? "mt-0 space-y-0"
@@ -608,23 +686,29 @@ export function HomeReviewList({
   return (
     <div className={outerClass}>
       <div className={innerClass}>
-        <section aria-labelledby="reviews-heading">
+        <section
+          aria-labelledby={hideListHeading ? undefined : listSectionId}
+          aria-label={hideListHeading ? "作品レビュー一覧" : undefined}
+        >
           <div className={compact ? "mb-4 space-y-3" : "mb-6 space-y-3 sm:mb-7 sm:space-y-3.5"}>
             <div
               id={REVIEWS_LIST_FILTERS_ID}
               className={`scroll-mt-24 sm:scroll-mt-28 ${filterBarWrap}`}
               role="group"
-              aria-label="絞り込みとジャンル"
+              aria-label={articlesOnly ? "絞り込みとカテゴリ" : "絞り込みとジャンル"}
             >
               <span className={filterBarLabel}>絞り込み:</span>
               <select
-                aria-label="並び順と評価"
+                aria-label={articlesOnly ? "並び順" : "並び順と評価"}
                 className={selectBase}
                 value={currentSortKey}
                 onChange={(e) => {
                   const next = e.currentTarget.value;
-                  const href =
-                    next === "new"
+                  const href = articlesOnly
+                    ? next === "old"
+                      ? buildSearchHref(basePath, searchParams, { sort: "old" })
+                      : buildSearchHref(basePath, searchParams, { sort: "new" })
+                    : next === "new"
                       ? hrefListSortNew(basePath, searchParams)
                       : next === "old"
                         ? hrefListSortOld(basePath, searchParams)
@@ -634,47 +718,95 @@ export function HomeReviewList({
                   router.push(href, { scroll: false });
                 }}
               >
-                <option value="new">新しい順（{listScopeCount}）</option>
-                <option value="old">古い順（{listScopeCount}）</option>
-                <option value="sale">セール中（{saleScopeCount}）</option>
-                {STAR_FILTER_LINKS.map(({ param, label }) => {
-                  const countKey =
-                    param === "lte5"
-                      ? ("lte5" as const)
-                      : (param as "10" | "9" | "8" | "7" | "6");
-                  const count = starCountsForFilter[countKey];
-                  return (
-                    <option key={param} value={param}>
-                      {label}（{count}）
+                {articlesOnly ? (
+                  <>
+                    <option value="new">新しい順（{articleScopeCount}）</option>
+                    <option value="old">古い順（{articleScopeCount}）</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="new">新しい順（{listScopeCount}）</option>
+                    <option value="old">古い順（{listScopeCount}）</option>
+                    <option value="sale">セール中（{saleScopeCount}）</option>
+                    {STAR_FILTER_LINKS.map(({ param, label }) => {
+                      const countKey =
+                        param === "lte5"
+                          ? ("lte5" as const)
+                          : (param as "10" | "9" | "8" | "7" | "6");
+                      const count = starCountsForFilter[countKey];
+                      return (
+                        <option key={param} value={param}>
+                          {label}（{count}）
+                        </option>
+                      );
+                    })}
+                  </>
+                )}
+              </select>
+              {articlesOnly ? (
+                <>
+                  <span className={filterBarLabel}>カテゴリ:</span>
+                  <select
+                    aria-label="カテゴリ"
+                    className={selectBase}
+                    value={currentArticleCategoryKey}
+                    onChange={(e) => {
+                      const next = e.currentTarget.value;
+                      const href = buildSearchHref(basePath, searchParams, {
+                        category:
+                          next === "listening" ||
+                          next === "guide" ||
+                          next === "recommend"
+                            ? next
+                            : null,
+                      });
+                      router.push(href, { scroll: false });
+                    }}
+                  >
+                    <option value="all">全て（{articleCategoryCounts.all}）</option>
+                    <option value="listening">
+                      {ARTICLE_LIST_CATEGORY_LABELS.listening}（
+                      {articleCategoryCounts.listening}）
                     </option>
-                  );
-                })}
-              </select>
-              <span className={filterBarLabel}>ジャンル:</span>
-              <select
-                aria-label="ジャンル"
-                className={selectBase}
-                value={currentGenreKey}
-                onChange={(e) => {
-                  const next = e.currentTarget.value;
-                  const href = buildSearchHref(basePath, searchParams, {
-                    genre:
-                      next === "hypnosis" || next === "doujin" ? next : null,
-                  });
-                  router.push(href, { scroll: false });
-                }}
-              >
-                <option value="all">全て（{genrePillCounts.all}）</option>
-                <option value="hypnosis">
-                  催眠音声（{genrePillCounts.hypnosis}）
-                </option>
-                <option value="doujin">
-                  同人音声（{genrePillCounts.doujin}）
-                </option>
-              </select>
+                    <option value="guide">
+                      {ARTICLE_LIST_CATEGORY_LABELS.guide}（
+                      {articleCategoryCounts.guide}）
+                    </option>
+                    <option value="recommend">
+                      {ARTICLE_LIST_CATEGORY_LABELS.recommend}（
+                      {articleCategoryCounts.recommend}）
+                    </option>
+                  </select>
+                </>
+              ) : (
+                <>
+                  <span className={filterBarLabel}>ジャンル:</span>
+                  <select
+                    aria-label="ジャンル"
+                    className={selectBase}
+                    value={currentGenreKey}
+                    onChange={(e) => {
+                      const next = e.currentTarget.value;
+                      const href = buildSearchHref(basePath, searchParams, {
+                        genre:
+                          next === "hypnosis" || next === "doujin" ? next : null,
+                      });
+                      router.push(href, { scroll: false });
+                    }}
+                  >
+                    <option value="all">全て（{genrePillCounts.all}）</option>
+                    <option value="hypnosis">
+                      催眠音声（{genrePillCounts.hypnosis}）
+                    </option>
+                    <option value="doujin">
+                      同人音声（{genrePillCounts.doujin}）
+                    </option>
+                  </select>
+                </>
+              )}
             </div>
 
-            {!reviewsOnly ? (
+            {!reviewsOnly && !articlesOnly ? (
               <p className="text-xs leading-relaxed text-slate-500">
                 <span className="text-slate-400">ページ内:</span>{" "}
                 <Link
@@ -685,7 +817,7 @@ export function HomeReviewList({
                 </Link>
                 {" · "}
                 <Link
-                  href={`/#${SECTION_AUTHOR_POSTS}`}
+                  href="/articles/"
                   className="text-sky-400/95 underline-offset-2 hover:text-sky-300 hover:underline"
                 >
                   記事一覧
@@ -694,18 +826,49 @@ export function HomeReviewList({
             ) : null}
           </div>
 
+          {hideListHeading ? (
+            <p className="mb-5 text-sm text-slate-500">
+              {filteredReviews.length} 件
+              {(starFilter !== null ||
+                genreFilter !== null ||
+                saleFilter ||
+                voiceFilter ||
+                toneFilter ||
+                sortOrder === "old") &&
+              mergedReviews.length > 0
+                ? ` / 全レビュー ${mergedReviews.length} 件`
+                : null}
+            </p>
+          ) : null}
+
+          {hideListHeading ? null : (
           <div className={compact ? "mb-5" : "mb-8 sm:mb-10"}>
             <h2
-              id="reviews-heading"
+              id={listSectionId}
               className={
                 compact
                   ? "scroll-mt-20 text-lg font-bold tracking-tight text-slate-50"
                   : "scroll-mt-24 text-xl font-bold tracking-tight text-slate-50 sm:scroll-mt-28 sm:text-2xl"
               }
             >
-              レビュー一覧
-              {(() => {
-                const parts: string[] = [];
+              {listSectionTitle}
+              {articlesOnly
+                ? (() => {
+                    const parts: string[] = [];
+                    if (categoryFilter != null) {
+                      parts.push(ARTICLE_LIST_CATEGORY_LABELS[categoryFilter]);
+                    }
+                    if (sortOrder === "old") parts.push("古い順");
+                    if (parts.length === 0) return null;
+                    return (
+                      <span className="text-lg font-semibold text-sky-300">
+                        {" "}
+                        （{parts.join(" · ")}）
+                      </span>
+                    );
+                  })()
+                : (() => {
+                    const parts: string[] = [];
                 if (genreFilter === "hypnosis") parts.push("催眠音声");
                 if (genreFilter === "doujin") parts.push("同人音声");
                 if (saleFilter) parts.push("セール中");
@@ -727,30 +890,66 @@ export function HomeReviewList({
                 if (toneFilter) {
                   parts.push(VOICE_ACTOR_TONE_LABELS[toneFilter]);
                 }
-                if (parts.length === 0) return null;
-                return (
-                  <span className="text-lg font-semibold text-sky-300">
-                    {" "}
-                    （{parts.join(" · ")}）
-                  </span>
-                );
-              })()}
+                    if (parts.length === 0) return null;
+                    return (
+                      <span className="text-lg font-semibold text-sky-300">
+                        {" "}
+                        （{parts.join(" · ")}）
+                      </span>
+                    );
+                  })()}
             </h2>
             <p className="mt-1 text-sm text-slate-500">
-              {filteredReviews.length} 件
-              {(starFilter !== null ||
-                genreFilter !== null ||
-                saleFilter ||
-                voiceFilter ||
-                toneFilter ||
-                sortOrder === "old") &&
-              mergedReviews.length > 0
-                ? ` / 全レビュー ${mergedReviews.length} 件`
-                : null}
+              {articlesOnly ? filteredArticleEntries.length : filteredReviews.length} 件
+              {articlesOnly
+                ? (categoryFilter != null || sortOrder === "old") &&
+                  combinedArticleEntries.length > 0
+                  ? ` / 全記事 ${combinedArticleEntries.length} 件`
+                  : null
+                : (starFilter !== null ||
+                    genreFilter !== null ||
+                    saleFilter ||
+                    voiceFilter ||
+                    toneFilter ||
+                    sortOrder === "old") &&
+                  mergedReviews.length > 0
+                  ? ` / 全レビュー ${mergedReviews.length} 件`
+                  : null}
             </p>
           </div>
+          )}
 
-          {filteredReviews.length === 0 ? (
+          {articlesOnly ? (
+            filteredArticleEntries.length === 0 ? (
+              <p className="rounded-2xl border border-dashed border-slate-600/50 bg-slate-800/40 px-4 py-10 text-center text-sm text-slate-500">
+                記事がありません。上の「絞り込み」で並び順やカテゴリを変えると表示件数が変わります。
+              </p>
+            ) : (
+              <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:gap-10">
+                {filteredArticleEntries.map((entry, index) => (
+                  <li
+                    key={
+                      entry.source === "file" ? entry.review.slug : entry.post.id
+                    }
+                    className="min-w-0"
+                  >
+                    {entry.source === "file" ? (
+                      <FileMarkdownArticleCard
+                        review={entry.review}
+                        priorityImage={index < 2}
+                        showNew={isReviewNewPublication(
+                          entry.review,
+                          new Date()
+                        )}
+                      />
+                    ) : (
+                      <LocalPostedCard review={entry.post} />
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )
+          ) : filteredReviews.length === 0 ? (
             <p className="rounded-2xl border border-dashed border-slate-600/50 bg-slate-800/40 px-4 py-10 text-center text-sm text-slate-500">
               {saleFilter
                 ? "セール中の掲載はまだありません。上の「絞り込み」で「新しい順」などを選ぶと一覧が変わります。"
@@ -782,7 +981,7 @@ export function HomeReviewList({
           )}
         </section>
 
-        {!reviewsOnly ? (
+        {!reviewsOnly && !articlesOnly ? (
         <section aria-labelledby="author-posts-heading">
           <div className="mb-8 sm:mb-10">
             <h2

@@ -1,7 +1,10 @@
 import {
   buildReviewListHref,
+  FEATURED_PICKS_HUB_PATH,
   HOME_REVIEW_LIST_BASE,
+  KNOWLEDGE_COLUMNS_HUB_PATH,
   VOICE_ACTORS_HUB_PATH,
+  WORKS_LIST_HUB_PATH,
 } from "@/lib/review-list-href";
 
 /** トップ／次サイト草案のカテゴリナビ */
@@ -23,29 +26,24 @@ export const SITE_CATEGORY_LINKS: SiteCategoryLink[] = [
     subtitle: "導線（ルート切替）",
   },
   {
-    emoji: "📰",
-    title: "新着記事一覧",
-    mobileTitleLines: ["新着記事", "一覧"],
-    href: buildReviewListHref(HOME_REVIEW_LIST_BASE, { sort: "new" }),
-    subtitle: "新しい順",
+    emoji: "🔍",
+    title: "作品一覧",
+    mobileTitleLines: ["作品", "一覧"],
+    href: WORKS_LIST_HUB_PATH,
+    subtitle: "レビュー一覧へ",
   },
   {
     emoji: "🏷️",
     title: "セール中",
-    href: buildReviewListHref(HOME_REVIEW_LIST_BASE, { sale: true }),
+    href: buildReviewListHref(WORKS_LIST_HUB_PATH, { sale: true }),
     subtitle: "値下げ中の作品",
   },
   {
     emoji: "👑",
-    title: "ランキング",
-    href: buildReviewListHref(HOME_REVIEW_LIST_BASE, { stars: "10" }),
-    subtitle: "★10・並び替え",
-  },
-  {
-    emoji: "🔍",
-    title: "作品一覧",
-    href: buildReviewListHref(HOME_REVIEW_LIST_BASE, { sort: "new" }),
-    subtitle: "レビュー一覧へ",
+    title: "厳選・おすすめ",
+    mobileTitleLines: ["厳選・", "おすすめ"],
+    href: FEATURED_PICKS_HUB_PATH,
+    subtitle: "編集部おすすめ記事",
   },
   {
     emoji: "🎧",
@@ -56,7 +54,7 @@ export const SITE_CATEGORY_LINKS: SiteCategoryLink[] = [
   {
     emoji: "📚",
     title: "知識・コラム",
-    href: "/#author-posts-heading",
+    href: KNOWLEDGE_COLUMNS_HUB_PATH,
     subtitle: "解説・用語・記事",
   },
   {

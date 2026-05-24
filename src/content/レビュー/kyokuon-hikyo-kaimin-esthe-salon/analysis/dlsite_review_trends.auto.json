@@ -1,0 +1,45 @@
+{
+  "fetchedAt": "2026-05-24T14:46:14.199Z",
+  "source": "review_text_only",
+  "total": 4,
+  "textReviewCount": 4,
+  "recurringThemes": [
+    {
+      "label": "添い寝・安眠",
+      "count": 5
+    },
+    {
+      "label": "耳舐め",
+      "count": 4
+    }
+  ],
+  "axisHints": [
+    {
+      "axis": "pleasure",
+      "count": 7
+    },
+    {
+      "axis": "scenario",
+      "count": 2
+    },
+    {
+      "axis": "acoustic",
+      "count": 1
+    },
+    {
+      "axis": "immersion",
+      "count": 1
+    },
+    {
+      "axis": "satisfaction",
+      "count": 1
+    }
+  ],
+  "recommendedForHints": [
+    "キス・耳舐め・密着スキンシップを主役にしたい層",
+    "添い寝・安眠寄りの聴き方もしたい層"
+  ],
+  "notRecommendedForHints": [
+    "最後まで一気通貫で刺激だけ追い続けたい層（寝落ちしやすい）"
+  ]
+}

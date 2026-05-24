@@ -6,11 +6,6 @@ export const VOICE_ACTOR_HUB_FEATURED_BY_NAME: Record<string, readonly string[]>
   逢坂成美: ["dandan-gehin-ni-naru-saimin"],
 };
 
-/** ハブ先頭のピックアップ（新着・注目をここに載せる） */
-export const VOICE_ACTOR_HUB_SPOTLIGHT_SLUGS: readonly string[] = [
-  "dandan-gehin-ni-naru-saimin",
-];
-
 export function featuredSlugsForVoiceActor(name: string): string[] {
   return [...(VOICE_ACTOR_HUB_FEATURED_BY_NAME[name] ?? [])];
 }

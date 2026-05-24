@@ -1,0 +1,133 @@
+{
+  "generatedAt": "2026-05-24T13:55:36.068Z",
+  "tracks": [
+    {
+      "file": "1残業上がりの足湯さん",
+      "segment_count": 76,
+      "low_confidence_segments": 4,
+      "filler_segments": 0,
+      "low_word_ratio": 0.402,
+      "reliability": 8,
+      "flagged_samples": [
+        {
+          "start": 60.747,
+          "end": 84.36,
+          "text": "足湯をご用意しておりますのでよかったら温まってお待ちになりませんか?はいえっとこ",
+          "meanScore": 0.333
+        },
+        {
+          "start": 1221.303,
+          "end": 1222.505,
+          "text": "はい、次は旦那様ありがとうございますどういたしまして",
+          "meanScore": 0.162
+        },
+        {
+          "start": 1326.271,
+          "end": 1347.394,
+          "text": "タヌさんにお店の人を紹介していくのを密かな楽しみにしてたんですよ全員紹介のトロフ",
+          "meanScore": 0.324
+        },
+        {
+          "start": 2909.382,
+          "end": 2934.003,
+          "text": "一緒に入っときます?冗談ですよはぁータルさん好き目ですなぁ",
+          "meanScore": 0.218
+        }
+      ]
+    },
+    {
+      "file": "2温泉貸切流しっ子",
+      "segment_count": 53,
+      "low_confidence_segments": 8,
+      "filler_segments": 0,
+      "low_word_ratio": 0.461,
+      "reliability": 6.4,
+      "flagged_samples": [
+        {
+          "start": 381.271,
+          "end": 407.432,
+          "text": "洗いっこしません?やった!隠してるとこは自分でしますから肌色のとこだけお願いしま",
+          "meanScore": 0.319
+        },
+        {
+          "start": 411.072,
+          "end": 429.82,
+          "text": "タオルの上からじゃあ手からねよろしくお願いします",
+          "meanScore": 0.243
+        },
+        {
+          "start": 1085.684,
+          "end": 1109.65,
+          "text": "タオルの下じゃなくなっちゃいましたよタオルバリアなくなっちゃいましたよ隠さないで",
+          "meanScore": 0.245
+        },
+        {
+          "start": 1410.29,
+          "end": 1430.009,
+          "text": "全身保湿しましょうね全身は嘘だなもん一箇所ばっかするなもん",
+          "meanScore": 0.346
+        },
+        {
+          "start": 1801.91,
+          "end": 1825.628,
+          "text": "できんでるできんでるカウントダウンとかする?下げましょうかはい543254",
+          "meanScore": 0.332
+        },
+        {
+          "start": 1972.735,
+          "end": 1999.176,
+          "text": "ついにタヌさん布一枚ですよそれも腰にかかってるだけですしこれ何パー隠れてるんです",
+          "meanScore": 0.341
+        },
+        {
+          "start": 2005.031,
+          "end": 2029.418,
+          "text": "良くないですよとても不健全ですよでもロマンありますよね旅先でこうこういうのってじ",
+          "meanScore": 0.317
+        },
+        {
+          "start": 2076.044,
+          "end": 2076.889,
+          "text": "必要なことですから",
+          "meanScore": 0.209
+        }
+      ]
+    },
+    {
+      "file": "3ポキポキ按摩とクシュクシュ歯磨き",
+      "segment_count": 89,
+      "low_confidence_segments": 4,
+      "filler_segments": 0,
+      "low_word_ratio": 0.397,
+      "reliability": 8.1,
+      "flagged_samples": [
+        {
+          "start": 1109.748,
+          "end": 1137.608,
+          "text": "はい反対側はなっちゃんが私?ぎゅっと抱えてぐるーぐるーんーできます工事しますじゃ",
+          "meanScore": 0.254
+        },
+        {
+          "start": 1394.125,
+          "end": 1395.712,
+          "text": "なんだろうね",
+          "meanScore": 0.324
+        },
+        {
+          "start": 2895.73,
+          "end": 2897.198,
+          "text": "ちょっといいね",
+          "meanScore": 0.347
+        },
+        {
+          "start": 3539.849,
+          "end": 3567.015,
+          "text": "ご視聴ありがとうございました",
+          "meanScore": 0.192
+        }
+      ]
+    }
+  ],
+  "recommendations": [],
+  "global_reliability": 7.5
+}

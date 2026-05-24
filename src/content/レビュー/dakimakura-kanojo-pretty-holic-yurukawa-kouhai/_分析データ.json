@@ -20,9 +20,50 @@
     "シナリオ：抱き枕・後輩・恋人一本道のリアリティと、からかい→本番の必然性。",
     "音響：KU100近接S/N・環境音と台詞の関係。没入度：音像・密着距離。快楽度：演技・テンポ緩急。満足度：コンセプト回収・余韻。",
     "【安眠用】の説明はパート解説のみ。着地・余韻は一般語で評価。",
+    "【DLsite購入者レビュー（文章）】全4件。繰り返し言及: イチャラブ・あまあま(5)、ディープキス・ベロチュー(5)、抱き枕・後輩(5)、添い寝・安眠(5)、耳舐め(4)。おすすめ反映の目安: あまあま・純愛の甘さを長尺で味わいたい層／キス・耳舐め・密着スキンシップを主役にしたい層／添い寝・安眠寄りの聴き方もしたい層。合わない目安: オホ声・過激喘ぎ一発高揚を主目的にする層／最後まで一気通貫で刺激だけ追い続けたい層（寝落ちしやすい）。原文コピペ禁止・言い換えて薄く反映。",
     "【自動補助根拠】derived_metrics.json: duration=9687.113s / rms_mean=0.00844122 / silence_ratio=0.4977 / surge_events_per_min=30.467。 spatial_spectral: pan_abs_mean=0.44633693, pan_std_mean=0.55814028, centroid_track_means_avg_hz=3455.01148289, hf_ratio_4khz_mean=0.24577095。",
     "【自動補助根拠】keyword_counts: 可愛い=16, ワン=0, 行け=0, 泣=1。event_counts: countdown=1, trigger=25, release=3。",
     "【自動補助根拠】sections.auto.json: 導入0.0-300.0 / 深化300.0-650.0 / 快楽650.0-9527.113 / 解除9527.113-9687.113。",
-    "【DLsite購入者レビュー（文章）】全4件。繰り返し言及: イチャラブ・あまあま(5)、ディープキス・ベロチュー(5)、抱き枕・後輩(5)、添い寝・安眠(5)、耳舐め(4)。おすすめ反映の目安: あまあま・純愛の甘さを長尺で味わいたい層／キス・耳舐め・密着スキンシップを主役にしたい層／添い寝・安眠寄りの聴き方もしたい層。合わない目安: オホ声・過激喘ぎ一発高揚を主目的にする層／最後まで一気通貫で刺激だけ追い続けたい層（寝落ちしやすい）。原文コピペ禁止・言い換えて薄く反映。"
-  ]
+    "【十サブ代理採点 v0.2】2026-05-24 … rec=9.6 env=8.8 spatial=9 dist=9.2 reality=8.3 inev=9.1 acting=8.3 tempo=8.8 concept=9.2 yoin=9.2。Whisper信頼=7.214。低確信:なし。"
+  ],
+  "subScores": {
+    "scenario": {
+      "reality": 8.3,
+      "inevitability": 9.1
+    },
+    "acoustic": {
+      "recording": 9.6,
+      "environment": 8.8
+    },
+    "immersion": {
+      "spatial": 9,
+      "distance": 9.2
+    },
+    "pleasure": {
+      "acting": 8.3,
+      "tempo": 8.8
+    },
+    "satisfaction": {
+      "concept": 9.2,
+      "yoin": 9.2
+    }
+  },
+  "scoreMeta": {
+    "computedAt": "2026-05-24T13:55:35.762Z",
+    "method": "score-doujin-graph-features.mjs v0.2",
+    "listenFree": true,
+    "confidence": {
+      "recording": "medium",
+      "environment": "medium",
+      "spatial": "medium",
+      "distance": "medium",
+      "reality": "medium",
+      "inevitability": "medium",
+      "acting": "medium",
+      "tempo": "medium",
+      "concept": "medium",
+      "yoin": "medium"
+    },
+    "whisperReliability": 7.214
+  }
 }

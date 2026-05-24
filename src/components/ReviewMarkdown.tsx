@@ -149,7 +149,9 @@ function buildMarkdownComponents(o: BuildOpts): Components {
       const isOverallEvaluation = label === "総合評価";
       const isSummarySection =
         label === "まとめ" || label === "解析まとめ" || label === "解析結論";
-      const isStructuralConclusion = label === "総評：本作品の構造的結論";
+      const isStructuralConclusion =
+        label === "総評：本作品の構造的結論" ||
+        label === "総評：本作品の結論";
       const articleH2Accent =
         articleReading &&
         !isRecommendedAudience &&

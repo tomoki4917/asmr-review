@@ -1,0 +1,858 @@
+{
+  "version": "v0.2.2-listen-free",
+  "slug": "higengo-saimin-giseigo-pavlov-another",
+  "computedAt": "2026-05-24T15:39:49.953Z",
+  "method": "Whisper監査＋文字起こし＋waveform＋spatial＋DLsite傾向＋indexメタからの代理採点。音声未聴取。公開確定値ではない。",
+  "subScores": {
+    "recording": 9.6,
+    "environment": 8.8,
+    "spatial": 6.9,
+    "distance": 7.4,
+    "reality": 7.8,
+    "inevitability": 7.6,
+    "acting": 6.8,
+    "tempo": 7.9,
+    "concept": 7,
+    "yoin": 7.5
+  },
+  "axisScores": {
+    "scenario": 7.7,
+    "acoustic": 9.2,
+    "immersion": 7.2,
+    "pleasure": 7.4,
+    "satisfaction": 7.3
+  },
+  "confidence": {
+    "recording": "medium",
+    "environment": "medium",
+    "spatial": "low",
+    "distance": "medium",
+    "reality": "medium",
+    "inevitability": "low",
+    "acting": "low",
+    "tempo": "low",
+    "concept": "low",
+    "yoin": "low"
+  },
+  "whisperAudit": {
+    "global_reliability": 6.2,
+    "recommendations": [
+      {
+        "track": "02-非言語催眠擬声語パブロフ-Another",
+        "action": "ignore_lexicon_partial",
+        "reason": "低信頼セグメント 16/30"
+      }
+    ]
+  },
+  "evidence": {
+    "recording": "clip=0.000225, sfx/min=1.158, clip_sfx_overlap=0.333333, clip_mode=normal, snr_proxy=276.772, silence=0.5035",
+    "environment": "non_speech=0.288, se_rms=0.022967",
+    "spatial": "pan_abs=undefined, pan_std=undefined",
+    "distance": "intimacy/min=0.669, hf=undefined, lf=undefined, cent=undefined, prox=none",
+    "reality": "senpai/min=0, whisper_rel=6.2",
+    "inevitability": "intimacy_mono=0, rms_mono=1",
+    "acting": "emotion/min=0.391, whisper_rel=6.2",
+    "tempo": "surge/min=30.396, rms_mono=1",
+    "concept": "concept_hits=0/3, lex=1",
+    "yoin": "sleep=183.7s, tail_ratio=0.748"
+  },
+  "features": {
+    "tracks": [
+      {
+        "name": "01-パブロフの首輪-Another",
+        "duration_sec": 2355.4,
+        "speech_sec": 1682.119,
+        "non_speech_ratio": 0.286,
+        "se_rms_mean": 0.021467,
+        "speech_rms_mean": 0.02065,
+        "snr_proxy": 100.285,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 0,
+            "キス": 0,
+            "耳": 9,
+            "添い寝": 0,
+            "抱き枕": 0,
+            "好き": 5,
+            "甘": 0,
+            "密着": 0,
+            "ぎゅ": 9,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 8
+          },
+          "total": 31
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 0,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 0,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 0,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0
+          },
+          "total": 0
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 0,
+            "好き": 5,
+            "嬉し": 1,
+            "恥": 0,
+            "可愛い": 5,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 6
+          },
+          "total": 17
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 0
+        },
+        "sfx_hits": {
+          "hits": {
+            "ふぅ": 0,
+            "フュ": 0,
+            "はぁ": 6,
+            "ハァ": 0,
+            "はー": 4,
+            "んちゅ": 0,
+            "ちゅ": 8,
+            "チュ": 4,
+            "ちゅっ": 2,
+            "ぱちゅ": 1,
+            "じゅる": 6,
+            "ジュル": 0,
+            "レロ": 4,
+            "ぺろ": 0,
+            "ペロ": 2,
+            "べろ": 0,
+            "ぐちゅ": 2,
+            "ぐちょ": 0,
+            "ぬちゅ": 2,
+            "くちゅ": 2,
+            "ヌル": 4,
+            "ねちょ": 0,
+            "耳舐": 0,
+            "耳なめ": 0,
+            "舐め": 1,
+            "ズリュ": 2
+          },
+          "total": 50
+        },
+        "senpai_count": 0,
+        "rms_mean": 0.017401,
+        "rms_p50": 0.002852,
+        "rms_p95": 0.078617,
+        "clip_ratio": 0.000042,
+        "clip_sfx_overlap_ratio": 0,
+        "clip_sfx_frames": 1,
+        "centroid_mean_hz": 5009.32,
+        "tail_rms_ratio": 1.332,
+        "head_to_tail_rms": 0.948,
+        "pan_mean_abs": null,
+        "pan_std": null,
+        "lf_ratio_100_250hz_mean": null,
+        "hf_ratio_ge_4khz_mean": null,
+        "whisper": {
+          "segment_count": 74,
+          "low_confidence_segments": 8,
+          "filler_segments": 0,
+          "low_word_ratio": 0.161,
+          "reliability": 7.9,
+          "flagged_samples": [
+            {
+              "start": 466.928,
+              "end": 491.52,
+              "text": "ゆっくり吸ってゆっくり吐いてゆっくり吸ってゆっくり吐いて",
+              "meanScore": 0.309
+            },
+            {
+              "start": 592.563,
+              "end": 606.231,
+              "text": "すーふーすーふー",
+              "meanScore": 0.187
+            },
+            {
+              "start": 655.405,
+              "end": 673.151,
+              "text": "ゆっくり吸ってゆっくり吐いてゆっくり吸ってゆっくり吐いて",
+              "meanScore": 0.191
+            },
+            {
+              "start": 693.969,
+              "end": 720.462,
+              "text": "すーっと息を吸うとゆったりするはーっと息を吐くとだらーんとする",
+              "meanScore": 0.283
+            },
+            {
+              "start": 791.3,
+              "end": 816.852,
+              "text": "はーすーはーすーふーぼやー",
+              "meanScore": 0.218
+            },
+            {
+              "start": 1622.588,
+              "end": 1644.002,
+              "text": "ギュギュギュギュギュードキドキソワソワうずうず",
+              "meanScore": 0.321
+            },
+            {
+              "start": 2205.037,
+              "end": 2218.831,
+              "text": "忘れずは最後にたまってますねあなたが言ってるところを見せてください私の言葉で言っ",
+              "meanScore": 0.223
+            },
+            {
+              "start": 2227.053,
+              "end": 2255.318,
+              "text": "今から10カウントダウンをして0と言ってから私がびくんびくんと言ったらあなたは行",
+              "meanScore": 0.346
+            }
+          ]
+        },
+        "is_sleep": false,
+        "dialogue_segments": 74
+      },
+      {
+        "name": "02-非言語催眠擬声語パブロフ-Another",
+        "duration_sec": 1139.5,
+        "speech_sec": 568.802,
+        "non_speech_ratio": 0.501,
+        "se_rms_mean": 0.019126,
+        "speech_rms_mean": 0.013562,
+        "snr_proxy": 46.726,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 0,
+            "キス": 0,
+            "耳": 0,
+            "添い寝": 0,
+            "抱き枕": 0,
+            "好き": 1,
+            "甘": 0,
+            "密着": 0,
+            "ぎゅ": 6,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 3
+          },
+          "total": 10
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 0,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 0,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 1,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0
+          },
+          "total": 1
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 0,
+            "好き": 1,
+            "嬉し": 1,
+            "恥": 0,
+            "可愛い": 1,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 4
+          },
+          "total": 7
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 0
+        },
+        "sfx_hits": {
+          "hits": {
+            "ふぅ": 0,
+            "フュ": 0,
+            "はぁ": 4,
+            "ハァ": 0,
+            "はー": 1,
+            "んちゅ": 0,
+            "ちゅ": 3,
+            "チュ": 0,
+            "ちゅっ": 0,
+            "ぱちゅ": 0,
+            "じゅる": 4,
+            "ジュル": 0,
+            "レロ": 2,
+            "ぺろ": 0,
+            "ペロ": 0,
+            "べろ": 0,
+            "ぐちゅ": 2,
+            "ぐちょ": 2,
+            "ぬちゅ": 1,
+            "くちゅ": 0,
+            "ヌル": 0,
+            "ねちょ": 2,
+            "耳舐": 0,
+            "耳なめ": 0,
+            "舐め": 0,
+            "ズリュ": 0
+          },
+          "total": 21
+        },
+        "senpai_count": 0,
+        "rms_mean": 0.010989,
+        "rms_p50": 0.001062,
+        "rms_p95": 0.055318,
+        "clip_ratio": 0.000088,
+        "clip_sfx_overlap_ratio": 1,
+        "clip_sfx_frames": 1,
+        "centroid_mean_hz": 4934.37,
+        "tail_rms_ratio": 1.981,
+        "head_to_tail_rms": 0.741,
+        "pan_mean_abs": null,
+        "pan_std": null,
+        "lf_ratio_100_250hz_mean": null,
+        "hf_ratio_ge_4khz_mean": null,
+        "whisper": {
+          "segment_count": 30,
+          "low_confidence_segments": 16,
+          "filler_segments": 0,
+          "low_word_ratio": 0.368,
+          "reliability": 0.9,
+          "flagged_samples": [
+            {
+              "start": 180.914,
+              "end": 201.727,
+              "text": "はぁーすーはぁーすーはぁー",
+              "meanScore": 0.269
+            },
+            {
+              "start": 217.128,
+              "end": 241.014,
+              "text": "深呼吸深呼吸深呼吸",
+              "meanScore": 0.277
+            },
+            {
+              "start": 267.066,
+              "end": 269.688,
+              "text": "すーはーよしよし、いい子いい子すー",
+              "meanScore": 0.208
+            },
+            {
+              "start": 384.57,
+              "end": 400.614,
+              "text": "すーはーすーふーぼやーぼーふわふわほわほわ",
+              "meanScore": 0.136
+            },
+            {
+              "start": 403.918,
+              "end": 424.883,
+              "text": "ぼやーぼーよしよしいい子いい子",
+              "meanScore": 0.257
+            },
+            {
+              "start": 437.657,
+              "end": 461.567,
+              "text": "にぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎ",
+              "meanScore": 0.205
+            },
+            {
+              "start": 470.882,
+              "end": 492.332,
+              "text": "にぎにぎぎゅーぐーぱつーたらーじわーじんじんじわじわぽかぽか",
+              "meanScore": 0.276
+            },
+            {
+              "start": 498.586,
+              "end": 525.728,
+              "text": "よしよしいい子いい子にぎにぎにぎにぎにぎにぎにぎぎゅーばにぎにぎぎゅー",
+              "meanScore": 0.349
+            }
+          ]
+        },
+        "is_sleep": true,
+        "dialogue_segments": 30
+      },
+      {
+        "name": "03-解除",
+        "duration_sec": 183.7,
+        "speech_sec": 169.408,
+        "non_speech_ratio": 0.078,
+        "se_rms_mean": 0.028307,
+        "speech_rms_mean": 0.024827,
+        "snr_proxy": 683.306,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 0,
+            "キス": 0,
+            "耳": 0,
+            "添い寝": 0,
+            "抱き枕": 0,
+            "好き": 0,
+            "甘": 0,
+            "密着": 0,
+            "ぎゅ": 0,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 0
+          },
+          "total": 0
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 0,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 0,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 0,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0
+          },
+          "total": 0
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 0,
+            "好き": 0,
+            "嬉し": 0,
+            "恥": 0,
+            "可愛い": 0,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 0
+          },
+          "total": 0
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 0,
+            "湯": 0,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 0
+        },
+        "sfx_hits": {
+          "hits": {
+            "ふぅ": 0,
+            "フュ": 0,
+            "はぁ": 0,
+            "ハァ": 0,
+            "はー": 0,
+            "んちゅ": 0,
+            "ちゅ": 0,
+            "チュ": 0,
+            "ちゅっ": 0,
+            "ぱちゅ": 0,
+            "じゅる": 0,
+            "ジュル": 0,
+            "レロ": 0,
+            "ぺろ": 0,
+            "ペロ": 0,
+            "べろ": 0,
+            "ぐちゅ": 0,
+            "ぐちょ": 0,
+            "ぬちゅ": 0,
+            "くちゅ": 0,
+            "ヌル": 0,
+            "ねちょ": 0,
+            "耳舐": 0,
+            "耳なめ": 0,
+            "舐め": 0,
+            "ズリュ": 0
+          },
+          "total": 0
+        },
+        "senpai_count": 0,
+        "rms_mean": 0.023102,
+        "rms_p50": 0.000866,
+        "rms_p95": 0.092738,
+        "clip_ratio": 0.000544,
+        "clip_sfx_overlap_ratio": 0,
+        "clip_sfx_frames": 1,
+        "centroid_mean_hz": 5854.97,
+        "tail_rms_ratio": 0.748,
+        "head_to_tail_rms": 0.909,
+        "pan_mean_abs": null,
+        "pan_std": null,
+        "lf_ratio_100_250hz_mean": null,
+        "hf_ratio_ge_4khz_mean": null,
+        "whisper": {
+          "segment_count": 14,
+          "low_confidence_segments": 0,
+          "filler_segments": 0,
+          "low_word_ratio": 0.05,
+          "reliability": 9.8,
+          "flagged_samples": []
+        },
+        "is_sleep": false,
+        "dialogue_segments": 14
+      }
+    ],
+    "global": {
+      "duration_sec": 3678.6,
+      "speech_sec": 169.408,
+      "silence_ratio": 0.5035,
+      "rms_mean": 0.01569953,
+      "rms_cv": 1.6911805640041453,
+      "surge_per_min": 30.396,
+      "centroid_mean_hz": 5026.85,
+      "centroid_std_hz": 3035.768,
+      "clip_ratio_mean": 0.000225,
+      "clip_sfx_overlap_mean": 0.333333,
+      "sfx_density_per_min": 1.158,
+      "snr_proxy_mean": 276.772,
+      "non_speech_ratio_mean": 0.288,
+      "se_rms_mean": 0.022967,
+      "intimacy_density_per_min": 0.669,
+      "senpai_ratio": 0,
+      "concept_lex_total": 1,
+      "concept_hit_tracks": 0,
+      "emotion_lex_density": 0.391,
+      "intimacy_monotonic": 0,
+      "rms_monotonic": 1,
+      "whisper_reliability": 6.2,
+      "dlsite_review_count": 0
+    },
+    "spatial": null,
+    "spatialTracks": [],
+    "whisperAudits": [
+      {
+        "track": "01-パブロフの首輪-Another",
+        "segment_count": 74,
+        "low_confidence_segments": 8,
+        "filler_segments": 0,
+        "low_word_ratio": 0.161,
+        "reliability": 7.9,
+        "flagged_samples": [
+          {
+            "start": 466.928,
+            "end": 491.52,
+            "text": "ゆっくり吸ってゆっくり吐いてゆっくり吸ってゆっくり吐いて",
+            "meanScore": 0.309
+          },
+          {
+            "start": 592.563,
+            "end": 606.231,
+            "text": "すーふーすーふー",
+            "meanScore": 0.187
+          },
+          {
+            "start": 655.405,
+            "end": 673.151,
+            "text": "ゆっくり吸ってゆっくり吐いてゆっくり吸ってゆっくり吐いて",
+            "meanScore": 0.191
+          },
+          {
+            "start": 693.969,
+            "end": 720.462,
+            "text": "すーっと息を吸うとゆったりするはーっと息を吐くとだらーんとする",
+            "meanScore": 0.283
+          },
+          {
+            "start": 791.3,
+            "end": 816.852,
+            "text": "はーすーはーすーふーぼやー",
+            "meanScore": 0.218
+          },
+          {
+            "start": 1622.588,
+            "end": 1644.002,
+            "text": "ギュギュギュギュギュードキドキソワソワうずうず",
+            "meanScore": 0.321
+          },
+          {
+            "start": 2205.037,
+            "end": 2218.831,
+            "text": "忘れずは最後にたまってますねあなたが言ってるところを見せてください私の言葉で言っ",
+            "meanScore": 0.223
+          },
+          {
+            "start": 2227.053,
+            "end": 2255.318,
+            "text": "今から10カウントダウンをして0と言ってから私がびくんびくんと言ったらあなたは行",
+            "meanScore": 0.346
+          }
+        ]
+      },
+      {
+        "track": "02-非言語催眠擬声語パブロフ-Another",
+        "segment_count": 30,
+        "low_confidence_segments": 16,
+        "filler_segments": 0,
+        "low_word_ratio": 0.368,
+        "reliability": 0.9,
+        "flagged_samples": [
+          {
+            "start": 180.914,
+            "end": 201.727,
+            "text": "はぁーすーはぁーすーはぁー",
+            "meanScore": 0.269
+          },
+          {
+            "start": 217.128,
+            "end": 241.014,
+            "text": "深呼吸深呼吸深呼吸",
+            "meanScore": 0.277
+          },
+          {
+            "start": 267.066,
+            "end": 269.688,
+            "text": "すーはーよしよし、いい子いい子すー",
+            "meanScore": 0.208
+          },
+          {
+            "start": 384.57,
+            "end": 400.614,
+            "text": "すーはーすーふーぼやーぼーふわふわほわほわ",
+            "meanScore": 0.136
+          },
+          {
+            "start": 403.918,
+            "end": 424.883,
+            "text": "ぼやーぼーよしよしいい子いい子",
+            "meanScore": 0.257
+          },
+          {
+            "start": 437.657,
+            "end": 461.567,
+            "text": "にぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎ",
+            "meanScore": 0.205
+          },
+          {
+            "start": 470.882,
+            "end": 492.332,
+            "text": "にぎにぎぎゅーぐーぱつーたらーじわーじんじんじわじわぽかぽか",
+            "meanScore": 0.276
+          },
+          {
+            "start": 498.586,
+            "end": 525.728,
+            "text": "よしよしいい子いい子にぎにぎにぎにぎにぎにぎにぎぎゅーばにぎにぎぎゅー",
+            "meanScore": 0.349
+          }
+        ]
+      },
+      {
+        "track": "03-解除",
+        "segment_count": 14,
+        "low_confidence_segments": 0,
+        "filler_segments": 0,
+        "low_word_ratio": 0.05,
+        "reliability": 9.8,
+        "flagged_samples": []
+      }
+    ],
+    "caveats": {
+      "manual": null,
+      "auto": {
+        "generatedAt": "2026-05-24T15:39:49.895Z",
+        "tracks": [
+          {
+            "file": "01-パブロフの首輪-Another",
+            "segment_count": 74,
+            "low_confidence_segments": 8,
+            "filler_segments": 0,
+            "low_word_ratio": 0.161,
+            "reliability": 7.9,
+            "flagged_samples": [
+              {
+                "start": 466.928,
+                "end": 491.52,
+                "text": "ゆっくり吸ってゆっくり吐いてゆっくり吸ってゆっくり吐いて",
+                "meanScore": 0.309
+              },
+              {
+                "start": 592.563,
+                "end": 606.231,
+                "text": "すーふーすーふー",
+                "meanScore": 0.187
+              },
+              {
+                "start": 655.405,
+                "end": 673.151,
+                "text": "ゆっくり吸ってゆっくり吐いてゆっくり吸ってゆっくり吐いて",
+                "meanScore": 0.191
+              },
+              {
+                "start": 693.969,
+                "end": 720.462,
+                "text": "すーっと息を吸うとゆったりするはーっと息を吐くとだらーんとする",
+                "meanScore": 0.283
+              },
+              {
+                "start": 791.3,
+                "end": 816.852,
+                "text": "はーすーはーすーふーぼやー",
+                "meanScore": 0.218
+              },
+              {
+                "start": 1622.588,
+                "end": 1644.002,
+                "text": "ギュギュギュギュギュードキドキソワソワうずうず",
+                "meanScore": 0.321
+              },
+              {
+                "start": 2205.037,
+                "end": 2218.831,
+                "text": "忘れずは最後にたまってますねあなたが言ってるところを見せてください私の言葉で言っ",
+                "meanScore": 0.223
+              },
+              {
+                "start": 2227.053,
+                "end": 2255.318,
+                "text": "今から10カウントダウンをして0と言ってから私がびくんびくんと言ったらあなたは行",
+                "meanScore": 0.346
+              }
+            ]
+          },
+          {
+            "file": "02-非言語催眠擬声語パブロフ-Another",
+            "segment_count": 30,
+            "low_confidence_segments": 16,
+            "filler_segments": 0,
+            "low_word_ratio": 0.368,
+            "reliability": 0.9,
+            "flagged_samples": [
+              {
+                "start": 180.914,
+                "end": 201.727,
+                "text": "はぁーすーはぁーすーはぁー",
+                "meanScore": 0.269
+              },
+              {
+                "start": 217.128,
+                "end": 241.014,
+                "text": "深呼吸深呼吸深呼吸",
+                "meanScore": 0.277
+              },
+              {
+                "start": 267.066,
+                "end": 269.688,
+                "text": "すーはーよしよし、いい子いい子すー",
+                "meanScore": 0.208
+              },
+              {
+                "start": 384.57,
+                "end": 400.614,
+                "text": "すーはーすーふーぼやーぼーふわふわほわほわ",
+                "meanScore": 0.136
+              },
+              {
+                "start": 403.918,
+                "end": 424.883,
+                "text": "ぼやーぼーよしよしいい子いい子",
+                "meanScore": 0.257
+              },
+              {
+                "start": 437.657,
+                "end": 461.567,
+                "text": "にぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎにぎ",
+                "meanScore": 0.205
+              },
+              {
+                "start": 470.882,
+                "end": 492.332,
+                "text": "にぎにぎぎゅーぐーぱつーたらーじわーじんじんじわじわぽかぽか",
+                "meanScore": 0.276
+              },
+              {
+                "start": 498.586,
+                "end": 525.728,
+                "text": "よしよしいい子いい子にぎにぎにぎにぎにぎにぎにぎぎゅーばにぎにぎぎゅー",
+                "meanScore": 0.349
+              }
+            ]
+          },
+          {
+            "file": "03-解除",
+            "segment_count": 14,
+            "low_confidence_segments": 0,
+            "filler_segments": 0,
+            "low_word_ratio": 0.05,
+            "reliability": 9.8,
+            "flagged_samples": []
+          }
+        ],
+        "recommendations": [
+          {
+            "track": "02-非言語催眠擬声語パブロフ-Another",
+            "action": "ignore_lexicon_partial",
+            "reason": "低信頼セグメント 16/30"
+          }
+        ],
+        "global_reliability": 6.2
+      }
+    },
+    "meta": {
+      "conceptKeywords": [],
+      "sourceText": ""
+    },
+    "conceptLex": [
+      "抱き枕",
+      "添い寝",
+      "後輩",
+      "密着",
+      "恋人",
+      "キス",
+      "耳舐",
+      "安眠",
+      "眠",
+      "告白",
+      "ラブホ",
+      "お泊"
+    ]
+  }
+}

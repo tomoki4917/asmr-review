@@ -1,0 +1,771 @@
+{
+  "version": "v0.2-listen-free",
+  "slug": "michikusa-natsuna4-onsen-pokipoki-seitai",
+  "computedAt": "2026-05-24T13:55:36.177Z",
+  "method": "Whisper監査＋文字起こし＋waveform＋spatial＋DLsite傾向＋indexメタからの代理採点。音声未聴取。公開確定値ではない。",
+  "subScores": {
+    "recording": 8.3,
+    "environment": 8.1,
+    "spatial": 8.8,
+    "distance": 7.8,
+    "reality": 8.3,
+    "inevitability": 7.6,
+    "acting": 7.1,
+    "tempo": 8.8,
+    "concept": 7.4,
+    "yoin": 8.3
+  },
+  "axisScores": {
+    "scenario": 8,
+    "acoustic": 8.2,
+    "immersion": 8.3,
+    "pleasure": 8,
+    "satisfaction": 7.9
+  },
+  "confidence": {
+    "recording": "medium",
+    "environment": "medium",
+    "spatial": "medium",
+    "distance": "medium",
+    "reality": "medium",
+    "inevitability": "medium",
+    "acting": "medium",
+    "tempo": "medium",
+    "concept": "medium",
+    "yoin": "low"
+  },
+  "whisperAudit": {
+    "global_reliability": 7.5,
+    "recommendations": []
+  },
+  "evidence": {
+    "recording": "clip=0.000034, snr_proxy=6.915, silence=0.7547",
+    "environment": "non_speech=0.486, se_rms=0.006848",
+    "spatial": "pan_abs=0.25612537, pan_std=0.34259812",
+    "distance": "intimacy/min=0.153, hf=0.63341467",
+    "reality": "senpai/min=0, whisper_rel=7.5",
+    "inevitability": "intimacy_mono=0.5, rms_mono=0.5",
+    "acting": "emotion/min=0.066, whisper_rel=7.5",
+    "tempo": "surge/min=30.381, rms_mono=0.5",
+    "concept": "concept_hits=2/3, lex=6",
+    "yoin": "sleep=3585.6s, tail_ratio=0.184"
+  },
+  "features": {
+    "tracks": [
+      {
+        "name": "1残業上がりの足湯さん",
+        "duration_sec": 3209.9,
+        "speech_sec": 1639.897,
+        "non_speech_ratio": 0.489,
+        "se_rms_mean": 0.006271,
+        "speech_rms_mean": 0.00238,
+        "snr_proxy": 5.143,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 0,
+            "キス": 0,
+            "耳": 8,
+            "添い寝": 0,
+            "抱き枕": 0,
+            "好き": 2,
+            "甘": 0,
+            "密着": 0,
+            "ぎゅ": 1,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 0
+          },
+          "total": 11
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 0,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 0,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 0,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0,
+            "温泉": 0,
+            "足湯": 3,
+            "ポキポキ": 0,
+            "道草屋": 1
+          },
+          "total": 4
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 0,
+            "好き": 2,
+            "嬉し": 0,
+            "恥": 1,
+            "可愛い": 0,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 1
+          },
+          "total": 4
+        },
+        "se_hits": {
+          "hits": {
+            "水": 1,
+            "シャワ": 0,
+            "布": 4,
+            "擦": 1,
+            "湯": 4,
+            "泡": 2,
+            "足湯": 3,
+            "温泉": 0
+          },
+          "total": 15
+        },
+        "senpai_count": 0,
+        "rms_mean": 0.001869,
+        "rms_p50": 0.000387,
+        "rms_p95": 0.008739,
+        "clip_ratio": 0.000031,
+        "centroid_mean_hz": 6688.64,
+        "tail_rms_ratio": 1.008,
+        "head_to_tail_rms": 1.36,
+        "pan_mean_abs": 0.287964403629303,
+        "pan_std": 0.3608958125114441,
+        "whisper": {
+          "segment_count": 76,
+          "low_confidence_segments": 4,
+          "filler_segments": 0,
+          "low_word_ratio": 0.402,
+          "reliability": 8,
+          "flagged_samples": [
+            {
+              "start": 60.747,
+              "end": 84.36,
+              "text": "足湯をご用意しておりますのでよかったら温まってお待ちになりませんか?はいえっとこ",
+              "meanScore": 0.333
+            },
+            {
+              "start": 1221.303,
+              "end": 1222.505,
+              "text": "はい、次は旦那様ありがとうございますどういたしまして",
+              "meanScore": 0.162
+            },
+            {
+              "start": 1326.271,
+              "end": 1347.394,
+              "text": "タヌさんにお店の人を紹介していくのを密かな楽しみにしてたんですよ全員紹介のトロフ",
+              "meanScore": 0.324
+            },
+            {
+              "start": 2909.382,
+              "end": 2934.003,
+              "text": "一緒に入っときます?冗談ですよはぁータルさん好き目ですなぁ",
+              "meanScore": 0.218
+            }
+          ]
+        },
+        "is_sleep": false,
+        "dialogue_segments": 76
+      },
+      {
+        "name": "2温泉貸切流しっ子",
+        "duration_sec": 2247.8,
+        "speech_sec": 1025.128,
+        "non_speech_ratio": 0.544,
+        "se_rms_mean": 0.009074,
+        "speech_rms_mean": 0.005459,
+        "snr_proxy": 9.983,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 0,
+            "キス": 0,
+            "耳": 1,
+            "添い寝": 0,
+            "抱き枕": 0,
+            "好き": 1,
+            "甘": 0,
+            "密着": 0,
+            "ぎゅ": 0,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 0
+          },
+          "total": 2
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 0,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 0,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 0,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0,
+            "温泉": 0,
+            "足湯": 0,
+            "ポキポキ": 0,
+            "道草屋": 0
+          },
+          "total": 0
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 0,
+            "好き": 1,
+            "嬉し": 0,
+            "恥": 0,
+            "可愛い": 0,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 1
+          },
+          "total": 2
+        },
+        "se_hits": {
+          "hits": {
+            "水": 0,
+            "シャワ": 0,
+            "布": 0,
+            "擦": 0,
+            "湯": 2,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 2
+        },
+        "senpai_count": 0,
+        "rms_mean": 0.003853,
+        "rms_p50": 0.000646,
+        "rms_p95": 0.01929,
+        "clip_ratio": 0.000044,
+        "centroid_mean_hz": 6316.6,
+        "tail_rms_ratio": 0.989,
+        "head_to_tail_rms": 1.547,
+        "pan_mean_abs": 0.19821195304393768,
+        "pan_std": 0.3024485409259796,
+        "whisper": {
+          "segment_count": 53,
+          "low_confidence_segments": 8,
+          "filler_segments": 0,
+          "low_word_ratio": 0.461,
+          "reliability": 6.4,
+          "flagged_samples": [
+            {
+              "start": 381.271,
+              "end": 407.432,
+              "text": "洗いっこしません?やった!隠してるとこは自分でしますから肌色のとこだけお願いしま",
+              "meanScore": 0.319
+            },
+            {
+              "start": 411.072,
+              "end": 429.82,
+              "text": "タオルの上からじゃあ手からねよろしくお願いします",
+              "meanScore": 0.243
+            },
+            {
+              "start": 1085.684,
+              "end": 1109.65,
+              "text": "タオルの下じゃなくなっちゃいましたよタオルバリアなくなっちゃいましたよ隠さないで",
+              "meanScore": 0.245
+            },
+            {
+              "start": 1410.29,
+              "end": 1430.009,
+              "text": "全身保湿しましょうね全身は嘘だなもん一箇所ばっかするなもん",
+              "meanScore": 0.346
+            },
+            {
+              "start": 1801.91,
+              "end": 1825.628,
+              "text": "できんでるできんでるカウントダウンとかする?下げましょうかはい543254",
+              "meanScore": 0.332
+            },
+            {
+              "start": 1972.735,
+              "end": 1999.176,
+              "text": "ついにタヌさん布一枚ですよそれも腰にかかってるだけですしこれ何パー隠れてるんです",
+              "meanScore": 0.341
+            },
+            {
+              "start": 2005.031,
+              "end": 2029.418,
+              "text": "良くないですよとても不健全ですよでもロマンありますよね旅先でこうこういうのってじ",
+              "meanScore": 0.317
+            },
+            {
+              "start": 2076.044,
+              "end": 2076.889,
+              "text": "必要なことですから",
+              "meanScore": 0.209
+            }
+          ]
+        },
+        "is_sleep": false,
+        "dialogue_segments": 53
+      },
+      {
+        "name": "3ポキポキ按摩とクシュクシュ歯磨き",
+        "duration_sec": 3585.6,
+        "speech_sec": 2060.824,
+        "non_speech_ratio": 0.425,
+        "se_rms_mean": 0.005199,
+        "speech_rms_mean": 0.00242,
+        "snr_proxy": 5.62,
+        "intimacy_hits": {
+          "hits": {
+            "先輩": 0,
+            "キス": 0,
+            "耳": 4,
+            "添い寝": 0,
+            "抱き枕": 0,
+            "好き": 2,
+            "甘": 0,
+            "密着": 0,
+            "ぎゅ": 2,
+            "恋人": 0,
+            "デート": 0,
+            "照れ": 0,
+            "からか": 0,
+            "ベロ": 0,
+            "ちゅ": 2
+          },
+          "total": 10
+        },
+        "concept_hits": {
+          "hits": {
+            "抱き枕": 0,
+            "添い寝": 0,
+            "後輩": 0,
+            "密着": 0,
+            "恋人": 0,
+            "キス": 0,
+            "耳舐": 0,
+            "安眠": 0,
+            "眠": 2,
+            "告白": 0,
+            "ラブホ": 0,
+            "お泊": 0,
+            "温泉": 0,
+            "足湯": 0,
+            "ポキポキ": 0,
+            "道草屋": 0
+          },
+          "total": 2
+        },
+        "emotion_hits": {
+          "hits": {
+            "照れ": 0,
+            "甘": 0,
+            "好き": 2,
+            "嬉し": 1,
+            "恥": 0,
+            "可愛い": 0,
+            "やん": 0,
+            "んっ": 0,
+            "はぁ": 1
+          },
+          "total": 4
+        },
+        "se_hits": {
+          "hits": {
+            "水": 3,
+            "シャワ": 0,
+            "布": 1,
+            "擦": 0,
+            "湯": 1,
+            "泡": 0,
+            "足湯": 0,
+            "温泉": 0
+          },
+          "total": 5
+        },
+        "senpai_count": 0,
+        "rms_mean": 0.001854,
+        "rms_p50": 0.000386,
+        "rms_p95": 0.008886,
+        "clip_ratio": 0.000028,
+        "centroid_mean_hz": 5788.72,
+        "tail_rms_ratio": 0.184,
+        "head_to_tail_rms": 0.361,
+        "pan_mean_abs": 0.2821997404098511,
+        "pan_std": 0.36445000767707825,
+        "whisper": {
+          "segment_count": 89,
+          "low_confidence_segments": 4,
+          "filler_segments": 0,
+          "low_word_ratio": 0.397,
+          "reliability": 8.1,
+          "flagged_samples": [
+            {
+              "start": 1109.748,
+              "end": 1137.608,
+              "text": "はい反対側はなっちゃんが私?ぎゅっと抱えてぐるーぐるーんーできます工事しますじゃ",
+              "meanScore": 0.254
+            },
+            {
+              "start": 1394.125,
+              "end": 1395.712,
+              "text": "なんだろうね",
+              "meanScore": 0.324
+            },
+            {
+              "start": 2895.73,
+              "end": 2897.198,
+              "text": "ちょっといいね",
+              "meanScore": 0.347
+            },
+            {
+              "start": 3539.849,
+              "end": 3567.015,
+              "text": "ご視聴ありがとうございました",
+              "meanScore": 0.192
+            }
+          ]
+        },
+        "is_sleep": false,
+        "dialogue_segments": 89
+      }
+    ],
+    "global": {
+      "duration_sec": 9043.3,
+      "speech_sec": 2060.824,
+      "silence_ratio": 0.7547,
+      "rms_mean": 0.00235637,
+      "rms_cv": 2.283703323332074,
+      "surge_per_min": 30.381,
+      "centroid_mean_hz": 6230.919,
+      "centroid_std_hz": 2048.859,
+      "clip_ratio_mean": 0.000034,
+      "snr_proxy_mean": 6.915,
+      "non_speech_ratio_mean": 0.486,
+      "se_rms_mean": 0.006848,
+      "intimacy_density_per_min": 0.153,
+      "senpai_ratio": 0,
+      "concept_lex_total": 6,
+      "concept_hit_tracks": 2,
+      "emotion_lex_density": 0.066,
+      "intimacy_monotonic": 0.5,
+      "rms_monotonic": 0.5,
+      "whisper_reliability": 7.5,
+      "dlsite_review_count": 20
+    },
+    "spatial": {
+      "tracks_n": 3,
+      "total_duration_sec": 9043.109,
+      "pan_linear_mean_abs_mean": 0.25612537,
+      "pan_linear_std_mean": 0.34259812,
+      "centroid_hz_mean_of_track_means": 6254.94390561,
+      "hf_ratio_ge_4khz_mean_of_track_means": 0.63341467,
+      "centroid_hz_std_pooled": 39.472928
+    },
+    "whisperAudits": [
+      {
+        "track": "1残業上がりの足湯さん",
+        "segment_count": 76,
+        "low_confidence_segments": 4,
+        "filler_segments": 0,
+        "low_word_ratio": 0.402,
+        "reliability": 8,
+        "flagged_samples": [
+          {
+            "start": 60.747,
+            "end": 84.36,
+            "text": "足湯をご用意しておりますのでよかったら温まってお待ちになりませんか?はいえっとこ",
+            "meanScore": 0.333
+          },
+          {
+            "start": 1221.303,
+            "end": 1222.505,
+            "text": "はい、次は旦那様ありがとうございますどういたしまして",
+            "meanScore": 0.162
+          },
+          {
+            "start": 1326.271,
+            "end": 1347.394,
+            "text": "タヌさんにお店の人を紹介していくのを密かな楽しみにしてたんですよ全員紹介のトロフ",
+            "meanScore": 0.324
+          },
+          {
+            "start": 2909.382,
+            "end": 2934.003,
+            "text": "一緒に入っときます?冗談ですよはぁータルさん好き目ですなぁ",
+            "meanScore": 0.218
+          }
+        ]
+      },
+      {
+        "track": "2温泉貸切流しっ子",
+        "segment_count": 53,
+        "low_confidence_segments": 8,
+        "filler_segments": 0,
+        "low_word_ratio": 0.461,
+        "reliability": 6.4,
+        "flagged_samples": [
+          {
+            "start": 381.271,
+            "end": 407.432,
+            "text": "洗いっこしません?やった!隠してるとこは自分でしますから肌色のとこだけお願いしま",
+            "meanScore": 0.319
+          },
+          {
+            "start": 411.072,
+            "end": 429.82,
+            "text": "タオルの上からじゃあ手からねよろしくお願いします",
+            "meanScore": 0.243
+          },
+          {
+            "start": 1085.684,
+            "end": 1109.65,
+            "text": "タオルの下じゃなくなっちゃいましたよタオルバリアなくなっちゃいましたよ隠さないで",
+            "meanScore": 0.245
+          },
+          {
+            "start": 1410.29,
+            "end": 1430.009,
+            "text": "全身保湿しましょうね全身は嘘だなもん一箇所ばっかするなもん",
+            "meanScore": 0.346
+          },
+          {
+            "start": 1801.91,
+            "end": 1825.628,
+            "text": "できんでるできんでるカウントダウンとかする?下げましょうかはい543254",
+            "meanScore": 0.332
+          },
+          {
+            "start": 1972.735,
+            "end": 1999.176,
+            "text": "ついにタヌさん布一枚ですよそれも腰にかかってるだけですしこれ何パー隠れてるんです",
+            "meanScore": 0.341
+          },
+          {
+            "start": 2005.031,
+            "end": 2029.418,
+            "text": "良くないですよとても不健全ですよでもロマンありますよね旅先でこうこういうのってじ",
+            "meanScore": 0.317
+          },
+          {
+            "start": 2076.044,
+            "end": 2076.889,
+            "text": "必要なことですから",
+            "meanScore": 0.209
+          }
+        ]
+      },
+      {
+        "track": "3ポキポキ按摩とクシュクシュ歯磨き",
+        "segment_count": 89,
+        "low_confidence_segments": 4,
+        "filler_segments": 0,
+        "low_word_ratio": 0.397,
+        "reliability": 8.1,
+        "flagged_samples": [
+          {
+            "start": 1109.748,
+            "end": 1137.608,
+            "text": "はい反対側はなっちゃんが私?ぎゅっと抱えてぐるーぐるーんーできます工事しますじゃ",
+            "meanScore": 0.254
+          },
+          {
+            "start": 1394.125,
+            "end": 1395.712,
+            "text": "なんだろうね",
+            "meanScore": 0.324
+          },
+          {
+            "start": 2895.73,
+            "end": 2897.198,
+            "text": "ちょっといいね",
+            "meanScore": 0.347
+          },
+          {
+            "start": 3539.849,
+            "end": 3567.015,
+            "text": "ご視聴ありがとうございました",
+            "meanScore": 0.192
+          }
+        ]
+      }
+    ],
+    "caveats": {
+      "manual": null,
+      "auto": {
+        "generatedAt": "2026-05-24T13:55:36.068Z",
+        "tracks": [
+          {
+            "file": "1残業上がりの足湯さん",
+            "segment_count": 76,
+            "low_confidence_segments": 4,
+            "filler_segments": 0,
+            "low_word_ratio": 0.402,
+            "reliability": 8,
+            "flagged_samples": [
+              {
+                "start": 60.747,
+                "end": 84.36,
+                "text": "足湯をご用意しておりますのでよかったら温まってお待ちになりませんか?はいえっとこ",
+                "meanScore": 0.333
+              },
+              {
+                "start": 1221.303,
+                "end": 1222.505,
+                "text": "はい、次は旦那様ありがとうございますどういたしまして",
+                "meanScore": 0.162
+              },
+              {
+                "start": 1326.271,
+                "end": 1347.394,
+                "text": "タヌさんにお店の人を紹介していくのを密かな楽しみにしてたんですよ全員紹介のトロフ",
+                "meanScore": 0.324
+              },
+              {
+                "start": 2909.382,
+                "end": 2934.003,
+                "text": "一緒に入っときます?冗談ですよはぁータルさん好き目ですなぁ",
+                "meanScore": 0.218
+              }
+            ]
+          },
+          {
+            "file": "2温泉貸切流しっ子",
+            "segment_count": 53,
+            "low_confidence_segments": 8,
+            "filler_segments": 0,
+            "low_word_ratio": 0.461,
+            "reliability": 6.4,
+            "flagged_samples": [
+              {
+                "start": 381.271,
+                "end": 407.432,
+                "text": "洗いっこしません?やった!隠してるとこは自分でしますから肌色のとこだけお願いしま",
+                "meanScore": 0.319
+              },
+              {
+                "start": 411.072,
+                "end": 429.82,
+                "text": "タオルの上からじゃあ手からねよろしくお願いします",
+                "meanScore": 0.243
+              },
+              {
+                "start": 1085.684,
+                "end": 1109.65,
+                "text": "タオルの下じゃなくなっちゃいましたよタオルバリアなくなっちゃいましたよ隠さないで",
+                "meanScore": 0.245
+              },
+              {
+                "start": 1410.29,
+                "end": 1430.009,
+                "text": "全身保湿しましょうね全身は嘘だなもん一箇所ばっかするなもん",
+                "meanScore": 0.346
+              },
+              {
+                "start": 1801.91,
+                "end": 1825.628,
+                "text": "できんでるできんでるカウントダウンとかする?下げましょうかはい543254",
+                "meanScore": 0.332
+              },
+              {
+                "start": 1972.735,
+                "end": 1999.176,
+                "text": "ついにタヌさん布一枚ですよそれも腰にかかってるだけですしこれ何パー隠れてるんです",
+                "meanScore": 0.341
+              },
+              {
+                "start": 2005.031,
+                "end": 2029.418,
+                "text": "良くないですよとても不健全ですよでもロマンありますよね旅先でこうこういうのってじ",
+                "meanScore": 0.317
+              },
+              {
+                "start": 2076.044,
+                "end": 2076.889,
+                "text": "必要なことですから",
+                "meanScore": 0.209
+              }
+            ]
+          },
+          {
+            "file": "3ポキポキ按摩とクシュクシュ歯磨き",
+            "segment_count": 89,
+            "low_confidence_segments": 4,
+            "filler_segments": 0,
+            "low_word_ratio": 0.397,
+            "reliability": 8.1,
+            "flagged_samples": [
+              {
+                "start": 1109.748,
+                "end": 1137.608,
+                "text": "はい反対側はなっちゃんが私?ぎゅっと抱えてぐるーぐるーんーできます工事しますじゃ",
+                "meanScore": 0.254
+              },
+              {
+                "start": 1394.125,
+                "end": 1395.712,
+                "text": "なんだろうね",
+                "meanScore": 0.324
+              },
+              {
+                "start": 2895.73,
+                "end": 2897.198,
+                "text": "ちょっといいね",
+                "meanScore": 0.347
+              },
+              {
+                "start": 3539.849,
+                "end": 3567.015,
+                "text": "ご視聴ありがとうございました",
+                "meanScore": 0.192
+              }
+            ]
+          }
+        ],
+        "recommendations": [],
+        "global_reliability": 7.5
+      }
+    },
+    "meta": {
+      "conceptKeywords": [
+        "眠",
+        "温泉",
+        "足湯",
+        "ポキポキ",
+        "道草屋"
+      ],
+      "sourceText": "【ポキポキ整体】道草屋-なつな4- 足湯、温泉、ポキポキ按摩！【貸し切り温泉】\n冬の旅館めいた足湯パートで体温と安心を土台にし、貸切温泉では相互洗いっことボディタッチへ関心が載せ替わる二本目へつなぎます。\n\n  三本目でポキポキ・歯磨き・耳かきに寄せ、音量と情報密度を落として睡眠導入側へ収束させる、ページ説明どおりの三本立て長編です。\n【レビュー】【ポキポキ整体】道草屋-なつな4- 足湯、温泉、ポキポキ按摩！【貸し切り温泉】\n同人音声\nASMR\nバイノーラル\n道草屋\n桃色CODE\n温泉\n整体\n睡眠導入\nvendor: dlsite"
+    },
+    "conceptLex": [
+      "抱き枕",
+      "添い寝",
+      "後輩",
+      "密着",
+      "恋人",
+      "キス",
+      "耳舐",
+      "安眠",
+      "眠",
+      "告白",
+      "ラブホ",
+      "お泊",
+      "温泉",
+      "足湯",
+      "ポキポキ",
+      "道草屋"
+    ]
+  }
+}

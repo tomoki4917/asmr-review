@@ -1,22 +1,65 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "workName": "【極音】秘境の快眠エステサロンへようこそ～清楚セラピストたちとの内緒の密着極上コース～",
   "scores": {
-    "trance": 8,
+    "immersion": 9,
+    "scenario": 8,
     "pleasure": 8,
+    "acoustic": 9,
     "satisfaction": 8
   },
   "radarAxisLabels": {
-    "first": "没入度",
-    "second": "刺激度",
-    "third": "満足度"
+    "immersion": "没入度",
+    "scenario": "シナリオ",
+    "pleasure": "快楽度",
+    "acoustic": "音響",
+    "satisfaction": "満足度"
   },
   "notes": [
-    "同人向け三軸運用: trance=没入度, pleasure=刺激度, satisfaction=満足度。",
-    "総合評価は「静かな部屋で一人、イヤホン/ヘッドホン視聴」を前提に判定。",
-    "構成は導入施術(01)→耳かき添い寝(02)→二人共通(03)→指名分岐(04a/04b)。",
-    "比較視聴で成立する価値（04a/04bの差分）を完成度の根拠として評価。単ルート1周のみを必須条件にしない改定基準で再判定。",
-    "DLsite product id: RJ01617970。"
-  ]
+    "同人五軸。極音監修→音響・没入度9。シナリオ/快楽/満足8。総合★9。",
+    "構成: 導入施術→耳かき添い寝→二人共通→指名分岐(蘭/杏)。04a/04b比較視聴も商品価値。",
+    "【DLsite購入者レビュー】全4件。添い寝・安眠／耳舐め言及多。",
+    "【十サブ v0.2.2】clip≈0、sfx/min=0.11→減点免除は未発火。聴取: 極音至近の息吹き・耳舐め過負荷は仕様→rec9。dist=7.8→9(HF0.34+密着)。acting=7.1→快楽8維持。",
+    "【十サブ代理採点 v0.2.2】2026-05-24 … rec=8.3 env=8.3 spatial=9 dist=7.8 reality=8.3 inev=9.1 acting=7.1 tempo=8.8 concept=8.6 yoin=7.5。Whisper信頼=8.6 clip=normal。低確信:yoin。"
+  ],
+  "subScores": {
+    "scenario": {
+      "reality": 8.3,
+      "inevitability": 9.1
+    },
+    "acoustic": {
+      "recording": 8.3,
+      "environment": 8.3
+    },
+    "immersion": {
+      "spatial": 9,
+      "distance": 7.8
+    },
+    "pleasure": {
+      "acting": 7.1,
+      "tempo": 8.8
+    },
+    "satisfaction": {
+      "concept": 8.6,
+      "yoin": 7.5
+    }
+  },
+  "scoreMeta": {
+    "computedAt": "2026-05-24T15:46:08.511Z",
+    "method": "score-doujin-graph-features.mjs v0.2.2",
+    "listenFree": true,
+    "confidence": {
+      "recording": "medium",
+      "environment": "medium",
+      "spatial": "medium",
+      "distance": "medium",
+      "reality": "medium",
+      "inevitability": "medium",
+      "acting": "medium",
+      "tempo": "medium",
+      "concept": "medium",
+      "yoin": "low"
+    },
+    "whisperReliability": 8.6
+  }
 }
-

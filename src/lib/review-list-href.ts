@@ -17,10 +17,24 @@ export type ReviewListHrefOptions = {
   voice?: string;
   /** 声優ハブの系統（`ama` / `ds` / `dm`） */
   tone?: "ama" | "ds" | "dm";
+  /** 記事一覧のカテゴリ（`listening` / `guide` / `recommend`） */
+  category?: "listening" | "guide" | "recommend";
 };
 
 /** 声優別おすすめハブ（次サイトグリッド・メニューから） */
 export const VOICE_ACTORS_HUB_PATH = "/voice-actors/";
+
+/** 厳選・おすすめハブ（次サイトグリッド・メニューから） */
+export const FEATURED_PICKS_HUB_PATH = "/featured/";
+
+/** 記事一覧ハブ（`/articles/`） */
+export const ARTICLES_LIST_HUB_PATH = "/articles/";
+
+/** 知識・コラムハブ（解説シリーズ） */
+export const KNOWLEDGE_COLUMNS_HUB_PATH = "/knowledge/";
+
+/** 作品一覧ハブ（レビュー絞り込み一覧） */
+export const WORKS_LIST_HUB_PATH = "/works/";
 
 /** @deprecated `VOICE_ACTORS_HUB_PATH` へリダイレクト */
 export const DEV_SITE_NEXT_VOICE_ACTORS_PATH = "/dev/site-next/voice-actors/";
@@ -37,6 +51,7 @@ export function buildReviewListHref(
   if (options.genre) p.set("genre", options.genre);
   if (options.voice) p.set("voice", options.voice);
   if (options.tone) p.set("tone", options.tone);
+  if (options.category) p.set("category", options.category);
   const prefix = basePath === "/" ? "/" : basePath.replace(/\/?$/, "/");
   const qs = p.toString();
   const hash = `#${REVIEWS_LIST_FILTERS_ID}`;

@@ -11,6 +11,8 @@
 | `src/content/レビュー/` | 星ありの**作品レビュー**（`contentKind` 省略または `review`） |
 | `src/content/記事/` | 星なしの**解説記事**（`contentKind: article`） |
 
+**同人音声レビュー**（`tags` に `同人音声` または `authorName: 同人音声レビュー室`）の執筆正本は **`src/content/記事/_同人音声執筆ガイド2.md`** と **`src/content/レビュー/dakimakura-kanojo-pretty-holic-yurukawa-kouhai/index.md`**（`.cursor/rules/review-doujin-canon.mdc`）。催眠レビューの正本は `docs/真催眠音声執筆ガイド.md` ＋ `kuchikou-saimin-count-trip-nouiki`。
+
 **作品レビューを新規追加するとき（再発防止・記事モード）:** 詳細ページの **記事モード**（クイック解析／作品詳細解析の切替）はコード側の登録が必要です。`index.md` の **`slug`** と同じキーで、`src/app/(public)/reviews/[slug]/page.tsx` 内の **`quickGuideBySlug`** にオブジェクトを **1 件追加**してください。抜けると切替 UI 自体が表示されません（Cursor 向けの常時ルール: `.cursor/rules/review-article-mode-quickguide.mdc`）。
 
 それぞれの中に、**1 本につき 1 フォルダ**を作り、本文は **`index.md`** に書きます。

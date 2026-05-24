@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "notes": "手動で上書きする場合のみ使用。空の adjustments なら自動監査のみ。",
+  "adjustments": {
+    "keyword_boost": {},
+    "keyword_ignore_tracks": {},
+    "ignore_lexicon_ranges": []
+  },
+  "comments": []
+}

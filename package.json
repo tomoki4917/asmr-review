@@ -21,7 +21,10 @@
     "sync-review-sale-from-dlsite": "node scripts/sync-review-sale-from-dlsite.mjs",
     "audit:reviews-dlsite": "node scripts/audit-reviews-dlsite.mjs",
     "fetch-dlsite-reviews:one": "node scripts/fetch-dlsite-user-reviews.mjs",
-    "review:audit-kansei": "node scripts/audit-review-kansei.mjs"
+    "review:audit-kansei": "node scripts/audit-review-kansei.mjs",
+    "review:score-doujin-graph": "node scripts/score-doujin-graph-features.mjs",
+    "review:audit-doujin-transcript": "node scripts/audit-doujin-transcript.mjs",
+    "review:compare-doujin-graph": "node scripts/compare-doujin-graph-scores.mjs"
   },
   "dependencies": {
     "@next/third-parties": "^16.2.2",
