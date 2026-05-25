@@ -45,6 +45,10 @@ import {
   parseArticleListCategory,
   type ArticleListCategory,
 } from "@/lib/article-list-category";
+import {
+  mergedReviewMatchesSearchQuery,
+  normalizeReviewListSearchQuery,
+} from "@/lib/review-list-search";
 import type { Review } from "@/lib/types";
 import { FileMarkdownArticleCard } from "@/components/FileMarkdownArticleCard";
 import { ReviewCard } from "@/components/ReviewCard";
@@ -128,6 +132,17 @@ function matchesGenreFilter(
   return tags.includes("同人音声");
 }
 
+function matchesListScopeFilters(
+  item: MergedReviewItem,
+  genre: "hypnosis" | "doujin" | null,
+  searchQuery: string
+): boolean {
+  return (
+    matchesGenreFilter(item, genre) &&
+    mergedReviewMatchesSearchQuery(item, searchQuery)
+  );
+}
+
 function isFileReviewOnSale(item: MergedReviewItem): boolean {
   if (item.kind !== "file") return false;
   const id = item.review.dlsiteProductId?.trim();
@@ -159,9 +174,11 @@ function sortMergedForSaleFilter(items: MergedReviewItem[]): MergedReviewItem[] 
 
 function countByGenre(
   merged: MergedReviewItem[],
-  genre: "hypnosis" | "doujin" | null
+  genre: "hypnosis" | "doujin" | null,
+  searchQuery: string
 ): number {
-  return merged.filter((i) => matchesGenreFilter(i, genre)).length;
+  return merged.filter((i) => matchesListScopeFilters(i, genre, searchQuery))
+    .length;
 }
 
 const SECTION_HYPNOSIS_INTRO = "hypnosis-intro";
@@ -256,9 +273,12 @@ function hrefListSaleOnly(basePath: string, sp: URLSearchParams): string {
 /** 現在のジャンル（未選択は全件）に対する評価別件数（絞り込みバー用） */
 function countsByStarFilter(
   merged: MergedReviewItem[],
-  genre: "hypnosis" | "doujin" | null
+  genre: "hypnosis" | "doujin" | null,
+  searchQuery: string
 ): Record<"10" | "9" | "8" | "7" | "6" | "lte5", number> {
-  const base = merged.filter((i) => matchesGenreFilter(i, genre));
+  const base = merged.filter((i) =>
+    matchesListScopeFilters(i, genre, searchQuery)
+  );
   return {
     "10": base.filter((i) => matchesStarFilter(i, 10)).length,
     "9": base.filter((i) => matchesStarFilter(i, 9)).length,
@@ -386,6 +406,8 @@ export function HomeReviewList({
 
   const categoryFilter = parseArticleListCategory(searchParams.get("category"));
 
+  const searchQuery = normalizeReviewListSearchQuery(searchParams.get("q"));
+
   const [posted, setPosted] = useState<PostedReview[]>([]);
 
   const reloadPosted = useCallback(() => {
@@ -402,7 +424,8 @@ export function HomeReviewList({
       Boolean(searchParams.get("genre")) ||
       Boolean(searchParams.get("voice")) ||
       Boolean(searchParams.get("tone")) ||
-      Boolean(searchParams.get("category"));
+      Boolean(searchParams.get("category")) ||
+      Boolean(normalizeReviewListSearchQuery(searchParams.get("q")));
     const shouldScrollToFilters =
       hasListQuery ||
       hash === REVIEWS_LIST_FILTERS_ID ||
@@ -456,14 +479,16 @@ export function HomeReviewList({
   const saleScopeCount = useMemo(
     () =>
       mergedReviews.filter(
-        (i) => matchesGenreFilter(i, genreFilter) && isFileReviewOnSale(i)
+        (i) =>
+          matchesListScopeFilters(i, genreFilter, searchQuery) &&
+          isFileReviewOnSale(i)
       ).length,
-    [mergedReviews, genreFilter]
+    [mergedReviews, genreFilter, searchQuery]
   );
 
   const filteredReviews = useMemo(() => {
     let list = mergedReviews.filter((item) =>
-      matchesGenreFilter(item, genreFilter)
+      matchesListScopeFilters(item, genreFilter, searchQuery)
     );
     if (saleFilter) {
       list = list.filter((item) => isFileReviewOnSale(item));
@@ -526,17 +551,17 @@ export function HomeReviewList({
     saleFilter,
     voiceFilter,
     toneFilter,
+    searchQuery,
   ]);
 
   const starCountsForFilter = useMemo(
-    () => countsByStarFilter(mergedReviews, genreFilter),
-    [mergedReviews, genreFilter]
+    () => countsByStarFilter(mergedReviews, genreFilter, searchQuery),
+    [mergedReviews, genreFilter, searchQuery]
   );
 
   const listScopeCount = useMemo(
-    () =>
-      mergedReviews.filter((i) => matchesGenreFilter(i, genreFilter)).length,
-    [mergedReviews, genreFilter]
+    () => countByGenre(mergedReviews, genreFilter, searchQuery),
+    [mergedReviews, genreFilter, searchQuery]
   );
 
   const articlePosts = useMemo(() => {
@@ -618,11 +643,11 @@ export function HomeReviewList({
 
   const genrePillCounts = useMemo(
     () => ({
-      all: mergedReviews.length,
-      hypnosis: countByGenre(mergedReviews, "hypnosis"),
-      doujin: countByGenre(mergedReviews, "doujin"),
+      all: countByGenre(mergedReviews, null, searchQuery),
+      hypnosis: countByGenre(mergedReviews, "hypnosis", searchQuery),
+      doujin: countByGenre(mergedReviews, "doujin", searchQuery),
     }),
-    [mergedReviews]
+    [mergedReviews, searchQuery]
   );
 
   const hasAnyContent = articlesOnly
@@ -835,10 +860,17 @@ export function HomeReviewList({
                 saleFilter ||
                 voiceFilter ||
                 toneFilter ||
+                searchQuery ||
                 sortOrder === "old") &&
               mergedReviews.length > 0
                 ? ` / 全レビュー ${mergedReviews.length} 件`
                 : null}
+              {searchQuery ? (
+                <>
+                  {" "}
+                  · キーワード「{searchQuery}」
+                </>
+              ) : null}
             </p>
           ) : null}
 
@@ -952,13 +984,15 @@ export function HomeReviewList({
             )
           ) : filteredReviews.length === 0 ? (
             <p className="rounded-2xl border border-dashed border-slate-600/50 bg-slate-800/40 px-4 py-10 text-center text-sm text-slate-500">
-              {saleFilter
-                ? "セール中の掲載はまだありません。上の「絞り込み」で「新しい順」などを選ぶと一覧が変わります。"
-                : starFilter !== null
-                  ? `${
-                      starFilter === "lte5" ? "★5〜" : `★${starFilter}`
-                    }のレビューはまだありません。上の「絞り込み」で「新しい順」「古い順」または別の星を選ぶと表示件数が変わります。`
-                  : "レビューがありません。"}
+              {searchQuery
+                ? `「${searchQuery}」に一致するレビューは見つかりませんでした。キーワードを変えるか、上の「絞り込み」を緩めてください。`
+                : saleFilter
+                  ? "セール中の掲載はまだありません。上の「絞り込み」で「新しい順」などを選ぶと一覧が変わります。"
+                  : starFilter !== null
+                    ? `${
+                        starFilter === "lte5" ? "★5〜" : `★${starFilter}`
+                      }のレビューはまだありません。上の「絞り込み」で「新しい順」「古い順」または別の星を選ぶと表示件数が変わります。`
+                    : "レビューがありません。"}
             </p>
           ) : (
             <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:gap-10">

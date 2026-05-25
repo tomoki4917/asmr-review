@@ -415,7 +415,7 @@ export default async function ReviewPage({ params }: Props) {
       ],
     },
     "kyokuon-hikyo-kaimin-esthe-salon": {
-      scoreLabel: "9.0 / 10",
+      scoreLabel: "8.0 / 10",
       oneLine:
         "秘境の快眠エステで施術→耳かき添い寝→二人共通→蘭／杏指名分岐。極音監修の密着と耳舐めが軸で、安眠寄りの聴き方も残せる二人体制長編",
       inductionType: "エステ / 安眠 / 添い寝",

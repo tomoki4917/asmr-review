@@ -19,6 +19,8 @@ export type ReviewListHrefOptions = {
   tone?: "ama" | "ds" | "dm";
   /** 記事一覧のカテゴリ（`listening` / `guide` / `recommend`） */
   category?: "listening" | "guide" | "recommend";
+  /** 作品一覧のキーワード検索 */
+  q?: string;
 };
 
 /** 声優別おすすめハブ（次サイトグリッド・メニューから） */
@@ -52,6 +54,8 @@ export function buildReviewListHref(
   if (options.voice) p.set("voice", options.voice);
   if (options.tone) p.set("tone", options.tone);
   if (options.category) p.set("category", options.category);
+  const q = options.q?.trim();
+  if (q) p.set("q", q);
   const prefix = basePath === "/" ? "/" : basePath.replace(/\/?$/, "/");
   const qs = p.toString();
   const hash = `#${REVIEWS_LIST_FILTERS_ID}`;

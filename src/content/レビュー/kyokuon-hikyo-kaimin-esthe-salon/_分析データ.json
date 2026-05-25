@@ -3,7 +3,7 @@
   "workName": "【極音】秘境の快眠エステサロンへようこそ～清楚セラピストたちとの内緒の密着極上コース～",
   "scores": {
     "immersion": 9,
-    "scenario": 8,
+    "scenario": 7,
     "pleasure": 8,
     "acoustic": 9,
     "satisfaction": 8
@@ -16,7 +16,7 @@
     "satisfaction": "満足度"
   },
   "notes": [
-    "同人五軸。極音監修→音響・没入度9。シナリオ/快楽/満足8。総合★9。",
+    "同人五軸。極音監修→音響・没入度9。シナリオ7/快楽/満足8。総合★8。",
     "構成: 導入施術→耳かき添い寝→二人共通→指名分岐(蘭/杏)。04a/04b比較視聴も商品価値。",
     "【DLsite購入者レビュー】全4件。添い寝・安眠／耳舐め言及多。",
     "【十サブ v0.2.2】clip≈0、sfx/min=0.11→減点免除は未発火。聴取: 極音至近の息吹き・耳舐め過負荷は仕様→rec9。dist=7.8→9(HF0.34+密着)。acting=7.1→快楽8維持。",
@@ -24,8 +24,8 @@
   ],
   "subScores": {
     "scenario": {
-      "reality": 8.3,
-      "inevitability": 9.1
+      "reality": 7,
+      "inevitability": 7
     },
     "acoustic": {
       "recording": 8.3,

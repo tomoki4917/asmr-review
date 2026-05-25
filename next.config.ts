@@ -3,6 +3,8 @@ import path from "path";
 
 const nextConfig: NextConfig = {
   output: "export",
+  // gray-matter → js-yaml → esprima を Webpack の vendor-chunk にすると dev で欠落することがある
+  serverExternalPackages: ["gray-matter"],
   // ESM-only（"type":"module"）の依存を Webpack がそのまま解釈すると、開発時に
   // 「Cannot read properties of undefined (reading 'call')」が出ることがあるため明示。
   transpilePackages: ["github-slugger"],
