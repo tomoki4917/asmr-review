@@ -164,7 +164,7 @@ function parseOptionalGoLiveAt(raw: unknown): string | undefined {
 }
 
 /** 現在時刻が goLiveAt 以降なら true（未指定なら常に true） */
-function isReviewVisibleByGoLiveAt(review: Review, now: Date): boolean {
+export function isReviewVisibleByGoLiveAt(review: Review, now: Date): boolean {
   if (!review.goLiveAt?.trim()) return true;
   const start = goLiveStartMs(review.goLiveAt.trim());
   if (Number.isNaN(start)) return true;
@@ -392,8 +392,30 @@ export const getAllReviewsIncludingScheduled = cache((): Review[] =>
   readAllReviewsSorted()
 );
 
+/** 全年齢向けサイト掲載の同人レビュー（R18 トップ・一覧からは除外） */
+export const ALL_AGES_REVIEW_TAG = "全年齢同人" as const;
+
+export function isAllAgesReview(review: Review): boolean {
+  return review.tags.includes(ALL_AGES_REVIEW_TAG);
+}
+
+/** 成人向け【R18】サイトの一覧・サイトマップ用 */
 export const getAllReviews = cache((): Review[] =>
-  applyGoLiveFilter(getAllReviewsIncludingScheduled())
+  applyGoLiveFilter(
+    getAllReviewsIncludingScheduled().filter((r) => !isAllAgesReview(r))
+  )
+);
+
+/** `/all-ages/` 掲載用（公開済みのみ・関連記事・サイトマップ相当） */
+export const getAllAgesReviews = cache((): Review[] =>
+  applyGoLiveFilter(
+    getAllReviewsIncludingScheduled().filter(isAllAgesReview)
+  )
+);
+
+/** `/all-ages/` 一覧用（`goLiveAt` 前も含む。カードの「準備中」表示に使う） */
+export const getAllAgesReviewsForList = cache((): Review[] =>
+  getAllReviewsIncludingScheduled().filter(isAllAgesReview)
 );
 
 /** SNS 流入ページ用。`safeForExternalLanding: true` の記事のみ（フロントマターで明示） */

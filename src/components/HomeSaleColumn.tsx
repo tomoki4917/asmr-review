@@ -7,7 +7,10 @@ import {
   buildReviewListHref,
   HOME_REVIEW_LIST_BASE,
 } from "@/lib/review-list-href";
-import { getDlsiteProductById } from "@/lib/dlsite-product-catalog";
+import {
+  getDlsiteProductById,
+  resolveDlsiteSaleDisplay,
+} from "@/lib/dlsite-product-catalog";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import type { Review } from "@/lib/types";
 
@@ -69,6 +72,7 @@ export function HomeSaleColumn({ reviews, previewMax }: Props) {
           const p = r.dlsiteProductId
             ? getDlsiteProductById(r.dlsiteProductId)
             : undefined;
+          const sale = p ? resolveDlsiteSaleDisplay(p) : null;
           const label = r.itemName?.trim() || reviewTitleSingleLine(r.title);
           return (
             <li key={r.slug}>
@@ -85,16 +89,16 @@ export function HomeSaleColumn({ reviews, previewMax }: Props) {
                   <p className="text-pretty text-sm font-semibold leading-snug text-sky-300 group-hover:underline">
                     {label}
                   </p>
-                  {p?.on_sale ? (
+                  {sale?.on_sale ? (
                     <p className="mt-1.5 text-xs tabular-nums leading-relaxed">
                       <span className="font-bold text-slate-100">
-                        ¥{p.current_price.toLocaleString("ja-JP")}
+                        ¥{sale.current_price.toLocaleString("ja-JP")}
                       </span>
                       <span className="ml-2 text-slate-500 line-through">
-                        ¥{p.original_price.toLocaleString("ja-JP")}
+                        ¥{sale.original_price.toLocaleString("ja-JP")}
                       </span>
                       <span className="ml-2 text-rose-400">
-                        {p.discount_rate}%OFF
+                        {sale.discount_rate}%OFF
                       </span>
                     </p>
                   ) : null}

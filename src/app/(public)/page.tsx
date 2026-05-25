@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { HomeDevShortcutPanel } from "@/components/home/HomeDevShortcutPanel";
-import { HomeHeroIntro } from "@/components/home/HomeHeroIntro";
+import { HomeHeroSection } from "@/components/home/HomeHeroSection";
 import { HomeReviewList } from "@/components/HomeReviewList";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { HomeSaleColumn } from "@/components/HomeSaleColumn";
@@ -15,6 +14,7 @@ import { RATING_BEST_DEFAULT, isStarBucketNineOrAbove } from "@/lib/rating-scale
 import {
   getDlsiteProductById,
   isDlsiteProductShinsaku,
+  resolveDlsiteSaleDisplay,
 } from "@/lib/dlsite-product-catalog";
 import { isReviewNewPublication } from "@/lib/review-new-badge";
 import { reviewTitleSingleLine } from "@/lib/review-title";
@@ -169,7 +169,9 @@ function allSaleReviews(reviews: Review[]): Review[] {
       const product = r.dlsiteProductId
         ? getDlsiteProductById(r.dlsiteProductId)
         : undefined;
-      return Boolean(product?.on_sale);
+      return product
+        ? resolveDlsiteSaleDisplay(product).on_sale
+        : false;
     })
     .sort((a, b) => {
       const starDiff =
@@ -181,7 +183,9 @@ function allSaleReviews(reviews: Review[]): Review[] {
       const pb = b.dlsiteProductId
         ? getDlsiteProductById(b.dlsiteProductId)
         : undefined;
-      const disc = (pb?.discount_rate ?? 0) - (pa?.discount_rate ?? 0);
+      const disc =
+        (pb ? resolveDlsiteSaleDisplay(pb).discount_rate : 0) -
+        (pa ? resolveDlsiteSaleDisplay(pa).discount_rate : 0);
       if (disc !== 0) return disc;
       return reviewPublicationTimeMs(b) - reviewPublicationTimeMs(a);
     });
@@ -354,22 +358,9 @@ export default function HomePage() {
   const reviews = getAllReviews();
   const beginnerGuides = getBeginnerGuides();
 
-  const devHero = process.env.NODE_ENV === "development";
-
   return (
     <main className="mx-auto w-full max-w-7xl py-10 sm:py-14">
-      {devHero ? (
-        <div className="mx-auto max-w-4xl rounded-2xl border border-amber-600/50 bg-gradient-to-b from-slate-900/50 to-slate-950/70 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] sm:p-8">
-          <header className="mx-auto max-w-3xl text-center">
-            <HomeHeroIntro />
-          </header>
-          <HomeDevShortcutPanel />
-        </div>
-      ) : (
-        <header className="mx-auto max-w-3xl text-center">
-          <HomeHeroIntro />
-        </header>
-      )}
+      <HomeHeroSection />
 
       {ENABLE_HOME_EDITORIAL_LAYOUT ? (
         <HomeEditorialColumns reviews={reviews} />

@@ -21,6 +21,7 @@ import { reviewTitleSingleLine } from "@/lib/review-title";
 import {
   getDlsiteProductById,
   isDlsitePriceFetched,
+  resolveDlsiteSaleDisplay,
 } from "@/lib/dlsite-product-catalog";
 import { ratingFilterBucket } from "@/lib/rating-scale";
 import { isReviewNewPublication } from "@/lib/review-new-badge";
@@ -133,7 +134,7 @@ function isFileReviewOnSale(item: MergedReviewItem): boolean {
   if (!id) return false;
   const product = getDlsiteProductById(id);
   if (!product || !isDlsitePriceFetched(product)) return false;
-  return product.on_sale === true;
+  return resolveDlsiteSaleDisplay(product).on_sale;
 }
 
 function sortMergedForSaleFilter(items: MergedReviewItem[]): MergedReviewItem[] {

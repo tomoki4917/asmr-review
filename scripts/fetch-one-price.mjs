@@ -116,9 +116,12 @@ if (!(Number.isFinite(current) && current >= 0)) {
 }
 if (!(Number.isFinite(original) && original >= 0)) original = current;
 
+if (original < current) original = current;
+const on_sale = original > current && current > 0;
 const discount_rate =
-  original > 0 ? Math.min(100, Math.max(0, Math.round((1 - current / original) * 100))) : 0;
-const on_sale = discount_rate > 0;
+  on_sale && original > 0
+    ? Math.min(100, Math.max(0, Math.round((1 - current / original) * 100)))
+    : 0;
 const sale_end_iso = extractSchemaPriceValidUntilRaw(html);
 const fetched_at = new Date().toISOString();
 const release_date_iso =

@@ -20,7 +20,7 @@ export type SiteNextDraftCategory = {
 export const SITE_NEXT_DRAWER_LINKS: { title: string; href: string }[] = [
   { title: "催眠音声ビギナーズガイド", href: "/beginner/" },
   {
-    title: "作品一覧",
+    title: "作品を探す",
     href: WORKS_LIST_HUB_PATH,
   },
   {
@@ -32,7 +32,7 @@ export const SITE_NEXT_DRAWER_LINKS: { title: string; href: string }[] = [
     href: buildReviewListHref(WORKS_LIST_HUB_PATH, { sale: true }),
   },
   {
-    title: "声優別おすすめ作品",
+    title: "声優から作品を探す",
     href: VOICE_ACTORS_HUB_PATH,
   },
 ];
@@ -47,8 +47,8 @@ export const SITE_NEXT_CATEGORY_GRID: SiteNextDraftCategory[] = [
   },
   {
     emoji: "🔍",
-    title: "作品一覧",
-    mobileTitleLines: ["作品", "一覧"],
+    title: "作品を探す",
+    mobileTitleLines: ["作品を", "探す"],
     href: WORKS_LIST_HUB_PATH,
   },
   {
@@ -86,8 +86,8 @@ export const SITE_NEXT_CATEGORY_GRID: SiteNextDraftCategory[] = [
   },
   {
     emoji: "🎤",
-    title: "声優別おすすめ作品",
-    mobileTitleLines: ["声優別", "おすすめ作品"],
+    title: "声優から作品を探す",
+    mobileTitleLines: ["声優から", "作品を探す"],
     href: VOICE_ACTORS_HUB_PATH,
   },
 ];

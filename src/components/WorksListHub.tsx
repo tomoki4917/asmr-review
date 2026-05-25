@@ -20,7 +20,7 @@ export function WorksListHub({
   return (
     <div className="px-4 pb-10 pt-8 sm:px-6 sm:pt-10">
       <CategoryHubHeader
-        title="作品一覧"
+        title="作品を探す"
         intro={WORKS_LIST_HUB_INTRO}
         emoji="🔍"
         breadcrumb={{ href: breadcrumbHref, label: "TOP" }}

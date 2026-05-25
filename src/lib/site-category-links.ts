@@ -27,8 +27,8 @@ export const SITE_CATEGORY_LINKS: SiteCategoryLink[] = [
   },
   {
     emoji: "🔍",
-    title: "作品一覧",
-    mobileTitleLines: ["作品", "一覧"],
+    title: "作品を探す",
+    mobileTitleLines: ["作品を", "探す"],
     href: WORKS_LIST_HUB_PATH,
     subtitle: "レビュー一覧へ",
   },
@@ -59,8 +59,8 @@ export const SITE_CATEGORY_LINKS: SiteCategoryLink[] = [
   },
   {
     emoji: "🎤",
-    title: "声優別おすすめ作品",
-    mobileTitleLines: ["声優別", "おすすめ作品"],
+    title: "声優から作品を探す",
+    mobileTitleLines: ["声優から", "作品を探す"],
     href: VOICE_ACTORS_HUB_PATH,
     subtitle: "声優名・系統から探す",
   },

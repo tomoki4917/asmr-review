@@ -22,9 +22,11 @@ import {
   formatSaleDateJapanese,
 } from "@/lib/format-published-at";
 import {
+  getAllAgesReviews,
   getAllReviews,
   getAllSlugs,
   getReviewBySlug,
+  isAllAgesReview,
   isReviewVisibleOnSite,
 } from "@/lib/reviews";
 import { extractDryWetCounts } from "@/lib/extractDryWetCounts";
@@ -39,6 +41,7 @@ import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
 import {
   getDlsiteProductById,
   isDlsiteProductShinsaku,
+  resolveDlsiteSaleDisplay,
 } from "@/lib/dlsite-product-catalog";
 import { resolveDlsiteAffiliateHref } from "@/lib/resolve-dlsite-affiliate-href";
 import type { AffiliateLink, Review } from "@/lib/types";
@@ -144,7 +147,8 @@ function inductionDistance(a: number[], b: number[]): number {
 
 function pickRelatedReviews(current: Review): Review[] {
   if (!current.body || current.contentKind !== "review") return [];
-  const all = getAllReviews().filter((r) => r.contentKind === "review" && r.slug !== current.slug);
+  const pool = isAllAgesReview(current) ? getAllAgesReviews() : getAllReviews();
+  const all = pool.filter((r) => r.contentKind === "review" && r.slug !== current.slug);
 
   const currentCircle = effectiveCircleName(current);
   const currentVector = extractInductionRatioVector(current.body);
@@ -273,7 +277,9 @@ export default async function ReviewPage({ params }: Props) {
   const isArticle = review.contentKind === "article";
   const isDoujinReview =
     review.authorName === "同人音声レビュー室" ||
-    review.tags?.includes("同人音声") === true;
+    review.authorName === "同人音声解析室" ||
+    review.tags?.includes("同人音声") === true ||
+    review.tags?.includes("全年齢同人") === true;
   const quickSpecTypeLabel = isDoujinReview ? "シチュエーション" : "誘導タイプ";
   const titleHasBreak = review.title.includes("\n");
   const nextReview = review.nextSlug
@@ -284,6 +290,9 @@ export default async function ReviewPage({ params }: Props) {
     !isArticle && review.dlsiteProductId != null
       ? getDlsiteProductById(review.dlsiteProductId)
       : undefined;
+  const dlsiteSaleDisplay = dlsiteProduct
+    ? resolveDlsiteSaleDisplay(dlsiteProduct)
+    : undefined;
 
   const nowBadges = new Date();
   const showNewBadge = isReviewNewPublication(review, nowBadges);
@@ -576,7 +585,7 @@ export default async function ReviewPage({ params }: Props) {
     "time-rotor": {
       scoreLabel: "8.0 / 10",
       oneLine:
-        "約59分09秒。古典脱力のあと公園・繁華街・満員電車へ羞恥の段を上げ、遅延許可と強度100%でドライ一回に収束させるリモコンローター屋外催眠（非バイノーラル）",
+        "約59分09秒。古典脱力のあと公園・繁華街・満員電車へ羞恥の強さを上げ、遅延許可と強度100%でドライ一回に収束させるリモコンローター屋外催眠（非バイノーラル）",
       inductionType: "リラックス系 / イメージ誘導系 / 段階深化系",
       voiceActor: "かの仔",
       tempoType: "中速 / 連続系（誘導厚め→屋外帯→電車で吊り上げ）",
@@ -1274,6 +1283,26 @@ export default async function ReviewPage({ params }: Props) {
         "屈辱設定やノーハンド絶頂に抵抗がある方",
       ],
     },
+    "shinitagari-junai-maid-yogarekake": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "死にたがりのあなたを楓が止め続ける——きっかけは高校の廊下から。添い寝と認知シャッフル睡眠法まで続く全年齢純愛長編",
+      inductionType: "メイド / 添い寝 / 純愛",
+      voiceActor: "浅木ゆめみ",
+      tempoType: "ややゆっくり / 断続〜連続（一本道）",
+      majorFetish: "メイド / 添い寝 / 純愛 / 安眠",
+      kinkType: "ノーマル",
+      recording: "本編8パート（プロローグ〜エピローグ）",
+      recommendedFor: [
+        "心の重さや孤独を抱えている方",
+        "メイド／ご主人様シチュが好きな方",
+        "眠れない夜に密着添い寝と甘い囁きを欲する方",
+      ],
+      notRecommendedFor: [
+        "最後までテンポ高めの刺激だけを追い続けたい方",
+        "バイノーラル定位や左右移動の音像演出を主目的にする方",
+      ],
+    },
     "michikusa-natsuna4-onsen-pokipoki-seitai": {
       scoreLabel: "10.0 / 10",
       oneLine:
@@ -1568,13 +1597,17 @@ export default async function ReviewPage({ params }: Props) {
     : "未記入";
   const quickCircleNameLabel = effectiveCircleName(review) ?? "未記入";
   const quickDryWetCounts = extractDryWetCounts(review.body);
-  const quickDiscountLabel = dlsiteProduct?.on_sale
-    ? `今なら${dlsiteProduct.discount_rate}%OFF`
+  const quickDiscountLabel = dlsiteSaleDisplay?.on_sale
+    ? `今なら${dlsiteSaleDisplay.discount_rate}%OFF`
     : "価格はページでご確認ください";
   const quickAffiliateHref = resolveDlsiteAffiliateHref(review) ?? "#";
+  const trialAffiliateHref = review.affiliateLinks.find((link) =>
+    /体験版|サンプル/.test(String(link.label ?? ""))
+  )?.href;
   const quickSampleHref =
-    review.affiliateLinks.find((link) => /体験版|サンプル/.test(String(link.label ?? "")))?.href ??
-    undefined;
+    trialAffiliateHref && trialAffiliateHref !== quickAffiliateHref
+      ? trialAffiliateHref
+      : undefined;
 
   return (
     <>
@@ -1665,24 +1698,26 @@ export default async function ReviewPage({ params }: Props) {
                 ))}
               </ul>
               <div
-                className={`mt-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6 ${
-                  review.affiliateLinks.length > 0 ? "sm:justify-between" : ""
-                }`}
+                className={
+                  review.affiliateLinks.length > 0
+                    ? "mt-5 grid grid-cols-1 gap-4 min-[720px]:grid-cols-[minmax(0,1fr)_auto] min-[720px]:items-start min-[720px]:gap-6"
+                    : "mt-5"
+                }
               >
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0">
                   <SummaryMarkdown markdown={review.summary} />
                 </div>
                 {review.affiliateLinks.length > 0 ? (
-                  <div className="flex w-full shrink-0 flex-col gap-3 sm:w-auto sm:max-w-[min(100%,18rem)] sm:pt-0.5">
+                  <div className="flex w-full min-w-0 flex-col gap-3 min-[720px]:w-[min(18rem,100%)] min-[720px]:justify-self-end min-[720px]:pt-0.5">
                     {review.affiliateLinks.length === 1 ? (
                       <AffiliateButton
                         link={affiliateLinksHeader(review.affiliateLinks)[0]}
-                        className="min-h-11 w-full px-5 py-2.5 text-sm sm:min-w-[12rem]"
+                        className="min-h-11 w-full px-5 py-2.5 text-sm"
                       />
                     ) : (
                       <AffiliateButtonGroup
                         links={affiliateLinksHeader(review.affiliateLinks)}
-                        className="w-full flex-col sm:w-auto"
+                        className="w-full"
                       />
                     )}
                   </div>
@@ -1706,7 +1741,7 @@ export default async function ReviewPage({ params }: Props) {
             detailTitle="しっかり見たい人向け！作品詳細解析"
             quickAffiliateHref={quickAffiliateHref}
             quickDiscountLabel={quickDiscountLabel}
-            quickIsOnSale={Boolean(dlsiteProduct?.on_sale)}
+            quickIsOnSale={Boolean(dlsiteSaleDisplay?.on_sale)}
             quickSampleHref={quickSampleHref}
             quickScoreLabel={quickGuideSpec?.scoreLabel ?? `${review.ratingValue}.0 / ${best}`}
             quickDryWetCounts={quickDryWetCounts}
@@ -1818,8 +1853,8 @@ export default async function ReviewPage({ params }: Props) {
                       />
                     ) : null}
                     <div className="mt-10 border-t border-slate-700/50 pt-8">
-                      <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
-                        <div className="min-w-0 flex-1">
+                      <div className="grid grid-cols-1 gap-6 min-[720px]:grid-cols-[minmax(0,1fr)_auto] min-[720px]:items-start min-[720px]:gap-8">
+                        <div className="min-w-0">
                           <h2
                             id={finalRatingHeadingId}
                             className="review-h2--analysis-block mb-3 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50"
@@ -1834,10 +1869,10 @@ export default async function ReviewPage({ params }: Props) {
                           />
                         </div>
                         {review.affiliateLinks.length > 0 ? (
-                          <div className="w-full shrink-0 sm:w-auto sm:max-w-[min(100%,20rem)] sm:pt-1">
+                          <div className="w-full min-w-0 min-[720px]:w-[min(20rem,100%)] min-[720px]:justify-self-end min-[720px]:pt-1">
                             <AffiliateButtonGroup
                               links={affiliateLinksBesideRating(review.affiliateLinks)}
-                              className="w-full sm:w-auto"
+                              className="w-full"
                             />
                           </div>
                         ) : null}
@@ -1992,8 +2027,8 @@ export default async function ReviewPage({ params }: Props) {
                 />
               ) : null}
               <div className="mt-10 border-t border-slate-700/50 pt-8">
-                <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
-                  <div className="min-w-0 flex-1">
+                <div className="grid grid-cols-1 gap-6 min-[720px]:grid-cols-[minmax(0,1fr)_auto] min-[720px]:items-start min-[720px]:gap-8">
+                  <div className="min-w-0">
                     <h2
                       id={finalRatingHeadingId}
                       className="review-h2--analysis-block mb-3 scroll-mt-24 text-xl font-bold tracking-tight text-slate-50"
@@ -2008,10 +2043,10 @@ export default async function ReviewPage({ params }: Props) {
                     />
                   </div>
                   {review.affiliateLinks.length > 0 ? (
-                    <div className="w-full shrink-0 sm:w-auto sm:max-w-[min(100%,20rem)] sm:pt-1">
+                    <div className="w-full min-w-0 min-[720px]:w-[min(20rem,100%)] min-[720px]:justify-self-end min-[720px]:pt-1">
                       <AffiliateButtonGroup
                         links={affiliateLinksBesideRating(review.affiliateLinks)}
-                        className="w-full sm:w-auto"
+                        className="w-full"
                       />
                     </div>
                   ) : null}

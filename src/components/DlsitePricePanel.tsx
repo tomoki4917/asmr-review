@@ -1,6 +1,7 @@
 import {
   isDlsitePriceFetched,
   isDlsiteProductShinsaku,
+  resolveDlsiteSaleDisplay,
   type DlsiteProductRecord,
 } from "@/lib/dlsite-product-catalog";
 import { ShinsakuBadge } from "./ShinsakuBadge";
@@ -45,14 +46,15 @@ export function DlsitePricePanel({
   if (!show) return null;
 
   const priceFetched = isDlsitePriceFetched(product);
+  const sale = resolveDlsiteSaleDisplay(product);
   const hasListedPrice =
     priceFetched &&
-    typeof product.current_price === "number" &&
-    Number.isFinite(product.current_price) &&
-    product.current_price >= 0;
-  const isFreeTaxIncluded = hasListedPrice && product.current_price === 0;
+    typeof sale.current_price === "number" &&
+    Number.isFinite(sale.current_price) &&
+    sale.current_price >= 0;
+  const isFreeTaxIncluded = hasListedPrice && sale.current_price === 0;
   const urgentDays =
-    product.sale_end_iso && product.on_sale
+    product.sale_end_iso && sale.on_sale
       ? daysUntil(product.sale_end_iso)
       : null;
   const showUrgent =
@@ -96,24 +98,24 @@ export function DlsitePricePanel({
       ) : (
         <>
           <div className="mt-3 flex flex-wrap items-end gap-3">
-            {product.on_sale ? (
+            {sale.on_sale ? (
               <>
                 <div>
                   <p className="text-[11px] font-medium uppercase tracking-wider text-amber-300/90">
                     セール価格（税込）
                   </p>
                   <p className="text-2xl font-bold tabular-nums text-amber-200">
-                    {formatYen(product.current_price)}
+                    {formatYen(sale.current_price)}
                     <span className="ml-0.5 text-base font-semibold">円</span>
                   </p>
                 </div>
                 <div className="flex flex-col items-start gap-0.5">
                   <span className="rounded-md bg-rose-600/90 px-2 py-0.5 text-xs font-bold text-white shadow-sm">
-                    {product.discount_rate}%OFF
+                    {sale.discount_rate}%OFF
                   </span>
                   <p className="text-sm text-slate-500">
                     <span className="line-through">
-                      {formatYen(product.original_price)}円
+                      {formatYen(sale.original_price)}円
                     </span>
                     <span className="ml-2 text-slate-400">定価（税込）</span>
                   </p>
@@ -125,7 +127,7 @@ export function DlsitePricePanel({
                   価格（税込）
                 </p>
                 <p className="text-2xl font-bold tabular-nums text-slate-100">
-                  {formatYen(product.current_price)}
+                  {formatYen(sale.current_price)}
                   <span className="ml-0.5 text-base font-semibold">円</span>
                 </p>
                 {isFreeTaxIncluded ? (
@@ -137,8 +139,17 @@ export function DlsitePricePanel({
             )}
           </div>
 
-          {product.on_sale && product.sale_limit ? (
+          {sale.on_sale && product.sale_limit ? (
             <p className="mt-2 text-xs text-slate-400">{product.sale_limit}</p>
+          ) : null}
+          {sale.on_sale && !product.sale_limit && product.sale_end_iso ? (
+            <p className="mt-2 text-xs text-slate-400">
+              セール期限:{" "}
+              <time dateTime={product.sale_end_iso}>
+                {product.sale_end_iso.slice(0, 10)}
+              </time>
+              まで（ページでご確認ください）
+            </p>
           ) : null}
 
           {showUrgent && urgentDays != null ? (

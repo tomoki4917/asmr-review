@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useId, useState } from "react";
+import { SiteRatingSwitch } from "@/components/SiteRatingSwitch";
 import { buildReviewListHref, DEV_SITE_NEXT_LIST_BASE } from "@/lib/review-list-href";
 import { SITE_NEXT_DRAWER_LINKS } from "@/lib/site-next-draft-links";
 
@@ -103,6 +104,10 @@ export function DevSiteNextHeader() {
             <MenuIcon className="h-5 w-5" />
           </button>
         </div>
+      </div>
+
+      <div className="border-t border-slate-600/35 px-3 pb-2.5 pt-2 sm:px-4">
+        <SiteRatingSwitch compact fullWidth className="mx-auto max-w-lg sm:max-w-xl" />
       </div>
 
       {open ? (

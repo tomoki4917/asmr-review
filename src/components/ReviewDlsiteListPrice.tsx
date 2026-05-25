@@ -1,5 +1,6 @@
 import {
   getDlsiteProductById,
+  resolveDlsiteSaleDisplay,
   shouldShowDlsitePriceOnReviewListCard,
 } from "@/lib/dlsite-product-catalog";
 import type { Review } from "@/lib/types";
@@ -27,6 +28,7 @@ export function ReviewDlsiteListPrice({
   }
   const p = getDlsiteProductById(review.dlsiteProductId!);
   if (!p) return null;
+  const sale = resolveDlsiteSaleDisplay(p);
 
   const compact = size === "compact";
 
@@ -37,7 +39,7 @@ export function ReviewDlsiteListPrice({
         compact ? "text-sm" : "text-base",
       ].join(" ")}
     >
-      {p.on_sale ? (
+      {sale.on_sale ? (
         <>
           <span
             className={[
@@ -47,7 +49,7 @@ export function ReviewDlsiteListPrice({
                 : "px-1.5 py-0.5 text-[11px]",
             ].join(" ")}
           >
-            {p.discount_rate}%OFF
+            {sale.discount_rate}%OFF
           </span>
           <span
             className={[
@@ -55,7 +57,7 @@ export function ReviewDlsiteListPrice({
               compact ? "text-sm" : "text-lg",
             ].join(" ")}
           >
-            ¥{p.current_price.toLocaleString("ja-JP")}
+            ¥{sale.current_price.toLocaleString("ja-JP")}
           </span>
           <span
             className={[
@@ -63,7 +65,7 @@ export function ReviewDlsiteListPrice({
               compact ? "text-xs" : "text-sm",
             ].join(" ")}
           >
-            ¥{p.original_price.toLocaleString("ja-JP")}
+            ¥{sale.original_price.toLocaleString("ja-JP")}
           </span>
         </>
       ) : (
@@ -74,9 +76,9 @@ export function ReviewDlsiteListPrice({
               compact ? "text-sm" : "text-lg",
             ].join(" ")}
           >
-            ¥{p.current_price.toLocaleString("ja-JP")}
+            ¥{sale.current_price.toLocaleString("ja-JP")}
           </span>
-          {p.current_price === 0 ? (
+          {sale.current_price === 0 ? (
             <span
               className={[
                 "font-medium text-emerald-200/90",

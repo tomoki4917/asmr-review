@@ -54,6 +54,32 @@ export function isDlsitePriceFetched(
  * 一覧カードに税込・セール価格を出す条件。
  * 該当 `id` があり **`fetched_at` 済み**で `current_price` が数値（**0円＝無料は取得後のみ表示**）。
  */
+/** 表示用セール状態（`on_sale` フラグが古くても定価＞現在価格ならセール扱い） */
+export function resolveDlsiteSaleDisplay(product: DlsiteProductRecord): {
+  on_sale: boolean;
+  current_price: number;
+  original_price: number;
+  discount_rate: number;
+} {
+  const current = product.current_price;
+  const original = Math.max(product.original_price, current);
+  const on_sale =
+    product.on_sale || (original > current && current > 0);
+  const discount_rate =
+    on_sale && original > 0
+      ? Math.min(
+          100,
+          Math.max(
+            0,
+            product.discount_rate > 0
+              ? product.discount_rate
+              : Math.round((1 - current / original) * 100)
+          )
+        )
+      : 0;
+  return { on_sale, current_price: current, original_price: original, discount_rate };
+}
+
 export function shouldShowDlsitePriceOnReviewListCard(
   dlsiteProductId: string | undefined
 ): boolean {

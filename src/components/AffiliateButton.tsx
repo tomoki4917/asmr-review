@@ -62,9 +62,7 @@ export function AffiliateButtonGroup({
   if (links.length === 0) return null;
 
   return (
-    <div
-      className={`flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-stretch ${className}`}
-    >
+    <div className={`flex flex-col gap-3 ${className}`}>
       {links.map((link, i) => (
         <AffiliateButton
           key={`${link.vendor}-${link.href}-${i}`}

@@ -10,6 +10,7 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { extractDryWetCounts } from "./lib/extract-dry-wet-counts.mjs";
+import { auditReviewScenario } from "./lib/review-scenario-audit.mjs";
 
 const repoRoot = process.cwd();
 const reviewsDir = path.join(repoRoot, "src", "content", "レビュー");
@@ -24,8 +25,13 @@ const flagWrite = args.has("--write-status");
 function isDoujinReview(text) {
   return (
     /\n\s+-\s+同人音声\n/.test(text) ||
+    /\n\s+-\s+全年齢同人\n/.test(text) ||
     /authorName:\s*同人音声レビュー室/.test(text)
   );
+}
+
+function isAllAgesDoujinReview(text) {
+  return /\n\s+-\s+全年齢同人\n/.test(text);
 }
 
 const CHECKS = [
@@ -99,6 +105,21 @@ const CHECKS = [
     fail: (t) => hasForbiddenTsumi(t),
   },
   {
+    id: "mukinikui",
+    label: "禁止語「向きにくい」系",
+    fail: (t) => hasForbiddenMukinikui(t),
+  },
+  {
+    id: "muki_masu",
+    label: "禁止語「向きます」",
+    fail: (t) => hasForbiddenMukiMasu(t),
+  },
+  {
+    id: "listening_premise_line",
+    label: "禁止: 総合評価直下の視聴前提一文",
+    fail: (t) => hasForbiddenListeningPremiseLine(t),
+  },
+  {
     id: "tachi_fragment",
     label: "禁止語「立ち」切れ（立つ欠落）",
     fail: (t) => hasForbiddenTachiFragment(t),
@@ -109,9 +130,39 @@ const CHECKS = [
     fail: (t) => hasForbiddenToriniikitai(t),
   },
   {
+    id: "hodoku",
+    label: "禁止語「ほどく」系",
+    fail: (t) => hasForbiddenHodoku(t),
+  },
+  {
+    id: "kankei_no_dan",
+    label: "禁止語「関係の段」系",
+    fail: (t) => hasForbiddenKankeiNoDan(t),
+  },
+  {
+    id: "dan_stage_phrase",
+    label: "禁止語「段を進め／この段の」系",
+    fail: (t) => hasForbiddenDanStagePhrase(t),
+  },
+  {
+    id: "ondo_ga",
+    label: "禁止語「温度が」",
+    fail: (t) => hasForbiddenOndoGa(t),
+  },
+  {
+    id: "bure_nikuku",
+    label: "禁止語「ぶれにく」系",
+    fail: (t) => hasForbiddenBureNikuku(t),
+  },
+  {
     id: "doujin_subtrack_table",
     label: "同人: サブトラック明細表（パートの長さ）",
     fail: (t) => hasDoujinSubtrackTable(t),
+  },
+  {
+    id: "all_ages_no_taikan",
+    label: "全年齢: パート解説に体感禁止",
+    fail: (t) => isAllAgesDoujinReview(t) && /\*\*体感:\*\*/.test(t),
   },
 ];
 
@@ -144,6 +195,70 @@ function hasForbiddenTsumi(text) {
   const body = text.replace(/^---[\s\S]*?---\n?/, "");
   const withoutQuotes = body.replace(/^>.*$/gm, "");
   return /積み/.test(withoutQuotes);
+}
+
+/** `向きにくい` `向きにく` 等（§2.2・同人ガイド2）。台詞引用（> 行）は除外 */
+function hasForbiddenMukinikui(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  return /向きにく/.test(withoutQuotes);
+}
+
+/** `向きます`（`向きにくい` は `mukinikui` で別検出）。台詞引用（> 行）は除外 */
+function hasForbiddenMukiMasu(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  return /向きます/.test(withoutQuotes);
+}
+
+/** 総合評価直下の視聴前提宣言（同人ガイド2・評価時の視聴前提）。台詞引用（> 行）は除外 */
+function hasForbiddenListeningPremiseLine(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  if (/静かな環境で(?:イヤホン|視聴)/.test(withoutQuotes)) return true;
+  if (/イヤホン視聴した場合の評価/.test(withoutQuotes)) return true;
+  if (/視聴する場合の評価です/.test(withoutQuotes)) return true;
+  return false;
+}
+
+/** `ほどく` `ほどき` `ほどけ` `ほどか` 等（§1（補）B-0c・同人ガイド2）。台詞引用（> 行）は除外 */
+function hasForbiddenHodoku(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  return /ほど[くけかき]/.test(withoutQuotes);
+}
+
+/** `関係の段ごと` `関係の段階` `関係の段差` 等（同人ガイド2）。台詞引用（> 行）は除外 */
+function hasForbiddenKankeiNoDan(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  return /関係の段/.test(withoutQuotes);
+}
+
+/** `温度が`（関係・甘さの比喩。台詞引用（> 行）は除外） */
+function hasForbiddenOndoGa(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  return /温度が/.test(withoutQuotes);
+}
+
+/** `ぶれにくく` `ぶれにくい` 等（台詞引用（> 行）は除外） */
+function hasForbiddenBureNikuku(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  return /ぶれにく/.test(withoutQuotes);
+}
+
+/** `段を進め` `この段の` `段を上げ` 等（ゲーム／段階メタの「段」・階段は可）。台詞引用（> 行）は除外 */
+function hasForbiddenDanStagePhrase(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  const stripped = withoutQuotes.replace(/階段/g, "");
+  if (/段を進め/.test(stripped)) return true;
+  if (/この段の/.test(stripped)) return true;
+  if (/その段の/.test(stripped)) return true;
+  if (/段を上げ/.test(stripped)) return true;
+  return false;
 }
 
 /** `立つ` を `立ち` だけで済ませる切れ（§1（補）B-1）。台詞引用（> 行）は除外 */
@@ -261,6 +376,7 @@ async function auditAll() {
     }
 
     const failed = CHECKS.filter((c) => c.fail(text));
+    const scenario = await auditReviewScenario(slug);
     const noQuickGuide = quickGuide.size > 0 && !quickGuide.has(slug);
     const inductionType = inductionBySlug.get(slug);
     const inductionShitu =
@@ -293,8 +409,10 @@ async function auditAll() {
         failed.length === 0 &&
         !noQuickGuide &&
         !dlsitePriceIssue &&
-        !inductionShitu,
+        !inductionShitu &&
+        scenario.ok,
       failed,
+      scenarioErrors: scenario.errors,
       noQuickGuide,
       inductionShitu: inductionShitu || undefined,
       dlsitePriceIssue: dlsitePriceIssue || undefined,
@@ -326,6 +444,7 @@ function formatReport(rows) {
     for (const r of pending) {
       const issues = [
         ...r.failed.map((f) => f.label),
+        ...(r.scenarioErrors ?? []).map((e) => `シナリオ: ${e}`),
         ...(r.noQuickGuide ? ["quickGuide 未登録"] : []),
         ...(r.inductionShitu ? ["誘導タイプにシチュ系"] : []),
         ...(r.dlsitePriceIssue ? [r.dlsitePriceIssue] : []),
@@ -364,6 +483,7 @@ function printConsole(rows) {
     for (const r of pending) {
       const issues = [
         ...r.failed.map((f) => f.id),
+        ...(r.scenarioErrors?.length ? ["scenario"] : []),
         ...(r.noQuickGuide ? ["no_quickguide"] : []),
         ...(r.dlsitePriceIssue ? ["dlsite_price"] : []),
       ];

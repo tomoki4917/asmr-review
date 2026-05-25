@@ -23,15 +23,24 @@ LABEL_COLOR = "#ffffff"
 # v1: 12→8→4 反時計回り
 THETA_TRI = np.array([np.pi / 2, 7 * np.pi / 6, 11 * np.pi / 6, np.pi / 2])
 
-# v2: 12時から反時計回り（没入度→シナリオ→快楽度→音響→満足度）
-DOUJIN_AXIS_KEYS = ("immersion", "scenario", "pleasure", "acoustic", "satisfaction")
+# v2 R18同人: 没入度→シナリオ→快楽度→音響→満足度
+DOUJIN_AXIS_KEYS_PLEASURE = ("immersion", "scenario", "pleasure", "acoustic", "satisfaction")
+# v2 全年齢同人: 第4軸は入眠・覚醒（scores.sleepWake）
+DOUJIN_AXIS_KEYS_SLEEP_WAKE = ("immersion", "scenario", "sleepWake", "acoustic", "satisfaction")
 DOUJIN_AXIS_DEFAULT_LABELS = {
     "immersion": "没入度",
     "scenario": "シナリオ",
     "pleasure": "快楽度",
+    "sleepWake": "睡眠・覚醒",
     "acoustic": "音響",
     "satisfaction": "満足度",
 }
+
+
+def resolve_doujin_axis_keys(scores: dict) -> tuple[str, ...]:
+    if "sleepWake" in scores:
+        return DOUJIN_AXIS_KEYS_SLEEP_WAKE
+    return DOUJIN_AXIS_KEYS_PLEASURE
 
 
 def _setup_font() -> None:
@@ -90,8 +99,9 @@ def load_v2(json_path: Path) -> tuple[str, list[tuple[str, float]]]:
         raise ValueError(f"missing scores object: {json_path}")
 
     radar = data.get("radarAxisLabels") if isinstance(data.get("radarAxisLabels"), dict) else {}
+    axis_keys = resolve_doujin_axis_keys(scores)
     axes: list[tuple[str, float]] = []
-    for key in DOUJIN_AXIS_KEYS:
+    for key in axis_keys:
         try:
             val = float(np.clip(float(scores[key]), 0.0, 10.0))
         except (KeyError, TypeError, ValueError) as e:

@@ -30,7 +30,7 @@ export function VoiceActorsHub({
   return (
     <div className="px-4 pb-10 pt-8 sm:px-6 sm:pt-10">
       <CategoryHubHeader
-        title="声優別おすすめ作品"
+        title="声優から作品を探す"
         intro={VOICE_ACTORS_HUB_INTRO}
         emoji="🎤"
         breadcrumb={{ href: breadcrumbHref, label: "TOP" }}

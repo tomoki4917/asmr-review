@@ -51,6 +51,20 @@ npm run review:audit-kansei
 
 対象 slug の失敗項目をメモする。
 
+### 1b. シナリオ3パス（新規・全面改稿・最優先・必須）
+
+**シナリオ間違いだけは許さない。** 時間がかかっても **§2（index 改稿）より先**に完了。正本: `docs/真催眠音声執筆ガイド.md` §1（補）・`_同人音声執筆ガイド2.md`「シナリオ照合」・`.cursor/rules/review-scenario-3pass.mdc`。
+
+1. **パス1** … DLsite ＋ 全 `analysis/*.txt` → `scenario-facts.json`（`timeline`・`forbiddenMisreads`）
+2. **パス2** … 正本 ↔ `index.md` 全文 ＋ **`quickGuideBySlug[slug]`**（購入者レビューのあらすじ要約は**正本にしない**）
+3. **パス3** … 各 `内容:` ↔ 対応 txt 再読 → `notes` に **【シナリオ正本・3パス照合済】** → **`passes: 3`**
+
+```bash
+npm run review:audit-scenario -- <slug>
+```
+
+**誰が／どこで／何が起きたか**（止める側・場面の場所）を台本と一致させてから §2 へ進む。
+
 ### 2. index.md を完成系に改稿
 
 最低限そろえるブロック:

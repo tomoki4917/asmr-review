@@ -1,14 +1,21 @@
+import { SITE_NAME_R18 } from "@/lib/site-brand";
+
+type HomeHeroIntroProps = {
+  /** 省略時は R18 サイト名（催眠音声解析室） */
+  siteName?: string;
+};
+
 /**
  * トップおよび「次サイト」草案で共通利用する、サイト冒頭（キャッチ〜説明2行）。
  */
-export function HomeHeroIntro() {
+export function HomeHeroIntro({ siteName = SITE_NAME_R18 }: HomeHeroIntroProps) {
   return (
     <>
       <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-400/90">
         hypnosis · ASMR · psychology
       </p>
       <h1 className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">
-        催眠音声解析室
+        {siteName}
       </h1>
       <div className="mx-auto mt-6 flex max-w-4xl items-center justify-center gap-3 sm:gap-4">
         <span
