@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { useState } from "react";
+import { ReviewMarkdown } from "@/components/ReviewMarkdown";
 
 type Props = {
   quickTitle: string;
@@ -21,7 +22,6 @@ type Props = {
   quickTypeLabel?: string;
   quickInductionType: string;
   quickVoiceActor: string;
-  quickTempoType: string;
   quickMajorFetish: string;
   quickKinkType: string;
   quickRecommendedLevel?: string;
@@ -30,12 +30,38 @@ type Props = {
   quickRecording: string;
   quickRecommendedFor: string[];
   quickNotRecommendedFor: string[];
+  /** クイックのみの「作品感想」段落（見出しはコンポーネント側で付与） */
+  quickWorkImpressionParagraphs?: string[];
+  quickWorkImpressionAvatar?: string;
+  /** 記事モード「解析データ」タブ（誘導・暗示の表ブロック） */
+  analysisDataMarkdown?: string;
   /** 詳細の `### 体験感度Lv（一覧）` へ誘導するリンクを「おすすめ催眠Lv」直後に出す */
   quickShowSensitivityLevelListLink?: boolean;
   children: ReactNode;
 };
 
 const EXPERIENCE_SENSITIVITY_LV_LIST_ID = "experience-sensitivity-lv-list";
+
+/** 記事モード「作品詳細解析」ボタン・見出しの既定文言 */
+export const REVIEW_DETAIL_MODE_BUTTON_LABEL = "しっかり見たい人向け！作品詳細解析";
+
+function ModeButtonLabel({
+  label,
+  align = "left",
+}: {
+  label: string;
+  align?: "left" | "center";
+}) {
+  return (
+    <span
+      className={`block whitespace-pre-line leading-snug ${
+        align === "center" ? "text-center" : "text-left"
+      }`}
+    >
+      {label}
+    </span>
+  );
+}
 
 export function ReviewModeSwitcher({
   quickTitle,
@@ -52,7 +78,6 @@ export function ReviewModeSwitcher({
   quickTypeLabel = "誘導タイプ",
   quickInductionType,
   quickVoiceActor,
-  quickTempoType,
   quickMajorFetish,
   quickKinkType,
   quickRecommendedLevel = "",
@@ -60,10 +85,14 @@ export function ReviewModeSwitcher({
   quickRecording,
   quickRecommendedFor,
   quickNotRecommendedFor,
+  quickWorkImpressionParagraphs,
+  quickWorkImpressionAvatar,
+  analysisDataMarkdown,
   quickShowSensitivityLevelListLink = false,
   children,
 }: Props) {
-  const [mode, setMode] = useState<"quick" | "detail">("quick");
+  const [mode, setMode] = useState<"quick" | "detail" | "data">("quick");
+  const hasAnalysisData = Boolean(analysisDataMarkdown?.trim());
 
   function openDetailAndScrollToSensitivityList() {
     setMode("detail");
@@ -75,6 +104,8 @@ export function ReviewModeSwitcher({
     }, 0);
   }
   const showQuick = mode === "quick";
+  const showDetail = mode === "detail";
+  const showData = mode === "data";
   const hasVoiceActor = quickVoiceActor.trim().length > 0 && !/確認中|未設定|不明/.test(quickVoiceActor);
   const showSampleLink =
     Boolean(quickSampleHref) &&
@@ -86,7 +117,11 @@ export function ReviewModeSwitcher({
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-300/90">
           記事モード
         </p>
-        <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <div
+          className={`mt-3 grid grid-cols-1 gap-2 ${
+            hasAnalysisData ? "sm:grid-cols-3" : "sm:grid-cols-2"
+          }`}
+        >
           <button
             type="button"
             onClick={() => setMode("quick")}
@@ -97,20 +132,34 @@ export function ReviewModeSwitcher({
                 : "border-slate-600/60 bg-slate-800/60 text-slate-200 hover:border-slate-500/70 hover:bg-slate-800/80"
             }`}
           >
-            {quickTitle}
+            <ModeButtonLabel label={quickTitle} />
           </button>
           <button
             type="button"
             onClick={() => setMode("detail")}
-            aria-pressed={!showQuick}
-            className={`min-h-11 rounded-xl border px-3 py-2 text-left text-sm font-semibold transition ${
-              !showQuick
+            aria-pressed={showDetail}
+            className={`flex min-h-11 items-center rounded-xl border px-3 py-2 text-sm font-semibold transition ${
+              showDetail
                 ? "border-sky-400/60 bg-sky-500/20 text-sky-100"
                 : "border-slate-600/60 bg-slate-800/60 text-slate-200 hover:border-slate-500/70 hover:bg-slate-800/80"
             }`}
           >
-            {detailTitle}
+            <ModeButtonLabel label={detailTitle} />
           </button>
+          {hasAnalysisData ? (
+            <button
+              type="button"
+              onClick={() => setMode("data")}
+              aria-pressed={showData}
+              className={`flex min-h-11 items-center justify-center rounded-xl border px-3 py-2 text-sm font-semibold transition ${
+                showData
+                  ? "border-sky-400/60 bg-sky-500/20 text-sky-100"
+                  : "border-slate-600/60 bg-slate-800/60 text-slate-200 hover:border-slate-500/70 hover:bg-slate-800/80"
+              }`}
+            >
+              <ModeButtonLabel label="解析データ" align="center" />
+            </button>
+          ) : null}
         </div>
       </section>
 
@@ -173,10 +222,6 @@ export function ReviewModeSwitcher({
                 </li>
               ) : null}
               <li className="border-l-[3px] border-slate-500/90 pl-3">
-                <span className="text-slate-100">テンポ：</span>{" "}
-                <span className="text-slate-50">{quickTempoType}</span>
-              </li>
-              <li className="border-l-[3px] border-slate-500/90 pl-3">
                 主要フェチ： {quickMajorFetish}
               </li>
               <li className="border-l-[3px] border-slate-500/90 pl-3">
@@ -225,6 +270,29 @@ export function ReviewModeSwitcher({
             </ul>
           </div>
 
+          {quickWorkImpressionParagraphs?.length ? (
+            <div className="mt-6">
+              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-2">
+                <h3 className="text-base font-bold tracking-tight text-amber-100 sm:text-lg">作品感想</h3>
+                {quickWorkImpressionAvatar ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- レビュー同梱の相対パス
+                  <img
+                    src={quickWorkImpressionAvatar}
+                    alt=""
+                    className="h-8 w-8 shrink-0 rounded-full border-2 border-slate-500/55 bg-slate-800/80 object-cover shadow-[0_1px_8px_rgba(0,0,0,0.4)] sm:h-9 sm:w-9"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : null}
+              </div>
+              <div className="mt-2 space-y-3 text-sm leading-relaxed text-slate-200">
+                {quickWorkImpressionParagraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
           <div className="mt-6">
             {quickIsOnSale ? (
               <p className="mb-2 inline-flex items-center rounded-md border border-rose-300/50 bg-rose-500/20 px-2.5 py-1 text-xs font-bold tracking-wide text-rose-100 shadow-[0_0_20px_rgba(244,63,94,0.28)]">
@@ -243,6 +311,18 @@ export function ReviewModeSwitcher({
             >
               ➡ DLsiteで作品をチェックする（{quickDiscountLabel}）
             </a>
+          </div>
+        </section>
+      ) : showData ? (
+        <section className="review-mode-data mt-4 rounded-2xl border border-slate-600/45 bg-slate-900/50 p-4 sm:p-5">
+          <h3 className="mb-3 inline-flex scroll-mt-24 items-center gap-2 rounded-lg border border-violet-400/40 bg-violet-500/10 px-3 py-2 text-lg font-bold tracking-tight leading-snug text-violet-100 shadow-[0_0_18px_rgba(167,139,250,0.22)] sm:text-xl">
+            <span aria-hidden className="text-xl leading-none">
+              📊
+            </span>
+            解析データ
+          </h3>
+          <div className="review-md review-reading mt-2 min-w-0 text-sm leading-relaxed text-slate-200 sm:text-[0.94rem]">
+            <ReviewMarkdown markdown={analysisDataMarkdown ?? ""} starReviewReadingComfort />
           </div>
         </section>
       ) : (

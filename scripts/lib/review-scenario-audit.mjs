@@ -4,6 +4,7 @@
  */
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { auditDryOrgasmCount } from "./review-dry-orgasm-audit.mjs";
 
 const REVIEW_ROOT = path.join(process.cwd(), "src", "content", "レビュー");
 
@@ -134,6 +135,23 @@ export async function auditReviewScenario(slug) {
   } else if (!facts && corpus.trim()) {
     warnings.push("scenario-facts.json 未作成（3パス照合の正本を推奨）");
   }
+
+  let analysisData = null;
+  try {
+    analysisData = JSON.parse(
+      await readFile(path.join(reviewDir, "_分析データ.json"), "utf8")
+    );
+  } catch {
+    /* optional */
+  }
+
+  const dryAudit = auditDryOrgasmCount({
+    indexMd,
+    facts,
+    analysisData,
+  });
+  errors.push(...dryAudit.errors);
+  warnings.push(...dryAudit.warnings);
 
   return { slug, ok: errors.length === 0, errors, warnings };
 }

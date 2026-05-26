@@ -55,9 +55,11 @@ npm run review:audit-kansei
 
 **シナリオ間違いだけは許さない。** 時間がかかっても **§2（index 改稿）より先**に完了。正本: `docs/真催眠音声執筆ガイド.md` §1（補）・`_同人音声執筆ガイド2.md`「シナリオ照合」・`.cursor/rules/review-scenario-3pass.mdc`。
 
-1. **パス1** … DLsite ＋ 全 `analysis/*.txt` → `scenario-facts.json`（`timeline`・`forbiddenMisreads`）
+1. **パス1** … DLsite ＋ 全 `analysis/*.txt`（＋あれば `.srt`）→ `scenario-facts.json`（`timeline`・`forbiddenMisreads`・**`dryOrgasmArrivals` / `dryOrgasmExcluded`**）
 2. **パス2** … 正本 ↔ `index.md` 全文 ＋ **`quickGuideBySlug[slug]`**（購入者レビューのあらすじ要約は**正本にしない**）
 3. **パス3** … 各 `内容:` ↔ 対応 txt 再読 → `notes` に **【シナリオ正本・3パス照合済】** → **`passes: 3`**
+
+**ドライシーン回数（パス1で必ず）** … `docs/真催眠音声執筆ガイド.md` §1（補・絶頂行）。**到達回収だけ**数える。終盤の連続波は **1回** にまとめるか **`複数回`**。整数を書くときは **`index` 絶頂行＝`orgasmSummary`＝`dryOrgasmArrivals.length`**。見本: `asmr-saimin-aman-toro-lip/scenario-facts.json`。
 
 ```bash
 npm run review:audit-scenario -- <slug>
@@ -70,10 +72,11 @@ npm run review:audit-scenario -- <slug>
 最低限そろえるブロック:
 
 - `circleName`（フロントマター）
+- `### 基本情報` … **サークル・販売日・種類・声優・収録** 等のカタログのみ。**`- **主題：**` 行は書かない**（§1（補）E。主旨は `summary`・`itemDescription`・本文へ）
 - `### パートの長さ`（合計行 + `—` 区切り・`01` 連番なし。**本編のみ査定ではフルバージョン総尺を合計行に書かない** — 執筆ガイド §1（補）①）
 - `**グラフ評価内訳**`（§3g・2文・`絶頂シーン`・採用されています体）
 - `### 【推奨感度Lv：n以上】` + 太字グレード1行 + 感度Lvカード + **おすすめ3 / 合わない2**（`## どんな人` h2 なし）
-- `## 総合評価` → `ドライシーン` / `ウェットシーン`
+- `## 総合評価` → `ドライシーン` / `ウェットシーン`（**括弧説明なし**。例: `- **ドライシーン1回**、**ウェットシーン0回**`）
 - 誘導・暗示表 → 3列目 `使用技法`（機序型の特性表）
 - `## パート別解析`（見出しは公式名・連番だけで指さない。**本編1トラックで誘導〜快感が混在** → §3b-2 の `（誘導）`／`（深化）`／`（性感パート）`。**境界は `analysis/*.txt` の台詞**・見本 `dandan-gehin-ni-naru-saimin`）
 - `## 総評：本作品の構造的結論` → 【誘導の組み立て】【快感が発生する仕組み】【結論】

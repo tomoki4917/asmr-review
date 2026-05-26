@@ -56,6 +56,11 @@ const CHECKS = [
     fail: (t) => t.includes("### 【設計の論理的総括】"),
   },
   {
+    id: "shudai_line",
+    label: "基本情報に「主題:」行（廃止・§1（補）E）",
+    fail: (t) => /- \*\*主題[：:]\*\*/.test(t),
+  },
+  {
     id: "dry_old",
     label: "旧「ドライN回」表記",
     fail: (t) => /ドライ\d+回/.test(t) && !/ドライシーン/.test(t),
@@ -93,6 +98,11 @@ const CHECKS = [
     id: "tai_part_zone",
     label: "禁止語「〜帯」（パート区間）",
     fail: (t) => hasForbiddenTaiPartZone(t),
+  },
+  {
+    id: "graph_sub_paren",
+    label: "グラフ小見出しの括弧サブタイトル（入り（〜）等）",
+    fail: (t) => hasForbiddenGraphSubParen(t),
   },
   {
     id: "tachiagari",
@@ -181,6 +191,11 @@ function hasForbiddenTaiPartZone(text) {
   if (/帯が(?:採用|閉じ|確保|続き|主軸)/.test(stripped)) return true;
   if (/(?:帯より|帯だけ|帯末|帯中心|帯配分|帯幅)/.test(stripped)) return true;
   return false;
+}
+
+/** グラフ六小見出しの括弧サブタイトル（§1（補）項5・2026-05-23 廃止） */
+function hasForbiddenGraphSubParen(text) {
+  return /\*\*(入り|深さ|快感設計|絶頂シーン|着地|余韻)（/.test(text);
 }
 
 /** `立ち上がる` `立ち上がってきます` `立ち上がり` 等（§3h 項5）。台詞引用（> 行）は除外 */

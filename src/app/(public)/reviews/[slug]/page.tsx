@@ -12,7 +12,10 @@ import { StarRating } from "@/components/StarRating";
 import { ReviewNewBadge } from "@/components/ReviewNewBadge";
 import { ShinsakuBadge } from "@/components/ShinsakuBadge";
 import { DlsitePricePanel } from "@/components/DlsitePricePanel";
-import { ReviewModeSwitcher } from "@/components/ReviewModeSwitcher";
+import {
+  REVIEW_DETAIL_MODE_BUTTON_LABEL,
+  ReviewModeSwitcher,
+} from "@/components/ReviewModeSwitcher";
 import { resolveSocialPreviewImage, siteUrl } from "@/lib/og-metadata";
 import { isReviewNewPublication } from "@/lib/review-new-badge";
 import {
@@ -35,6 +38,8 @@ import {
   splitBodyAtFinalRating,
   splitRatingAtWorkIntroLabel,
   splitRestAfterWorkImpression,
+  splitInductionAnalysisContent,
+  splitRestAtInductionAnalysis,
 } from "@/lib/split-review-body";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
@@ -315,9 +320,34 @@ export default async function ReviewPage({ params }: Props) {
   const finalRatingSplit = review.body
     ? splitBodyAtFinalRating(review.body)
     : null;
+  /** 記事モード「解析データ」タブは甘とろリップのみ（他作品への横展開は未） */
+  const enableAnalysisDataTab = review.slug === "asmr-saimin-aman-toro-lip";
+  const inductionAnalysisSplit =
+    enableAnalysisDataTab && finalRatingSplit?.rest != null
+      ? splitRestAtInductionAnalysis(finalRatingSplit.rest)
+      : null;
+  const inductionContentParts = inductionAnalysisSplit?.induction
+    ? splitInductionAnalysisContent(inductionAnalysisSplit.induction)
+    : null;
+  const analysisDataMarkdown =
+    enableAnalysisDataTab && inductionContentParts?.analysisTables.trim()
+      ? inductionContentParts.analysisTables
+      : undefined;
+  const detailRestMarkdown = (() => {
+    if (!enableAnalysisDataTab || !inductionAnalysisSplit) {
+      return finalRatingSplit?.rest ?? "";
+    }
+    const flowPart = inductionContentParts?.inductionFlow.trim();
+    const detailInductionBlock = flowPart
+      ? `## 本作の誘導・暗示解析詳細\n\n${flowPart}`
+      : inductionAnalysisSplit.induction;
+    return [detailInductionBlock, inductionAnalysisSplit.afterRest]
+      .filter((part) => part.length > 0)
+      .join("\n\n");
+  })();
   const restWorkSplit =
-    finalRatingSplit?.rest != null
-      ? splitRestAfterWorkImpression(finalRatingSplit.rest)
+    detailRestMarkdown.trim().length > 0
+      ? splitRestAfterWorkImpression(detailRestMarkdown)
       : null;
   const ratingParts = finalRatingSplit?.rating
     ? splitRatingAtWorkIntroLabel(finalRatingSplit.rating)
@@ -342,13 +372,13 @@ export default async function ReviewPage({ params }: Props) {
       oneLine: string;
       inductionType: string;
       voiceActor: string;
-      tempoType: string;
       majorFetish: string;
       kinkType: string;
       recommendedLevel?: string;
       recording: string;
       recommendedFor: string[];
       notRecommendedFor: string[];
+      workImpressionParagraphs?: string[];
     }
   > = {
     "jinsei-senpai-koi-dorei-mind-control": {
@@ -357,7 +387,6 @@ export default async function ReviewPage({ params }: Props) {
         "先輩後輩ドラマで関係を固め、質問反復とトリガーで恋ドレイ化へ連れていく長尺マインドコントロール",
       inductionType: "洗脳系 / 服従・支配系 / 反復刷り込み系",
       voiceActor: "野上菜月",
-      tempoType: "ややゆっくり / 断続系（間が多い）",
       majorFetish: "主従関係 / 言葉責め / 耳舐め / 乳首責め / 前立腺責め",
       kinkType: "M推奨",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
@@ -378,7 +407,6 @@ export default async function ReviewPage({ params }: Props) {
         "「行っちゃダメ」の禁止暗示を両耳反復で快感トリガーに反転し、連続ピークから解除まで運ぶ約96分の実験型催眠",
       inductionType: "洗脳系 / 禁止暗示系 / 反復刷り込み系",
       voiceActor: "乙倉ゅい / 恋鈴桃歌",
-      tempoType: "ややゆっくり / 断続系（間が多い）",
       majorFetish: "禁止暗示 / 言葉責め / 脳イキ / 寸止め / 両耳責め",
       kinkType: "M推奨",
       recommendedLevel: "中級トランス（暗示を受け入れ・絶頂反応は未達）以上の方",
@@ -399,7 +427,6 @@ export default async function ReviewPage({ params }: Props) {
         "催眠ショーとメトロノームで注意をリズム側に固定し、禁止と短文トリガーを重ねたうえで逆カウント終端に乳首ドライを連発、終端信号の再定義で合図に身体が先に反応する約56分のカウント依存型",
       inductionType: "反復刷り込み系 / カウント誘導系 / 双子定位系",
       voiceActor: "乙倉ゅい",
-      tempoType: "ややゆっくり / 断続系（間が多い）",
       majorFetish: "乳首責め / カウント責め / 双子定位 / ドライ絶頂 / 後催眠",
       kinkType: "M推奨",
       recommendedLevel: "初中級（中程度トランス＋暗示受容）",
@@ -420,7 +447,6 @@ export default async function ReviewPage({ params }: Props) {
         "秘境の快眠エステで施術→耳かき添い寝→二人共通→蘭／杏指名分岐。極音監修の密着と耳舐めが軸で、安眠寄りの聴き方も残せる二人体制長編",
       inductionType: "エステ / 安眠 / 添い寝",
       voiceActor: "一之瀬りと / 陽向葵ゅか",
-      tempoType: "ややゆっくり / 段階型（施術→密着→指名）",
       majorFetish: "エステ / 耳かき / 添い寝 / 密着 / 耳舐め",
       kinkType: "ノーマル〜M向け",
       recording: "共通約1時間34分〜1時間44分＋指名1本／全5トラック約2時間8分",
@@ -440,7 +466,6 @@ export default async function ReviewPage({ params }: Props) {
         "双子がバイノーラルで挟み、寝たふり・無反応の禁止暗示のあと耳責めで感度を上げ、3カウント解禁と10→0で約65分、反応許可の快感へ回収する構成",
       inductionType: "リラックス系 / 禁止暗示系 / 反復カウント系",
       voiceActor: "音撫屋 かの仔",
-      tempoType: "ゆっくり / 断続系（間が多い）",
       majorFetish: "双子責め / 耳舐め / バイノーラル / 寝たふり / 感度上昇",
       kinkType: "ノーマル〜M向け（我慢・禁止）",
       recommendedLevel:
@@ -462,7 +487,6 @@ export default async function ReviewPage({ params }: Props) {
         "双子定位と321・ふにゃーん反復で脱力を先行させ、幸福感からキス・カウント・ゼロ合図へ継ぎ足し、部位ローテでドライのみを約105分積む甘系長尺",
       inductionType: "リラックス系 / 快感増幅系 / 反復刷り込み系",
       voiceActor: "みもりあいの",
-      tempoType: "ゆっくり / 断続系（間が多い）",
       majorFetish: "双子責め / キス責め / 乳首責め / 亀頭責め / 耳責め",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
@@ -483,7 +507,6 @@ export default async function ReviewPage({ params }: Props) {
         "環境・呼吸・往復深化を長尺で積み、幸福と快感の波を心象入力として重ねて覚醒まで処理する約110分の深催眠構成",
       inductionType: "リラックス系 / 深化反復系 / 同一化誘導系",
       voiceActor: "天知遥",
-      tempoType: "ゆっくり / 断続系（間が多い）",
       majorFetish: "耳元囁き / 呼吸同期 / 心象快感 / ドライ絶頂 / 深催眠",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
@@ -504,7 +527,6 @@ export default async function ReviewPage({ params }: Props) {
         "吸気同期と逆カウント反復で深度を固定し、口唇イメージを終端カウントへ接続して脳イキ回収する約40分の誘導特化構成",
       inductionType: "反復刷り込み系 / カウント誘導系 / リラックス系",
       voiceActor: "魔暗ヤミ",
-      tempoType: "ややゆっくり / 断続系（間が多い）",
       majorFetish: "カウント責め / 口唇責め / キスイメージ / 脳イキ / 催眠誘導",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初中級（中程度トランス＋暗示受容）",
@@ -522,22 +544,27 @@ export default async function ReviewPage({ params }: Props) {
     "asmr-saimin-aman-toro-lip": {
       scoreLabel: "10.0 / 10",
       oneLine:
-        "呼吸同期から耳舐めASMRへ接続し、三段暗示で感度・脱力・好意を直列固定して約32分で回収まで完了する短尺高密度催眠",
+        "双子形式×耳舐めを駆使した時間対効果抜群の短尺高密度ASMR催眠",
       inductionType: "リラックス系 / 快感増幅系 / 反復刷り込み系",
       voiceActor: "みもりあいの／和水創太",
-      tempoType: "ややゆっくり / 断続系（間が多い）",
-      majorFetish: "耳舐め / 囁き / 好意暗示 / ドライ絶頂 / ASMR催眠",
+      majorFetish: "耳舐め / 囁き / 好意暗示 / 脳イキ",
       kinkType: "ノーマル〜M向け",
-      recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
-      recording: "約32分02秒（01+02・字幕終端／バイノーラル）",
+      recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
+      recording: "約32分09秒（本編30:39＋解除1:30／バイノーラル）",
       recommendedFor: [
-        "短尺で深く落ちたい方",
-        "耳刺激と暗示を同時に受けたい方",
-        "導入から余韻まで短尺で密度を取りたい方",
+        "短時間で催眠の快楽を味わいたい方",
+        "感覚連動暗示や耳舐めが癖の方",
+        "幸福系・脳イキの作品を求めている方",
       ],
       notRecommendedFor: [
-        "長尺ドラマで浸りたい方",
-        "実演動作を主軸にしたい方",
+        "物語調の作品を求めている方",
+        "下半身中心のドライ絶頂を求めている方",
+      ],
+      workImpressionParagraphs: [
+        "本作は総合計時間32分という短尺でありながら双子形式×耳舐めが特徴で技術が高密度で詰め込まれた作品という印象。",
+        "耳を使った感覚連動暗示を駆使した誘導が特徴でタイトルに載せるだけあって耳舐めの技術は一級品です。丁寧に耳から開発されていき最終的には脳イキを目指す設計です。",
+        "32分と催眠音声にしては短尺でありながらここまでの満足度を提供できる技術にはあっぱれとしかいいようがありません。",
+        "男女両用なのも優しい点ですよね。「明日予定があるから夜更かしできないなぁ　でも催眠したい、、、」というシチュエーションの時に最適です。また集中が続かない催眠初心者の方、耳を開発したい方にもうってつけ、私が自信をもっておすすめできる1本です。",
       ],
     },
     "warui-inma-kanashiki-koufuku-nadenade-hagu": {
@@ -546,7 +573,6 @@ export default async function ReviewPage({ params }: Props) {
         "恋人導入で受容を作り、淫魔の幸福快感再定義をナデナデとハグで重ねて背徳と甘さを同時回収する高密度構成",
       inductionType: "リラックス系 / 幸福再定義系 / 反復刷り込み系",
       voiceActor: "みもりあいの／和水創太",
-      tempoType: "ややゆっくり / 断続系（間が多い）",
       majorFetish: "ナデナデ / ハグ / 幸福暗示 / 背徳シチュ / ドライ絶頂",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
@@ -567,7 +593,6 @@ export default async function ReviewPage({ params }: Props) {
         "天使と悪魔の二声を同時入力して判断軸を揺らし、連続ドライから終端セルフまで矛盾を快感へ転換する長尺構成",
       inductionType: "競合入力系 / 反復カウント系 / 二重誘導系",
       voiceActor: "野上菜月／花笠れい",
-      tempoType: "中速 / 断続〜連続（カウント密度高め）",
       majorFetish: "天使×悪魔 / 相反命令 / 連続ドライ / 終端セルフ",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初中級（中程度トランス＋暗示受容）",
@@ -588,7 +613,6 @@ export default async function ReviewPage({ params }: Props) {
         "約59分09秒。古典脱力のあと公園・繁華街・満員電車へ羞恥の強さを上げ、遅延許可と強度100%でドライ一回に収束させるリモコンローター屋外催眠（非バイノーラル）",
       inductionType: "リラックス系 / イメージ誘導系 / 段階深化系",
       voiceActor: "かの仔",
-      tempoType: "中速 / 連続系（誘導厚め→屋外帯→電車で吊り上げ）",
       majorFetish: "リモコンローター / 屋外羞恥 / 満員電車 / 遅延許可 / エロトランス",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初中級（中程度トランス＋暗示受容）以上の方",
@@ -609,7 +633,6 @@ export default async function ReviewPage({ params }: Props) {
         "呼吸同期と深化誘導で受容を固定し、「好き」「名前」「快感」の連結反復で条件付けを成立させて終盤ウェット回収へ収束する長尺構成",
       inductionType: "条件付け系 / 反復刷り込み系 / 深化誘導系",
       voiceActor: "御子柴泉",
-      tempoType: "ややゆっくり / 断続系（反復多め）",
       majorFetish: "刷り込み暗示 / 名前呼称 / オナニー指示 / 終端ウェット",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初中級（中程度トランス＋暗示受容）",
@@ -630,7 +653,6 @@ export default async function ReviewPage({ params }: Props) {
         "導入・体づくり・空想回収・解除を一連化し、ノーハンド脳イキを再現工程として成立させる実践訓練型の催眠構成",
       inductionType: "訓練型 / 反復刷り込み系 / イメージ誘導系",
       voiceActor: "秋野かえで",
-      tempoType: "中速 / 断続系（手順説明あり）",
       majorFetish: "ノーハンド / 脳イキ / PC筋トレ / 空想セックス",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "中級トランス（暗示を受け入れ・絶頂反応は未達）以上の方",
@@ -651,7 +673,6 @@ export default async function ReviewPage({ params }: Props) {
         "夢世界導入で受容を固定し、蜜・受粉の比喩トリガーを連続更新して連続メスイキへ積層回収する誘導主導構成",
       inductionType: "イメージ誘導系 / 反復刷り込み系 / 連続回収系",
       voiceActor: "魔暗ヤミ",
-      tempoType: "ややゆっくり / 断続〜連続（終盤高密度）",
       majorFetish: "連続メスイキ / 受粉比喩 / 逆カウント / 夢催眠 / 愛語反復",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
@@ -672,7 +693,6 @@ export default async function ReviewPage({ params }: Props) {
         "「ダメ」の禁止語を欲求トリガーに反転し、カリギュラ効果でウェット回収へ段階遷移する快楽重心の心理テスト型構成",
       inductionType: "禁止反転系 / カリギュラ効果系 / 反復刷り込み系",
       voiceActor: "柚木つばめ",
-      tempoType: "中速 / 断続〜連続（反復語多め）",
       majorFetish: "禁止暗示 / 手コキ / フェラ / 中出し / お仕置き特典",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初級トランス（重感・脱力まで可能）以上の方",
@@ -693,7 +713,6 @@ export default async function ReviewPage({ params }: Props) {
         "双子の左右定位と褒め反復で安心と快感を同時更新し、幸福感を保ったまま同調ピークへ積層回収する長尺構成",
       inductionType: "リラックス系 / 同調深化系 / 反復刷り込み系",
       voiceActor: "みもりあいの",
-      tempoType: "ややゆっくり / 断続〜連続（終盤高密度）",
       majorFetish: "双子掛け合い / 褒め暗示 / 耳刺激 / 幸福ドライ / 愛語反復",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
@@ -714,7 +733,6 @@ export default async function ReviewPage({ params }: Props) {
         "草原ジャーニーと分画法で幻想世界へ沈み、妖精の香りと言葉の振動で敏感化するツインキャスト催眠",
       inductionType: "リラックス系 / ジャーニー誘導系 / 分画法・カウント系",
       voiceActor: "紅月ことね・椎那天",
-      tempoType: "ややゆっくり / 往復深化（覚醒確認あり）",
       majorFetish: "ツインキャスト / 妖精・香り / 言葉の振動 / 飼い犬比喩 / イメージ絶頂",
       kinkType: "M向け",
       recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
@@ -735,7 +753,6 @@ export default async function ReviewPage({ params }: Props) {
         "手を引くジャーニーで視界を奪い、雲の濃度とカウント増幅で性感を段階的に積むバイノーラル催眠",
       inductionType: "リラックス系 / ジャーニー誘導系 / カウント誘導系",
       voiceActor: "紗藤ましろ",
-      tempoType: "ややゆっくり / 連続系（深化〜増幅まで一方通行）",
       majorFetish: "囁きバイノーラル / 霧・雲メタファ / ジャーニー追随 / 段階増幅カウント",
       kinkType: "M向け",
       recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
@@ -756,7 +773,6 @@ export default async function ReviewPage({ params }: Props) {
         "複数声の同時入力で判断処理を飽和させ、二段カウントと数字トリガー反復で背徳寄りドライ回収を連鎖させる構成",
       inductionType: "コンフュージョン系 / 反復刷り込み系 / カウント誘導系",
       voiceActor: "沢野ぽぷら",
-      tempoType: "中速 / 断続〜連続（後半反復密度高め）",
       majorFetish: "複数声囁き / 数字トリガー / 支配語彙 / 背徳ドライ / 覚醒解除",
       kinkType: "M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
@@ -778,7 +794,6 @@ export default async function ReviewPage({ params }: Props) {
       inductionType:
         "教育導入系 / 身体的誘導系 / 分割弛緩系 / 音楽同期系 / 集合的トランス系",
       voiceActor: "沢野ぽぷら・野上菜月",
-      tempoType: "ややゆっくり（弛緩）／中速〜連続（クラブ本編・連続ドライ帯）",
       majorFetish:
         "クラブミュージック / フェス没入 / 分割弛緩 / 連続ドライ / M向け羞恥・公開",
       kinkType: "M向け",
@@ -801,7 +816,6 @@ export default async function ReviewPage({ params }: Props) {
         "単独導入から多声展開へ段階移行し、予言カウントと耳舐め反復で先読み反応を連続回収するヒプノマルチ構成",
       inductionType: "反復刷り込み系 / カウント誘導系 / 多声展開系",
       voiceActor: "沢野ぽぷら",
-      tempoType: "ややゆっくり / 断続〜連続（終盤高密度）",
       majorFetish: "多声囁き / 耳舐め / 連続絶頂 / 予言カウント / ドライオーガズム",
       kinkType: "M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
@@ -822,7 +836,6 @@ export default async function ReviewPage({ params }: Props) {
         "演劇部後輩の演技好きで脱力と恋心を固定し、嘘告白の脳イキ連鎖と寸止め自動手コキのあとカウント射精まで追い込む長尺M精神支配催眠",
       inductionType: "好き条件づけ系 / 逆カウント系 / 自己暗示ループ系",
       voiceActor: "陽向葵ゅか",
-      tempoType: "ややゆっくり / 断続〜連続（レクリ→ドラマ→好き攻撃追込）",
       majorFetish: "好き攻撃 / 嘘告白 / 寸止め / 自動手コキ / M煽り",
       kinkType: "M向け",
       recommendedLevel:
@@ -844,7 +857,6 @@ export default async function ReviewPage({ params }: Props) {
         "管理AIの逆進行解除で仮想と現実をリンクし、解放トリガーと触手多峰のあと家畜化反転まで追い込む長尺破滅願望M精神支配催眠",
       inductionType: "逆進行解除系 / 現実リンク系 / 解放トリガー反転系",
       voiceActor: "逢坂成美",
-      tempoType: "ややゆっくり / 段階解除〜連続（レクリ→プロローグ→逆進行追込）",
       majorFetish: "逆催眠 / 触手 / 解放トリガー / 連続絶頂 / 家畜化 / M煽り",
       kinkType: "M向け",
       recommendedLevel:
@@ -866,7 +878,6 @@ export default async function ReviewPage({ params }: Props) {
         "膝枕とロケ音で日常同期を保ったまま非現実へ段階遷移し、音そのものを快感トリガーへ変換して耳刺激ドライへ回収する構成",
       inductionType: "リラックス系 / イメージ誘導系 / 音響同調系",
       voiceActor: "天知遥",
-      tempoType: "ややゆっくり / 断続系（長尺遷移）",
       majorFetish: "環境音催眠 / 膝枕導入 / 逆カウント / 耳刺激 / ドライ回収",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "中級トランス（暗示を受け入れ・絶頂反応は未達）以上の方",
@@ -887,7 +898,6 @@ export default async function ReviewPage({ params }: Props) {
         "捕食モチーフで受容を固定し、耳奥ASMRと逆カウント反復を統合して失神系脳イキを連続更新する超長尺構成",
       inductionType: "イメージ誘導系 / 反復刷り込み系 / カウント誘導系",
       voiceActor: "琴音有波（紅月ことね）",
-      tempoType: "ややゆっくり / 断続〜連続（長尺高密度）",
       majorFetish: "スライム捕食 / 耳奥ASMR / 逆カウント / 失神脳イキ / 解除分離",
       kinkType: "M向け",
       recommendedLevel: "上級トランス（長尺・高密度・連続脳イキ回収が可能）以上の方",
@@ -908,7 +918,6 @@ export default async function ReviewPage({ params }: Props) {
         "即売会羞恥の状況固定と女装魔法少女化を並走させ、前立腺焦らしとカウント反復でノーハンド射精へ収束させる構成",
       inductionType: "イメージ誘導系 / 反復刷り込み系 / カウント誘導系",
       voiceActor: "涼花みなせ",
-      tempoType: "中速 / 断続〜連続（後半反復密度高め）",
       majorFetish: "男の娘 / 女装魔法少女 / 前立腺責め / ノーハンド射精 / 公開羞恥",
       kinkType: "M向け",
       recommendedLevel: "中級トランス（暗示を受け入れ・絶頂反応は未達）以上の方",
@@ -929,7 +938,6 @@ export default async function ReviewPage({ params }: Props) {
         "主従固定と糸弛緩の身体上書きを土台に、「まだいけるよね」反復と多段カウントでドライ回収を連鎖させる構成",
       inductionType: "リラックス系 / 反復刷り込み系 / カウント誘導系",
       voiceActor: "涼花みなせ",
-      tempoType: "中速 / 断続〜連続（後半反復多め）",
       majorFetish: "主従関係 / マリオネット化 / 寸止め / 多絶頂 / ドライ連鎖",
       kinkType: "M向け",
       recommendedLevel: "中級トランス（暗示を受け入れ・絶頂反応は未達）以上の方",
@@ -950,7 +958,6 @@ export default async function ReviewPage({ params }: Props) {
         "捕縛と唾液汚染で受容を固定し、部位別カウント反復で敗北TSの身体自覚と快感を同時更新してドライ回収へ繋ぐ構成",
       inductionType: "イメージ誘導系 / 反復刷り込み系 / 関係固定系",
       voiceActor: "餅梨あむ",
-      tempoType: "ややゆっくり / 断続系（反復多め）",
       majorFetish: "敗北TS / 女体化 / 唾液汚染 / 関係固定 / ドライ絶頂",
       kinkType: "M向け",
       recommendedLevel: "中級トランス（暗示を受け入れ・絶頂反応は未達）以上の方",
@@ -971,7 +978,6 @@ export default async function ReviewPage({ params }: Props) {
         "抱き枕から恋人まで一本道。小悪魔後輩のあまあま純愛イチャラブが、キス・耳舐めの密着のまま本編約2時間8分続く密着・添い寝ボイス",
       inductionType: "生徒会 / 抱き枕 / 後輩",
       voiceActor: "陽向葵ゅか",
-      tempoType: "ややゆっくり / 断続〜連続（関係進行型）",
       majorFetish: "抱き枕 / 生徒会 / 後輩 / 恋人",
       kinkType: "ノーマル〜M向け",
       recording: "本編約2時間8分（6パート）／【安眠用】約35分（総再生約2時間43分）",
@@ -991,7 +997,6 @@ export default async function ReviewPage({ params }: Props) {
         "甘出し反復で締めと抜きを学習させ、乳首・前立腺刺激とカウント暗示を同期して枯渇後ドライへ収束させる訓練型構成",
       inductionType: "リラックス系 / 反復刷り込み系 / 実践訓練系",
       voiceActor: "天音羽乃",
-      tempoType: "ややゆっくり / 断続〜連続（実演長尺）",
       majorFetish: "甘出し / 前立腺責め / 乳首責め / カウント暗示 / ドライ開発",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
@@ -1012,7 +1017,6 @@ export default async function ReviewPage({ params }: Props) {
         "移動導入から可愛い反復・指合図・歌唱リズムを統合し、ライブ高揚を脳イキ回収へ一本線で接続する長尺構成",
       inductionType: "音響同調系 / 反復刷り込み系 / カウント誘導系",
       voiceActor: "野上菜月 / 陽向葵ゅか / そらまめ。 / 乙倉ゅい / 恋鈴桃歌 ほか",
-      tempoType: "中速 / 断続〜連続（歌唱帯あり）",
       majorFetish: "ライブ催眠 / 可愛い反復 / 指トリガー / 脳イキ / 歌唱連結",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "中級トランス（暗示を受け入れ・絶頂反応は未達）以上の方",
@@ -1033,7 +1037,6 @@ export default async function ReviewPage({ params }: Props) {
         "妖狐の情景導入と尻尾ASMRで注意を固定し、脳イキから耳イキへ快感経路を切り替えて二段回収する約76分の通し構成",
       inductionType: "イメージ誘導系 / 音響同調系 / 反復刷り込み系",
       voiceActor: "そらまめ。 / 和水創太（女性向け）",
-      tempoType: "ややゆっくり / 断続〜連続（後半高密度）",
       majorFetish: "妖狐シチュ / 尻尾ASMR / 脳イキ / 耳イキ / 経路切替",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初中級（中程度トランス＋暗示受容）",
@@ -1054,7 +1057,6 @@ export default async function ReviewPage({ params }: Props) {
         "前室で運用条件を固定し、儀式語の反復と耳舐めを長尺で積層して深度を押し込み、専用解除まで一体化して完走させる洗脳儀式型",
       inductionType: "洗脳系 / 儀式反復系 / 耳刺激系",
       voiceActor: "逢坂成美",
-      tempoType: "ややゆっくり / 断続系（反復儀式中心）",
       majorFetish: "洗脳ロールプレイ / 儀式語反復 / 耳舐め / 崇拝暗示 / 支配語彙",
       kinkType: "M向け",
       recommendedLevel: "初中級（中程度トランス＋暗示受容）",
@@ -1075,7 +1077,6 @@ export default async function ReviewPage({ params }: Props) {
         "約95分。二人の催眠生放送ドラマからバイノーラル二声へ入り、媚薬と人形の本編をスイ／メロで分岐しつつドライ二回へ収束させる長尺構成",
       inductionType: "ラジオ・生放送系 / 二声掛け合い系 / 分岐運用系 / 古典誘導系",
       voiceActor: "そらまめ。／沢野ぽぷら",
-      tempoType: "中速 / 断続〜連続（冒頭トーク厚め→本編）",
       majorFetish: "生放送 / 二声バイノーラル / 媚薬・人形 / 分岐本編 / エロトランス",
       kinkType: "ノーマル〜M向け",
       recommendedLevel:
@@ -1097,7 +1098,6 @@ export default async function ReviewPage({ params }: Props) {
         "双子の同期呼吸とリップ密集で能動を手放し、GoではなくComeとしてドライの波を迎える受動体験へ寄せる高密度バイノーラル",
       inductionType: "リラックス系 / バイノーラル快感系 / 受動受容系",
       voiceActor: "みもりあいの",
-      tempoType: "ややゆっくり / 断続〜連続（リップ・定位の密度高め）",
       majorFetish: "双子掛け合い / リップASMR / Come受容 / 淫紋・先端帯 / ドライ連鎖",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
@@ -1118,7 +1118,6 @@ export default async function ReviewPage({ params }: Props) {
         "ふたりがけ同調で我慢・蓄積・解放を手順化し、ダイヤル・カウント・PC筋・前立腺を反復してドライ到達を支援する長尺サポート型",
       inductionType: "訓練支援型 / 反復刷り込み系 / カウント誘導系",
       voiceActor: "みもりあいの",
-      tempoType: "中速 / 断続〜連続（版差・反復多め）",
       majorFetish: "ふたりがけ / 我慢蓄積 / 前立腺・PC筋 / ダイヤル暗示 / ドライ多段",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
@@ -1139,7 +1138,6 @@ export default async function ReviewPage({ params }: Props) {
         "甘やかしで受容した直後に犬化語尾と支配・寸止めへ切り替え、温度差と脳イキ反復を強くぶつける起伏型",
       inductionType: "ペットプレイ系 / 温度差切替系 / 寸止め反復系",
       voiceActor: "紫雲",
-      tempoType: "ややゆっくり〜中速 / 通し（落差強め）",
       majorFetish: "犬化暗示 / 甘辛切替 / 寸止め / 支配語 / 脳イキ",
       kinkType: "M向け",
       recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
@@ -1160,7 +1158,6 @@ export default async function ReviewPage({ params }: Props) {
         "多声で判断処理を飽和させ、誘導三段からエロ四連へ接続し、カウントと命令の反復圧でドライ回収を連鎖させる拘束型長尺",
       inductionType: "コンフュージョン系 / 反復刷り込み系 / カウント誘導系",
       voiceActor: "沢野ぽぷら",
-      tempoType: "中速 / 連続（後半反復密度高め）",
       majorFetish: "多声拘束 / カウント圧迫 / 支配語彙 / ドライ四連 / 覚醒解除",
       kinkType: "M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
@@ -1181,7 +1178,6 @@ export default async function ReviewPage({ params }: Props) {
         "保育所設定で大人の判断を外し、挨拶・語尾・命令反復で赤ちゃん化を通しで定着させ、服従報酬からウェット回収へ繋ぐ退行型",
       inductionType: "退行系 / 命令反復系 / 無力化系",
       voiceActor: "あやめ（先生役）",
-      tempoType: "ややゆっくり / 連続再生（反復多め）",
       majorFetish: "育児退行 / 赤ちゃん化 / しつけ・授乳語彙 / 服従報酬 / ドライ・ウェット",
       kinkType: "M向け",
       recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
@@ -1202,7 +1198,6 @@ export default async function ReviewPage({ params }: Props) {
         "呼び方トリガーと半覚醒分画法で深く落とし、パウダー責めから脳イキ・前立腺まで幼馴染M性感館で追い込む通し約2時間12分の催眠+Mプレイ",
       inductionType: "リラックス系 / 半覚醒分画法系 / 反復刷り込み系",
       voiceActor: "そらまめ。",
-      tempoType: "ややゆっくり / 長尺連続（レクリ→ドラマ→本編）",
       majorFetish:
         "幼馴染 / M性感 / パウダー責め / 脳イキ / 前立腺 / 半覚醒",
       kinkType: "ドM",
@@ -1225,7 +1220,6 @@ export default async function ReviewPage({ params }: Props) {
         "未来予知の宣言と絶頂カウントを合図化し、先読み反応を快感増幅へ転換して連続ピークへ運ぶ二本立て催眠",
       inductionType: "予言トリガー系 / カウント誘導系 / 関係固定系",
       voiceActor: "陽向葵ゅか / みたかりん",
-      tempoType: "中速 / 断続〜連続（後半反復密度高め）",
       majorFetish: "未来予知暗示 / 絶頂カウント / 教祖・崇拝 / キス責め / 脳イキ",
       kinkType: "M向け",
       recommendedLevel: "中級トランス（暗示を受け入れ・絶頂反応は未達）以上の方",
@@ -1246,7 +1240,6 @@ export default async function ReviewPage({ params }: Props) {
         "約2時間15分。背徳系の悪堕ち洗脳で、カウントと強い命令、言葉責めと身体感覚を長尺で組み合わせて深く運ぶ一本。",
       inductionType: "洗脳系 / 悪堕ち系 / 無力化系 / カウント誘導系",
       voiceActor: "陽向葵ゅか",
-      tempoType: "中速 / 断続〜連続（後半追い込み）",
       majorFetish: "悪堕ち / 洗脳 / 触手 / 薬液 / エナジー吸引 / 言葉責め",
       kinkType: "M向け",
       recommendedLevel: "中級（脳イキは可能だがドライ未達）以上の方",
@@ -1268,7 +1261,6 @@ export default async function ReviewPage({ params }: Props) {
         "約1時間36分49秒。フリからマゾ確定へ落差を作り、『ダメ』系禁制と感度操作を経て初級編でノーハンド志向まで言語で収束させる学園バイノーラル催眠（ルート選択あり）",
       inductionType: "洗脳系 / 禁制反復系 / 感度操作系 / カウント誘導系",
       voiceActor: "架月らみゅ",
-      tempoType: "やや速め / 断続系（からかいと禁止の往復）",
       majorFetish: "後輩からかい / マゾバレ / メスイキ / ノーハンド / 言葉責め / 学園",
       kinkType: "M向け",
       recommendedLevel: "初級トランス（重感・脱力まで可能）以上の方",
@@ -1289,7 +1281,6 @@ export default async function ReviewPage({ params }: Props) {
         "死にたがりのあなたを楓が止め続ける——きっかけは高校の廊下から。添い寝と認知シャッフル睡眠法まで続く全年齢純愛長編",
       inductionType: "メイド / 添い寝 / 純愛",
       voiceActor: "浅木ゆめみ",
-      tempoType: "ややゆっくり / 断続〜連続（一本道）",
       majorFetish: "メイド / 添い寝 / 純愛 / 安眠",
       kinkType: "ノーマル",
       recording: "本編8パート（プロローグ〜エピローグ）",
@@ -1309,7 +1300,6 @@ export default async function ReviewPage({ params }: Props) {
         "足湯で安心を先に置き、貸切温泉で大人向け洗いっこへ載せ替え、ポキポキと歯磨き・耳かきで睡眠導入へ収束する道草屋三本立て長編",
       inductionType: "温泉 / 足湯 / ポキポキ",
       voiceActor: "丹羽うさぎ / ルナ ほか",
-      tempoType: "ややゆっくり / 断続系（三本立て）",
       majorFetish: "温泉 / 足湯 / ポキポキ / 耳かき",
       kinkType: "ノーマル〜M向け",
       recording: "足湯＋貸切温泉＋ポキポキ／歯磨き・耳かき",
@@ -1329,7 +1319,6 @@ export default async function ReviewPage({ params }: Props) {
         "彼女の妹サキュバスとの我慢ゲームで抵抗が快感へ反転し、半覚醒の羞恥とドライ連鎖のあとごめんなさい射精まで追い込む長尺の寝取り催眠",
       inductionType: "恋の魔法系 / 半覚醒往復系 / 我慢カウント系",
       voiceActor: "そらまめ。",
-      tempoType: "ややゆっくり / 断続〜連続（レクリ→ドラマ→ゲーム追込）",
       majorFetish: "メスガキ / NTR / 我慢ゲーム / 乳首カウント / M煽り",
       kinkType: "M向け〜寝取り",
       recommendedLevel:
@@ -1351,7 +1340,6 @@ export default async function ReviewPage({ params }: Props) {
         "サロン規約で主導権を固定し、長尺の耳かき幸福感を核に終盤サービスと覚醒まで連結するバイノーラル催眠",
       inductionType: "リラクゼーション系 / 耳刺激集中系 / カウント誘導系",
       voiceActor: "伊ヶ崎綾香",
-      tempoType: "ややゆっくり / 断続〜連続（耳かき→終盤サービス）",
       majorFetish: "耳かき / サロン主導 / 膝枕 / 受動没入 / バイノーラル",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
@@ -1372,7 +1360,6 @@ export default async function ReviewPage({ params }: Props) {
         "首輪パートで条件付けと声のイメージを固め、擬声語パブロフで台詞をほぼ排したオノマトペ入力へ移す実験的バイノーラル催眠",
       inductionType: "条件付け系 / リラックス系 / 擬似複線定位・効果音系（擬声語パート）",
       voiceActor: "秋野かえで",
-      tempoType: "ややゆっくり〜断続（首輪）／高密度連打（擬声語パート）",
       majorFetish: "オノマトペ / 耳舐め（首輪パート） / 条件付け / ペット・ワンちゃん",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
@@ -1393,7 +1380,6 @@ export default async function ReviewPage({ params }: Props) {
         "約78分48秒の通し本編として、ステージ仕込みから公開催眠ショー・心象誘導・長めエロ帯・カウント覚醒まで処理するリアルヒプノ系バイノーラル",
       inductionType: "公示ショー系 / イエスセット系 / 心象誘導系 / 段階深化系",
       voiceActor: "陽向葵ゅか",
-      tempoType: "中速 / 断続〜連続（ショー→長めエロ帯）",
       majorFetish: "催眠ショー / MC視点 / バイノーラル / ステージ / エロトランス",
       kinkType: "ノーマル〜M向け",
       recommendedLevel:
@@ -1415,7 +1401,6 @@ export default async function ReviewPage({ params }: Props) {
         "低テンションサキュバスとキャンプ肝試しで魅了事故→未了状態、言葉のドライ絶頂とサキュバス解放後の射精まで、通し約1時間53分の恋愛疑似体験催眠",
       inductionType: "物語導入系 / 未了状態系 / 反復カウント系",
       voiceActor: "そらまめ。",
-      tempoType: "ややゆっくり / 断続〜連続（レクリ→ドラマ→追込）",
       majorFetish: "サキュバス / ドライ絶頂 / 好き宣言 / 尻尾責め / M煽り",
       kinkType: "M向け〜恋愛疑似体験",
       recommendedLevel:
@@ -1437,7 +1422,6 @@ export default async function ReviewPage({ params }: Props) {
         "三人妖精のサラウンド定位と宣言・ゼロ待機で脳を空にし、重ね掛け快楽魔法と裏筋指魔法まで追い込む通し約1時間49分の長尺催眠",
       inductionType: "サラウンド定位系 / 宣言トリガー系 / 反復カウント系",
       voiceActor: "音撫屋 かの仔",
-      tempoType: "ややゆっくり / 断続〜連続（レクリ→追込→連鎖回収）",
       majorFetish: "妖精 / ゼロカウント / 前立腺 / 脳イキ / 裏筋責め",
       kinkType: "M向け〜変態煽り",
       recommendedLevel:
@@ -1461,7 +1445,6 @@ export default async function ReviewPage({ params }: Props) {
         "教育導入系 / 分割弛緩系 / イメージ誘導系 / 反復カウント系",
       voiceActor:
         "かの仔、みもりあいの、陽向葵ゅか、あきら、一条ひらめ、ユメノシオリ、山田じぇみ子、月村望、御上みみ（9名・同一台本）",
-      tempoType: "ややゆっくり / 断続〜連続（講義→誘導→情景深化）",
       majorFetish:
         "初心者向け / 9声優比較 / 分割弛緩 / イメージ誘導 / 教育",
       kinkType: "ノーマル",
@@ -1484,7 +1467,6 @@ export default async function ReviewPage({ params }: Props) {
       inductionType:
         "教育導入系 / 身体的誘導系 / 分割弛緩系 / 落下イメージ系 / カウント誘導系",
       voiceActor: "恋鈴桃歌",
-      tempoType: "ややゆっくり / 断続〜連続（弛緩深化→落下加速→カウント連鎖）",
       majorFetish:
         "初心者向け / 分割弛緩 / 落下体感 / 立ちリラックス / カウント絶頂",
       kinkType: "ノーマル",
@@ -1507,7 +1489,6 @@ export default async function ReviewPage({ params }: Props) {
         "共通導入でトランスの身近さを示したうえ、双子定位と真っ白ジャーニー、「行く練習」で脳内のドライ絶頂を反復しやすい同梱・脳イキホワイトアウトルート（通し約1時間27分）",
       inductionType: "教育導入系 / イメージ誘導系 / 双子定位系 / カウント誘導系",
       voiceActor: "乙倉ゅい",
-      tempoType: "ややゆっくり / 断続〜連続（情景深化→カウント連鎖）",
       majorFetish: "初心者向け / 脳イキ / 白空間ジャーニー / 双子形式 / 行く練習",
       kinkType: "ノーマル",
       recommendedLevel: "初心者（浅いトランス＋イメージ受容が可能）以上の方",
@@ -1528,7 +1509,6 @@ export default async function ReviewPage({ params }: Props) {
         "音分離と魂の階段深化で深層スタジオへ落とし、EDMビート連動のドライ連鎖から夢精連鎖まで追い込む通し約2時間2分のクラブ系長尺催眠",
       inductionType: "音分離集中系 / 階段カウント系 / ビート同期系",
       voiceActor: "野上菜月",
-      tempoType: "ややゆっくり導入→断続〜連続（運動→深化→EDM追込）",
       majorFetish: "EDM / ドライ絶頂 / 夢精連鎖 / 双子DJ / 羞恥配信",
       kinkType: "M向け〜従順化",
       recommendedLevel:
@@ -1550,7 +1530,6 @@ export default async function ReviewPage({ params }: Props) {
         "こと玉融合と「下品になるほど気持ちいい」で語彙が段階的に下品化し、手を止めたドライ絶頂を複数回、最後はカウント射精まで運ぶ長尺言語責め催眠（通し約2時間14分）",
       inductionType: "論理説得系 / 言霊体感化系 / 段階カウント系",
       voiceActor: "逢坂成美",
-      tempoType: "ゆっくり / 長尺連続（レクリエーション→本編→解除）",
       majorFetish:
         "言葉責め / 下品語段階化 / カウント絶頂 / ドライ→ウェット / M向け",
       kinkType: "ドM",
@@ -1573,7 +1552,6 @@ export default async function ReviewPage({ params }: Props) {
         "双子の悪女が左右から囁きと吐息で環境を組み替え、キスと耳元責めを経由して段階式のドライへ運ぶ無料の長尺バイノーラル催眠",
       inductionType: "双子定位系 / カウント誘導系 / 密着囁き系 / マゾラベリング系",
       voiceActor: "陽向葵ゅか / そらまめ。",
-      tempoType: "ややゆっくり / 断続〜連続（前半独白→後半密着）",
       majorFetish: "双子責め / キス / 吐息 / 耳舐め / マゾ言責め / 段階ドライ",
       kinkType: "ドM",
       recommendedLevel:
@@ -1738,7 +1716,7 @@ export default async function ReviewPage({ params }: Props) {
         {enableTwoModeReview ? (
           <ReviewModeSwitcher
             quickTitle="1分で判断！クイック解析"
-            detailTitle="しっかり見たい人向け！作品詳細解析"
+            detailTitle={REVIEW_DETAIL_MODE_BUTTON_LABEL}
             quickAffiliateHref={quickAffiliateHref}
             quickDiscountLabel={quickDiscountLabel}
             quickIsOnSale={Boolean(dlsiteSaleDisplay?.on_sale)}
@@ -1754,7 +1732,6 @@ export default async function ReviewPage({ params }: Props) {
             quickTypeLabel={quickSpecTypeLabel}
             quickInductionType={quickGuideSpec?.inductionType ?? "分析中"}
             quickVoiceActor={quickGuideSpec?.voiceActor ?? ""}
-            quickTempoType={quickGuideSpec?.tempoType ?? "分析中"}
             quickMajorFetish={quickGuideSpec?.majorFetish ?? "分析中"}
             quickKinkType={quickGuideSpec?.kinkType ?? "ノーマル"}
             quickShowRecommendedLevel={!isDoujinReview}
@@ -1768,6 +1745,13 @@ export default async function ReviewPage({ params }: Props) {
             quickNotRecommendedFor={
               quickGuideSpec?.notRecommendedFor ?? ["合わない可能性のある条件を整理中です。"]
             }
+            quickWorkImpressionParagraphs={quickGuideSpec?.workImpressionParagraphs}
+            quickWorkImpressionAvatar={
+              quickGuideSpec?.workImpressionParagraphs?.length
+                ? review.workImpressionAvatar
+                : undefined
+            }
+            analysisDataMarkdown={analysisDataMarkdown}
           >
             <>
               {!isArticle ? (
@@ -1779,7 +1763,7 @@ export default async function ReviewPage({ params }: Props) {
                           aria-hidden
                           className="inline-block h-2 w-2 rounded-full bg-sky-300 shadow-[0_0_10px_rgba(125,211,252,0.85)]"
                         />
-                        しっかり見たい人向け！作品詳細解析
+                        {REVIEW_DETAIL_MODE_BUTTON_LABEL}
                       </h2>
                       <nav aria-label="本文見出し">
                       <p className="rounded-lg border border-slate-600/70 bg-slate-900/65 px-3 py-2.5 text-base font-bold tracking-wide text-slate-100">
@@ -1888,7 +1872,7 @@ export default async function ReviewPage({ params }: Props) {
                         </div>
                       ) : null}
                     </div>
-                    {finalRatingSplit.rest.trim() ? (
+                    {detailRestMarkdown.trim() ? (
                       <div className="mt-10 min-w-0 border-t border-slate-700/50 pt-8">
                         {restWorkSplit && review.affiliateLinks.length > 0 ? (
                           <>
@@ -1921,7 +1905,7 @@ export default async function ReviewPage({ params }: Props) {
                         ) : (
                           <>
                             <ReviewMarkdown
-                              markdown={finalRatingSplit.rest}
+                              markdown={detailRestMarkdown}
                               articleReading={isArticle}
                               starReviewReadingComfort={!isArticle}
                               workImpressionAvatar={review.workImpressionAvatar}
@@ -2062,7 +2046,7 @@ export default async function ReviewPage({ params }: Props) {
                   </div>
                 ) : null}
               </div>
-              {finalRatingSplit.rest.trim() ? (
+              {detailRestMarkdown.trim() ? (
                 <div className="mt-10 min-w-0 border-t border-slate-700/50 pt-8">
                   {restWorkSplit && review.affiliateLinks.length > 0 ? (
                     <>
@@ -2095,7 +2079,7 @@ export default async function ReviewPage({ params }: Props) {
                   ) : (
                     <>
                       <ReviewMarkdown
-                        markdown={finalRatingSplit.rest}
+                        markdown={detailRestMarkdown}
                         articleReading={isArticle}
                         starReviewReadingComfort={!isArticle}
                         workImpressionAvatar={review.workImpressionAvatar}

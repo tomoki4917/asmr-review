@@ -310,6 +310,8 @@ const DOC_MARKDOWN_NAMES = new Set([
 function isReviewMarkdownFile(filePath: string): boolean {
   const base = path.basename(filePath).toLowerCase();
   if (!base.endsWith(".md") || base.startsWith("_")) return false;
+  // index.md.bak-* や *.md.bak-*.md など改稿スナップショットはレビューとして読まない
+  if (base.includes(".bak")) return false;
   if (DOC_MARKDOWN_NAMES.has(base)) return false;
   return true;
 }

@@ -203,9 +203,11 @@ function buildMarkdownComponents(o: BuildOpts): Components {
       const pullSummary =
         starReviewReadingComfort && /^一言で言えば[:：\uFF1A]/.test(plain);
       const audienceSubhead =
-        plain === "おすすめしたい方"
+        plain === "おすすめしたい方" || plain === "【こんな人におすすめ】"
           ? "recommended"
-          : plain === "合わない可能性がある方" || plain === "合わない人"
+          : plain === "合わない可能性がある方" ||
+              plain === "合わない可能性がある人" ||
+              plain === "合わない人"
             ? "not-recommended"
             : null;
       return (

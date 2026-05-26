@@ -67,15 +67,20 @@ export function splitBeforeAtRecommendedAudience(before: string): {
   if (n.startsWith("## どんな人におすすめか\n")) {
     return { prefix: "", audience: n.trimStart() };
   }
-  const audienceLead = "\n**おすすめしたい方**";
-  const leadIdx = n.indexOf(audienceLead);
-  if (leadIdx !== -1) {
-    return {
-      prefix: n.slice(0, leadIdx).trimEnd(),
-      audience: n.slice(leadIdx + 1).trimStart(),
-    };
+  const audienceLeads = [
+    "\n**おすすめしたい方**",
+    "\n**【こんな人におすすめ】**",
+  ] as const;
+  for (const audienceLead of audienceLeads) {
+    const leadIdx = n.indexOf(audienceLead);
+    if (leadIdx !== -1) {
+      return {
+        prefix: n.slice(0, leadIdx).trimEnd(),
+        audience: n.slice(leadIdx + 1).trimStart(),
+      };
+    }
   }
-  if (n.startsWith("**おすすめしたい方**")) {
+  if (n.startsWith("**おすすめしたい方**") || n.startsWith("**【こんな人におすすめ】**")) {
     return { prefix: "", audience: n.trimStart() };
   }
   return null;
@@ -275,6 +280,81 @@ export function splitBodyAtFirstH2(body: string): { lead: string; main: string }
   const lead = normalized.slice(0, firstH2).trimEnd();
   const main = normalized.slice(firstH2 + 1).trimStart();
   return { lead, main };
+}
+
+const INDUCTION_ANALYSIS_H2_LABELS = [
+  "本作の誘導・暗示解析詳細",
+  "本作の誘導・暗示解析",
+] as const;
+
+/**
+ * `## 総合評価` より後の `rest` から `## 本作の誘導・暗示解析（詳細）` ブロックを切り出す。
+ * 記事モードの「解析データ」タブと詳細本文の重複表示を避けるため。
+ * 表ブロックと流れブロックの分割は `splitInductionAnalysisContent` を使う。
+ */
+export function splitRestAtInductionAnalysis(rest: string): {
+  induction: string;
+  afterRest: string;
+} | null {
+  const n = rest.replace(/\r\n/g, "\n").trimEnd();
+
+  function sliceInduction(afterHeading: string): { induction: string; after: string } {
+    const nextH2 = /\n## (?![#])/;
+    const m = nextH2.exec(afterHeading);
+    if (!m) {
+      return { induction: afterHeading.trim(), after: "" };
+    }
+    return {
+      induction: afterHeading.slice(0, m.index).trim(),
+      after: afterHeading.slice(m.index).trimStart(),
+    };
+  }
+
+  for (const label of INDUCTION_ANALYSIS_H2_LABELS) {
+    const midNeedle = `\n## ${label}\n`;
+    const midIdx = n.indexOf(midNeedle);
+    if (midIdx !== -1) {
+      const before = n.slice(0, midIdx).trimEnd();
+      const { induction, after } = sliceInduction(n.slice(midIdx + midNeedle.length));
+      if (!induction) return null;
+      const afterRest = [before, after].filter((part) => part.length > 0).join("\n\n");
+      return { induction, afterRest };
+    }
+    const startNeedle = `## ${label}\n`;
+    if (n.startsWith(startNeedle)) {
+      const { induction, after } = sliceInduction(n.slice(startNeedle.length));
+      if (!induction) return null;
+      return { induction, afterRest: after };
+    }
+  }
+
+  return null;
+}
+
+const INDUCTION_FLOW_START_HEADING = "### 主要誘導の流れ";
+
+/**
+ * `## 本作の誘導・暗示解析詳細` 本文を、記事モード「解析データ」（表）と詳細本文（流れ）に分ける。
+ */
+export function splitInductionAnalysisContent(induction: string): {
+  analysisTables: string;
+  inductionFlow: string;
+} {
+  const n = induction.replace(/\r\n/g, "\n").trim();
+  if (!n) {
+    return { analysisTables: "", inductionFlow: "" };
+  }
+  const idx = n.indexOf(INDUCTION_FLOW_START_HEADING);
+  if (idx === -1) {
+    if (n.includes("### 誘導構成比")) {
+      return { analysisTables: n, inductionFlow: "" };
+    }
+    return { analysisTables: "", inductionFlow: n };
+  }
+  return {
+    analysisTables: n.slice(0, idx).trim(),
+    inductionFlow: n.slice(idx).trim(),
+  };
 }
 
 export function splitBodyAtFinalRating(

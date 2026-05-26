@@ -23,13 +23,20 @@ alwaysApply: false
 
 誰が／どこで／何が起きたか（「死の予定」「会話でやめる」「刃物を止める」は別）。
 
+## ドライシーン回数（再発防止・2026-05-25）
+
+- **数えるのは「明確な到達回収」だけ**（`いっちゃう`／`絶頂に到達`／321後の`はじけて飛ぶ` 等）。**叙述型の「絶頂へと到達する」・先走りの「いっちゃおうか」は含めない。**
+- **終盤がつながった1波**（例: `asmr-saimin-aman-toro-lip`）は **ドライシーン1回**。同一波内の「また行っちゃう」は**第2回収に数えない**。
+- **`scenario-facts.json`** に `dryOrgasmArrivals`（到達ごとの evidence・目安時刻）と `dryOrgasmExcluded`（数えない台詞）を書く。
+- **`index.md` 絶頂行**・**`_分析データ.json` の `orgasmSummary`**・**`dryOrgasmArrivals` 件数**は **同一整数**（複数回のときは `ドライシーン複数回` で三箇所そろえる）。
+
 ## 公開前（必須）
 
 ```bash
 npm run review:audit-scenario -- <slug>
 ```
 
-同人・全年齢同人は **`scenario-facts.json` 必須**・**`passes: 3`**。
+同人・全年齢同人は **`scenario-facts.json` 必須**・**`passes: 3`**。催眠音声も **絶頂行を整数で書く改稿**では `dryOrgasmArrivals` 推奨。
 
 ## 正本ドキュメント
 
