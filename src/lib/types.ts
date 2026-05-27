@@ -74,4 +74,9 @@ export type Review = {
    * 催眠音声ビギナーズガイド等の直リンク専用に使う。
    */
   excludeFromArticleIndex?: boolean;
+  /**
+   * `true` のとき、レビュー一覧・トップ・サイトマップ・関連記事候補から除外する。
+   * 原紙プレビュー（`genkami-preview`）など執筆用の空殻に使う。
+   */
+  excludeFromReviewIndex?: boolean;
 };

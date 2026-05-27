@@ -1,7 +1,7 @@
 ---
 name: review-kansei-update
 description: >-
-  レビュー index.md を完成系へ1本ずつ更新する（催眠＝kuchikou＋真執筆ガイド／同人＝抱き枕＋同人ガイド2）。
+  レビュー index.md を完成系へ1本ずつ更新する（催眠＝kuchikou＋催眠音声執筆ガイド［主］＋真執筆［補］／同人＝抱き枕＋同人ガイド2）。
   ユーザーが「完成系」「次の1本」「kansei」+ slug と言ったとき、または review:audit-kansei の未完了を直すときに使う。
 ---
 
@@ -32,8 +32,10 @@ description: >-
 
 **催眠音声**（上記以外）のとき:
 
-1. 正本: `src/content/レビュー/kuchikou-saimin-count-trip-nouiki/index.md`
-2. `docs/真催眠音声執筆ガイド.md`（§1.6, §2, §3g, §3h, §3b-2, §4b, §11）
+1. **執筆・完成系の主:** `docs/催眠音声執筆ガイド.md`（§0・§4.5・§7.1・§8・Gemini スクリプト一覧）
+2. **記事見本:** `src/content/レビュー/kuchikou-saimin-count-trip-nouiki/index.md`
+3. **補助:** `docs/真催眠音声執筆ガイド.md`（記事モード3ボタン・シナリオ3パス・監査・§4b 総評標本）
+4. **Gemini:** `scripts/gemini-hypnosis-review/README.md`
 
 **共通:**
 

@@ -1,0 +1,47 @@
+---
+description: 催眠音声レビューの作成・更新は催眠音声執筆ガイド＋Gemini（分析・本文）＋Cursor（サイト情報）
+globs:
+  - src/content/レビュー/**/index.md
+  - scripts/gemini-hypnosis-review/**
+  - docs/催眠音声執筆ガイド.md
+alwaysApply: true
+---
+
+# 催眠音声レビュー — 役割分担（必須）
+
+ユーザーが **催眠記事の作成・更新** を依頼したとき、次を守る。
+
+## 正本
+
+| 用途 | 正本 |
+|------|------|
+| 執筆・完成チェック・文体 | **`docs/催眠音声執筆ガイド.md`**（`真催眠音声執筆ガイド.md` は構造・監査の補助。執筆ルール矛盾時は催眠音声執筆ガイド優先） |
+| 見本記事 | `kuchikou-saimin-count-trip-nouiki`（完成系） |
+| パイプライン | `scripts/gemini-hypnosis-review/auto_review.py` |
+
+## 誰が何をするか
+
+| 作業 | 担当 |
+|------|------|
+| **音声分析・三軸採点・記事本文の [KEY] 初稿** | **Gemini API**（`auto_review.py`。デスクトップ採点マニュアル3種＋催眠音声執筆ガイド） |
+| **DLsite・サークル名・販売日・トラック表・RJ・`quickGuideBySlug`・予約日** | **Cursor（エージェント）** — ブラウザ／`info.txt`／既存 `index.md` を確認してメタを合わせる |
+| **旧 index の文言コピー** | **禁止**（全面作り直し時はバックアップ後、Whisper 実データのみ） |
+
+## 実行手順（解析フォルダ付き）
+
+1. Cursor: 解析フォルダ → `prepare_analysis_inputs`（`auto_review.py --analysis-dir` で可）
+2. Cursor: DLsite で **サークル・販売日・トラック名** を確認 → `--circle` `--rj` `--sale-date` `--item-name`（`【レビュー】` は原紙が付与するので **商品名のみ**）
+3. **Gemini**: `py -3 auto_review.py --force --slug … --analysis-dir … --recommended-lv …`
+4. Cursor: 生出力の誤メタ・脳イキ／ドライ混同・AI調を修正 → 必要なら `--merge-only`
+4b. 四表だけ均一配分・`特性名` プレースホルダのときは `--optimize-tables`（§3.1）
+5. Cursor: `humanize_graph_breakdown.py` / `generate_work_impression.py --write-tsx`（任意）・`quickGuideBySlug` 同期
+
+## 再発防止
+
+- 催眠レビューの `index.md` を **手書きで白紙から書かない**
+- 採点は **デスクトップ `催眠音声記事作成マニュアル`**（`HYPNOSIS_MANUAL_DIR`）を経由 — リポジトリにマニュアル複製しない
+- **ドライオーガズムと脳イキは別物**（催眠音声執筆ガイド §0.1.1）
+- **`INDUCTION_FLOW`** … `kuchikou` 型の空行（####／引用／誘導方法／身体の変化）。`normalize_induction_flow()` 適用後にマージ
+- **`DRY_SCENE_COUNT`** … Gemini が Whisper で到達回収を数える（§0.1.2）。総合評価・`_分析データ.json` と同期
+- **`tags`** … 催眠音声先頭・サークル名必須・バイノーラル末尾（該当時）。ドライ専売に `脳イキ` を並べない（§0.1.3）
+- **`### 基本情報`** … サークル・販売日・種類・CV・イラスト（任意）。`主題:` 禁止・`[SALE_DATE_DISPLAY]` 等の未置換禁止・種類は `tags` と整合（§0.1.4）

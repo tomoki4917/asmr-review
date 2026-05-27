@@ -288,6 +288,8 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
     safeForExternalLanding: d.safeForExternalLanding === true ? true : undefined,
     excludeFromArticleIndex:
       d.excludeFromArticleIndex === true ? true : undefined,
+    excludeFromReviewIndex:
+      d.excludeFromReviewIndex === true ? true : undefined,
   };
 
   if (Number.isNaN(Date.parse(review.publishedAt))) {
@@ -401,23 +403,38 @@ export function isAllAgesReview(review: Review): boolean {
   return review.tags.includes(ALL_AGES_REVIEW_TAG);
 }
 
+/** 一覧・サイトマップ・関連記事に載せない内部用レビュー（原紙プレビュー等） */
+export function isExcludedFromReviewIndex(review: Review): boolean {
+  return review.excludeFromReviewIndex === true;
+}
+
+function filterListedReviews(reviews: Review[]): Review[] {
+  return reviews.filter((r) => !isExcludedFromReviewIndex(r));
+}
+
 /** 成人向け【R18】サイトの一覧・サイトマップ用 */
 export const getAllReviews = cache((): Review[] =>
   applyGoLiveFilter(
-    getAllReviewsIncludingScheduled().filter((r) => !isAllAgesReview(r))
+    filterListedReviews(
+      getAllReviewsIncludingScheduled().filter((r) => !isAllAgesReview(r))
+    )
   )
 );
 
 /** `/all-ages/` 掲載用（公開済みのみ・関連記事・サイトマップ相当） */
 export const getAllAgesReviews = cache((): Review[] =>
   applyGoLiveFilter(
-    getAllReviewsIncludingScheduled().filter(isAllAgesReview)
+    filterListedReviews(
+      getAllReviewsIncludingScheduled().filter(isAllAgesReview)
+    )
   )
 );
 
 /** `/all-ages/` 一覧用（`goLiveAt` 前も含む。カードの「準備中」表示に使う） */
 export const getAllAgesReviewsForList = cache((): Review[] =>
-  getAllReviewsIncludingScheduled().filter(isAllAgesReview)
+  filterListedReviews(
+    getAllReviewsIncludingScheduled().filter(isAllAgesReview)
+  )
 );
 
 /** SNS 流入ページ用。`safeForExternalLanding: true` の記事のみ（フロントマターで明示） */
@@ -496,7 +513,7 @@ export function getReviewBySlug(slug: string): Review | undefined {
 }
 
 export function getAllSlugs(): string[] {
-  return getAllReviewsIncludingScheduled().map((r) => r.slug);
+  return filterListedReviews(getAllReviewsIncludingScheduled()).map((r) => r.slug);
 }
 
 /** Gemini 用に軽量な一覧（全文送信を避ける） */

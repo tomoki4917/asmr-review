@@ -1,0 +1,108 @@
+# Gemini 出力キー（甘とろ B 型・厳守）
+
+**このファイルのキー以外を出力しない。Markdown見出し・クイック解析形式は禁止。**
+
+**用語:** **ドライオーガズム**と**脳イキ**は別物。`ドライオーガズム（脳イキ）` 等の同一視禁止（`docs/催眠音声執筆ガイド.md` §0.1.1）。
+
+## 1行形式 `[KEY]: 値`
+
+| キー | 内容 |
+|------|------|
+| SALE_DATE_DISPLAY | 例: 2018年1月14日（販売ページ表記）。`--sale-date` と暦日一致（§0.1.4） |
+| GENRE_TYPE | **全文** 例: `催眠音声（ふたりがけ・双子・ドライオーガズム）`。`tags` からサークル・バイノーラル除く2〜4語。**ドライ専売に脳イキを入れない**（§0.1.1・§0.1.4） |
+| CV_MALE | 本編CV（DLsite・info 準拠）。**1名のみのときはこちらだけ**（サイト表示は `CV：` のみ。「男性向け」等は付けない） |
+| CV_FEMALE | **本編CVが2名以上**で女性向け本編CVがあるときのみ。無ければ省略または空 |
+| ILLUSTRATOR | DLsite に記載があるときのみ |
+| LOGO | 販売ページにロゴクレジットがあるときのみ。無ければキー省略または空（行ごと非表示） |
+| RECOMMENDED_1 | おすすめ1・太字ラベル（20字前後・`**` 不要） |
+| RECOMMENDED_1_REASON | おすすめ1・理由（1〜2文・なぜ合うか・音声根拠） |
+| RECOMMENDED_2 | おすすめ2・ラベル（誘導・フェチ・シチュ） |
+| RECOMMENDED_2_REASON | おすすめ2・理由 |
+| RECOMMENDED_3 | おすすめ3・ラベル（求める快楽） |
+| RECOMMENDED_3_REASON | おすすめ3・理由 |
+| NOT_RECOMMENDED_1 | 合わない1・ラベル（弱みに対応する層） |
+| NOT_RECOMMENDED_1_REASON | 合わない1・理由（ファクト・三軸数値禁止） |
+| NOT_RECOMMENDED_2 | 合わない2・ラベル（風潮・トーン） |
+| NOT_RECOMMENDED_2_REASON | 合わない2・理由 |
+| RATING_VALUE | 0〜10 整数 |
+| DRY_SCENE_COUNT | 整数（Whisper 走査・明確なドライ到達回収のみ。§0.1.2。1回決め打ち禁止） |
+| WET_SCENE_COUNT | 整数（射精・ウェット回収。無ければ 0） |
+| SCORE_TRANSE | 0〜10 |
+| SCORE_PLEASURE | 0〜10 |
+| SCORE_SATISFACTION | 0〜10 |
+| INDUCTION_TYPE | 誘導タイプ3つまで（`A / B / C`）。§8.2 準拠。マージ後は `quickGuideBySlug` へ手動転記 |
+
+**グラフ評価内訳3行**は Gemini キーでは出さない。執筆後に `humanize_graph_breakdown.py` または人手で `docs/催眠音声執筆ガイド.md` §7.1 に合わせる。
+
+## ブロック形式
+
+```
+[SUMMARY]
+（1段落推奨・最大2段落・合計3〜5文）
+・コンセプトと作品像のみ（尺・誘導の型・快感の狙い）。簡潔に。
+・批評・弱点・減点・★点数は禁止（ITEM_DESCRIPTION / NOT_RECOMMENDED / CONCLUSION へ）。
+・任意の最終1文: 強みの芯一言まで可（弱点不可）。
+[/SUMMARY]
+
+[ITEM_DESCRIPTION]
+（2段落・です／ます）
+しっかり見たい人向け。おすすめ/合わないの要点を、Whisper/SRTの「約○分付近の誘導が〜」で根拠付き肉付け。時刻捏造禁止。
+[/ITEM_DESCRIPTION]
+
+[TAGS_YAML]
+  - 催眠音声
+  - （作品タグ 2〜5個・短い一般名詞。販売・台本の売り）
+  - （サークル名 1件必須 — --circle と同一表記）
+  - （バイノーラル作品のみ最終行に バイノーラル）
+[/TAGS_YAML]
+（順序・ドライ/脳イキ・件数上限は docs/催眠音声執筆ガイド.md §0.1.3）
+
+[PACKAGE_FILES]
+- **トラック名** … **mm:ss**
+（複数行）
+[/PACKAGE_FILES]
+
+[INDUCTION_TABLE_ROWS]
+| 論理性 | 2.0 | 【ペーシング】 / 【イエスセット】 |
+（5行・項目名固定・数値合計10.0・均一2.0禁止・§3.1）
+[/INDUCTION_TABLE_ROWS]
+
+[STRONG_INDUCTION_ROWS]
+| 双子同期ラポール | 4.6 / 5 | 一行の機序融合文（特性名禁止・採点メタ禁止）
+| 反復カウント深化 | 4.4 / 5 | 同上
+[/STRONG_INDUCTION_ROWS]
+
+[SUGGESTION_TABLE_ROWS]
+| 感覚暗示 | 2.0 | 【熱感】 / 【密着感】 |
+（7行・項目名固定・合計10.0・§3.1）
+[/SUGGESTION_TABLE_ROWS]
+
+[STRONG_SUGGESTION_ROWS]
+| ゼロ合図連結 | 4.5 / 5 | 一行の機序融合文（特性名禁止）
+| とろとろ反復刻印 | 4.4 / 5 | 同上
+[/STRONG_SUGGESTION_ROWS]
+
+[INDUCTION_FLOW]
+#### 1. 呼吸誘導で受容の土台を作る
+
+> Whisper に実在する台詞（1〜3文・創作禁止）
+
+**誘導方法:** 技法・手続き（括弧で技法名可）。
+
+**身体の変化:** 体内で何が起きるか（神経・血流・必要なら**ドーパミン**等）→ リスナーが感じる身体感覚。因果1〜3文・です／ます調。快感・絶頂・覚醒比較の手順は物質名を具体的に（§4.5）。
+
+（5〜8手順。見出しは「導入」「暗示」等の工程名のみ禁止。各手順は見出し→空行→引用→空行→誘導方法→空行→身体の変化。詳細は docs/催眠音声執筆ガイド.md §4）
+[/INDUCTION_FLOW]
+
+[CONCLUSION_INDUCTION]
+（1〜3文・三軸数値禁止 §5.1）
+[/CONCLUSION_INDUCTION]
+
+[CONCLUSION_PLEASURE]
+（1〜3文・オキシトシン/ドーパミン等可。三軸の数値・「快楽度9.2水準」禁止→高水準等の定性のみ §5.1）
+[/CONCLUSION_PLEASURE]
+
+[CONCLUSION_FINAL]
+（1〜2文・三軸数値禁止 §5.1）
+[/CONCLUSION_FINAL]
+```

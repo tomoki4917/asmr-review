@@ -357,6 +357,54 @@ export function splitInductionAnalysisContent(induction: string): {
   };
 }
 
+export type ArticleModeInductionSplit = {
+  /** B 型四表があり「解析データ」タブを出す */
+  enableAnalysisDataTab: boolean;
+  /** 解析データタブ用 Markdown（四表ブロックのみ） */
+  analysisDataMarkdown?: string;
+  /** 作品詳細解析タブ用の `## 総合評価` 以降本文 */
+  detailRestMarkdown: string;
+};
+
+/**
+ * 記事モード用に `## 総合評価` 以降を分割する。
+ * - **解析データ** … `### 主要誘導の流れ（作品の流れ）` 直前まで（四表）
+ * - **作品詳細解析** … 主要誘導の流れ ＋ 総評 以降（四表は重複表示しない）
+ */
+export function splitBodyForArticleMode(body: string): ArticleModeInductionSplit | null {
+  const finalRatingSplit = splitBodyAtFinalRating(body);
+  if (!finalRatingSplit) return null;
+
+  const rest = finalRatingSplit.rest ?? "";
+  const inductionAnalysisSplit = splitRestAtInductionAnalysis(rest);
+  if (!inductionAnalysisSplit) {
+    return { enableAnalysisDataTab: false, detailRestMarkdown: rest };
+  }
+
+  const inductionContentParts = splitInductionAnalysisContent(inductionAnalysisSplit.induction);
+  const analysisTables = inductionContentParts.analysisTables.trim();
+  const enableAnalysisDataTab =
+    analysisTables.length > 0 && analysisTables.includes("### 誘導構成比");
+
+  if (!enableAnalysisDataTab) {
+    return { enableAnalysisDataTab: false, detailRestMarkdown: rest };
+  }
+
+  const flowPart = inductionContentParts.inductionFlow.trim();
+  const detailInductionBlock = flowPart
+    ? `## 本作の誘導・暗示解析詳細\n\n${flowPart}`
+    : inductionAnalysisSplit.induction;
+  const detailRestMarkdown = [detailInductionBlock, inductionAnalysisSplit.afterRest]
+    .filter((part) => part.length > 0)
+    .join("\n\n");
+
+  return {
+    enableAnalysisDataTab: true,
+    analysisDataMarkdown: analysisTables,
+    detailRestMarkdown,
+  };
+}
+
 export function splitBodyAtFinalRating(
   body: string
 ): { before: string; rating: string; rest: string } | null {

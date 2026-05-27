@@ -90,6 +90,11 @@ out
 # Vercel CLI (`vercel link` — org/project id は Secret 用にローカルだけで保持)
 .vercel
 
+# Gemini 自動執筆（ローカル入出力）
+scripts/gemini-hypnosis-review/review_output.md
+scripts/gemini-hypnosis-review/whisper_output.txt
+scripts/gemini-hypnosis-review/librosa_output.txt
+
 # 解析取り込みの生音声（リポジトリ・GitHub には入れない。解析は PC 上の解析フォルダで行う）
 src/content/レビュー/**/analysis/*.wav
 src/content/レビュー/**/analysis/*.mp3

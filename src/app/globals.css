@@ -640,6 +640,32 @@ body {
   }
 
   /** レビュー内の解析ブロック見出し（作品評価グラフ／本作の誘導・暗示解析）を強調 */
+  .review-reading .review-md--star-review .review-h4--induction-step {
+    margin-top: 1.75rem;
+    padding-top: 0.15rem;
+    border-top: 1px solid rgba(56, 189, 248, 0.14);
+  }
+
+  .review-reading .review-md--star-review .review-h4--induction-step:first-of-type {
+    margin-top: 1.25rem;
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .review-reading .review-md--star-review p.review-induction-field {
+    margin-top: 0.65rem;
+    margin-bottom: 0.85rem;
+    padding-left: 0.15rem;
+    font-size: 0.9375rem;
+    line-height: 1.78;
+    color: rgb(226 232 240 / 0.96);
+  }
+
+  .review-reading .review-md--star-review p.review-induction-field--method strong,
+  .review-reading .review-md--star-review p.review-induction-field--body strong {
+    color: rgb(186 230 253 / 0.98);
+  }
+
   .review-md h2.review-h2--analysis-block,
   .review-reading h2.review-h2--analysis-block {
     margin-bottom: 1rem;
@@ -698,6 +724,15 @@ body {
 
   .review-recommended-panel .review-md > ul > li:first-child {
     margin-top: 0;
+  }
+
+  .review-recommended-panel .review-md > ul > li > p {
+    margin-top: 0.45rem;
+    margin-bottom: 0;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.68;
+    color: rgb(203 213 225);
   }
 
   .review-recommended-panel .review-md > ul > li::before {

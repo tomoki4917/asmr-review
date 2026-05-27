@@ -1,6 +1,6 @@
 # 完成系移行状況（自動生成）
 
-正本: `kuchikou-saimin-count-trip-nouiki/index.md` / `docs/真催眠音声執筆ガイド.md`
+完成系の主（2026-05〜）: `kuchikou-saimin-count-trip-nouiki/index.md` / `docs/催眠音声執筆ガイド.md`（補助: `docs/真催眠音声執筆ガイド.md`）
 
 | 項目 | 件数 |
 |------|------:|

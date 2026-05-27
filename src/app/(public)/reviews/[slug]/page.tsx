@@ -38,8 +38,7 @@ import {
   splitBodyAtFinalRating,
   splitRatingAtWorkIntroLabel,
   splitRestAfterWorkImpression,
-  splitInductionAnalysisContent,
-  splitRestAtInductionAnalysis,
+  splitBodyForArticleMode,
 } from "@/lib/split-review-body";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import { stripMarkdownForMeta } from "@/lib/strip-markdown-lite";
@@ -320,31 +319,12 @@ export default async function ReviewPage({ params }: Props) {
   const finalRatingSplit = review.body
     ? splitBodyAtFinalRating(review.body)
     : null;
-  /** 記事モード「解析データ」タブは甘とろリップのみ（他作品への横展開は未） */
-  const enableAnalysisDataTab = review.slug === "asmr-saimin-aman-toro-lip";
-  const inductionAnalysisSplit =
-    enableAnalysisDataTab && finalRatingSplit?.rest != null
-      ? splitRestAtInductionAnalysis(finalRatingSplit.rest)
-      : null;
-  const inductionContentParts = inductionAnalysisSplit?.induction
-    ? splitInductionAnalysisContent(inductionAnalysisSplit.induction)
+  const articleModeSplit = review.body
+    ? splitBodyForArticleMode(review.body)
     : null;
-  const analysisDataMarkdown =
-    enableAnalysisDataTab && inductionContentParts?.analysisTables.trim()
-      ? inductionContentParts.analysisTables
-      : undefined;
-  const detailRestMarkdown = (() => {
-    if (!enableAnalysisDataTab || !inductionAnalysisSplit) {
-      return finalRatingSplit?.rest ?? "";
-    }
-    const flowPart = inductionContentParts?.inductionFlow.trim();
-    const detailInductionBlock = flowPart
-      ? `## 本作の誘導・暗示解析詳細\n\n${flowPart}`
-      : inductionAnalysisSplit.induction;
-    return [detailInductionBlock, inductionAnalysisSplit.afterRest]
-      .filter((part) => part.length > 0)
-      .join("\n\n");
-  })();
+  const analysisDataMarkdown = articleModeSplit?.analysisDataMarkdown;
+  const detailRestMarkdown =
+    articleModeSplit?.detailRestMarkdown ?? finalRatingSplit?.rest ?? "";
   const restWorkSplit =
     detailRestMarkdown.trim().length > 0
       ? splitRestAfterWorkImpression(detailRestMarkdown)
@@ -390,7 +370,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "主従関係 / 言葉責め / 耳舐め / 乳首責め / 前立腺責め",
       kinkType: "M推奨",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
-      recording: "約163分（本編・字幕終端）",
+      recording: "約163分",
       recommendedFor: [
         "先輩恋愛・恋ドレイシチュが好きな方",
         "質問反復・応答ループ誘導が好きな方",
@@ -484,21 +464,26 @@ export default async function ReviewPage({ params }: Props) {
     "futarigake-saimin-melty-orgasm": {
       scoreLabel: "10.0 / 10",
       oneLine:
-        "双子定位と321・ふにゃーん反復で脱力を先行させ、幸福感からキス・カウント・ゼロ合図へ継ぎ足し、部位ローテでドライのみを約105分積む甘系長尺",
-      inductionType: "リラックス系 / 快感増幅系 / 反復刷り込み系",
+        "安心導入ととろとろ本編のドライ波に、乳首・亀頭・耳の各パートでゼロ回収が続くふたりがけ甘系長尺",
+      inductionType: "反復刷り込み系 / カウント誘導系 / 深化誘導系",
       voiceActor: "みもりあいの",
       majorFetish: "双子責め / キス責め / 乳首責め / 亀頭責め / 耳責め",
       kinkType: "ノーマル〜M向け",
-      recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
-      recording: "約1時間45分（01〜09・パッケージ表記／バイノーラル）",
+      recommendedLevel: "初中級（中程度トランス＋暗示受容）",
+      recording: "約1時間40分（本編01〜09・バイノーラル）",
       recommendedFor: [
-        "安心トーンで深く入りたい方",
-        "長尺でとろとろ没入したい方",
-        "解除まで含めて通しで聴きたい方",
+        "安心感の中で深く落ちたい方",
+        "全身のとろける快感を求める方",
+        "ドライオーガズムを体験したい方",
       ],
       notRecommendedFor: [
-        "短時間で強刺激だけ欲しい方",
-        "ウェット描写を重視する方",
+        "即効性の強い肉体刺激だけ欲しい方",
+        "短時間で手軽に快感を味わいたい方",
+      ],
+      workImpressionParagraphs: [
+        "フルトラの双子白（ふたりがけ）シリーズの一作で、みもりあいのさんの甘い声が「おかえりなさい」から聴き手を迎えてくれます。聴き終わった印象としては、安心と脱力を長く保ちながら、とろとろの快感を全身に溜めてドライオーガズムへ運ぶ、甘く幸せな一本だと感じました。",
+        "本作は、リラックスと快感を同時に注ぐふたりがけ構成が特徴です。「ふにゃ」「とろとろ」の反復とカウントの合図で深度と高揚が重なり、催眠の感覚はわかるけどドライしたことない方におすすめな1本となっております。",
+        "約1時間40分と長尺かつ全編ドライのみで、じっくり通しで聴いて絶頂を味わいたい人向けです。",
       ],
     },
     "unknown-hypno-daijobu-koe-ni-yudanete": {
@@ -510,7 +495,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "耳元囁き / 呼吸同期 / 心象快感 / ドライ絶頂 / 深催眠",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
-      recording: "約1時間49分49秒（01〜06・字幕終端／バイノーラル本編）",
+      recording: "約1時間49分49秒（01〜06／バイノーラル本編）",
       recommendedFor: [
         "浅覚醒を挟む往復深化で深く沈みたい方",
         "「私はあなたの無意識」という同一化語りが刺さる方",
@@ -524,21 +509,46 @@ export default async function ReviewPage({ params }: Props) {
     "kuchikou-saimin-count-trip-nouiki": {
       scoreLabel: "8.0 / 10",
       oneLine:
-        "吸気同期と逆カウント反復で深度を固定し、口唇イメージを終端カウントへ接続して脳イキ回収する約40分の誘導特化構成",
-      inductionType: "反復刷り込み系 / カウント誘導系 / リラックス系",
+        "約40分・吸気同期カウントと口唇イメージで脳イキを狙うカウント特化の口腔催眠",
+      inductionType: "逆カウント系 / カウント誘導系 / 反復刷り込み系",
       voiceActor: "魔暗ヤミ",
       majorFetish: "カウント責め / 口唇責め / キスイメージ / 脳イキ / 催眠誘導",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初中級（中程度トランス＋暗示受容）",
-      recording: "約40分24秒（本編・字幕終端）",
+      recording: "約40分",
       recommendedFor: [
-        "数字トリガーで沈みたい方",
-        "口唇イメージで快感を高めたい方",
-        "四ブロックで進行を把握しながら深めたい方",
+        "吸気同期カウントで深度が落ちやすい方",
+        "口腔催眠・口唇・キスイメージが好きな方",
+        "数字トリガーで脳イキを狙いたい方",
       ],
       notRecommendedFor: [
-        "短時間の即刺激だけを求める方",
-        "強語彙で一気に上げたい方",
+        "解除が短く余韻まで整えたい方",
+        "ハードな肉体描写・淫語が主役の方",
+      ],
+      workImpressionParagraphs: [
+        "「魔暗ヤミ」氏代表のサークル「暗闇Works」の処女作です。聴き終わった印象としては、非常に丁寧な誘導で、特に口腔催眠とカウントダウンを組み合わせた脳イキに特化した作品だと感じました。誘導手順が明確でわかりやすいため、催眠音声初心者の方にもおすすめできます。",
+        "本作は、呼吸テンポと逆カウントを軸に、一度覚醒を挟んで再深化させるという、誘導に振り切った構成が特徴です。数字を追うことで自然と集中が高まり、口元の幻触とゼロの合図が脳内の高揚へと直結する仕組みは、まさに頭の中だけでイキたい方にぴったりでしょう。派手さよりも、安定した快感を求める方に強く響く一本だと思います。",
+        "解除は明確ですが、少し単調なので余韻を楽しみたい方には少し物足りなく感じるかもしれません。丁寧な誘導なので快楽の再現性は高いと思います。",
+        "処女作でありながら技術の高さがうかがえる1本です。",
+      ],
+    },
+    "genkami-preview": {
+      scoreLabel: "0.0 / 10（原紙プレビュー）",
+      oneLine: "（未執筆 — 原紙の表示確認用）",
+      inductionType: "（記入）",
+      voiceActor: "（記入）",
+      majorFetish: "（記入）",
+      kinkType: "（記入）",
+      recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
+      recording: "（記入）",
+      recommendedFor: [
+        "（おすすめ1 — Gemini で記入）",
+        "（おすすめ2 — Gemini で記入）",
+        "（おすすめ3 — Gemini で記入）",
+      ],
+      notRecommendedFor: [
+        "（合わない1 — Gemini で記入）",
+        "（合わない2 — Gemini で記入）",
       ],
     },
     "asmr-saimin-aman-toro-lip": {
@@ -596,7 +606,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "天使×悪魔 / 相反命令 / 連続ドライ / 終端セルフ",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初中級（中程度トランス＋暗示受容）",
-      recording: "約1時間42分54秒（01〜04・字幕終端／バイノーラル）",
+      recording: "約1時間42分54秒（01〜04／バイノーラル）",
       recommendedFor: [
         "二声掛け合いで没入したい方",
         "矛盾入力を快感に変換する設計が好きな方",
@@ -616,7 +626,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "リモコンローター / 屋外羞恥 / 満員電車 / 遅延許可 / エロトランス",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初中級（中程度トランス＋暗示受容）以上の方",
-      recording: "約59分09秒（6パート・字幕終端・非バイノーラル）",
+      recording: "約59分09秒（6パート・非バイノーラル）",
       recommendedFor: [
         "古典的な脱力誘導から入りたい方",
         "バレそうな緊張で快感を吊りたい方",
@@ -636,7 +646,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "刷り込み暗示 / 名前呼称 / オナニー指示 / 終端ウェット",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初中級（中程度トランス＋暗示受容）",
-      recording: "約1時間19分03秒（Tr.1〜Tr.5・字幕終端／バイノーラル）",
+      recording: "約1時間19分03秒（Tr.1〜Tr.5／バイノーラル）",
       recommendedFor: [
         "言葉の条件付けを体感したい方",
         "長尺で段階的に上げたい方",
@@ -676,7 +686,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "連続メスイキ / 受粉比喩 / 逆カウント / 夢催眠 / 愛語反復",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
-      recording: "約51分（本編・字幕終端）",
+      recording: "約51分",
       recommendedFor: [
         "夢世界・植物種孕シチュが好きな方",
         "呼吸・逆カウント誘導が好きな方",
@@ -716,7 +726,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "双子掛け合い / 褒め暗示 / 耳刺激 / 幸福ドライ / 愛語反復",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
-      recording: "約1時間40分43秒（本編・字幕終端）",
+      recording: "約1時間40分43秒",
       recommendedFor: [
         "双子ラブハピ幸福系シチュが好きな方",
         "往復深化・褒め誘導が好きな方",
@@ -736,7 +746,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "ツインキャスト / 妖精・香り / 言葉の振動 / 飼い犬比喩 / イメージ絶頂",
       kinkType: "M向け",
       recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
-      recording: "約35分12秒（本編・字幕終端）",
+      recording: "約35分12秒",
       recommendedFor: [
         "ファンタジー森シチュが好きな方",
         "ジャーニー誘導・分画法が好きな方",
@@ -756,7 +766,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "囁きバイノーラル / 霧・雲メタファ / ジャーニー追随 / 段階増幅カウント",
       kinkType: "M向け",
       recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
-      recording: "約46分16秒（本編・字幕終端）",
+      recording: "約46分16秒",
       recommendedFor: [
         "手を引く霧の旅シチュが好きな方",
         "ジャーニー誘導・段階カウントが好きな方",
@@ -776,7 +786,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "複数声囁き / 数字トリガー / 支配語彙 / 背徳ドライ / 覚醒解除",
       kinkType: "M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
-      recording: "約49分50秒（本編・字幕終端）",
+      recording: "約49分50秒",
       recommendedFor: [
         "背徳・敗北催眠シチュが好きな方",
         "コンフュージョン・二段カウント誘導が好きな方",
@@ -819,7 +829,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "多声囁き / 耳舐め / 連続絶頂 / 予言カウント / ドライオーガズム",
       kinkType: "M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
-      recording: "約64分（本編・字幕終端）",
+      recording: "約64分",
       recommendedFor: [
         "迷い子・ヒプノマルチシチュが好きな方",
         "予言カウント・段階反復誘導が好きな方",
@@ -1000,7 +1010,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "甘出し / 前立腺責め / 乳首責め / カウント暗示 / ドライ開発",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
-      recording: "約1時間28分46秒（本編・字幕終端）",
+      recording: "約1時間28分46秒",
       recommendedFor: [
         "幼馴染訓練・開発シチュが好きな方",
         "甘出し・カウント誘導が好きな方",
@@ -1040,7 +1050,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "妖狐シチュ / 尻尾ASMR / 脳イキ / 耳イキ / 経路切替",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初中級（中程度トランス＋暗示受容）",
-      recording: "男性向け本編 約76分（字幕終端合算約76:03）",
+      recording: "男性向け本編 約76分",
       recommendedFor: [
         "耳から深く落ちたい方",
         "脳イキと耳イキを両方追いたい方",
@@ -1101,7 +1111,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "双子掛け合い / リップASMR / Come受容 / 淫紋・先端帯 / ドライ連鎖",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
-      recording: "約1時間8分32秒（本編・字幕終端）",
+      recording: "約1時間8分32秒",
       recommendedFor: [
         "双子カミング受容シチュが好きな方",
         "双子同期・Come誘導が好きな方",
@@ -1121,7 +1131,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "ふたりがけ / 我慢蓄積 / 前立腺・PC筋 / ダイヤル暗示 / ドライ多段",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
-      recording: "約3時間35分（本編・字幕終端合算）",
+      recording: "約3時間35分",
       recommendedFor: [
         "ふたりがけドライサポートシチュが好きな方",
         "我慢蓄積・カウント誘導が好きな方",
@@ -1141,7 +1151,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "犬化暗示 / 甘辛切替 / 寸止め / 支配語 / 脳イキ",
       kinkType: "M向け",
       recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
-      recording: "約31分（本編・字幕終端）",
+      recording: "約31分",
       recommendedFor: [
         "飼い主わからせ・犬化シチュが好きな方",
         "甘辛切替・寸止め誘導が好きな方",
@@ -1161,7 +1171,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "多声拘束 / カウント圧迫 / 支配語彙 / ドライ四連 / 覚醒解除",
       kinkType: "M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
-      recording: "約1時間47分（本編・字幕終端）",
+      recording: "約1時間47分",
       recommendedFor: [
         "拘束・敗北催眠シチュが好きな方",
         "コンフュージョン・三段カウント誘導が好きな方",
@@ -1343,7 +1353,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "耳かき / サロン主導 / 膝枕 / 受動没入 / バイノーラル",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
-      recording: "約79分（本編・字幕終端）",
+      recording: "約79分",
       recommendedFor: [
         "サロン委ね・役割没入シチュが好きな方",
         "呼吸・カウント誘導が好きな方",
@@ -1363,7 +1373,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "オノマトペ / 耳舐め（首輪パート） / 条件付け / ペット・ワンちゃん",
       kinkType: "ノーマル〜M向け",
       recommendedLevel: "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
-      recording: "約61分8秒（本編・字幕終端）",
+      recording: "約61分8秒",
       recommendedFor: [
         "擬声語パブロフ・ペット化シチュが好きな方",
         "条件付け・オノマトペ誘導が好きな方",
@@ -1449,7 +1459,7 @@ export default async function ReviewPage({ params }: Props) {
         "初心者向け / 9声優比較 / 分割弛緩 / イメージ誘導 / 教育",
       kinkType: "ノーマル",
       recommendedLevel: "初心者（浅いトランス＋暗示受容が可能）以上の方",
-      recording: "約1時間58分27秒（字幕終端・1声優分）",
+      recording: "約1時間58分27秒（1声優分）",
       recommendedFor: [
         "どうしてもかからない壁にぶつかっている方",
         "催眠はインチキでは？と感じている方",

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "workName": "【原紙プレビュー】催眠音声記事原紙",
+  "scores": {
+    "trance": 0,
+    "pleasure": 0,
+    "satisfaction": 0
+  },
+  "orgasmSummary": "絶頂目安（本文総合評価と同期）: ドライシーン（回）・ウェットシーン（回）",
+  "notes": [
+    "【原紙プレビュー】催眠音声記事原紙 — 催眠音声記事原紙（未執筆）",
+    "Gemini 等で index.md 執筆後、三軸スコア・notes を更新すること。",
+    "グラフ: py -3 scripts/generate_review_triangle.py <slug>"
+  ]
+}

@@ -21,7 +21,7 @@ alwaysApply: false
 
 ## 精度
 
-- 正本 `kuchikou-saimin-count-trip-nouiki` + `docs/真催眠音声執筆ガイド.md`
+- 完成系の主 `docs/催眠音声執筆ガイド.md` ＋ 見本 `kuchikou-saimin-count-trip-nouiki`（真執筆は構造・監査の補助）
 - `_分析データ.json` を採点・絶頂行の根拠にする
 - 終了前に `npm run review:audit-kansei` で当該 slug が合格すること
 

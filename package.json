@@ -21,6 +21,7 @@
     "sync-review-sale-from-dlsite": "node scripts/sync-review-sale-from-dlsite.mjs",
     "audit:reviews-dlsite": "node scripts/audit-reviews-dlsite.mjs",
     "fetch-dlsite-reviews:one": "node scripts/fetch-dlsite-user-reviews.mjs",
+    "review:create-genkami": "node scripts/create-hypnosis-review-shell.mjs",
     "review:audit-kansei": "node scripts/audit-review-kansei.mjs",
     "review:audit-scenario": "node scripts/audit-review-scenario.mjs",
     "review:score-doujin-graph": "node scripts/score-doujin-graph-features.mjs",

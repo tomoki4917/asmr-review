@@ -49,7 +49,9 @@ function isTenOutOfTenRating(text: string): boolean {
 /** 「グラフ評価内訳」の `- **トランス度 8** …` / `- **没入度 8** …` 形式を検出（表示を見出し風にする用） */
 function isReviewAxisScoresListItem(children: ReactNode): boolean {
   const text = nodeToPlainText(children).replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
-  return /^(トランス度|シナリオ|音響|快楽度|入眠・覚醒|睡眠・覚醒|没入度|刺激度|満足度)\s*\d+\b/.test(text);
+  return /^(トランス度|シナリオ|音響|快楽度|入眠・覚醒|睡眠・覚醒|没入度|刺激度|満足度)\s*\d+(?:\.\d+)?\b/.test(
+    text
+  );
 }
 
 /** 解析結論の体験感度Lv一覧表（3列・Lv1〜5） */
@@ -136,6 +138,21 @@ function buildMarkdownComponents(o: BuildOpts): Components {
         </h3>
       );
     },
+    h4: ({ children }) => {
+      const starInductionStep =
+        starReviewReadingComfort && !articleReading;
+      return (
+        <h4
+          className={
+            starInductionStep
+              ? `review-h4--induction-step mb-2 mt-7 scroll-mt-24 text-[1.02rem] font-semibold leading-snug tracking-tight text-sky-100/95 sm:mt-8 sm:text-lg ${h3Comfort}`
+              : `mb-2 mt-6 scroll-mt-24 text-base font-semibold text-slate-100 ${h3Comfort}`
+          }
+        >
+          {children}
+        </h4>
+      );
+    },
     h2: ({ children }) => {
       const label = nodeToPlainText(children).replace(/\u00a0/g, " ").trim();
       const isRecommendedAudience =
@@ -210,9 +227,17 @@ function buildMarkdownComponents(o: BuildOpts): Components {
               plain === "合わない人"
             ? "not-recommended"
             : null;
+      const inductionMethod =
+        starReviewReadingComfort &&
+        !articleReading &&
+        plain.startsWith("誘導方法:");
+      const inductionBody =
+        starReviewReadingComfort &&
+        !articleReading &&
+        plain.startsWith("身体の変化:");
       return (
         <p
-          className={`review-md-p mb-5 leading-[1.75] last:mb-0 ${pComfort} ${articleReading ? "text-slate-200/95" : "text-slate-300"} ${pullSummary ? "review-md-p--pull-summary" : ""} ${audienceSubhead ? `review-audience-subhead review-audience-subhead--${audienceSubhead}` : ""}`}
+          className={`review-md-p mb-5 leading-[1.75] last:mb-0 ${pComfort} ${articleReading ? "text-slate-200/95" : "text-slate-300"} ${pullSummary ? "review-md-p--pull-summary" : ""} ${audienceSubhead ? `review-audience-subhead review-audience-subhead--${audienceSubhead}` : ""} ${inductionMethod ? "review-induction-field review-induction-field--method" : ""} ${inductionBody ? "review-induction-field review-induction-field--body" : ""}`}
         >
           {children}
         </p>

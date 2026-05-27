@@ -15,7 +15,7 @@
 
 **全年齢同人音声レビュー**（`tags` に `全年齢同人` または `authorName: 同人音声解析室`・`/all-ages/` 掲載予定）の執筆正本は **`src/content/記事/_全年齢同人執筆ガイド.md`**（五軸の第4軸は **入眠・覚醒**。母本は `_同人音声執筆ガイド2.md`）。`.cursor/rules/review-all-ages-doujin-canon.mdc`。
 
-催眠レビューの正本は `docs/真催眠音声執筆ガイド.md` ＋ `kuchikou-saimin-count-trip-nouiki`。
+催眠レビューの**完成系（主）**は `docs/催眠音声執筆ガイド.md` ＋ 見本 `kuchikou-saimin-count-trip-nouiki` ＋ `scripts/gemini-hypnosis-review/`。サイト構造・監査は `docs/真催眠音声執筆ガイド.md`（補助）。
 
 **作品レビューを新規追加するとき（再発防止・記事モード）:** 詳細ページの **記事モード**（クイック解析／作品詳細解析の切替）はコード側の登録が必要です。`index.md` の **`slug`** と同じキーで、`src/app/(public)/reviews/[slug]/page.tsx` 内の **`quickGuideBySlug`** にオブジェクトを **1 件追加**してください。抜けると切替 UI 自体が表示されません（Cursor 向けの常時ルール: `.cursor/rules/review-article-mode-quickguide.mdc`）。
 
@@ -54,6 +54,11 @@ src/content/
 
 - ファイル名を **`_` で始める**（例: `_draft.md`）と一覧・ビルド対象外になります。
 - `README.md` などのドキュメントも対象外です。
+- **原紙プレビュー**（`genkami-preview`）はフロントマター **`excludeFromReviewIndex: true`** で一覧・トップ・サイトマップから除外（URL直打ち・執筆確認用のみ）。
+
+## 3b. 既存レビューの改稿（公開日）
+
+**記事の内容だけ更新**するときは、**初回公開日の `publishedAt` を変えない**（例: 全面改稿で `2026-05-27` に上書きしない）。`goLiveAt` を新規予約として付け直す必要がなければ触らない。
 
 ## 4. 画像・素材（index と同じフォルダにまとめる）
 

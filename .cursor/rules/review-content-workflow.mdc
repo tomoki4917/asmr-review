@@ -8,7 +8,11 @@ alwaysApply: false
 
 - **構造化データ（Google 商品スニペット）**は `src/components/ReviewJsonLd.tsx` が自動生成する。テーマや本文に **手で `Product` / `Review` の JSON-LD を追記しない**（Search Console の重複・不整合の原因になる）。
 
-**ユーザーから解析フォルダ（`.mp3` または `.wav`・`.srt`・`*_waveform.csv` 等）を渡されて新規執筆・大きく書き直すとき**（`index.md` に手を入れる前）、`docs/真催眠音声執筆ガイド.md` §1（補・解析パイプライン）のとおり **`analyze_mp3_immersive_metrics.py`（MP3/WAV 対応）→ `import-review-analysis.py` → `analyze_review_auto.py`** を実行する。**同人**では続けて **`node scripts/fetch-dlsite-user-reviews.mjs RJ… <slug> --update-notes`**（購入者レビュー**文章**の傾向把握→**summary・おすすめ・本文へ言い換えて反映**（整合性優先）。星は使わない・`_同人音声執筆ガイド2.md`「DLsite ユーザーレビュー」）。**.wav のみ**のフォルダでも手順1をスキップしない。生成物を**採点材料**とし、本文にスクリプト名や生数値列を晒さない。
+**ユーザーから解析フォルダ（`.mp3` または `.wav`・`.srt`・`*_waveform.csv` 等）を渡されて新規執筆・大きく書き直すとき**（`index.md` に手を入れる前）、`docs/真催眠音声執筆ガイド.md` §1（補・解析パイプライン）のとおり **`analyze_mp3_immersive_metrics.py`（MP3/WAV 対応）→ `import-review-analysis.py` → `analyze_review_auto.py`** を実行する。
+
+**催眠音声レビュー（`authorName: 催眠音声解析室` 等）** … 執筆正本は **`docs/催眠音声執筆ガイド.md`**（`.cursor/rules/review-hypnosis-gemini-workflow.mdc`）。**分析・採点・本文初稿はすべて Gemini**（`auto_review.py`）。**DLsite メタ・`quickGuideBySlug`・予約日は Cursor**。**`index.md` を白紙から手書きしない。** 失敗時は API キー・503 リトライ。校正のみ差分編集可。
+
+**同人**では続けて **`node scripts/fetch-dlsite-user-reviews.mjs RJ… <slug> --update-notes`**（購入者レビュー**文章**の傾向把握→**summary・おすすめ・本文へ言い換えて反映**（整合性優先）。星は使わない・`_同人音声執筆ガイド2.md`「DLsite ユーザーレビュー」）。**.wav のみ**のフォルダでも手順1をスキップしない。生成物を**採点材料**とし、本文にスクリプト名や生数値列を晒さない。
 
 1. `npm run sync:content-assets` を実行する（画像・表紙の反映）。
 2. **新規レビューで `dlsiteProductId` を付けた／変えたとき** … **`data/products.json`** に **`id` + `url`** を1件追加したら、**直後に必ず `npm run update-price:one RJ…`**（`fetched_at` が埋まるまで完了としない）。**`current_price: 0` の手書きプレースホルダー禁止**（未取得 0 は「無料」と誤表示される）。無料作品も先に `update-price:one` で 0 を取り込む。機械チェック: **`npm run validate:dlsite-prices`**（`.cursor/rules/review-dlsite-price-placeholder.mdc`）。

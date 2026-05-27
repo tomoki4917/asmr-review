@@ -20,8 +20,17 @@ FILL = (0, 242 / 255, 1.0, 0.3)
 GRID = "#3a3a3a"
 LABEL_COLOR = "#ffffff"
 
-# v1: 12→8→4 反時計回り
-THETA_TRI = np.array([np.pi / 2, 7 * np.pi / 6, 11 * np.pi / 6, np.pi / 2])
+
+def format_axis_score(val: float) -> str:
+    """レーダー・グラフ評価内訳用。必ず小数点を含む（7 → 7.0、7.25 → 7.25、9.7 → 9.7）。"""
+    v = float(val)
+    text = f"{v:.2f}".rstrip("0").rstrip(".")
+    if "." not in text:
+        text = f"{v:.1f}"
+    return text
+
+# v1 三軸: 上=第1軸、右下=第2軸、左下=第3軸（label_specs と radii の順を一致させる）
+THETA_TRI = np.array([np.pi / 2, 11 * np.pi / 6, 7 * np.pi / 6, np.pi / 2])
 
 # v2 R18同人: 没入度→シナリオ→快楽度→音響→満足度
 DOUJIN_AXIS_KEYS_PLEASURE = ("immersion", "scenario", "pleasure", "acoustic", "satisfaction")
@@ -126,7 +135,7 @@ def _draw_polar(fig_h: float, ax: plt.Axes, theta: np.ndarray, radii: np.ndarray
         ax.text(
             ang,
             r_max * 1.22,
-            f"{lab}\n{val:.1f}",
+            f"{lab}\n{format_axis_score(val)}",
             ha="center",
             va="center",
             color=LABEL_COLOR,
@@ -141,7 +150,9 @@ def render_triangle(out_path: Path, trans: float, body: float, third: float, lab
     trans = float(np.clip(trans, 0.0, r_max))
     body = float(np.clip(body, 0.0, r_max))
     third = float(np.clip(third, 0.0, r_max))
-    r_ccw = np.array([trans, third, body, trans])
+    # THETA_TRI と同順: 上=lab1、右下=lab2、左下=lab3
+    r_ccw = np.array([trans, body, third, trans])
+    axis_labels = [(lab1, trans), (lab2, body), (lab3, third)]
 
     _setup_font()
     fig = plt.figure(figsize=(10.0, 16.0), dpi=150, facecolor=BG)
@@ -149,18 +160,7 @@ def render_triangle(out_path: Path, trans: float, body: float, third: float, lab
     ax = fig.add_subplot(111, projection="polar", facecolor=BG)
     ax.set_facecolor(BG)
 
-    label_specs = [
-        (np.pi / 2, lab1, trans),
-        (11 * np.pi / 6, lab2, body),
-        (7 * np.pi / 6, lab3, third),
-    ]
-    _draw_polar(
-        16.0,
-        ax,
-        THETA_TRI,
-        r_ccw,
-        [(lab, val) for _, lab, val in label_specs],
-    )
+    _draw_polar(16.0, ax, THETA_TRI, r_ccw, axis_labels)
     fig.savefig(out_path, facecolor=BG, edgecolor="none", bbox_inches="tight")
     plt.close(fig)
 
