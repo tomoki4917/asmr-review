@@ -136,6 +136,19 @@ def get_api_key() -> str:
     return os.environ.get("GEMINI_API_KEY", "").strip()
 
 
+def review_safety_settings() -> list[types.SafetySetting]:
+    """催眠・R18 レビュー執筆用（台詞・絶頂描写で PROHIBITED_CONTENT になりやすい）。"""
+    categories = (
+        "HARM_CATEGORY_HATE_SPEECH",
+        "HARM_CATEGORY_DANGEROUS_CONTENT",
+        "HARM_CATEGORY_HARASSMENT",
+        "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+    )
+    return [
+        types.SafetySetting(category=cat, threshold="BLOCK_NONE") for cat in categories
+    ]
+
+
 def gemini_generate(
     client: genai.Client,
     *,
@@ -149,17 +162,22 @@ def gemini_generate(
     last_err: Exception | None = None
     for attempt in range(1, max_attempts + 1):
         try:
-            return (
-                client.models.generate_content(
-                    model=model,
-                    contents=contents,
-                    config=types.GenerateContentConfig(
-                        system_instruction=system_instruction,
-                        temperature=temperature,
-                    ),
-                ).text
-                or ""
+            resp = client.models.generate_content(
+                model=model,
+                contents=contents,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_instruction,
+                    temperature=temperature,
+                    safety_settings=review_safety_settings(),
+                ),
             )
+            text = resp.text or ""
+            if not text.strip() and resp.prompt_feedback:
+                fb = resp.prompt_feedback
+                print(
+                    f"[警告] {label} 空応答（prompt block: {getattr(fb, 'block_reason', fb)}）"
+                )
+            return text
         except Exception as exc:  # noqa: BLE001 — API 503 等を再試行
             last_err = exc
             wait = min(2**attempt, 60)

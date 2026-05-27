@@ -89,9 +89,31 @@ def parse_bodies(text: str) -> dict[str, str]:
     return out
 
 
+def write_compare_file(
+    slug: str, steps: list[dict[str, str]], bodies: dict[str, str]
+) -> Path:
+    out_path = SCRIPT_DIR / f"body_compare_{slug}.md"
+    lines = [f"# 身体の変化 比較: {slug}\n", "手編集（実行前） vs Gemini（今回）\n"]
+    for s in steps:
+        n = s["n"]
+        lines.append(f"## 手順{n}: {s['title']}\n")
+        lines.append("### 手編集（変更前）\n")
+        lines.append(f"{s['body']}\n")
+        lines.append("### Gemini\n")
+        lines.append(bodies.get(n, "（なし）").replace("**身体の変化:** ", "") + "\n")
+        lines.append("---\n")
+    out_path.write_text("\n".join(lines), encoding="utf-8")
+    return out_path
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("slug")
+    p.add_argument(
+        "--compare-only",
+        action="store_true",
+        help="index.md は更新せず body_compare_<slug>.md に差分だけ出力",
+    )
     args = p.parse_args()
 
     index_path = ROOT / "src" / "content" / "レビュー" / args.slug / "index.md"
@@ -112,12 +134,10 @@ def main() -> None:
         f"【{n_steps}手順・現状】\n",
     ]
     for s in steps:
-        quote_line = f"台詞抜粋: {s['quote']}\n" if s["quote"] else ""
+        # 台詞・現状文は入力ブロックされやすいため送らない（誘導方法・見出しのみ）
         prompt_parts.append(
             f"### 手順{s['n']}: {s['title']}\n"
-            f"{quote_line}"
             f"誘導方法: {s['method']}\n"
-            f"現状の身体の変化: {s['body']}\n"
         )
     prompt_parts.append(
         f"\n{n_steps}件すべての [BODY_N]…[/BODY_N] を出力してください（N=1〜{n_steps}）。"
@@ -150,6 +170,13 @@ def main() -> None:
         debug.write_text(out, encoding="utf-8")
         print(f"[エラー] パース失敗 ({len(bodies)}/{n_steps}) → {debug}")
         sys.exit(1)
+
+    compare_path = write_compare_file(args.slug, steps, bodies)
+    print(f"[body] 比較ファイル: {compare_path}")
+
+    if args.compare_only:
+        print("[body] --compare-only のため index.md は未更新")
+        return
 
     new_md = index_md
     for s in steps:
