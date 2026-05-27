@@ -10,6 +10,7 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { extractDryWetCounts } from "./lib/extract-dry-wet-counts.mjs";
+import { auditGraphScores } from "./lib/audit-graph-scores.mjs";
 import { auditReviewScenario } from "./lib/review-scenario-audit.mjs";
 
 const repoRoot = process.cwd();
@@ -391,6 +392,7 @@ async function auditAll() {
     }
 
     const failed = CHECKS.filter((c) => c.fail(text));
+    const graphScores = await auditGraphScores(slug, text, reviewsDir);
     const scenario = await auditReviewScenario(slug);
     const noQuickGuide = quickGuide.size > 0 && !quickGuide.has(slug);
     const inductionType = inductionBySlug.get(slug);
@@ -425,8 +427,10 @@ async function auditAll() {
         !noQuickGuide &&
         !dlsitePriceIssue &&
         !inductionShitu &&
+        graphScores.ok &&
         scenario.ok,
       failed,
+      graphScoreErrors: graphScores.errors.length ? graphScores.errors : undefined,
       scenarioErrors: scenario.errors,
       noQuickGuide,
       inductionShitu: inductionShitu || undefined,
@@ -459,6 +463,7 @@ function formatReport(rows) {
     for (const r of pending) {
       const issues = [
         ...r.failed.map((f) => f.label),
+        ...(r.graphScoreErrors ?? []),
         ...(r.scenarioErrors ?? []).map((e) => `シナリオ: ${e}`),
         ...(r.noQuickGuide ? ["quickGuide 未登録"] : []),
         ...(r.inductionShitu ? ["誘導タイプにシチュ系"] : []),
@@ -498,6 +503,7 @@ function printConsole(rows) {
     for (const r of pending) {
       const issues = [
         ...r.failed.map((f) => f.id),
+        ...(r.graphScoreErrors?.length ? ["graph_scores"] : []),
         ...(r.scenarioErrors?.length ? ["scenario"] : []),
         ...(r.noQuickGuide ? ["no_quickguide"] : []),
         ...(r.dlsitePriceIssue ? ["dlsite_price"] : []),

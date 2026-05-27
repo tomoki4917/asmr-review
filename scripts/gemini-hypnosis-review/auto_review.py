@@ -314,10 +314,15 @@ def parse_gemini_keys(text: str) -> dict[str, str]:
         "ILLUSTRATOR",
         "LOGO",
         "RECOMMENDED_1",
+        "RECOMMENDED_1_REASON",
         "RECOMMENDED_2",
+        "RECOMMENDED_2_REASON",
         "RECOMMENDED_3",
+        "RECOMMENDED_3_REASON",
         "NOT_RECOMMENDED_1",
+        "NOT_RECOMMENDED_1_REASON",
         "NOT_RECOMMENDED_2",
+        "NOT_RECOMMENDED_2_REASON",
         "RATING_VALUE",
         "DRY_SCENE_COUNT",
         "WET_SCENE_COUNT",
@@ -1186,7 +1191,11 @@ def main() -> None:
     print(f"  index.md      → {index_path}")
     print(f"  _分析データ.json → {analysis_path}")
     print(f"  Gemini生出力  → {draft_path}")
-    print("\n残作業: quickGuideBySlug / products.json / audit-kansei（dev 時は npm run dev で画像同期）")
+    print("\n残作業（必須）:")
+    print(f"  py -3 scripts/gemini-hypnosis-review/restore_body_changes.py {args.slug}")
+    print(f"  py -3 scripts/gemini-hypnosis-review/generate_work_impression.py {args.slug} --write-tsx")
+    print("  quickGuideBySlug のその他フィールド / products.json / audit-kansei")
+    print("  （dev 時は npm run dev で画像同期）")
 
 
 if __name__ == "__main__":

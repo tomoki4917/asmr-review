@@ -22,29 +22,30 @@ load_dotenv(SCRIPT_DIR / ".env")
 SYSTEM = """あなたは催眠音声レビューの編集者です。**身体の変化**行だけを書き直します。
 
 ## 形式（厳守）
-各手順ごとに1行:
+各手順ごとに:
 [BODY_N]
-（**身体の変化:** から始める1〜3文・です／ます調）
+**身体の変化:** （1〜3文・です／ます調）
 [/BODY_N]
 
-N は 1〜7。7件すべて出力。前置き禁止。
+N はプロンプトで指定された件数ぶん **すべて** 出力。前置き禁止。
 
-## 因果順（必須）
-1. **体内メカニズム**（副交感神経・前頭の思考抑制・筋緊張・注意の向き・**ドーパミン**・**エンドルフィン**・**GABA** 等、手順に合うもの）
-2. **その結果、** リスナーが感じる体感（重さ・脱力・口唇の熱・頭内の締まり・覚醒など）
+## 因果順（必須・メルティ標本と同型）
+1. **体内メカニズム** … 副交感／交感、前頭の思考抑制、筋緊張・血流、注意の内向き、**ドーパミン**・**オキシトシン**・**エンドルフィン**・**GABA** 等（手順に合うものだけ。根拠のない羅列禁止）
+2. **その結果、** … リスナーが**実際に感じる**体感（肩の脱力・頭内の締まり・全身の振動・羞恥の熱・覚醒など）
+
+**NG:** 体感だけで終わる文（メカニズムなし）。体内と体感の順序が逆。
 
 ## 手順別の目安
-- 1（呼吸）: 副交感神経優位 → 心拍・肩の脱力
-- 2〜4（深化）: 注意の内向き・筋緊張低下・トランス固定（無理にドーパミン不要）
-- 5（開眼比較）: 覚醒と催眠の落差・再深化の期待
-- 6（口唇・ゼロ）: **ドーパミン**必須（作品台詞にドーパミン言及あり）。絶頂手順なら**エンドルフィン**も可
-- 7（解除）: 交感神経側へ戻る → 現実感
+- 導入・リラックス: 副交感神経優位 → 心拍・肩の脱力
+- 深化・音分離・階段: 注意の内向き・前頭抑制・筋緊張低下（無理にドーパミン不要）
+- 快感・EDMビート・絶頂・ライブ配信: **ドーパミン** を太字で1回以上。連続絶頂なら **エンドルフィン** も可
+- 解除: 交感神経側へ戻る → 呼吸・現実感
 
 ## 禁止
-体感だけで終わる文、くっつい、整えきれない、設計、導線、押し寄せられる、感覚がある
+くっつい、整えきれない、設計、導線、押し寄せられる、感覚がある、立ち上が
 
-## 物質名
-快感・口唇・ゼロ合図の手順では **ドーパミン** を太字 `**ドーパミン**` で1回以上。
+## 見本（メルティ型）
+**身体の変化:** ゆっくりとした呼吸が続くことで副交感神経が優位になり、覚醒系の緊張が下がります。その結果、心拍と呼吸が落ち着き、肩の力が抜けて、意識が日常のβ波からα波へと移行しやすくなります。
 """
 
 
@@ -59,9 +60,10 @@ def extract_steps(index_md: str) -> list[dict[str, str]]:
     section = m.group(0)
     steps: list[dict[str, str]] = []
     for block in re.split(r"\n#### ", section):
-        if not block.strip().startswith(("1.", "2.", "3.", "4.", "5.", "6.", "7.")):
+        if not re.match(r"\d+\.", block.strip()):
             continue
         title_m = re.match(r"(\d+)\.\s+(.+?)\n", block)
+        quote_m = re.search(r"^>\s*(.+)", block, re.MULTILINE)
         method_m = re.search(r"\*\*誘導方法:\*\*\s*(.+)", block)
         body_m = re.search(r"\*\*身体の変化:\*\*\s*(.+)", block, re.DOTALL)
         if title_m and method_m and body_m:
@@ -69,6 +71,7 @@ def extract_steps(index_md: str) -> list[dict[str, str]]:
                 {
                     "n": title_m.group(1),
                     "title": title_m.group(2).strip(),
+                    "quote": quote_m.group(1).strip()[:200] if quote_m else "",
                     "method": method_m.group(1).strip(),
                     "body": body_m.group(1).strip().split("\n\n")[0],
                 }
@@ -94,8 +97,9 @@ def main() -> None:
     index_path = ROOT / "src" / "content" / "レビュー" / args.slug / "index.md"
     index_md = index_path.read_text(encoding="utf-8")
     steps = extract_steps(index_md)
-    if len(steps) != 7:
-        print(f"[エラー] 手順7件を抽出できませんでした ({len(steps)})")
+    n_steps = len(steps)
+    if n_steps < 5 or n_steps > 8:
+        print(f"[エラー] 手順は5〜8件想定ですが {n_steps} 件抽出されました")
         sys.exit(1)
 
     guide_excerpt = load_file(ROOT / "docs" / "催眠音声執筆ガイド.md", "guide")
@@ -103,33 +107,48 @@ def main() -> None:
     if "### 4.5 身体の変化" in guide_excerpt:
         guide_45 = guide_excerpt.split("### 4.5 身体の変化", 1)[1].split("### 4.6", 1)[0]
 
-    prompt_parts = [f"【執筆ルール抜粋】\n{guide_45}\n", "【7手順・現状】\n"]
+    prompt_parts = [
+        f"【執筆ルール抜粋】\n{guide_45}\n",
+        f"【{n_steps}手順・現状】\n",
+    ]
     for s in steps:
+        quote_line = f"台詞抜粋: {s['quote']}\n" if s["quote"] else ""
         prompt_parts.append(
             f"### 手順{s['n']}: {s['title']}\n"
+            f"{quote_line}"
             f"誘導方法: {s['method']}\n"
             f"現状の身体の変化: {s['body']}\n"
         )
-    prompt_parts.append("\n7件の [BODY_N]…[/BODY_N] を出力してください。")
+    prompt_parts.append(
+        f"\n{n_steps}件すべての [BODY_N]…[/BODY_N] を出力してください（N=1〜{n_steps}）。"
+    )
     prompt = "\n".join(prompt_parts)
+
+    system = SYSTEM.replace(
+        "N はプロンプトで指定された件数ぶん **すべて** 出力。",
+        f"N は 1〜{n_steps}。**{n_steps}件すべて**出力。",
+    )
 
     require_api_key()
     model = os.environ.get("GEMINI_HUMANIZE_MODEL", "gemini-2.5-flash")
     client = genai.Client(api_key=get_api_key())
-    print(f"[body] Gemini ({model}) …")
+    print(f"[body] Gemini ({model}) … {n_steps}手順")
     out = gemini_generate(
         client,
         model=model,
         contents=prompt,
-        system_instruction=SYSTEM,
+        system_instruction=system,
         temperature=0.2,
         label="身体の変化",
     )
+    if not (out or "").strip():
+        print("[エラー] Gemini が空応答を返しました（API キー・クォータを確認）")
+        sys.exit(1)
     bodies = parse_bodies(out)
-    if len(bodies) != 7:
+    if len(bodies) != n_steps:
         debug = SCRIPT_DIR / f"_body_debug_{args.slug}.txt"
         debug.write_text(out, encoding="utf-8")
-        print(f"[エラー] パース失敗 ({len(bodies)}/7) → {debug}")
+        print(f"[エラー] パース失敗 ({len(bodies)}/{n_steps}) → {debug}")
         sys.exit(1)
 
     new_md = index_md
@@ -144,7 +163,7 @@ def main() -> None:
     index_path.write_text(new_md, encoding="utf-8")
     print(f"[body] 更新: {index_path}")
     for n in sorted(bodies, key=int):
-        print(f"\n--- {n} ---\n{bodies[n][:120]}…")
+        print(f"\n--- {n} ---\n{bodies[n][:160]}…")
 
 
 if __name__ == "__main__":

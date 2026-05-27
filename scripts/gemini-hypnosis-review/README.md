@@ -32,13 +32,13 @@ py -3 restore_body_changes.py <slug>
 
 `docs/催眠音声執筆ガイド.md` §4.5 準拠（ドーパミン等のメカニズム＋`その結果、`）。
 
-**クイック「作品感想」**
+**クイック「作品感想」（必須）**
 
 ```bash
 py -3 generate_work_impression.py <slug> --write-tsx
 ```
 
-§8.4 準拠。`quickGuideBySlug.workImpressionParagraphs` に追記。
+§8.4 準拠。**【合わない可能性がある人】の直下**に出る `workImpressionParagraphs`。**`quickGuideBySlug` 登録作品は欠落不可**（Gemini で 2〜3 段落）。
 pip install -r requirements.txt
 copy .env.example .env
 # .env に GEMINI_API_KEY=
