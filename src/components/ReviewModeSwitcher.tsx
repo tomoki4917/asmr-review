@@ -114,7 +114,7 @@ export function ReviewModeSwitcher({
   return (
     <div className="mt-8 sm:mt-9">
       <section className="rounded-2xl border border-slate-600/45 bg-slate-900/45 p-4 sm:p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-300/90">
+        <p className="text-center text-xs font-semibold uppercase tracking-[0.16em] text-sky-300/90">
           記事モード
         </p>
         <div
@@ -126,25 +126,25 @@ export function ReviewModeSwitcher({
             type="button"
             onClick={() => setMode("quick")}
             aria-pressed={showQuick}
-            className={`min-h-11 rounded-xl border px-3 py-2 text-left text-sm font-semibold transition ${
+            className={`flex min-h-11 items-center justify-center rounded-xl border px-3 py-2 text-sm font-semibold transition ${
               showQuick
                 ? "border-sky-400/60 bg-sky-500/20 text-sky-100"
                 : "border-slate-600/60 bg-slate-800/60 text-slate-200 hover:border-slate-500/70 hover:bg-slate-800/80"
             }`}
           >
-            <ModeButtonLabel label={quickTitle} />
+            <ModeButtonLabel label={quickTitle} align="center" />
           </button>
           <button
             type="button"
             onClick={() => setMode("detail")}
             aria-pressed={showDetail}
-            className={`flex min-h-11 items-center rounded-xl border px-3 py-2 text-sm font-semibold transition ${
+            className={`flex min-h-11 items-center justify-center rounded-xl border px-3 py-2 text-sm font-semibold transition ${
               showDetail
                 ? "border-sky-400/60 bg-sky-500/20 text-sky-100"
                 : "border-slate-600/60 bg-slate-800/60 text-slate-200 hover:border-slate-500/70 hover:bg-slate-800/80"
             }`}
           >
-            <ModeButtonLabel label={detailTitle} />
+            <ModeButtonLabel label={detailTitle} align="center" />
           </button>
           {hasAnalysisData ? (
             <button

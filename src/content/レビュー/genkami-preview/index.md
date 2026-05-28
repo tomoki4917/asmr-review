@@ -18,7 +18,7 @@ authorName: 催眠音声解析室
 excludeFromReviewIndex: true
 
 # 作品の販売開始日（販売ページの販売日／DLsite regist_date に準拠）
-saleDate: "2000-01-01"
+saleDate: "2020-12-29"
 publishedAt: "2026-05-27"
 
 circleName: （プレビュー用）
@@ -44,7 +44,7 @@ dlsiteProductId: RJ312554
 ### 基本情報
 
 - **サークル：** （プレビュー用）
-- **販売日：** （販売ページ表記を記入）
+- **販売日：** 2020年12月29日（販売ページ表記）
 - **種類：** （記入）
 - **CV（男性向け本編）：** （記入）
 - **CV（女性向け）：** （該当時のみ記入）
