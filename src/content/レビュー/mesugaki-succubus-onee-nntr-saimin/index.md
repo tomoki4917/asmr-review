@@ -24,8 +24,8 @@ itemDescription: |
 authorName: 催眠音声解析室
 
 saleDate: "2023-03-25"
-publishedAt: "2026-05-28"
-goLiveAt: "2026-05-28T12:00:00+09:00"
+publishedAt: "2026-05-29"
+goLiveAt: "2026-05-29T12:00:00+09:00"
 
 circleName: F・A・S
 
