@@ -34,14 +34,14 @@ alwaysApply: true
 3. **Gemini**: `py -3 auto_review.py --force --slug … --analysis-dir … --recommended-lv …`
 4. Cursor: 生出力の誤メタ・脳イキ／ドライ混同・AI調を修正 → 必要なら `--merge-only`
 4b. 四表だけ均一配分・`特性名` プレースホルダのときは `--optimize-tables`（§3.1）
-5. Cursor: **`generate_review_triangle.py`（§7.0）** → **`restore_body_changes.py <slug>`（§4.5・体内→体感）** → `humanize_graph_breakdown.py`（任意）→ **`generate_work_impression.py --write-tsx`（§8.4）** → `quickGuideBySlug` 同期
+5. Cursor: **`generate_review_triangle.py`（§7.0）** → **`restore_body_changes.py <slug>`（§4.5・体内→体感・三軸と整合）** → `humanize_graph_breakdown.py`（任意）→ **`generate_work_impression.py --write-tsx`（§8.4）** → `quickGuideBySlug` 同期
 
 ## 再発防止
 
 - 催眠レビューの `index.md` を **手書きで白紙から書かない**
 - 採点は **デスクトップ `催眠音声記事作成マニュアル`**（`HYPNOSIS_MANUAL_DIR`）を経由 — リポジトリにマニュアル複製しない
 - **ドライオーガズムと脳イキは別物**（催眠音声執筆ガイド §0.1.1）
-- **`INDUCTION_FLOW`** … `kuchikou` 型の空行（####／引用／誘導方法／身体の変化）。`normalize_induction_flow()` 適用後にマージ
+- **`INDUCTION_FLOW`** … `kuchikou` 型の空行（####／引用／誘導方法／身体の変化）。`normalize_induction_flow()` 適用後にマージ。**`身体の変化` は三軸・総合評価と整合**（全作品・§4.5）
 - **`DRY_SCENE_COUNT`** … Gemini が Whisper で到達回収を数える（§0.1.2）。総合評価・`_分析データ.json` と同期
 - **`tags`** … **必須3種**：音声の種類（`催眠音声`／`同人音声`）・サークル名・声優（CV表記・複数なら全員）。並び：種類→作品タグ→サークル→声優→（該当時）`バイノーラル` 末尾。ドライ専売に `脳イキ` を並べない（§0.1.3）
 - **`### 基本情報`** … サークル・販売日・種類・CV・イラスト（任意）。`主題:` 禁止・`[SALE_DATE_DISPLAY]` 等の未置換禁止・種類は `tags` と整合（§0.1.4）

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import sys
@@ -46,7 +47,111 @@ N はプロンプトで指定された件数ぶん **すべて** 出力。前置
 
 ## 見本（メルティ型）
 **身体の変化:** ゆっくりとした呼吸が続くことで副交感神経が優位になり、覚醒系の緊張が下がります。その結果、心拍と呼吸が落ち着き、肩の力が抜けて、意識が日常のβ波からα波へと移行しやすくなります。
+
+## 採点との整合（プロンプトに三軸があるとき・全作品・厳守）
+- **身体の変化は三軸・総合評価と矛盾させない**。プロンプトの【採点】と【軸別の書き方指示】に従う。
+- **高い軸** … その手順で厚く書いてよい（トランス高→深化・固定／快楽高→催眠的快楽・部位感覚／満足高→再統合・余韻）。
+- **低い軸** … 薄く・不足を正直に（トランス低→浅い・固定なし／快楽低→実演寄り・催眠的快楽薄い／満足低→再統合不足・未完了感）。
+- 採点が中位でも、**別軸が高いからといって低い軸を盛らない**（例: 快楽9でもトランス3なら深化は浅いまま）。
 """
+
+
+def build_score_guidance(scores: dict[str, float]) -> str:
+    """三軸ごとに身体の変化の厚み・禁止表現を指示（全作品）。"""
+    t = scores.get("trance", 5.0)
+    p = scores.get("pleasure", 5.0)
+    s = scores.get("satisfaction", 5.0)
+    lines = [
+        "【採点（本文・グラフと一致・身体の変化は必ずこの水準と整合）】",
+        f"トランス度 {t} / 快楽度 {p} / 満足度 {s}",
+        "",
+        "【軸別の書き方指示】",
+    ]
+    if t <= 4:
+        lines.append(
+            "- トランス低: 深化・固定・θ波・深い没入は書かない。浅い受容・トランス不足を可。"
+        )
+    elif t <= 7:
+        lines.append(
+            "- トランス中: 深化はあるが最深固定は控えめ。固定の厚みに限界があってよい。"
+        )
+    else:
+        lines.append(
+            "- トランス高: 前頭抑制・注意の内向き・脱力・深度持続を具体に。浅さだけで終えない。"
+        )
+    if p <= 5:
+        lines.append(
+            "- 快楽低: 催眠としての心地よさ・暗示の身体感覚は薄い。交感優位・実演刺激中心を可。"
+        )
+    elif p <= 8:
+        lines.append(
+            "- 快楽中: 催眠的快楽と刺激の両方。没入の上の報酬はあるが満点型の絶頂表現は避ける。"
+        )
+    else:
+        lines.append(
+            "- 快楽高: 暗示が届く部位感覚・頭内高揚・トリガー報酬を厚く。没入の上に乗る快感を書く。"
+        )
+    if s <= 4:
+        lines.append(
+            "- 満足低: 解除で再統合不足・興奮残存・未完了感を可。「すっきり完全覚醒」だけで締めない。"
+        )
+    elif s <= 7:
+        lines.append(
+            "- 満足中: 覚醒誘導は明確だが余韻はやや短めと可。"
+        )
+    else:
+        lines.append(
+            "- 満足高: 再統合・現実感回復・余韻まで丁寧に。"
+        )
+    lines.append(
+        "- 他軸が高くても低い軸を盛らない（例: 快楽9でもトランス3なら深化は浅い）。"
+    )
+    return "\n".join(lines) + "\n\n"
+
+
+def abstract_method_hint(title: str, scores: dict[str, float] | None) -> str:
+    """API プロンプト用：手順種別＋三軸に応じた生理・催眠要点。"""
+    t = (scores or {}).get("trance", 5.0)
+    p = (scores or {}).get("pleasure", 5.0)
+    s = (scores or {}).get("satisfaction", 5.0)
+
+    if "注意" in title or "ルール" in title:
+        base = "ルール説明で注意が内向き。"
+        if t <= 4:
+            return base + "深化・固定はこれからほぼ行わない。"
+        if t >= 8:
+            return base + "以降の深化・固定へつながる受容の土台。"
+        return base + "以降の深化の深さは採点のトランス水準に合わせる。"
+
+    if "呼吸" in title:
+        if t <= 4:
+            return "短い呼吸誘導。副交感は軽く優位。深いトランスには至らない。"
+        if t >= 8:
+            return "呼吸誘導で副交感優位。前頭抑制・脱力・α波移行しやすい。"
+        return "呼吸誘導で副交感が優位。深化は採点のトランス水準まで。"
+
+    if "想像" in title or "禁止" in title or "カリギュラ" in title:
+        if t <= 4 and p <= 5:
+            return "想像・禁止反転。トランス浅く欲求・興奮が主。催眠的快楽は薄い。"
+        if t >= 7 and p >= 8:
+            return "想像・トリガー導入。注意の内向きと催眠的快楽の土台を厚く。"
+        return "想像・禁止反転。トランス・快楽は各採点に合わせる。"
+
+    if any(k in title for k in ("手コキ", "フェラ", "中出し", "お仕置き", "射精", "セックス")):
+        if p <= 5:
+            return "実演・禁止反復区間。交感優位・性的興奮。催眠的快楽・没入の上の報酬は薄い。"
+        if p >= 9:
+            return "快感・絶頂区間。ドーパミン・部位感覚・頭内高揚。没入の上の報酬を厚く。"
+        return "快感区間。交感・ドーパミンと催眠的快楽の比率は快楽採点に合わせる。"
+
+    if "解除" in title or "覚醒" in title:
+        if s <= 4:
+            return "催眠解除。再統合不足・興奮残存・未完了感が残りやすい。"
+        if s >= 8:
+            return "催眠解除・覚醒誘導。再統合・現実感回復・余韻まで丁寧。"
+        return "催眠解除。覚醒と再統合の厚みは満足採点に合わせる。"
+
+    return "当該手順。三軸スコアと矛盾しない体内→体感で書く。"
 
 
 def extract_steps(index_md: str) -> list[dict[str, str]]:
@@ -89,6 +194,24 @@ def parse_bodies(text: str) -> dict[str, str]:
     return out
 
 
+def load_scores(slug: str) -> dict[str, float] | None:
+    json_path = ROOT / "src" / "content" / "レビュー" / slug / "_分析データ.json"
+    if not json_path.is_file():
+        return None
+    try:
+        data = json.loads(json_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+    scores = data.get("scores")
+    if not isinstance(scores, dict):
+        return None
+    out: dict[str, float] = {}
+    for key in ("trance", "pleasure", "satisfaction"):
+        if key in scores and scores[key] is not None:
+            out[key] = float(scores[key])
+    return out or None
+
+
 def write_compare_file(
     slug: str, steps: list[dict[str, str]], bodies: dict[str, str]
 ) -> Path:
@@ -129,46 +252,65 @@ def main() -> None:
     if "### 4.5 身体の変化" in guide_excerpt:
         guide_45 = guide_excerpt.split("### 4.5 身体の変化", 1)[1].split("### 4.6", 1)[0]
 
+    scores = load_scores(args.slug)
+    score_block = build_score_guidance(scores) if scores else (
+        "【採点】_分析データ.json なし。index.md のグラフ評価内訳3行の数値と整合させること。\n\n"
+    )
+
     prompt_parts = [
         f"【執筆ルール抜粋】\n{guide_45}\n",
+        score_block,
         f"【{n_steps}手順・現状】\n",
     ]
-    for s in steps:
-        # 台詞・現状文は入力ブロックされやすいため送らない（誘導方法・見出しのみ）
-        prompt_parts.append(
-            f"### 手順{s['n']}: {s['title']}\n"
-            f"誘導方法: {s['method']}\n"
-        )
-    prompt_parts.append(
-        f"\n{n_steps}件すべての [BODY_N]…[/BODY_N] を出力してください（N=1〜{n_steps}）。"
-    )
-    prompt = "\n".join(prompt_parts)
-
-    system = SYSTEM.replace(
-        "N はプロンプトで指定された件数ぶん **すべて** 出力。",
-        f"N は 1〜{n_steps}。**{n_steps}件すべて**出力。",
-    )
-
     require_api_key()
     model = os.environ.get("GEMINI_HUMANIZE_MODEL", "gemini-2.5-flash")
     client = genai.Client(api_key=get_api_key())
-    print(f"[body] Gemini ({model}) … {n_steps}手順")
-    out = gemini_generate(
-        client,
-        model=model,
-        contents=prompt,
-        system_instruction=system,
-        temperature=0.2,
-        label="身体の変化",
-    )
-    if not (out or "").strip():
-        print("[エラー] Gemini が空応答を返しました（API キー・クォータを確認）")
-        sys.exit(1)
-    bodies = parse_bodies(out)
+    bodies: dict[str, str] = {}
+    batch_size = int(os.environ.get("BODY_CHANGE_BATCH", "4"))
+
+    for start in range(0, n_steps, batch_size):
+        chunk = steps[start : start + batch_size]
+        nums = [s["n"] for s in chunk]
+        prompt_parts = [
+            f"【執筆ルール抜粋】\n{guide_45}\n",
+            score_block,
+            f"【手順 {', '.join(nums)} / 全{n_steps}】\n",
+        ]
+        for s in chunk:
+            prompt_parts.append(
+                f"### 手順{s['n']}: {s['title']}\n"
+                f"生理・催眠上の要点: {abstract_method_hint(s['title'], scores)}\n"
+            )
+        prompt_parts.append(
+            f"\n手順 {', '.join(nums)} の [BODY_N]…[/BODY_N] のみ出力（N={nums[0]}〜{nums[-1]}）。"
+        )
+        prompt = "\n".join(prompt_parts)
+        system = SYSTEM.replace(
+            "N はプロンプトで指定された件数ぶん **すべて** 出力。",
+            f"N は {nums[0]}〜{nums[-1]}。**{len(chunk)}件すべて**出力。",
+        )
+        print(f"[body] Gemini ({model}) ... steps {nums[0]}-{nums[-1]}")
+        out = gemini_generate(
+            client,
+            model=model,
+            contents=prompt,
+            system_instruction=system,
+            temperature=0.2,
+            label="身体の変化",
+        )
+        if not (out or "").strip():
+            print("[エラー] Gemini が空応答を返しました（API キー・クォータを確認）")
+            sys.exit(1)
+        part = parse_bodies(out)
+        if len(part) != len(chunk):
+            debug = SCRIPT_DIR / f"_body_debug_{args.slug}_{nums[0]}.txt"
+            debug.write_text(out, encoding="utf-8")
+            print(f"[エラー] パース失敗 ({len(part)}/{len(chunk)}) → {debug}")
+            sys.exit(1)
+        bodies.update(part)
+
     if len(bodies) != n_steps:
-        debug = SCRIPT_DIR / f"_body_debug_{args.slug}.txt"
-        debug.write_text(out, encoding="utf-8")
-        print(f"[エラー] パース失敗 ({len(bodies)}/{n_steps}) → {debug}")
+        print(f"[エラー] 合計パース失敗 ({len(bodies)}/{n_steps})")
         sys.exit(1)
 
     compare_path = write_compare_file(args.slug, steps, bodies)

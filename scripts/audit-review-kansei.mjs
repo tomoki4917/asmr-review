@@ -106,6 +106,11 @@ const CHECKS = [
     fail: (t) => hasForbiddenGraphSubParen(t),
   },
   {
+    id: "chui_kotei",
+    label: "禁止語「注意を固定」系",
+    fail: (t) => hasForbiddenChuiKotei(t),
+  },
+  {
     id: "tachiagari",
     label: "禁止語「立ち上が」系",
     fail: (t) => hasForbiddenTachiagari(t),
@@ -197,6 +202,14 @@ function hasForbiddenTaiPartZone(text) {
 /** グラフ六小見出しの括弧サブタイトル（§1（補）項5・2026-05-23 廃止） */
 function hasForbiddenGraphSubParen(text) {
   return /\*\*(入り|深さ|快感設計|絶頂シーン|着地|余韻)（/.test(text);
+}
+
+/** `注意を固定` `注意が〜固定` `注意固定` 等（催眠音声執筆ガイド §6）。台詞引用（> 行）は除外 */
+function hasForbiddenChuiKotei(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  if (/注意固定/.test(withoutQuotes)) return true;
+  return /注意(?:を|が|へ)[^。\n]{0,24}固定/.test(withoutQuotes);
 }
 
 /** `立ち上がる` `立ち上がってきます` `立ち上がり` 等（§3h 項5）。台詞引用（> 行）は除外 */

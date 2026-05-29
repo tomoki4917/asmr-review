@@ -34,8 +34,10 @@ SYSTEM = """あなたは催眠音声レビューサイトの管理人です。�
 - 解析記事の事実と矛盾させない（淫語控えめ・解除短め等も正直に触れてよい）。
 
 ## 文体
-- サイト管理人の感想（「私は」「おすすめします」可）。熱量は中程度（煽り過ぎない）。
-- 日常の日本語。論文調・AI語（一方で／つまり／設計／導線／密度／主軸／〇.X水準）禁止。
+- サイト管理人の感想。**説明・紹介調を基本**に、主観は**全体で1〜2フレーズ**（`個人的に` `私は思います` 等）にとどめる。各段落へ主観を詰め込まない。
+- 熱量は中程度（煽り過ぎない）。
+- 日常の日本語。論文調・AI語（一方で／つまり／設計／導線／密度／主軸／報酬系／神経学的／存分に堪能／〇.X水準）禁止。
+- `注意を固定` 系の言い回し禁止（催眠音声執筆ガイド §6）。
 - 三軸の数値・★点数は書かない。
 
 ## 禁止
@@ -124,16 +126,43 @@ def main() -> None:
         if key not in tsx:
             print("[エラー] slug が page.tsx にありません")
             sys.exit(1)
-        # insert after notRecommendedFor block for this slug
-        pattern = (
-            rf'("{re.escape(args.slug)}": \{{[\s\S]*?notRecommendedFor: \[[\s\S]*?\],)\s*(\}},)'
-        )
+        # slug ブロック内の workImpressionParagraphs を置換（既存は上書き）
         lines = ",\n".join(f'        "{p.replace(chr(34), chr(92)+chr(34))}"' for p in paragraphs)
-        block = f"\n      workImpressionParagraphs: [\n{lines},\n      ],"
-        new_tsx, n = re.subn(pattern, rf"\1{block}\n    \2", tsx, count=1)
-        if n != 1:
-            print("[エラー] page.tsx への挿入に失敗（既に workImpressionParagraphs があるか、形式不一致）")
+        block = f"      workImpressionParagraphs: [\n{lines},\n      ],"
+        slug_pat = rf'"{re.escape(args.slug)}": \{{'
+        m = re.search(slug_pat, tsx)
+        if not m:
+            print("[エラー] slug が page.tsx にありません")
             sys.exit(1)
+        depth = 0
+        end = m.start()
+        for i in range(m.end() - 1, len(tsx)):
+            if tsx[i] == "{":
+                depth += 1
+            elif tsx[i] == "}":
+                depth -= 1
+                if depth == 0:
+                    end = i + 1
+                    break
+        entry = tsx[m.start() : end]
+        existing = re.search(r"workImpressionParagraphs: \[[\s\S]*?\],", entry)
+        if existing:
+            new_entry = (
+                entry[: existing.start()]
+                + block
+                + entry[existing.end() :]
+            )
+        else:
+            new_entry, n = re.subn(
+                r"(notRecommendedFor: \[[\s\S]*?\],)",
+                rf"\1\n{block}",
+                entry,
+                count=1,
+            )
+            if n != 1:
+                print("[エラー] page.tsx への挿入に失敗（notRecommendedFor が見つかりません）")
+                sys.exit(1)
+        new_tsx = tsx[: m.start()] + new_entry + tsx[end:]
         tsx_path.write_text(new_tsx, encoding="utf-8")
         print(f"[impression] 更新: {tsx_path}")
 
