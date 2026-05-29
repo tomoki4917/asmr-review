@@ -145,23 +145,17 @@ def main() -> None:
                     end = i + 1
                     break
         entry = tsx[m.start() : end]
-        existing = re.search(r"workImpressionParagraphs: \[[\s\S]*?\],", entry)
-        if existing:
-            new_entry = (
-                entry[: existing.start()]
-                + block
-                + entry[existing.end() :]
-            )
-        else:
-            new_entry, n = re.subn(
-                r"(notRecommendedFor: \[[\s\S]*?\],)",
-                rf"\1\n{block}",
-                entry,
-                count=1,
-            )
-            if n != 1:
-                print("[エラー] page.tsx への挿入に失敗（notRecommendedFor が見つかりません）")
-                sys.exit(1)
+        # 重複ブロックをすべて除去してから1件だけ挿入
+        cleaned = re.sub(r"\n      workImpressionParagraphs: \[[\s\S]*?\],", "", entry)
+        new_entry, n = re.subn(
+            r"(notRecommendedFor: \[[\s\S]*?\],)",
+            rf"\1\n{block}",
+            cleaned,
+            count=1,
+        )
+        if n != 1:
+            print("[エラー] page.tsx への挿入に失敗（notRecommendedFor が見つかりません）")
+            sys.exit(1)
         new_tsx = tsx[: m.start()] + new_entry + tsx[end:]
         tsx_path.write_text(new_tsx, encoding="utf-8")
         print(f"[impression] 更新: {tsx_path}")
