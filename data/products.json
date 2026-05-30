@@ -698,13 +698,13 @@
   {
     "id": "RJ01607151",
     "url": "https://www.dlsite.com/home/work/=/product_id/RJ01607151.html",
-    "current_price": 990,
+    "current_price": 1100,
     "original_price": 1100,
-    "discount_rate": 10,
-    "on_sale": true,
+    "discount_rate": 0,
+    "on_sale": false,
     "sale_limit": "",
-    "sale_end_iso": "2026-05-30T00:00:00+09:00",
+    "sale_end_iso": "",
     "release_date_iso": "2026-05-01T15:00:00.000Z",
-    "fetched_at": "2026-05-25T10:15:31.574Z"
+    "fetched_at": "2026-05-29T18:18:36.859Z"
   }
 ]
