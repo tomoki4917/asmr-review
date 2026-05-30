@@ -121,6 +121,21 @@ const CHECKS = [
     fail: (t) => hasForbiddenTsumi(t),
   },
   {
+    id: "shin",
+    label: "禁止語「芯」系（台詞引用除外）",
+    fail: (t) => hasForbiddenShin(t),
+  },
+  {
+    id: "tejun",
+    label: "禁止語「手順」系（台詞引用除外）",
+    fail: (t) => hasForbiddenTejun(t),
+  },
+  {
+    id: "time_not_recommended",
+    label: "合わない: 時間／尺理由（§0.3）",
+    fail: (t) => hasForbiddenTimeNotRecommended(t),
+  },
+  {
     id: "mukinikui",
     label: "禁止語「向きにくい」系",
     fail: (t) => hasForbiddenMukinikui(t),
@@ -226,6 +241,20 @@ function hasForbiddenTsumi(text) {
   return /積み/.test(withoutQuotes);
 }
 
+/** `芯` `この作品の芯` `快感の芯は` `芯だと感じ` 等（§7.1・review-prose-voice）。台詞引用（> 行）は除外 */
+function hasForbiddenShin(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  return /芯/.test(withoutQuotes);
+}
+
+/** `手順` `手順どおり` `解除手順` 等（§7.1・review-prose-voice）。台詞引用（> 行）は除外 */
+function hasForbiddenTejun(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const withoutQuotes = body.replace(/^>.*$/gm, "");
+  return /手順/.test(withoutQuotes);
+}
+
 /** `向きにくい` `向きにく` 等（§2.2・同人ガイド2）。台詞引用（> 行）は除外 */
 function hasForbiddenMukinikui(text) {
   const body = text.replace(/^---[\s\S]*?---\n?/, "");
@@ -309,6 +338,25 @@ function hasForbiddenTachiFragment(text) {
     .replace(/粟立ち/g, "")
     .replace(/際立ち/g, "");
   return /(?:が|に)立ち[、。]/.test(stripped) || /(?:が|に)立ち\s/.test(stripped);
+}
+
+/** 【合わない可能性がある人】で時間／尺を理由にする（§0.3） */
+function hasForbiddenTimeNotRecommended(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  if (!body.includes("**【合わない可能性がある人】**")) return false;
+  const section = body.split("**【合わない可能性がある人】**")[1];
+  if (!section) return false;
+  const block = section.split("\n\n---", 1)[0];
+  const withoutQuotes = block.replace(/^>.*$/gm, "");
+  const patterns = [
+    /短時間で完結/,
+    /短時間で終わ/,
+    /長尺が苦手/,
+    /時間がない方/,
+    /要点だけ拾/,
+    /本編だけでも1時間/,
+  ];
+  return patterns.some((re) => re.test(withoutQuotes));
 }
 
 /** おすすめ／合わないの太字見出しで `取りにいきたい方`（§2.2・§2.3） */

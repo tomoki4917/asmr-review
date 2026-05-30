@@ -23,9 +23,9 @@
 | RECOMMENDED_2_REASON | おすすめ2・理由 |
 | RECOMMENDED_3 | おすすめ3・ラベル（求める快楽） |
 | RECOMMENDED_3_REASON | おすすめ3・理由 |
-| NOT_RECOMMENDED_1 | 合わない1・ラベル（弱みに対応する層） |
+| NOT_RECOMMENDED_1 | 合わない1・ラベル（弱みに対応する層。**時間／尺禁止**） |
 | NOT_RECOMMENDED_1_REASON | 合わない1・理由（ファクト・三軸数値禁止。**時間／尺を理由にしない**） |
-| NOT_RECOMMENDED_2 | 合わない2・ラベル（風潮・トーン） |
+| NOT_RECOMMENDED_2 | 合わない2・ラベル（風潮・トーン。**`短時間で完結させたい方` 等は禁止**） |
 | NOT_RECOMMENDED_2_REASON | 合わない2・理由（**時間／尺を理由にしない**） |
 | RATING_VALUE | 0〜10 整数 |
 | DRY_SCENE_COUNT | 整数（Whisper 走査・明確なドライ到達回収のみ。§0.1.2。1回決め打ち禁止）。総合評価の絶頂行は **回数のみ**（`複数回` は人手で `ドライシーン複数回` に差し替え）。**括弧注釈禁止**（§0.1.1） |
@@ -44,7 +44,7 @@
 （1段落推奨・最大2段落・合計3〜5文）
 ・コンセプトと作品像のみ（尺・誘導の型・快感の狙い）。簡潔に。
 ・批評・弱点・減点・★点数は禁止（ITEM_DESCRIPTION / NOT_RECOMMENDED / CONCLUSION へ）。
-・任意の最終1文: 強みの芯一言まで可（弱点不可）。
+・任意の最終1文: 強みを一言で添えても可（弱点不可。「芯」は禁止）。
 [/SUMMARY]
 
 [ITEM_DESCRIPTION]

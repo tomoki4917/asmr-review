@@ -100,10 +100,12 @@ npm run review:audit-scenario -- <slug>
 ### 4. 検査（必須）
 
 ```bash
-npm run review:audit-kansei
+npm run review:validate-prose -- --slug <slug>
+npm run review:audit-kansei -- --slug <slug>
 ```
 
-対象 slug が未完了リストから消えること。`</motion>` が無いこと。
+- **`review:validate-prose`** … `review_output.md` + `index.md` の禁止語（§7.1・`writer_forbidden.md`）。**修正・merge-only 後も毎回**。
+- **`review:audit-kansei`** … 完成系体裁・`shin`/`tejun` 等。対象 slug が未完了リストから消えること。`</motion>` が無いこと。
 
 必要なら:
 

@@ -116,7 +116,10 @@ def main() -> None:
     res_t, res_p, res_s = load_eval_results(slug)
     humanize_system = load_file(SCRIPT_DIR / "writer_system_humanize.md", "humanize")
     keys_doc = load_file(SCRIPT_DIR / "writer_output_keys.md", "keys")
-    hypnosis_guide = load_file(ROOT / "docs" / "催眠音声執筆ガイド.md", "guide")
+    from review_prose_rules import load_forbidden_rules, load_guide_excerpts_for_writer, validate_prose_keys
+
+    forbidden = load_forbidden_rules()
+    guide_excerpt = load_guide_excerpts_for_writer()
 
     client = genai.Client(api_key=get_api_key())
     prompt = build_humanize_prompt(slug, draft, res_t, res_p, res_s, graph_excerpt)
@@ -132,7 +135,8 @@ def main() -> None:
             p
             for p in (
                 humanize_system,
-                "【執筆ガイド抜粋】\n" + hypnosis_guide[:8000],
+                forbidden,
+                guide_excerpt,
                 keys_doc,
             )
             if p.strip()
@@ -142,6 +146,8 @@ def main() -> None:
     )
 
     keys = parse_gemini_keys(out)
+    for w in validate_prose_keys(keys):
+        print(f"[警告] 改稿出力の執筆ルール違反: {w}")
     updated = draft
     missing = []
     for key in HUMANIZE_KEYS:

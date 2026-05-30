@@ -26,6 +26,12 @@ alwaysApply: true
 | **音声分析・三軸採点・記事本文の [KEY] 初稿** | **Gemini API**（`auto_review.py`。デスクトップ採点マニュアル3種＋催眠音声執筆ガイド） |
 | **DLsite・サークル名・販売日・トラック表・RJ・`quickGuideBySlug`・予約日** | **Cursor（エージェント）** — ブラウザ／`info.txt`／既存 `index.md` を確認してメタを合わせる |
 | **旧 index の文言コピー** | **禁止**（全面作り直し時はバックアップ後、Whisper 実データのみ） |
+| **旧 `_分析データ.json`・旧 index の ★／三軸を採点の正本にする** | **禁止**（再生成・校正時に旧稿の点数へ戻さない） |
+
+## 採点の正本（再発防止）
+
+- **三軸・★・絶頂回数** … 当該実行の **`auto_review.py` → `eval_results/<slug>_*.md`** ＋ Whisper 到達回収（§0.1.2）＋デスクトップ採点マニュアル。**削除前・バックアップ・旧 `_分析データ.json` の scores / ratingValue は参考にしない**（人手で上書き禁止）。
+- 旧稿と Gemini 採点が食い違うとき … **Gemini 採点ログと音声根拠で確定**し、旧点数に合わせて減点・増点しない。
 
 ## 実行手順（解析フォルダ付き）
 
@@ -34,7 +40,15 @@ alwaysApply: true
 3. **Gemini**: `py -3 auto_review.py --force --slug … --analysis-dir … --recommended-lv …`
 4. Cursor: 生出力の誤メタ・脳イキ／ドライ混同・AI調を修正 → 必要なら `--merge-only`
 4b. 四表だけ均一配分・`特性名` プレースホルダのときは `--optimize-tables`（§3.1）
-5. Cursor: **`generate_review_triangle.py`（§7.0）** → **`restore_body_changes.py <slug>`（§4.5・体内→体感・三軸と整合）** → `humanize_graph_breakdown.py`（任意）→ **`generate_work_impression.py --write-tsx`（§8.4）** → `quickGuideBySlug` 同期
+4c. **修正・merge-only・人手改稿のときも** … `docs/催眠音声執筆ガイド.md` §7.1・§8.4・`writer_forbidden.md` を適用。**`npm run review:validate-prose -- --slug …`** で禁止語を通す（`auto_review.py` マージ時も同一チェックで **失敗時は exit 1**）
+5. Cursor: **`generate_review_triangle.py`（§7.0）** → **`restore_body_changes.py <slug>`（§4.5・体内→体感・三軸と整合）** → `humanize_graph_breakdown.py`（任意）→ **`generate_work_impression.py --write-tsx`（§8.4）** → `quickGuideBySlug` 同期 → **`npm run review:audit-kansei -- --slug …`**
+
+## 修正時も執筆ルール全適用（必須）
+
+- **`--merge-only` だけ** … Gemini 本文生成をスキップするが、**執筆ルール適用はスキップしない**。
+- **人手で `review_output.md` / `index.md` を直す前** … `writer_forbidden.md` と `docs/催眠音声執筆ガイド.md` を参照。
+- **保存前（毎回）** … `npm run review:validate-prose -- --slug <slug>` ＋ `npm run review:audit-kansei -- --slug <slug>`。
+- **`auto_review.py` マージ完了時** … `review_prose_rules.validate_*` で禁止語違反なら **index を書き込んだあと rollback せず exit 1**（修正して再マージ）。
 
 ## 再発防止
 

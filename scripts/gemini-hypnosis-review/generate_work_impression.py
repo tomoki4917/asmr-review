@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import random
 import re
 import sys
 from pathlib import Path
@@ -17,6 +18,11 @@ ROOT = SCRIPT_DIR.parents[1]
 sys.path.insert(0, str(SCRIPT_DIR))
 
 from auto_review import gemini_generate, get_api_key, load_file, require_api_key  # noqa: E402
+from review_prose_rules import (  # noqa: E402
+    load_forbidden_rules,
+    load_guide_excerpts_for_impression,
+    find_forbidden_in_text,
+)
 
 load_dotenv(SCRIPT_DIR / ".env")
 
@@ -29,20 +35,42 @@ SYSTEM = """あなたは催眠音声レビューサイトの管理人です。�
 2〜3段落。各段落80〜160字。です・ます調。
 
 ## 内容
-- 聴き終わった印象・誰向けか・作品の強み（カウント口腔・脳イキ・手順の追いやすさ等）。
+- 聴き終わった印象・誰向けか・作品の強み（カウント口腔・脳イキ・流れの追いやすさ等）。
 - サークル処女作・声優への言及は1段落まで可（礼儀正しく短く）。
 - 解析記事の事実と矛盾させない（淫語控えめ・解除短め等も正直に触れてよい）。
+
+## 構成バリエーション（毎回必須・最重要）
+- **他作品と同型にしない**。毎回、段落の役割と入り方を変える。
+- **禁止の固定型** … 「〜が特徴／印象だと感じました」→「初回は〜聴く」→「解除まで〜戻りやすい」の3段テンプレ。
+- **入り方の例**（毎回1つ選び、他と被らせない） … 尺の感想／二声・掛け合いの驚き／カウントの追いやすさ／終わり方の余韻／向く人／実験的な一面 等。
+- **2段落** … 印象+強み、聴感+向く人、など配分を作品ごとに変える。
+- **3段落** … 各段の役割をずらす（第2段落を「向く人」にしない／第1段落を聴き方にしない、等）。
+- **語尾** … `です` `ます` `でしょう` `と思います` を混ぜ、同じ締めを連続させない。
+- **禁止の書き出し** … `聴き終わった印象としては` `この作品いちばんの特徴だと感じました` `〜が印象的です` を使いすぎない（1本につき1回まで）。
 
 ## 文体
 - サイト管理人の感想。**説明・紹介調を基本**に、主観は**全体で1〜2フレーズ**（`個人的に` `私は思います` 等）にとどめる。各段落へ主観を詰め込まない。
 - 熱量は中程度（煽り過ぎない）。
 - 日常の日本語。論文調・AI語（一方で／つまり／設計／導線／密度／主軸／報酬系／神経学的／存分に堪能／〇.X水準）禁止。
+- **`芯` 禁止** … `この作品の芯` `快感の芯` `芯だと感じました` 等。
+- **`手順` 禁止** … `手順どおり` `解除手順` `誘導手順` `回収手順` `手順的` 等（代用：**流れ**・**進め方**・**段階**・**順番**・**想定どおり**）。
 - `注意を固定` 系の言い回し禁止（催眠音声執筆ガイド §6）。
 - 三軸の数値・★点数は書かない。
 
 ## 禁止
 箇条書き、Markdown、HTML、キーワードの羅列だけの段落
 """
+
+OPENING_ANGLES = [
+    "第1段落は「尺・長さ」から入る（短い／長いの感想）。",
+    "第1段落は「二声・掛け合い・左右」の驚きから入る。",
+    "第1段落は「カウント・数字・反復」の追いやすさから入る。",
+    "第1段落は「終わり方・解除・余韻」から入る（逆順の入り）。",
+    "第1段落は「向く人・向かない人」のどちらか一方から入る。",
+    "第1段落は「実験的・矛盾文・変わった所」から入る。",
+    "2段落構成：第1=聴感、第2=強み+向く人をまとめる。",
+    "3段落構成：第1=没入、第2=快感の売り、第3=聴き方または余韻（初回の聞き方段落は任意）。",
+]
 
 
 def gather_context(slug: str) -> str:
@@ -84,8 +112,15 @@ def main() -> None:
         print("[エラー] index.md から文脈を取得できませんでした")
         sys.exit(1)
 
-    guide = load_file(ROOT / "docs" / "催眠音声執筆ガイド.md", "guide")
-    prompt = f"【執筆ガイド抜粋（文体）】\n{guide[:2000]}\n\n【作品情報】\n{ctx}\n\nJSON で paragraphs を出力してください。"
+    guide = load_guide_excerpts_for_impression()
+    forbidden = load_forbidden_rules()
+    angle = random.choice(OPENING_ANGLES)
+    prompt = (
+        f"【禁止語・執筆ルール（正本抜粋）】\n{forbidden}\n\n{guide}\n\n"
+        f"【今回の構成指示】\n{angle}\n\n"
+        f"【作品情報】\n{ctx}\n\n"
+        "JSON で paragraphs を出力してください。"
+    )
 
     require_api_key()
     model = os.environ.get("GEMINI_HUMANIZE_MODEL", "gemini-2.5-flash")
@@ -96,7 +131,7 @@ def main() -> None:
         model=model,
         contents=prompt,
         system_instruction=SYSTEM,
-        temperature=0.35,
+        temperature=0.55,
         label="作品感想",
     ).strip()
 
@@ -109,6 +144,11 @@ def main() -> None:
     paragraphs: list[str] = data.get("paragraphs", [])
     if not paragraphs:
         sys.exit(1)
+
+    for i, para in enumerate(paragraphs, 1):
+        hits = find_forbidden_in_text(para)
+        if hits:
+            print(f"[警告] 段落{i} に禁止語: {', '.join(hits)}")
 
     out_path = SCRIPT_DIR / f"work_impression_{args.slug}.json"
     out_path.write_text(

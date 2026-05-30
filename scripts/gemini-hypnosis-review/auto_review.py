@@ -30,6 +30,14 @@ from google.genai import types
 SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parent.parent
 
+sys.path.insert(0, str(SCRIPT_DIR))
+from review_prose_rules import (  # noqa: E402
+    load_forbidden_rules,
+    load_guide_excerpts_for_writer,
+    validate_index_md,
+    validate_prose_keys,
+)
+
 try:
     from dotenv import load_dotenv
 
@@ -600,6 +608,7 @@ def build_writer_prompt(
         f"サイト掲載用は出力キー（[KEY]）／JSON のみ。\n"
         f"・SCORE_* / RATING_VALUE / 表の行名は keys 定義どおり。捏造の CV・販売日・トラック名禁止。\n"
         f"・DRY_SCENE_COUNT / WET_SCENE_COUNT は Whisper の到達回収のみ数える（§0.1.2）。1回と決め打ち禁止。\n"
+        f"・読者向け散文の禁止語: `芯` `手順` `設計`（台詞引用 `> ` 行のみ可）。代用: 流れ・構成・進め方・段階・順番。\n"
         f"・## 見出しや「クイック解析」セクション形式での出力は禁止（[KEY] のみ）。\n\n"
         f"【出力形式 — 厳守】\n{keys_section}\n"
     )
@@ -690,7 +699,7 @@ def validate_analysis_tables(keys: dict[str, str]) -> list[str]:
         for r in parse_table_rows_markdown(keys.get(sk, "")):
             if r["label"] in ("特性名", "（特性名）"):
                 warnings.append(f"{sk}: 特性名がプレースホルダのままです")
-    banned = ("Librosa", "同相バインド", "ステージ4", "CFバイパス")
+    banned = ("Librosa", "同相バインド", "ステージ4", "CFバイパス", "芯", "手順", "設計")
     blob = "\n".join(keys.get(k, "") for k in ANALYSIS_TABLE_KEYS)
     for b in banned:
         if b in blob:
@@ -912,7 +921,7 @@ def main() -> None:
         if "INDUCTION_FLOW" in only_keys:
             extra_flow = (
                 "【追加】INDUCTION_FLOW: 催眠音声執筆ガイド §4 厳守。"
-                "見出しは工程名のみ禁止。各手順は #### →空行→引用→空行→**誘導方法:**→空行→**身体の変化:**（kuchikou 見本）。"
+                "見出しは工程名のみ禁止。各ブロックは #### →空行→引用→空行→**誘導方法:**→空行→**身体の変化:**（kuchikou 見本）。"
                 "引用は Whisper から1〜3文・80〜200字に切り出し（連結全文禁止）。"
             )
         if "DRY_SCENE_COUNT" in only_keys or "WET_SCENE_COUNT" in only_keys:
@@ -939,6 +948,8 @@ def main() -> None:
             )
         writer_instruction_parts = [
             writer_system,
+            load_forbidden_rules(),
+            load_guide_excerpts_for_writer(),
             desktop_writer,
             "【執筆正本】\n" + hypnosis_guide,
             table_hint
@@ -1005,6 +1016,8 @@ def main() -> None:
         writer_prompt = f"{source_context}\n\n{writer_prompt}"
         writer_instruction_parts = [
             writer_system,
+            load_forbidden_rules(),
+            load_guide_excerpts_for_writer(),
             desktop_writer,
             "【執筆正本（§0 ライター脳含む）】\n" + hypnosis_guide,
             "見本記事: kuchikou-saimin-count-trip-nouiki（完成系・SUMMARY・おすすめ理由・主要誘導・身体の変化の型のみ。文言コピー禁止）。",
@@ -1105,6 +1118,8 @@ def main() -> None:
         writer_prompt = build_writer_prompt(res_t, res_p, res_s, keys_doc, product_facts)
         writer_instruction_parts = [
             writer_system,
+            load_forbidden_rules(),
+            load_guide_excerpts_for_writer(),
             desktop_writer,
             "【執筆正本（§0 ライター脳含む）】\n" + hypnosis_guide,
             "見本記事: kuchikou-saimin-count-trip-nouiki（完成系・SUMMARY・おすすめ理由・主要誘導・身体の変化の型のみ。文言コピー禁止）。",
@@ -1125,6 +1140,8 @@ def main() -> None:
         draft_path.write_text(generated, encoding="utf-8")
 
     keys = parse_gemini_keys(generated)
+
+    prose_violations = validate_prose_keys(keys)
 
     if args.optimize_tables:
         print("[5/6] 四表のみ index.md へ差し替え...")
@@ -1194,6 +1211,15 @@ def main() -> None:
         print(f"  Gemini 生出力: {draft_path}")
         sys.exit(1)
 
+    prose_violations.extend(validate_index_md(index_md))
+    if prose_violations:
+        print("\n[エラー] 執筆ルール違反（merge 前に review_output.md を修正）:")
+        for w in prose_violations:
+            print(f"  - {w}")
+        print("  正本: docs/催眠音声執筆ガイド.md §7.1 / scripts/gemini-hypnosis-review/writer_forbidden.md")
+        print(f"  検証: npm run review:validate-prose -- --slug {args.slug}")
+        sys.exit(1)
+
     triangle_script = ROOT / "scripts" / "generate_review_triangle.py"
     if analysis_path.is_file() and triangle_script.is_file():
         import subprocess
@@ -1210,6 +1236,7 @@ def main() -> None:
     print(f"  _分析データ.json → {analysis_path}")
     print(f"  Gemini生出力  → {draft_path}")
     print("\n残作業（必須）:")
+    print(f"  npm run review:validate-prose -- --slug {args.slug}")
     print(f"  py -3 scripts/gemini-hypnosis-review/restore_body_changes.py {args.slug}")
     print(f"  py -3 scripts/gemini-hypnosis-review/generate_work_impression.py {args.slug} --write-tsx")
     print("  quickGuideBySlug のその他フィールド / products.json / audit-kansei")

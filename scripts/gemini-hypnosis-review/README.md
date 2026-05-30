@@ -38,7 +38,7 @@ py -3 restore_body_changes.py <slug>
 py -3 generate_work_impression.py <slug> --write-tsx
 ```
 
-§8.4 準拠。**【合わない可能性がある人】の直下**に出る `workImpressionParagraphs`。**`quickGuideBySlug` 登録作品は欠落不可**（Gemini で 2〜3 段落）。
+§8.4 準拠。**【合わない可能性がある人】の直下**に出る `workImpressionParagraphs`。**`quickGuideBySlug` 登録作品は欠落不可**（Gemini で 2〜3 段落）。**禁止語: `芯` `手順`。構成は毎回変える**（固定3段テンプレ禁止）。
 pip install -r requirements.txt
 copy .env.example .env
 # .env に GEMINI_API_KEY=
@@ -97,6 +97,7 @@ py -3 auto_review.py --force --keys INDUCTION_FLOW `
 | **執筆正本** | `docs/催眠音声執筆ガイド.md` |
 | ライター脳 | `writer_system_amatori.md` |
 | 出力キー | `writer_output_keys.md` |
+| **禁止語（Gemini 共通）** | `writer_forbidden.md` + `review_prose_rules.py` |
 | B 型ガワ | `templates/…/index.gemini-merge.template.md` |
 | 記事モード・禁止語全集 | `docs/真催眠音声執筆ガイド.md`（マージ後の人手確認用） |
 
