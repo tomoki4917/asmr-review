@@ -38,7 +38,7 @@ py -3 restore_body_changes.py <slug>
 py -3 generate_work_impression.py <slug> --write-tsx
 ```
 
-§8.4 準拠。**【合わない可能性がある人】の直下**に出る `workImpressionParagraphs`。**`quickGuideBySlug` 登録作品は欠落不可**（Gemini で 2〜3 段落）。**禁止語: `芯` `手順`。構成は毎回変える**（固定3段テンプレ禁止）。
+§8.4 準拠。**【合わない可能性がある人】の直下**に出る `workImpressionParagraphs`。**`quickGuideBySlug` 登録作品は欠落不可**（Gemini で **2〜4 段落**・生きたレビュアー所感）。**禁止語: `芯` `手順`。構成・入り方は毎回変える**（固定テンプレ・グリム型コピー禁止）。見本: `usotsuki-kouhai-suki-suki-seishin-shihai`。
 pip install -r requirements.txt
 copy .env.example .env
 # .env に GEMINI_API_KEY=
