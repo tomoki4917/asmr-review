@@ -1,30 +1,105 @@
 {
   "schemaVersion": 1,
   "workName": "ふたりがけ催眠ラブハピオーガズム編",
-  "scores": {
-    "trance": 8.0,
-    "pleasure": 9.0,
-    "satisfaction": 10.0
-  },
-  "orgasmSummary": "絶頂目安（本文総合評価と同期）: ドライ2回（幸福系）・ウェット0回",
   "notes": [
-    "ふたりがけ催眠ラブハピオーガズム編 — アイアン・トライアングル（各軸 10.0 満点）",
-    "第三軸: 満足度 = 興奮のあとの収束と安心感（星・三軸の前提は docs/レビュー三軸評価定義.md「評価の前提（完成度主軸）」）",
-    "【評価方針】docs/レビュー三軸評価定義.md に沿う。",
-    "【参照データ】本記事ディレクトリ内 `analysis/`（解析後フォルダから取り込み）。",
-    "- `心拍活動.jpg` … Polar 聴取セッションの心拍グラフ（サイト用コピー: public/.../polar_h10_heart_rate_session.jpg）",
-    "- 各トラック `*_waveform.csv` … 0.1 秒刻みの `timestamp_sec` / `amplitude_rms`（音声 RMS）/ `frequency_centroid_hz`",
-    "- Whisper 由来の `.json` / `.txt` / `.tsv` / `.srt` / `.vtt` … 文字起こし・セグメント",
-    "- `info.txt` … アフィリエイト用 HTML 断片",
-    "【心拍（Polar）】`analysis/心拍活動.jpg` をレビュー直下 `polar_h10_heart_rate_session.jpg` にコピーし、`npm run sync:content-assets` で `public/.../polar_h10_heart_rate_session.jpg` に反映。",
-    "本文は `### 聴取時の身体反応（心拍）` で画像のみ（波形の時刻・bpm 読み段落は載せない）。数値の整理は作品感想セクションに任せる。",
-    "トランス度 8.0 … 往復で深さを積む。混乱型より褒め・安心が手順の芯。",
-    "快楽度 9.0 … 褒めループと耳元、「好き」の反復で期待と報酬を言葉側に。",
-    "満足度 10.0 … 褒め・掛け合い長尺が内容と一致。解除〜余韻で収束が立つ（おすすめ層前提）。",
-    "絶頂目安（本文総合評価と同期）: ドライ2回（幸福系）・ウェット0回",
-    "【グラフ用】四捨五入（整数）",
-    "【自動補助根拠】derived_metrics.json: duration=6042.591s（約1:40:43、analysis/01〜07.srt 終端合算と一致）/ rms_mean=0.02375464 / silence_ratio=0.2645 / surge_events_per_min=30.176。",
-    "【自動補助根拠】keyword_counts: 可愛い=7, ワン=0, 行け=0, 泣=0。event_counts: countdown=11, trigger=69, release=5。",
-    "【自動補助根拠】sections.auto.json: 導入0.0-300.0 / 深化300.0-650.0 / 快楽650.0-5882.591 / 解除5882.591-6042.591。"
-  ]
+    "Gemini auto_review.py 生成（2026-05-31） — 採点:デスクトップ採点マニュアル3種。本文:催眠音声執筆ガイド+B型原紙。旧稿未参照。",
+    "四表最適化（2026-05-31）— Gemini + Whisper/Librosa（§3.1）"
+  ],
+  "scores": {
+    "trance": 9.7,
+    "pleasure": 9.5,
+    "satisfaction": 9.5
+  },
+  "orgasmSummary": "絶頂目安（本文総合評価と同期）: ドライシーン2回・ウェットシーン0回",
+  "analysisTables": {
+    "optimizedAt": "2026-05-31",
+    "inductionComposition": [
+      {
+        "label": "論理性",
+        "value": "2.2",
+        "detail": "【多段深化】 / 【往復催眠】"
+      },
+      {
+        "label": "強制力",
+        "value": "2.3",
+        "detail": "【参加型誘導】 / 【キラー暗示】"
+      },
+      {
+        "label": "突破力",
+        "value": "1.8",
+        "detail": "【感情的報酬】 / 【存在肯定】"
+      },
+      {
+        "label": "浸透力",
+        "value": "2.0",
+        "detail": "【ラポール形成】 / 【一体感醸成】"
+      },
+      {
+        "label": "身体性",
+        "value": "1.7",
+        "detail": "【脱力誘導】 / 【呼吸同期】"
+      }
+    ],
+    "strongInduction": [
+      {
+        "label": "多段深化と往復催眠",
+        "value": "4.6 / 5",
+        "detail": "多段深化と往復催眠が意識の深度を揺さぶりながら確実に深め、極めて深い変性意識状態を形成します。"
+      },
+      {
+        "label": "参加型誘導とCFバイパス",
+        "value": "4.5 / 5",
+        "detail": "リスナーの発話を催眠状態に組み込むことでCFバイパスを強力に促進し、現実混線に近い状態を作り出します。"
+      }
+    ],
+    "suggestionComposition": [
+      {
+        "label": "感覚暗示",
+        "value": "1.5",
+        "detail": "【脱力感】 / 【意識の重さ】"
+      },
+      {
+        "label": "認知暗示",
+        "value": "2.0",
+        "detail": "【思考溶解】 / 【自己境界曖昧】"
+      },
+      {
+        "label": "反応暗示",
+        "value": "2.0",
+        "detail": "【発話誘導】 / 【快感発声】"
+      },
+      {
+        "label": "関係性暗示",
+        "value": "2.0",
+        "detail": "【一体感】 / 【ラポール】"
+      },
+      {
+        "label": "トリガー暗示",
+        "value": "1.5",
+        "detail": "【言葉の再定義】 / 【幸福感】"
+      },
+      {
+        "label": "否定暗示",
+        "value": "0.5",
+        "detail": "【思考停止】 / 【抵抗解除】"
+      },
+      {
+        "label": "時間歪曲暗示",
+        "value": "0.5",
+        "detail": "【時間短縮】 / 【没入感】"
+      }
+    ],
+    "strongSuggestion": [
+      {
+        "label": "存在肯定と感情的報酬",
+        "value": "4.5 / 5",
+        "detail": "「好き」という言葉を最高の褒め言葉と定義し、精神的な快感と幸福感を極限まで高めます。"
+      },
+      {
+        "label": "発話による現実混線",
+        "value": "4.4 / 5",
+        "detail": "リスナーの発話が催眠体験と深く結びつき、現実混線に近い状態を作り出すことで暗示効果を強化します。"
+      }
+    ]
+  }
 }

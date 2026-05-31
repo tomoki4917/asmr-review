@@ -37,6 +37,11 @@ from review_prose_rules import (  # noqa: E402
     validate_index_md,
     validate_prose_keys,
 )
+from merge_preserve_sections import (  # noqa: E402
+    count_part_analysis_headings,
+    extract_preserved_sections,
+    inject_preserved_sections,
+)
 
 try:
     from dotenv import load_dotenv
@@ -554,6 +559,19 @@ def load_axis_manual(axis: str) -> str:
     return path.read_text(encoding="utf-8")
 
 
+def load_eval_repo_context() -> str:
+    """リポジトリ採点正本（eval_system_repo + 三軸定義 + 運用ガイド）。Gemini 採点に必須。"""
+    parts: list[str] = []
+    for path in (EVAL_SYSTEM_FILE, SCORING_OPS_FILE, SCORING_DEF_FILE):
+        if path.is_file():
+            parts.append(path.read_text(encoding="utf-8"))
+    return "\n\n".join(parts)
+
+
+def build_axis_eval_instruction(axis_manual: str) -> str:
+    return "\n\n".join(p for p in (load_eval_repo_context(), axis_manual) if p.strip())
+
+
 def load_desktop_writer_guide() -> str:
     path = manual_dir() / DESKTOP_WRITER_GUIDE
     if path.is_file():
@@ -561,20 +579,146 @@ def load_desktop_writer_guide() -> str:
     return ""
 
 
-def build_eval_prompt(source_context: str, axis: str, manual_text: str) -> str:
+def build_eval_prompt(
+    source_context: str,
+    axis: str,
+    manual_text: str,
+    *,
+    trance_score: float | None = None,
+    pleasure_score: float | None = None,
+) -> str:
     label = EVAL_AXIS_LABELS.get(axis, axis)
+    anchor_note = (
+        "\n比較アンカー（必ず参照）: "
+        "下限 saimin-shinri-test-dame-iwakareru（★3・トランス3.0） / "
+        "上限 unknown-hypno-daijobu-koe-ni-yudanete（★10・三軸10）。"
+        "約30分で本編大半が報酬・RPの作品は深さを甘く見ない（運用ガイド §2）。"
+    )
+    prior = ""
+    if axis == "pleasure" and trance_score is not None:
+        prior = (
+            f"\n【前提・トランスありき】既決トランス度 {trance_score:.1f}。"
+            "催眠として届く深さを超える快楽度は付けない。"
+        )
+    if axis == "satisfaction" and trance_score is not None and pleasure_score is not None:
+        prior = (
+            f"\n【前提・トランスありき】トランス {trance_score:.1f} / 快楽 {pleasure_score:.1f}。"
+            "着地・余韻・尺対密度。快楽だけ高いのに満足だけ極端に低い／高い偏りは理由を明示。"
+        )
     return (
         f"{source_context}\n\n"
         "--------------------------------------------------\n"
         f"今回採点する軸: **{label}**\n"
-        "上記の WhisperX / Librosa と、system 指示の採点マニュアルのみに基づき採点してください。"
+        "上記の WhisperX / Librosa と、system 指示（リポジトリ採点正本＋デスクトップ採点マニュアル）"
+        "のみに基づき採点してください。"
         "マニュアル指定の出力フォーマットに従い、最終スコアを明示してください。"
+        f"{anchor_note}{prior}"
         + (
             " 快楽軸: ドライオーガズムと脳イキは別物。C-0がドライ型なら【ドライ型】目安で判定し、同一視しない。"
             if axis == "pleasure"
             else ""
         )
     )
+
+
+def run_three_axis_eval(
+    client: genai.Client,
+    source_context: str,
+    slug: str,
+) -> tuple[str, str, str, float | None, float | None, float | None]:
+    """Gemini 三軸採点（リポジトリ正本＋デスクトップマニュアル）。eval_results に保存。"""
+    trance_manual = load_axis_manual("trance")
+    pleasure_manual = load_axis_manual("pleasure")
+    satisfaction_manual = load_axis_manual("satisfaction")
+
+    print("[eval] トランス度採点...")
+    res_t = gemini_generate(
+        client,
+        model=EVAL_MODEL,
+        contents=build_eval_prompt(source_context, "trance", trance_manual),
+        system_instruction=build_axis_eval_instruction(trance_manual),
+        temperature=0.0,
+        label="トランス度採点",
+    )
+    trance_score = extract_score_number(res_t)
+
+    pleasure_sys = pleasure_manual
+    if trance_score is not None:
+        pleasure_sys = pleasure_sys.replace("[TRANS_SCORE]", f"{trance_score:.1f}")
+
+    print("[eval] 快楽度採点...")
+    res_p = gemini_generate(
+        client,
+        model=EVAL_MODEL,
+        contents=build_eval_prompt(
+            source_context, "pleasure", pleasure_manual, trance_score=trance_score
+        ),
+        system_instruction=build_axis_eval_instruction(pleasure_sys),
+        temperature=0.0,
+        label="快楽度採点",
+    )
+    pleasure_score = extract_score_number(res_p)
+
+    print("[eval] 満足度採点...")
+    res_s = gemini_generate(
+        client,
+        model=EVAL_MODEL,
+        contents=build_eval_prompt(
+            source_context,
+            "satisfaction",
+            satisfaction_manual,
+            trance_score=trance_score,
+            pleasure_score=pleasure_score,
+        ),
+        system_instruction=build_axis_eval_instruction(satisfaction_manual),
+        temperature=0.0,
+        label="満足度採点",
+    )
+    satisfaction_score = extract_score_number(res_s)
+
+    eval_dir = SCRIPT_DIR / "eval_results"
+    eval_dir.mkdir(exist_ok=True)
+    (eval_dir / f"{slug}_trance.md").write_text(res_t, encoding="utf-8")
+    (eval_dir / f"{slug}_pleasure.md").write_text(res_p, encoding="utf-8")
+    (eval_dir / f"{slug}_satisfaction.md").write_text(res_s, encoding="utf-8")
+    print(
+        f"[eval] 完了: トランス={trance_score} 快楽={pleasure_score} 満足={satisfaction_score}"
+    )
+    return res_t, res_p, res_s, trance_score, pleasure_score, satisfaction_score
+
+
+def patch_analysis_scores_from_eval(
+    path: Path,
+    res_t: str,
+    res_p: str,
+    res_s: str,
+    *,
+    note: str = "",
+) -> None:
+    """eval_results から scores のみ更新（本文・表は触らない）。"""
+    trance = extract_score_number(res_t)
+    pleasure = extract_score_number(res_p)
+    satisfaction = extract_score_number(res_s)
+    if trance is None or pleasure is None or satisfaction is None:
+        print("[警告] eval からスコアを抽出できませんでした。_分析データ.json は未更新。")
+        return
+    if path.is_file():
+        data = json.loads(path.read_text(encoding="utf-8"))
+    else:
+        data = {"schemaVersion": 1, "notes": []}
+    data["scores"] = {
+        "trance": round(trance, 1),
+        "pleasure": round(pleasure, 1),
+        "satisfaction": round(satisfaction, 1),
+    }
+    notes = list(data.get("notes") or [])
+    stamp = f"三軸再採点（{today_jst_ymd()}）— リポジトリ採点正本＋デスクトップマニュアル経由 Gemini"
+    if stamp not in notes:
+        notes.insert(0, stamp)
+    if note and note not in notes:
+        notes.insert(1, note)
+    data["notes"] = notes
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def build_writer_prompt(
@@ -603,7 +747,7 @@ def build_writer_prompt(
         f"・既存の当サイトレビュー・過去原稿の文章を参照・模倣・流用してはならない。\n"
         f"・事実は今回渡した Whisper / Librosa / 作品メタ のみ。台詞引用は Whisper に実在する文だけ。\n"
         f"・執筆正本は `docs/催眠音声執筆ガイド.md` §0 ライター脳と `writer_output_keys.md`。\n"
-        f"・SUMMARY=コンセプトのみ簡潔（批評禁止）、ITEM_DESCRIPTION=時刻根拠の肉付け、INDUCTION_FLOW=§4。\n"
+        f"・SUMMARY=§0.3リード短文型（1段落・2文以内・100〜130字・時間尺禁止・見本 hypno-multi-rape。批評禁止）、ITEM_DESCRIPTION=時刻根拠の肉付け、INDUCTION_FLOW=§4。\n"
         f"・デスクトップ `催眠音声執筆ガイド.txt` は system 短縮版。\n"
         f"サイト掲載用は出力キー（[KEY]）／JSON のみ。\n"
         f"・SCORE_* / RATING_VALUE / 表の行名は keys 定義どおり。捏造の CV・販売日・トラック名禁止。\n"
@@ -781,7 +925,7 @@ def update_analysis_json(
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Gemini で B 型 index.md を生成")
     p.add_argument("--slug", required=True, help="レビュー slug（英小文字・ハイフン）")
-    p.add_argument("--item-name", required=True, help="商品名")
+    p.add_argument("--item-name", default="", help="商品名")
     p.add_argument("--circle", default="（記入）", help="サークル名")
     p.add_argument("--rj", default="", help="DLsite RJ 番号")
     p.add_argument("--sale-date", default="2000-01-01", help="saleDate YYYY-MM-DD")
@@ -792,6 +936,16 @@ def parse_args() -> argparse.Namespace:
         "--merge-only",
         action="store_true",
         help="review_output.md を B 型へマージのみ（Gemini API 呼び出しなし）",
+    )
+    p.add_argument(
+        "--no-preserve-sections",
+        action="store_true",
+        help="マージ時に既存 index の グラフ内訳／パート別解析 を保持しない（全面再生成の既定）",
+    )
+    p.add_argument(
+        "--preserve-sections",
+        action="store_true",
+        help="--force 時でも旧 index から graph_breakdown / part_analysis を保持（部分改稿・明示時のみ）",
     )
     p.add_argument(
         "--draft-file",
@@ -833,11 +987,28 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="--skip-eval と併用。本文執筆のみ（採点 API 呼び出しなし）",
     )
+    p.add_argument(
+        "--eval-only",
+        action="store_true",
+        help="三軸採点のみ（eval_results + _分析データ.json scores）。index.md は更新しない",
+    )
     return p.parse_args()
 
 
 def main() -> None:
     args = parse_args()
+
+    if args.force and not args.preserve_sections:
+        args.no_preserve_sections = True
+    elif args.force and args.preserve_sections:
+        print(
+            "[警告] --preserve-sections: 旧 index からグラフ内訳・パート別解析を差し戻します。"
+            " 全面作り直しでは使わないでください。"
+        )
+
+    if not args.eval_only and not args.item_name.strip():
+        print("[エラー] --item-name が必要です（--eval-only 時は省略可）")
+        sys.exit(1)
 
     if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", args.slug):
         print(f"[エラー] slug が不正です: {args.slug}")
@@ -848,7 +1019,7 @@ def main() -> None:
     analysis_path = out_dir / "_分析データ.json"
     draft_path = Path(args.draft_file) if args.draft_file else SCRIPT_DIR / "review_output.md"
 
-    if index_path.exists() and not args.force and not args.optimize_tables:
+    if index_path.exists() and not args.force and not args.optimize_tables and not args.eval_only:
         print(f"[エラー] 既に存在します: {index_path}\n  --force で上書き")
         sys.exit(1)
     if args.optimize_tables and not index_path.is_file():
@@ -869,12 +1040,42 @@ def main() -> None:
             sys.exit(1)
 
     print("[1/6] 正本・原紙テンプレートを読み込み...")
-    print(f"       採点: デスクトップ採点マニュアル（{manual_dir()}）")
+    print(f"       採点: リポジトリ採点正本 + デスクトップ採点マニュアル（{manual_dir()}）")
     print("       本文: B型原紙 + docs/催眠音声執筆ガイド.md + 執筆ガイド.txt")
     merge_template = load_file(MERGE_TEMPLATE_FILE, "B型マージ原紙")
 
     res_t = res_p = res_s = ""
     generated = ""
+
+    if args.eval_only:
+        require_api_key()
+        if args.analysis_dir:
+            import subprocess
+
+            ad = Path(args.analysis_dir)
+            subprocess.run(
+                [sys.executable, str(SCRIPT_DIR / "prepare_analysis_inputs.py"), str(ad)],
+                check=True,
+            )
+        print("[2/6] Whisper / Librosa を読み込み...")
+        whisper_data = load_file(WHISPER_FILE, "WhisperX")
+        librosa_data = load_file(LIBROSA_FILE, "Librosa")
+        source_context = f"【WhisperX】\n{whisper_data}\n\n【Librosa】\n{librosa_data}"
+        print(f"       採点正本: eval_system_repo + 三軸定義 + 運用ガイド + {manual_dir()}")
+        client = genai.Client(api_key=get_api_key())
+        print("[3/6] 三軸採点（--eval-only）...")
+        res_t, res_p, res_s, _, _, _ = run_three_axis_eval(client, source_context, args.slug)
+        anchor_note = (
+            "比較アンカー: saimin-shinri-test-dame-iwakareru（★3）より導入・解除・犬化往復は明確に上。"
+            "unknown-hypno-daijobu-koe-ni-yudanete（★10）より連続深化密度・語り緻密さは届かない。"
+            "約31分・後半RP報酬中心のため深さは厳しめに見る（運用ガイド §2）。"
+        )
+        patch_analysis_scores_from_eval(
+            analysis_path, res_t, res_p, res_s, note=anchor_note
+        )
+        print(f"[完了] eval_results + {analysis_path} scores のみ更新。index.md は未変更。")
+        print("       次: 人手でトランスありき整合 → index グラフ内訳・★ を同期")
+        return
 
     if args.merge_only:
         print("[2-4/6] スキップ（--merge-only）")
@@ -1037,9 +1238,6 @@ def main() -> None:
         draft_path.write_text(generated, encoding="utf-8")
     else:
         require_api_key()
-        trance_manual = load_axis_manual("trance")
-        pleasure_manual = load_axis_manual("pleasure")
-        satisfaction_manual = load_axis_manual("satisfaction")
         desktop_writer = load_desktop_writer_guide()
         writer_system = load_file(WRITER_SYSTEM_FILE, "執筆ガイド（ライター脳）")
         hypnosis_guide = load_file(HYPNOSIS_WRITING_GUIDE, "催眠音声執筆ガイド")
@@ -1076,43 +1274,8 @@ def main() -> None:
 
         client = genai.Client(api_key=get_api_key())
 
-        print("[3/6] 三軸採点（Gemini・デスクトップ採点マニュアル）...")
-        res_t = gemini_generate(
-            client,
-            model=EVAL_MODEL,
-            contents=build_eval_prompt(source_context, "trance", trance_manual),
-            system_instruction=trance_manual,
-            temperature=0.0,
-            label="トランス度採点",
-        )
-        trance_score = extract_score_number(res_t)
-
-        pleasure_sys = pleasure_manual
-        if trance_score is not None:
-            pleasure_sys = pleasure_sys.replace("[TRANS_SCORE]", f"{trance_score:.1f}")
-
-        res_p = gemini_generate(
-            client,
-            model=EVAL_MODEL,
-            contents=build_eval_prompt(source_context, "pleasure", pleasure_manual),
-            system_instruction=pleasure_sys,
-            temperature=0.0,
-            label="快楽度採点",
-        )
-
-        res_s = gemini_generate(
-            client,
-            model=EVAL_MODEL,
-            contents=build_eval_prompt(source_context, "satisfaction", satisfaction_manual),
-            system_instruction=satisfaction_manual,
-            temperature=0.0,
-            label="満足度採点",
-        )
-        eval_dir = SCRIPT_DIR / "eval_results"
-        eval_dir.mkdir(exist_ok=True)
-        (eval_dir / f"{args.slug}_trance.md").write_text(res_t, encoding="utf-8")
-        (eval_dir / f"{args.slug}_pleasure.md").write_text(res_p, encoding="utf-8")
-        (eval_dir / f"{args.slug}_satisfaction.md").write_text(res_s, encoding="utf-8")
+        print("[3/6] 三軸採点（Gemini・採点正本＋デスクトップマニュアル）...")
+        res_t, res_p, res_s, _, _, _ = run_three_axis_eval(client, source_context, args.slug)
 
         print("[4/6] 記事本文執筆（Gemini・B型原紙 + 執筆ガイド）...")
         writer_prompt = build_writer_prompt(res_t, res_p, res_s, keys_doc, product_facts)
@@ -1190,6 +1353,17 @@ def main() -> None:
             keys["SALE_DATE_DISPLAY"] = sale_disp
         index_md = merge_keys(shell, keys)
 
+        if index_path.is_file() and not args.no_preserve_sections:
+            preserved = extract_preserved_sections(
+                index_path.read_text(encoding="utf-8")
+            )
+            if preserved:
+                index_md = inject_preserved_sections(index_md, preserved)
+                print(
+                    "[preserve] 既存 index から保持: "
+                    + ", ".join(sorted(preserved.keys()))
+                )
+
         print("[6/6] 保存...")
         index_path.parent.mkdir(parents=True, exist_ok=True)
         index_path.write_text(index_md, encoding="utf-8")
@@ -1212,6 +1386,10 @@ def main() -> None:
         sys.exit(1)
 
     prose_violations.extend(validate_index_md(index_md))
+    if count_part_analysis_headings(index_md) > 1:
+        prose_violations.append(
+            "index.md: ## パート別解析 が2回以上（merge 重複。§1 再発防止）"
+        )
     if prose_violations:
         print("\n[エラー] 執筆ルール違反（merge 前に review_output.md を修正）:")
         for w in prose_violations:

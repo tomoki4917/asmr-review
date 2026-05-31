@@ -40,6 +40,42 @@ TIME_NOT_RECOMMENDED_PATTERNS = (
     "要点だけ拾",
 )
 
+PLEASURE_URGE_NOT_RECOMMENDED_PATTERNS = (
+    "すぐに快感を求め",
+    "快感を急い",
+    "すぐに絶頂へ",
+    "じれった",
+    "深化に時間をかけ",
+)
+
+SUMMARY_TIME_BANNED_SUBSTRINGS = (
+    "長尺",
+    "短尺",
+    "中尺",
+    "約1時間",
+    "約2時間",
+    "約3時間",
+    "約50分",
+    "約40分",
+    "約30分",
+    "約60分",
+    "約90分",
+    "分超",
+    "時間超",
+    "長時間の",
+    "短時間の",
+    "時間がかか",
+    "尺が",
+)
+
+SUMMARY_TIME_BANNED_REGEX = (
+    re.compile(r"約\d+分"),
+    re.compile(r"約\d+時間"),
+    re.compile(r"\d+時間\d+分"),
+    re.compile(r"\d+分の催眠"),
+    re.compile(r"\d+時間の催眠"),
+)
+
 FORBIDDEN_IN_PROSE = (
     ("芯", "芯"),
     ("設計", "設計"),
@@ -47,7 +83,7 @@ FORBIDDEN_IN_PROSE = (
     ("積み", "積み"),
     ("立ち上が", "立ち上が"),
     ("ほどく", "ほど[くけき]"),
-    ("注意固定", "注意固定"),
+    ("固定", "固定"),
 )
 
 
@@ -113,6 +149,11 @@ def strip_block_quotes(text: str) -> str:
     return "\n".join(lines)
 
 
+def _plain_without_kotei_exceptions(plain: str) -> str:
+    """表内特性ラベル【…固定…】を除いた検査用テキスト。"""
+    return re.sub(r"【[^】]*固定[^】]*】", "", plain)
+
+
 def find_forbidden_in_text(text: str) -> list[str]:
     warnings: list[str] = []
     plain = strip_block_quotes(text)
@@ -120,9 +161,9 @@ def find_forbidden_in_text(text: str) -> list[str]:
         if label == "ほどく":
             if re.search(pattern, plain):
                 warnings.append(f"禁止語「{label}」系")
-        elif label == "注意固定":
-            if "注意固定" in plain or re.search(r"注意(?:を|が|へ)[^。\n]{0,24}固定", plain):
-                warnings.append(f"禁止語「{label}」系")
+        elif label == "固定":
+            if "固定" in _plain_without_kotei_exceptions(plain):
+                warnings.append(f"禁止語「{label}」")
         elif pattern in plain:
             warnings.append(f"禁止語「{label}」")
     return warnings
@@ -137,6 +178,33 @@ def find_time_not_recommended(text: str) -> list[str]:
     return warnings
 
 
+def find_pleasure_urge_not_recommended(text: str) -> list[str]:
+    warnings: list[str] = []
+    plain = strip_block_quotes(text)
+    for pattern in PLEASURE_URGE_NOT_RECOMMENDED_PATTERNS:
+        if pattern in plain:
+            warnings.append(f"合わない: 快感欲求理由「{pattern}」")
+    return warnings
+
+
+def find_summary_time_banned(text: str) -> list[str]:
+    """§0.3 summary リード: 時間・尺を連想させる語を禁止。"""
+    warnings: list[str] = []
+    plain = strip_block_quotes(text)
+    for pattern in SUMMARY_TIME_BANNED_SUBSTRINGS:
+        if pattern in plain:
+            warnings.append(f"リード: 時間／尺禁止「{pattern}」")
+    for rx in SUMMARY_TIME_BANNED_REGEX:
+        if rx.search(plain):
+            warnings.append(f"リード: 時間／尺禁止（{rx.pattern}）")
+    return warnings
+
+
+def extract_index_summary(text: str) -> str:
+    m = re.search(r"^summary:\s*\|\s*\n([\s\S]*?)(?=\n\w|\n---)", text, re.MULTILINE)
+    return m.group(1).strip() if m else ""
+
+
 def validate_prose_keys(keys: dict[str, str]) -> list[str]:
     """[KEY] 散文の禁止語チェック（警告文リスト）。"""
     warnings: list[str] = []
@@ -146,8 +214,13 @@ def validate_prose_keys(keys: dict[str, str]) -> list[str]:
         if key in PROSE_KEY_SUFFIXES or key.endswith("_REASON"):
             for w in find_forbidden_in_text(val):
                 warnings.append(f"{key}: {w}")
+        if key == "SUMMARY":
+            for w in find_summary_time_banned(val):
+                warnings.append(f"{key}: {w}")
         if key in ("NOT_RECOMMENDED_1", "NOT_RECOMMENDED_2") or key.endswith("_REASON") and key.startswith("NOT_RECOMMENDED"):
             for w in find_time_not_recommended(val):
+                warnings.append(f"{key}: {w}")
+            for w in find_pleasure_urge_not_recommended(val):
                 warnings.append(f"{key}: {w}")
         for sk in ("STRONG_INDUCTION_ROWS", "STRONG_SUGGESTION_ROWS"):
             if key == sk and any(x in val for x in ("芯", "手順", "積み", "設計")):
@@ -169,6 +242,16 @@ def validate_index_md(text: str) -> list[str]:
         section = section.split("\n\n---", 1)[0]
         for w in find_time_not_recommended(section):
             errors.append(f"index.md: {w}")
+        for w in find_pleasure_urge_not_recommended(section):
+            errors.append(f"index.md: {w}")
+    from merge_preserve_sections import count_part_analysis_headings  # noqa: PLC0415
+
+    if count_part_analysis_headings(text) > 1:
+        errors.append("index.md: ## パート別解析 が2回以上（merge 重複）")
+    summary = extract_index_summary(text)
+    if summary:
+        for w in find_summary_time_banned(summary):
+            errors.append(f"index.md summary: {w}")
     return errors
 
 

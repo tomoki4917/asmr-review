@@ -107,8 +107,8 @@ const CHECKS = [
   },
   {
     id: "chui_kotei",
-    label: "禁止語「注意を固定」系",
-    fail: (t) => hasForbiddenChuiKotei(t),
+    label: "禁止語「固定」系",
+    fail: (t) => hasForbiddenKotei(t),
   },
   {
     id: "tachiagari",
@@ -129,6 +129,16 @@ const CHECKS = [
     id: "tejun",
     label: "禁止語「手順」系（台詞引用除外）",
     fail: (t) => hasForbiddenTejun(t),
+  },
+  {
+    id: "part_breakdown_dup",
+    label: "パート別解析見出しの重複（§1 merge 再発防止）",
+    fail: (t) => !isDoujinReview(t) && (t.match(/^## パート別解析\s*$/gm) || []).length > 1,
+  },
+  {
+    id: "pleasure_urge_not_recommended",
+    label: "合わない: 快感欲求ラベル（§0.3）",
+    fail: (t) => hasForbiddenPleasureUrgeNotRecommended(t),
   },
   {
     id: "time_not_recommended",
@@ -219,12 +229,12 @@ function hasForbiddenGraphSubParen(text) {
   return /\*\*(入り|深さ|快感設計|絶頂シーン|着地|余韻)（/.test(text);
 }
 
-/** `注意を固定` `注意が〜固定` `注意固定` 等（催眠音声執筆ガイド §6）。台詞引用（> 行）は除外 */
-function hasForbiddenChuiKotei(text) {
+/** `固定`（§6・§7.1）。台詞引用（> 行）と表内 `【…固定…】` 特性ラベルは除外 */
+function hasForbiddenKotei(text) {
   const body = text.replace(/^---[\s\S]*?---\n?/, "");
   const withoutQuotes = body.replace(/^>.*$/gm, "");
-  if (/注意固定/.test(withoutQuotes)) return true;
-  return /注意(?:を|が|へ)[^。\n]{0,24}固定/.test(withoutQuotes);
+  const withoutBracketLabels = withoutQuotes.replace(/【[^】]*固定[^】]*】/g, "");
+  return /固定/.test(withoutBracketLabels);
 }
 
 /** `立ち上がる` `立ち上がってきます` `立ち上がり` 等（§3h 項5）。台詞引用（> 行）は除外 */
@@ -355,6 +365,24 @@ function hasForbiddenTimeNotRecommended(text) {
     /時間がない方/,
     /要点だけ拾/,
     /本編だけでも1時間/,
+  ];
+  return patterns.some((re) => re.test(withoutQuotes));
+}
+
+/** 合わない欄でリスナーの快感欲求を理由にしない（催眠音声執筆ガイド §0.3） */
+function hasForbiddenPleasureUrgeNotRecommended(text) {
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  if (!body.includes("**【合わない可能性がある人】**")) return false;
+  const section = body.split("**【合わない可能性がある人】**")[1];
+  if (!section) return false;
+  const block = section.split("\n\n---", 1)[0];
+  const withoutQuotes = block.replace(/^>.*$/gm, "");
+  const patterns = [
+    /すぐに快感を求め/,
+    /快感を急い/,
+    /すぐに絶頂へ/,
+    /じれった/,
+    /深化に時間をかけ/,
   ];
   return patterns.some((re) => re.test(withoutQuotes));
 }

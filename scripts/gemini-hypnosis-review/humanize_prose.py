@@ -84,7 +84,7 @@ def build_humanize_prompt(
 def main() -> None:
     p = argparse.ArgumentParser(description="review_output の散文を人間味改稿")
     p.add_argument("slug", help="レビュー slug")
-    p.add_argument("--merge", action="store_true", help="改稿後に auto_review.py --merge-only を実行")
+    p.add_argument("--merge", action="store_true", help="改稿後に patch_humanize_to_index.py で index に部分反映（merge-only 禁止）")
     p.add_argument("--item-name", default="", help="--merge 時の商品名")
     args = p.parse_args()
 
@@ -171,22 +171,13 @@ def main() -> None:
     print(f"[humanize] 保存: {draft_path}")
 
     if args.merge:
-        item = args.item_name or ""
-        if not item and index_path.is_file():
-            m = re.search(r"^itemName:\s*(.+)$", index_path.read_text(encoding="utf-8"), re.M)
-            item = m.group(1).strip() if m else slug
-        cmd = [
-            sys.executable,
-            str(SCRIPT_DIR / "auto_review.py"),
-            "--slug",
-            slug,
-            "--item-name",
-            item,
-            "--merge-only",
-            "--force",
-        ]
-        print("[humanize] merge-only...")
-        subprocess.run(cmd, cwd=str(SCRIPT_DIR), check=True)
+        patch_script = SCRIPT_DIR / "patch_humanize_to_index.py"
+        print("[humanize] patch_humanize_to_index（merge-only は使わない）...")
+        subprocess.run(
+            [sys.executable, str(patch_script), slug],
+            cwd=str(SCRIPT_DIR),
+            check=True,
+        )
 
 
 if __name__ == "__main__":

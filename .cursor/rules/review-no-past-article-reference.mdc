@@ -1,0 +1,56 @@
+---
+description: レビュー執筆・再生成で他 slug・旧 index の本文を参照・保持しない（再発防止）
+globs:
+  - src/content/レビュー/**/index.md
+  - scripts/gemini-hypnosis-review/**
+  - docs/催眠音声執筆ガイド.md
+alwaysApply: true
+---
+
+# 過去記事・旧稿参照禁止（必須）
+
+ユーザーが **作成・更新・1から・全面作り直し・削除して作り直し** と言ったとき、**当該作品の Whisper／解析フォルダと Gemini 出力だけ**を根拠に書く。**他レビュー・旧 index の散文を読んで流用しない。**
+
+## 禁止（本文・採点・感想）
+
+| やってはいけない | 理由 |
+|------------------|------|
+| **他 slug の `index.md` を開いて文言・構成・パート解説をコピー** | 別作品の混入（洗脳儀式文がロケ音作品に残る等） |
+| **`merge_preserve_sections` で旧 index のグラフ内訳・パート別解析を差し戻し**（全面再生成時） | 旧稿非参照の迂回 |
+| **旧 `index.md` から summary・総評・おすすめ理由・INDUCTION_FLOW を写す** | 手書き／旧AI文の温存 |
+| **旧 `_分析データ.json` の scores / ★ を採点正本に戻す** | 再採点の無効化 |
+| **他作品の `eval_results`・`review_output.md` を流用** | 旧採点・旧キーの混入 |
+| **「過去記事に合わせて」体裁だけ揃えるために他記事本文を grep して段落を持ってくる** | §0.3・禁止語の持ち込み |
+
+## 許可（参照してよいもの）
+
+| 参照 | 用途 | 禁止 |
+|------|------|------|
+| **`docs/催眠音声執筆ガイド.md`**（＋執筆時 `writer_forbidden.md`） | ルール・禁止語 | — |
+| **当該 slug の解析フォルダ**（`.txt` / `.json` / whisper） | 事実・台詞・尺 | — |
+| **`auto_review.py` 当該実行の `eval_results/<slug>_*.md`** | 三軸・★ | 他 slug の eval |
+| **見本 slug（構造のみ）** | `kuchikou`＝四表・INDUCTION_FLOW **型**／感度Lv **HTML タグ** | **文言コピー** |
+| **見本 JSON（感想のみ）** | `work_impression_saimin-douwa-grim-grimm-*` / `usotsuki-*` を Gemini few-shot | 他 slug の `work_impression_*.json` を手書き転記 |
+| **退避した旧 `index.md.bak-*`** | **`publishedAt`・RJ・affiliate・`goLiveAt`・画像 URL** 等メタのみ | 本文ブロック |
+
+## 全面作り直しの固定手順
+
+1. `index.md` → `index.md.bak-pre-gemini-rewrite-YYYY-MM-DD`
+2. **削除** … `scripts/gemini-hypnosis-review/review_output.md`・`eval_results/<slug>_*.md`（旧稿・旧採点防止）
+3. **Gemini フル生成** … 必ず **`--force --no-preserve-sections`**（下記）
+4. 後処理 … triangle → `restore_body_changes.py` → `generate_work_impression.py --write-tsx` → validate
+
+```bash
+py -3 auto_review.py --force --no-preserve-sections \
+  --slug <slug> --analysis-dir "<解析フォルダ>" ...
+```
+
+**`--preserve-sections`（旧 index から graph / part を保持）** … ユーザーが **明示**した部分改稿・humanize パッチ時のみ。 **「1から」「削除して作り直し」では使わない。**
+
+## エージェント再発防止チェック
+
+- [ ] 全面再生成で `[preserve] 既存 index から保持` がログに出ていない
+- [ ] パート別解析に **当該作品のトラック名・台詞と無関係な語**（洗脳・女神・儀式 等）が無い
+- [ ] `npm run review:validate-prose -- --slug <slug>` 通過
+
+関連: `review-hypnosis-gemini-workflow.mdc`・`docs/催眠音声執筆ガイド.md` §「既存記事の全面作り直し」
