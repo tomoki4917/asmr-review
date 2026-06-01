@@ -2,16 +2,109 @@
   "schemaVersion": 1,
   "workName": "双子の催眠彼女",
   "scores": {
-    "trance": 8,
-    "pleasure": 8,
-    "satisfaction": 8
+    "trance": 7.5,
+    "pleasure": 7.9,
+    "satisfaction": 8.8
   },
-  "orgasmSummary": "ドライ1回（耳感覚転写・10→0の頭内／耳イキ）／ウェット1回",
+  "orgasmSummary": "絶頂目安（本文総合評価と同期）: ドライシーン1回・ウェットシーン0回",
   "notes": [
+    "Gemini auto_review.py 生成（2026-06-01） — 採点:デスクトップ採点マニュアル3種。本文:催眠音声執筆ガイド+B型原紙。旧稿未参照。",
     "評価は docs/レビュー三軸評価定義.md に準拠（鑑賞用・臨床非保証）。",
     "尺は解析SRT集約で本編約65分38秒（注意事項除く）。誘導→暗示→耳責め×2→覚醒の5段。",
     "主軸は『双子バイノーラル定位』『寝たふり・無反応の禁止暗示』『耳性感の感覚転移』『我慢後の3カウント解除と10→0回収』。",
     "ふたりがけシリーズ（RJ273500）とは別サークル・別設計。",
-    "【自動補助根拠】derived_metrics.json: duration=4124.406s / silence_ratio=0.4501 / event_counts: countdown=5, trigger=28, release=3。"
-  ]
+    "【自動補助根拠】derived_metrics.json: duration=4124.406s / silence_ratio=0.4501 / event_counts: countdown=5, trigger=28, release=3。",
+    "四表最適化（2026-06-01）— Gemini + Whisper/Librosa（§3.1）"
+  ],
+  "analysisTables": {
+    "optimizedAt": "2026-06-01",
+    "inductionComposition": [
+      {
+        "label": "論理性",
+        "value": "2.5",
+        "detail": "【段階誘導】 / 【コンフュージョン】"
+      },
+      {
+        "label": "強制力",
+        "value": "2.0",
+        "detail": "【禁止暗示】 / 【カウントダウン】"
+      },
+      {
+        "label": "突破力",
+        "value": "2.5",
+        "detail": "【コンフュージョン】 / 【多段深化】"
+      },
+      {
+        "label": "浸透力",
+        "value": "1.5",
+        "detail": "【脱力誘導】 / 【感覚暗示】"
+      },
+      {
+        "label": "身体性",
+        "value": "1.5",
+        "detail": "【耳責め】 / 【下半身連動】"
+      }
+    ],
+    "strongInduction": [
+      {
+        "label": "反応禁止コンフュージョン",
+        "value": "4.5 / 5",
+        "detail": "聴き手の反応を禁止しつつ、思考を飽和させることで、暗示の受容性を高めます。"
+      },
+      {
+        "label": "多段カウント深化",
+        "value": "4.4 / 5",
+        "detail": "段階的な深化暗示とカウントダウンを組み合わせ、意識を深く沈み込ませます。"
+      }
+    ],
+    "suggestionComposition": [
+      {
+        "label": "感覚暗示",
+        "value": "2.5",
+        "detail": "【耳性感帯化】 / 【下半身連動】"
+      },
+      {
+        "label": "認知暗示",
+        "value": "2.0",
+        "detail": "【感覚混乱】 / 【思考飽和】"
+      },
+      {
+        "label": "反応暗示",
+        "value": "2.0",
+        "detail": "【反応禁止】 / 【我慢解放】"
+      },
+      {
+        "label": "関係性暗示",
+        "value": "1.5",
+        "detail": "【好意強調】 / 【密着感】"
+      },
+      {
+        "label": "トリガー暗示",
+        "value": "2.0",
+        "detail": "【耳責め】 / 【反復刺激】"
+      },
+      {
+        "label": "否定暗示",
+        "value": "0.0",
+        "detail": "【なし】"
+      },
+      {
+        "label": "時間歪曲暗示",
+        "value": "0.0",
+        "detail": "【なし】"
+      }
+    ],
+    "strongSuggestion": [
+      {
+        "label": "耳性感帯化暗示",
+        "value": "4.5 / 5",
+        "detail": "耳への刺激が全身の快感、そして頭側の快感へと連動するよう暗示を刷り込みます。"
+      },
+      {
+        "label": "反応禁止と報酬",
+        "value": "4.4 / 5",
+        "detail": "反応を禁止することで我慢を誘発し、その後の解放を報酬として快感を増幅させます。"
+      }
+    ]
+  }
 }

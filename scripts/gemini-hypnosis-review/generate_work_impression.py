@@ -23,6 +23,9 @@ from review_prose_rules import (  # noqa: E402
     load_guide_excerpts_for_impression,
     find_forbidden_in_text,
     find_summary_time_banned,
+    gather_impression_banned_names,
+    find_circle_cv_in_impression,
+    find_score_in_impression,
 )
 
 load_dotenv(SCRIPT_DIR / ".env")
@@ -57,7 +60,8 @@ SYSTEM = """あなたは催眠音声解析室のプロレビュアーです。�
 - **Whisper 抜粋**から場面・言葉・音を拾う（あれば必須）。summary・おすすめ理由・グラフ内訳の**言い換え・再掲禁止**。
 - 手触り・売り・**弱点（三軸の低い軸や合わない理由と整合）**・向く人（段落役割はプロンプトの「今回の構成指示」に従う）。
 - 解析記事の事実と矛盾させない。
-- サークル・声優はプロンプトに除外指示がなければ1段落まで可。
+- **サークル名・声優名（CV）禁止** … 段落内にサークル名・声優名・「○○氏」・サークル略称（例: `エロトランス側`）を書かない。語り手は「語り手」「この声」等で指す。
+- **点数・採点禁止** … ★・三軸の軸名＋数値・「総合★」「トランス10」「快楽7.9」「満足度4.2」等を書かない。弱点は聴いた体感で書く（採点は別UI）。
 
 ## 禁止
 箇条書き、Markdown、HTML、キーワード羅列だけの段落、販促コピー追記、「絶対イける」等の結果保証
@@ -153,6 +157,7 @@ REVISE_AI_PATTERNS = """
 - AI予言・説明調 … `聴き終えて残ったのは` `感じられます` `印象に残りました` の連発
 - 抽象の快感 … `倒錯した快感` `精神を支配される体験` `非常に響く一本` `包み込むような感覚`
 - キーワード並べ … `捕縛や〜、花畑や〜、部位ごとの〜が重なり` の説明列挙
+- **サークル・声優名** … `天知遥` `エロトランス` `○○氏` `サークル名側` 等（感想本文では語り手・この声で指す）
 - 締めの型 … `〜方には` `特に向いているでしょう` `響くと思います` で終わるだけ
 - 正本見本より硬い語 … 見本A/Bより丁寧すぎる `です・ます` の並べ／接続詞だけの段落
 
@@ -290,7 +295,9 @@ def is_sensitive_work_context(ctx: str) -> bool:
     return any(marker in ctx for marker in SENSITIVE_CONTEXT_MARKERS)
 
 
-def validate_impression_paragraphs(paragraphs: list[str]) -> list[str]:
+def validate_impression_paragraphs(
+    paragraphs: list[str], slug: str | None = None
+) -> list[str]:
     warnings: list[str] = []
     banned_openings = (
         "聴き終わった印象としては",
@@ -318,6 +325,14 @@ def validate_impression_paragraphs(paragraphs: list[str]) -> list[str]:
             warnings.append(f"段落{i}: 台詞引用が多すぎ（カタログ化）")
         if para.count("でしょう") > 1:
             warnings.append(f"段落{i}: でしょう が多い")
+    if slug:
+        blob = "\n".join(paragraphs)
+        for w in find_circle_cv_in_impression(
+            blob, gather_impression_banned_names(slug)
+        ):
+            warnings.append(w)
+        for w in find_score_in_impression(blob):
+            warnings.append(w)
     return warnings
 
 
@@ -689,7 +704,7 @@ def run_impression_loop(
             continue
         if not validate:
             return paragraphs
-        warnings = validate_impression_paragraphs(paragraphs)
+        warnings = validate_impression_paragraphs(paragraphs, slug=slug)
         if not warnings:
             return paragraphs
         print(f"[警告] {label} 試行 {attempt}/{max_attempts} 品質NG:")
@@ -721,9 +736,14 @@ def main() -> None:
         print("[エラー] index.md から文脈を取得できませんでした")
         sys.exit(1)
 
-    extra_note = ""
+    extra_note = (
+        "【必須除外】作品感想にサークル名・声優名（CV）・「○○氏」は一切書かない。"
+        "語り手は「語り手」「この声」「語りかけ」等で指す。\n"
+        "【必須除外】★・三軸の点数・数値（7.5 / 総合★9 / トランス10 等）は一切書かない。"
+        "弱点は聴いた体感・場面で書く。\n\n"
+    )
     if args.note.strip():
-        extra_note = f"【ユーザー追加指示（必須）】\n{args.note.strip()}\n\n"
+        extra_note += f"【ユーザー追加指示（必須）】\n{args.note.strip()}\n\n"
 
     guide = load_guide_excerpts_for_impression()
     forbidden = load_forbidden_rules()
@@ -850,6 +870,8 @@ def main() -> None:
             f"{fact_block}"
             f"{refs}の**温度**に合わせ、下書きをプロレビュアーの所感へ添削。"
             "キーワード羅列・説明調をやめ、場面と手触りが伝わる語に置き換える。"
+            "**サークル名・声優名（CV）・「○○氏」は削除し、語り手は「語り手」「この声」等で指す。**"
+            "**★・三軸点数・数値採点は削除し、弱点は体感・場面で書く。**"
             "事実語は summary どおり維持（出力では具体語をそのまま使ってよい）。"
             "入力が言い換えられていても、出力ではメスイキ・ノーハンド・前立腺焦らし・即売会等の作品語を復元してよい。"
             "JSON で paragraphs のみ。"
@@ -1005,7 +1027,7 @@ def main() -> None:
         paragraphs = cleanup_impression_prose(paragraphs)
 
     for i, para in enumerate(paragraphs, 1):
-        hits = validate_impression_paragraphs([para])
+        hits = validate_impression_paragraphs([para], slug=args.slug)
         for h in hits:
             print(f"[警告] {h}")
 

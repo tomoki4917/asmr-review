@@ -205,6 +205,147 @@ def extract_index_summary(text: str) -> str:
     return m.group(1).strip() if m else ""
 
 
+def gather_impression_banned_names(slug: str) -> list[str]:
+    """作品感想に書いてはいけないサークル名・声優名（index 正本）。"""
+    index_path = REVIEWS_DIR / slug / "index.md"
+    if not index_path.is_file():
+        return []
+    text = index_path.read_text(encoding="utf-8")
+    names: list[str] = []
+    seen: set[str] = set()
+
+    def add(name: str) -> None:
+        n = name.strip().strip('"').strip("'")
+        if not n or len(n) < 2 or n in seen:
+            return
+        seen.add(n)
+        names.append(n)
+
+    if m := re.search(r"^circleName:\s*(.+)$", text, re.MULTILINE):
+        add(m.group(1))
+
+    if m := re.search(r"\*\*CV：\*\* (.+)", text):
+        for part in re.split(r"[／/、,]", m.group(1)):
+            add(part.strip())
+
+    tag_skip = {
+        "催眠音声",
+        "同人音声",
+        "バイノーラル",
+        "睡眠導入",
+        "多段深化",
+        "ドライオーガズム",
+        "脳イキ",
+        "サラウンド",
+        "妖精",
+        "催眠ショー",
+        "リアルヒプノシリーズ",
+        "アンノウンヒプノ",
+    }
+    for m in re.finditer(r"^tags:\s*\n([\s\S]*?)(?=\n\w|\n---)", text, re.MULTILINE):
+        for tag in re.findall(r"^\s*-\s+(.+)$", m.group(1), re.MULTILINE):
+            t = tag.strip()
+            if t in tag_skip or t.startswith("RJ"):
+                continue
+            if re.search(r"系$|向け|責め|カウント|前立腺|裏筋|ステージ|MC", t):
+                continue
+            if len(t) <= 12 and not re.search(r"[・/／]", t):
+                add(t)
+
+    page_path = ROOT / "src" / "app" / "(public)" / "reviews" / "[slug]" / "page.tsx"
+    if page_path.is_file():
+        tsx = page_path.read_text(encoding="utf-8")
+        block_m = re.search(
+            rf'"{re.escape(slug)}"\s*:\s*\{{([\s\S]*?)\n    \}},',
+            tsx,
+        )
+        if block_m:
+            va_m = re.search(r'voiceActor:\s*"([^"]+)"', block_m.group(1))
+            if va_m:
+                for part in re.split(r"[／/、,]", va_m.group(1)):
+                    add(part.strip())
+
+    return names
+
+
+def find_circle_cv_in_impression(text: str, names: list[str]) -> list[str]:
+    warnings: list[str] = []
+    for name in names:
+        if name in text:
+            warnings.append(f"作品感想: サークル名・声優名禁止「{name}」")
+        if f"{name}氏" in text:
+            warnings.append(f"作品感想: 声優名禁止「{name}氏」")
+    return warnings
+
+
+SCORE_IN_IMPRESSION_SUBSTRINGS = (
+    "★",
+    "総合★",
+    "トランス度",
+    "快楽度",
+    "満足度",
+    "三軸",
+)
+SCORE_IN_IMPRESSION_REGEX = (
+    re.compile(r"トランス度?\s*[\d\.]+"),
+    re.compile(r"快楽度?\s*[\d\.]+"),
+    re.compile(r"満足度?\s*[\d\.]+"),
+    re.compile(r"★\s*[\d]+"),
+    re.compile(r"[\d]+台"),
+)
+
+
+def find_score_in_impression(text: str) -> list[str]:
+    warnings: list[str] = []
+    for s in SCORE_IN_IMPRESSION_SUBSTRINGS:
+        if s in text:
+            warnings.append(f"作品感想: 点数・採点禁止「{s}」")
+    for rx in SCORE_IN_IMPRESSION_REGEX:
+        for m in rx.finditer(text):
+            warnings.append(f"作品感想: 点数・採点禁止「{m.group(0)}」")
+    return warnings
+
+
+def extract_work_impression_paragraphs_from_page(slug: str) -> list[str]:
+    page_path = ROOT / "src" / "app" / "(public)" / "reviews" / "[slug]" / "page.tsx"
+    if not page_path.is_file():
+        return []
+    tsx = page_path.read_text(encoding="utf-8")
+    block_m = re.search(
+        rf'"{re.escape(slug)}"\s*:\s*\{{([\s\S]*?)\n    \}},',
+        tsx,
+    )
+    if not block_m:
+        return []
+    paras: list[str] = []
+    in_block = False
+    for line in block_m.group(1).splitlines():
+        if "workImpressionParagraphs:" in line:
+            in_block = True
+            continue
+        if in_block:
+            if line.strip() == "],":
+                break
+            m = re.match(r'\s+"((?:\\.|[^"\\])*)"', line)
+            if m:
+                paras.append(
+                    m.group(1)
+                    .replace('\\"', '"')
+                    .replace("\\n", "\n")
+                )
+    return paras
+
+
+def validate_work_impression_for_slug(slug: str) -> list[str]:
+    paras = extract_work_impression_paragraphs_from_page(slug)
+    if not paras:
+        return []
+    blob = "\n".join(paras)
+    warnings = find_circle_cv_in_impression(blob, gather_impression_banned_names(slug))
+    warnings.extend(find_score_in_impression(blob))
+    return warnings
+
+
 def validate_prose_keys(keys: dict[str, str]) -> list[str]:
     """[KEY] 散文の禁止語チェック（警告文リスト）。"""
     warnings: list[str] = []
@@ -278,6 +419,7 @@ def validate_slug(slug: str, *, draft_path: Path | None = None) -> list[str]:
         errors.extend(validate_prose_keys(parse_review_output_keys(draft)))
     if index_path.is_file():
         errors.extend(validate_index_md(index_path.read_text(encoding="utf-8")))
+    errors.extend(validate_work_impression_for_slug(slug))
     return errors
 
 

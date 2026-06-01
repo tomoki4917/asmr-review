@@ -2,16 +2,109 @@
   "schemaVersion": 1,
   "workName": "催眠妖精のサラウンド夢幻イキ魔法",
   "scores": {
-    "trance": 9,
-    "pleasure": 9,
-    "satisfaction": 8
+    "trance": 7.5,
+    "pleasure": 9.8,
+    "satisfaction": 9.3
   },
-  "orgasmSummary": "ドライシーン複数回（頭内・前立腺・ゼロ待機の脳イキ）／ウェットシーン複数回（ゼロ解放・裏筋指魔法・射精）",
+  "orgasmSummary": "絶頂目安（本文総合評価と同期）: ドライシーン複数回回・ウェットシーン0回",
   "notes": [
+    "Gemini auto_review.py 生成（2026-06-01） — 採点:デスクトップ採点マニュアル3種。本文:催眠音声執筆ガイド+B型原紙。旧稿未参照。",
     "評価は docs/レビュー三軸評価定義.md に準拠（鑑賞用・臨床非保証）。",
     "尺は解析SRT集約。レクリ16:47＋本編84:41＋解除7:08（注意除く合計約1時間48分）。",
     "主軸は『音の聴き分けレクリ』『三人妖精のサラウンド定位と声追い』『願い叶えてあげる宣言×ゼロ待機』『重ね掛け快楽魔法と裏筋指魔法』。",
     "同一サークル osananajimi-m-sei-mazo-saimin-play（RJ370100）と同系の宣言・カウント設計。",
-    "【自動補助根拠】derived_metrics.json: duration=6625.384s / event_counts: countdown=1, trigger=45, release=20 / 行け=10。"
-  ]
+    "【自動補助根拠】derived_metrics.json: duration=6625.384s / event_counts: countdown=1, trigger=45, release=20 / 行け=10。",
+    "四表最適化（2026-06-01）— Gemini + Whisper/Librosa（§3.1）"
+  ],
+  "analysisTables": {
+    "optimizedAt": "2026-06-01",
+    "inductionComposition": [
+      {
+        "label": "論理性",
+        "value": "2.0",
+        "detail": "【契約】 / 【説明】"
+      },
+      {
+        "label": "強制力",
+        "value": "2.5",
+        "detail": "【コンフュージョン】 / 【直接暗示】"
+      },
+      {
+        "label": "突破力",
+        "value": "2.0",
+        "detail": "【定位変化】 / 【思考停止】"
+      },
+      {
+        "label": "浸透力",
+        "value": "2.0",
+        "detail": "【反復】 / 【トリガー】"
+      },
+      {
+        "label": "身体性",
+        "value": "1.5",
+        "detail": "【脱力】 / 【呼吸誘導】"
+      }
+    ],
+    "strongInduction": [
+      {
+        "label": "多段コンフュージョン",
+        "value": "4.5 / 5",
+        "detail": "妖精の瞬間移動と声の定位変化、思考停止暗示を組み合わせ、意識を飽和させて判断力を低下させます。"
+      },
+      {
+        "label": "無限絶頂トリガー",
+        "value": "4.8 / 5",
+        "detail": "「お兄さんの願い叶えてあげる」宣言と「ゼロ」の数字を快感のトリガーとして反復し、絶頂を連続的に誘発します。"
+      }
+    ],
+    "suggestionComposition": [
+      {
+        "label": "感覚暗示",
+        "value": "2.5",
+        "detail": "【熱感】 / 【痺れ】"
+      },
+      {
+        "label": "認知暗示",
+        "value": "2.0",
+        "detail": "【思考停止】 / 【記憶消失】"
+      },
+      {
+        "label": "反応暗示",
+        "value": "1.5",
+        "detail": "【脱力】 / 【絶頂】"
+      },
+      {
+        "label": "関係性暗示",
+        "value": "1.0",
+        "detail": "【妖精と人間】 / 【奴隷】"
+      },
+      {
+        "label": "トリガー暗示",
+        "value": "2.0",
+        "detail": "【宣言】 / 【数字】"
+      },
+      {
+        "label": "否定暗示",
+        "value": "0.5",
+        "detail": "【思考不要】"
+      },
+      {
+        "label": "時間歪曲暗示",
+        "value": "0.5",
+        "detail": "【無限】"
+      }
+    ],
+    "strongSuggestion": [
+      {
+        "label": "複合快感体感化",
+        "value": "4.7 / 5",
+        "detail": "脳イキ、ドライオーガズム、射精、前立腺、裏筋といった多様な快感を言葉で詳細に描写し、身体感覚として強く体感させます。"
+      },
+      {
+        "label": "思考停止快楽連結",
+        "value": "4.5 / 5",
+        "detail": "思考が停止する状態と快感を強く結びつけることで、「何も考えられないほど気持ちいい」という認知を形成し、快楽を増幅させます。"
+      }
+    ]
+  }
 }
