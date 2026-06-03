@@ -8,6 +8,7 @@ import { PsychologyInsightsSection } from "@/components/PsychologyInsightsSectio
 import { ReviewCover } from "@/components/ReviewCover";
 import { ReviewDlsiteListPrice } from "@/components/ReviewDlsiteListPrice";
 import { StarRating } from "@/components/StarRating";
+import { DlsiteRankingSidebar } from "@/components/dlsite/DlsiteRankingSidebar";
 import { ReviewNewBadge } from "@/components/ReviewNewBadge";
 import { ShinsakuBadge } from "@/components/ShinsakuBadge";
 import { RATING_BEST_DEFAULT, isStarBucketNineOrAbove } from "@/lib/rating-scale";
@@ -18,10 +19,7 @@ import {
 } from "@/lib/dlsite-product-catalog";
 import { isReviewNewPublication } from "@/lib/review-new-badge";
 import { reviewTitleSingleLine } from "@/lib/review-title";
-import {
-  formatReviewPublishedForList,
-  reviewPublicationTimeMs,
-} from "@/lib/format-published-at";
+import { reviewPublicationTimeMs } from "@/lib/format-published-at";
 import { buildReviewListHref, HOME_REVIEW_LIST_BASE } from "@/lib/review-list-href";
 import { getAllReviews, getBeginnerGuides } from "@/lib/reviews";
 import { SITE_NAME } from "@/lib/site-brand";
@@ -149,19 +147,6 @@ function SpotlightReviews({ reviews }: { reviews: Review[] }) {
   );
 }
 
-function latestReviews(reviews: Review[]): Review[] {
-  return reviews
-    .filter((r) => r.contentKind === "review")
-    .sort((a, b) => {
-      const tb = reviewPublicationTimeMs(b);
-      const ta = reviewPublicationTimeMs(a);
-      const diff = tb - ta;
-      if (diff !== 0) return diff;
-      return a.slug.localeCompare(b.slug);
-    })
-    .slice(0, HOME_SIDE_LIST_MAX);
-}
-
 /** セール中のレビュー（★高い順・同点は割引率→新しい順）。件数制限なし。 */
 function allSaleReviews(reviews: Review[]): Review[] {
   return reviews
@@ -192,32 +177,8 @@ function allSaleReviews(reviews: Review[]): Review[] {
     });
 }
 
-/** 一覧左カラム用（JST 暦日で「今日 / 昨日 / N日前」） */
-function publicationRelativeJa(review: Review): string {
-  const ms = reviewPublicationTimeMs(review);
-  if (!Number.isFinite(ms)) return formatReviewPublishedForList(review);
-  const pubDay = new Date(ms).toLocaleDateString("en-CA", {
-    timeZone: "Asia/Tokyo",
-  });
-  const now = new Date();
-  const today = now.toLocaleDateString("en-CA", { timeZone: "Asia/Tokyo" });
-  if (pubDay === today) return "今日";
-  const y = new Date(
-    now.toLocaleString("en-US", { timeZone: "Asia/Tokyo" })
-  );
-  y.setDate(y.getDate() - 1);
-  const yesterday = y.toLocaleDateString("en-CA", { timeZone: "Asia/Tokyo" });
-  if (pubDay === yesterday) return "昨日";
-  const pubNoon = new Date(`${pubDay}T12:00:00+09:00`).getTime();
-  const todayNoon = new Date(`${today}T12:00:00+09:00`).getTime();
-  const diffDays = Math.floor((todayNoon - pubNoon) / 86400000);
-  if (diffDays >= 2 && diffDays < 7) return `${diffDays}日前`;
-  return formatReviewPublishedForList(review);
-}
-
 function HomeEditorialColumns({ reviews }: { reviews: Review[] }) {
   const spotlight = pickSpotlightReviews(reviews)[0];
-  const latest = latestReviews(reviews);
   const onSaleAll = allSaleReviews(reviews);
 
   if (!spotlight) return null;
@@ -238,48 +199,7 @@ function HomeEditorialColumns({ reviews }: { reviews: Review[] }) {
       aria-label="注目エリア"
     >
       <div className="grid items-start gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.55fr)_minmax(0,1fr)] lg:gap-x-10">
-        <aside className="min-w-0">
-          <header className="border-t border-slate-500/70 pt-3">
-            <h2 className="font-serif text-xl font-bold tracking-tight text-slate-50 sm:text-[1.35rem]">
-              <Link
-                href={buildReviewListHref(HOME_REVIEW_LIST_BASE, { sort: "new" })}
-                className="transition hover:text-sky-200"
-              >
-                新着
-              </Link>
-            </h2>
-          </header>
-          <ul className="mt-5 space-y-5">
-            {latest.map((r) => {
-              const titleOne = reviewTitleSingleLine(r.title);
-              return (
-                <li key={r.slug}>
-                  <Link href={`/reviews/${r.slug}/`} className="group flex gap-3">
-                    <div className="w-[4.5rem] shrink-0 sm:w-20">
-                      <ReviewCover
-                        coverImage={r.coverImage}
-                        alt={titleOne}
-                        slug={r.slug}
-                        className="rounded-md"
-                      />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-pretty text-sm font-semibold leading-snug text-slate-100 group-hover:text-sky-300">
-                        {titleOne}
-                      </p>
-                      <p className="mt-1 text-xs text-slate-500">
-                        {publicationRelativeJa(r)}
-                      </p>
-                      <div className="mt-1.5 min-w-0">
-                        <ReviewDlsiteListPrice review={r} size="compact" />
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </aside>
+        <DlsiteRankingSidebar site="home" />
 
         <article
           className="min-w-0 lg:px-1"

@@ -1081,4 +1081,55 @@ body {
       line-height: 1.45;
     }
   }
+
+  /* DLsite ブログパーツ（ランキング）— ダーク背景用の文字色 */
+  .dlsite-ranking-blogparts {
+    color: #e2e8f0;
+  }
+
+  .dlsite-ranking-blogparts .DLsite_bp_body,
+  .dlsite-ranking-blogparts .DLsite_bp_inner {
+    background: transparent !important;
+  }
+
+  .dlsite-ranking-blogparts .DLsite_bp_box_01,
+  .dlsite-ranking-blogparts .DLsite_bp_box_02,
+  .dlsite-ranking-blogparts .DLsite_bp_box_02 dt,
+  .dlsite-ranking-blogparts .DLsite_bp_box_02 dd {
+    color: inherit;
+  }
+
+  /* 作品タイトル（dt > a） */
+  .dlsite-ranking-blogparts .DLsite_bp_work_name,
+  .dlsite-ranking-blogparts .DLsite_bp_work_name a {
+    color: #f1f5f9 !important;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .dlsite-ranking-blogparts .DLsite_bp_work_name a:hover {
+    color: #ffffff !important;
+  }
+
+  /* サークル名（dd > a） */
+  .dlsite-ranking-blogparts .DLsite_bp_circle_name,
+  .dlsite-ranking-blogparts .DLsite_bp_circle_name a {
+    color: #94a3b8 !important;
+    font-size: 0.8125rem;
+    text-decoration: none;
+  }
+
+  .dlsite-ranking-blogparts .DLsite_bp_circle_name a:hover {
+    color: #cbd5e1 !important;
+  }
+
+  /* フォールバック（DLsite のマークアップ変更時） */
+  .dlsite-ranking-blogparts a {
+    color: #e2e8f0;
+    text-decoration: none;
+  }
+
+  .dlsite-ranking-blogparts a:hover {
+    color: #f8fafc;
+  }
 }

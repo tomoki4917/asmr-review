@@ -1,25 +1,21 @@
 import Link from "next/link";
+import { DlsiteRankingSidebar } from "@/components/dlsite/DlsiteRankingSidebar";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { ReviewCover } from "@/components/ReviewCover";
 import { ReviewDlsiteListPrice } from "@/components/ReviewDlsiteListPrice";
 import { StarRating } from "@/components/StarRating";
 import { ReviewNewBadge } from "@/components/ReviewNewBadge";
 import { ShinsakuBadge } from "@/components/ShinsakuBadge";
-import { allAgesReviewListHref } from "@/lib/all-ages-site-chrome";
 import {
   getDlsiteProductById,
   isDlsiteProductShinsaku,
 } from "@/lib/dlsite-product-catalog";
 import { isReviewNewPublication } from "@/lib/review-new-badge";
 import { reviewTitleSingleLine } from "@/lib/review-title";
-import {
-  formatReviewPublishedForList,
-  reviewPublicationTimeMs,
-} from "@/lib/format-published-at";
+import { reviewPublicationTimeMs } from "@/lib/format-published-at";
 import { RATING_BEST_DEFAULT, isStarBucketNineOrAbove } from "@/lib/rating-scale";
 import type { Review } from "@/lib/types";
 
-const SIDE_LIST_MAX = 5;
 /** 全年齢トップのピックアップ固定 slug（`null` で ★9 以上・新しい順） */
 const ALL_AGES_SPOTLIGHT_SLUG: string | null =
   "shinitagari-junai-maid-yogarekake";
@@ -36,13 +32,6 @@ function pickSpotlight(reviews: Review[]): Review | undefined {
     .sort((a, b) => reviewPublicationTimeMs(b) - reviewPublicationTimeMs(a))[0];
 }
 
-function latestReviews(reviews: Review[]): Review[] {
-  return reviews
-    .filter((r) => r.contentKind === "review")
-    .sort((a, b) => reviewPublicationTimeMs(b) - reviewPublicationTimeMs(a))
-    .slice(0, SIDE_LIST_MAX);
-}
-
 type Props = {
   reviews: Review[];
 };
@@ -50,8 +39,6 @@ type Props = {
 /** 全年齢トップ：新着／ピックアップ（2 カラム） */
 export function AllAgesHomeEditorial({ reviews }: Props) {
   const spotlight = pickSpotlight(reviews);
-  const latest = latestReviews(reviews);
-
   if (!spotlight) return null;
 
   const now = new Date();
@@ -70,48 +57,7 @@ export function AllAgesHomeEditorial({ reviews }: Props) {
       aria-label="注目エリア"
     >
       <div className="grid items-start gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.55fr)] lg:gap-x-10">
-        <aside className="min-w-0">
-          <header className="border-t border-slate-500/70 pt-3">
-            <h2 className="font-serif text-xl font-bold tracking-tight text-slate-50 sm:text-[1.35rem]">
-              <Link
-                href={allAgesReviewListHref({ sort: "new" })}
-                className="transition hover:text-sky-200"
-              >
-                新着
-              </Link>
-            </h2>
-          </header>
-          <ul className="mt-5 space-y-5">
-            {latest.map((r) => {
-              const titleOne = reviewTitleSingleLine(r.title);
-              return (
-                <li key={r.slug}>
-                  <Link href={`/reviews/${r.slug}/`} className="group flex gap-3">
-                    <div className="w-[4.5rem] shrink-0 sm:w-20">
-                      <ReviewCover
-                        coverImage={r.coverImage}
-                        alt={titleOne}
-                        slug={r.slug}
-                        className="rounded-md"
-                      />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-pretty text-sm font-semibold leading-snug text-slate-100 group-hover:text-sky-300">
-                        {titleOne}
-                      </p>
-                      <p className="mt-1 text-xs text-slate-500">
-                        {formatReviewPublishedForList(r)}
-                      </p>
-                      <div className="mt-1.5 min-w-0">
-                        <ReviewDlsiteListPrice review={r} size="compact" />
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </aside>
+        <DlsiteRankingSidebar site="home" />
 
         <article
           className="min-w-0 lg:px-1"
