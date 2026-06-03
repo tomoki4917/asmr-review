@@ -10,11 +10,12 @@ import {
   FEATURED_PICKS_HUB_PATH,
 } from "@/lib/review-list-href";
 import { getAllReviews } from "@/lib/reviews";
+import { SITE_NAME } from "@/lib/site-brand";
 
 export const metadata: Metadata = {
   title: "厳選・おすすめ",
   description:
-    "催眠音声解析室がデータと聴取で選んだ厳選おすすめ。初心者向け特集記事など、迷ったときのまとめコンテンツを掲載しています。",
+    `${SITE_NAME}がデータと聴取で選んだ厳選おすすめ。初心者向け特集記事など、迷ったときのまとめコンテンツを掲載しています。`,
   alternates: { canonical: FEATURED_PICKS_HUB_PATH },
 };
 

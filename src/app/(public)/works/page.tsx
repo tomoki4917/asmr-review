@@ -6,11 +6,12 @@ import {
   WORKS_LIST_HUB_PATH,
 } from "@/lib/review-list-href";
 import { getAllReviews } from "@/lib/reviews";
+import { SITE_NAME } from "@/lib/site-brand";
 
 export const metadata: Metadata = {
   title: "作品一覧",
   description:
-    "催眠音声解析室の作品レビュー一覧。キーワード検索・新しい順・評価・ジャンルで探せます。",
+    `${SITE_NAME}の作品レビュー一覧。キーワード検索・新しい順・評価・ジャンルで探せます。`,
   alternates: { canonical: WORKS_LIST_HUB_PATH },
 };
 

@@ -1,7 +1,7 @@
 import { SITE_NAME_R18 } from "@/lib/site-brand";
 
 type HomeHeroIntroProps = {
-  /** 省略時は R18 サイト名（催眠音声解析室） */
+  /** 省略時は SITE_NAME_R18（ムキネコ解析室） */
   siteName?: string;
 };
 

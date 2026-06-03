@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PrivacyPolicyContent } from "@/components/PrivacyPolicyContent";
+import { SITE_NAME } from "@/lib/site-brand";
 
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
   description:
-    "催眠音声解析室の個人情報・Cookie・広告・アナリティクスに関する取り扱いです。",
+    `${SITE_NAME}の個人情報・Cookie・広告・アナリティクスに関する取り扱いです。`,
 };
 
 export default function PrivacyPage() {

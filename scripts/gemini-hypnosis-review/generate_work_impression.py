@@ -26,6 +26,7 @@ from review_prose_rules import (  # noqa: E402
     gather_impression_banned_names,
     find_circle_cv_in_impression,
     find_score_in_impression,
+    is_all_ages_doujin_review,
 )
 
 load_dotenv(SCRIPT_DIR / ".env")
@@ -92,6 +93,15 @@ STYLE_REFERENCE_SLUGS = (
     "saimin-douwa-grim-grimm-ike-nai-ohanashi",
     "usotsuki-kouhai-suki-suki-seishin-shihai",
 )
+
+ALL_AGES_STYLE_REFERENCE_SLUG = "shinitagari-junai-maid-yogarekake"
+
+ALL_AGES_OPENING_ANGLES = [
+    "4段落：第1=入り方の特異性+声の温度、第2=関係の芯（救い合い・逆転）、第3=手触り+音像留保1文、第4=向く人（心情）。",
+    "4段落：第1=プロローグの立場関係、第2=叱責と赦しの場面、第3=添い寝・電話の温かさ+弱点1文、第4=深い愛を求める人。",
+    "4段落：第1=重いテーマの入り、第2=メイド／語り手の執着と肯定、第3=睡眠支えの手触り+モノラル等の惜しい点、第4=一人で眠れない夜に寄り添う人。",
+    "3段落：第1=最初の場面+声、第2=関係の逆転と引用1つ、第3=向く人+留保。",
+]
 
 # usotsuki 見本全文 + 露骨な summary を同一プロンプトに載せると PROHIBITED_CONTENT になりやすい
 SENSITIVE_CONTEXT_MARKERS = (
@@ -258,8 +268,22 @@ def cleanup_impression_prose(paragraphs: list[str]) -> list[str]:
     return cleaned
 
 
-def load_style_few_shot(*, include_usotsuki: bool = True) -> str:
-    """§8.4 正本見本（グリム＝温度・嘘つき後輩＝完成系）を few-shot として読み込む。"""
+def load_style_few_shot(*, include_usotsuki: bool = True, all_ages: bool = False) -> str:
+    """§8.4 / 全年齢 §10 正本見本を few-shot として読み込む。"""
+    if all_ages:
+        path = SCRIPT_DIR / f"work_impression_{ALL_AGES_STYLE_REFERENCE_SLUG}.json"
+        if path.is_file():
+            data = json.loads(path.read_text(encoding="utf-8"))
+            paras: list[str] = data.get("paragraphs") or []
+            if paras:
+                body = "\n\n".join(f"{i}. {p}" for i, p in enumerate(paras, 1))
+                return (
+                    "## 文体見本（構造・温度の参考。**文言・決まり句のコピー禁止**）\n\n"
+                    "### 見本C（全年齢・shinitagari型：入り方→関係の芯→手触り+留保→向く人）\n"
+                    f"{body}"
+                )
+        return ""
+
     blocks: list[str] = []
     labels = {
         "saimin-douwa-grim-grimm-ike-nai-ohanashi": "見本A（具体シーン→聴き方→快感→向く人・ユーザー執筆の温度）",
@@ -407,6 +431,50 @@ def gather_whisper_snippets(slug: str, *, max_lines: int = 10) -> str:
     return (
         "【Whisper 抜粋（感想の主素材。ここから場面・言葉・音を拾う。summary の言い換え禁止）】\n"
         + "\n".join(picked)
+    )
+
+
+def sanitize_dlsite_review_text(text: str, slug: str) -> str:
+    """購入者レビューから CV・サークル名等を除去し、Gemini がそのまま写さないようにする。"""
+    out = text
+    for name in gather_impression_banned_names(slug):
+        out = out.replace(name, "（声優）" if "ゆめ" in name or len(name) <= 6 else "（サークル）")
+    for pat, repl in (
+        (r"浅木\s*ゆめみ(?:さん|様|氏)?", "（声優）"),
+        (r"めめめのすゝめ", "（サークル）"),
+        (r"百合草\s*楓(?:さん)?", "楓"),
+        (r"没入度", "引き込まれ"),
+        (r"没入感", "引き込まれ"),
+    ):
+        out = re.sub(pat, repl, out)
+    return out
+
+
+def gather_dlsite_reviews_brief(slug: str, *, max_reviews: int = 10) -> str:
+    """analysis/dlsite_reviews.auto.json から購入者の主観を要約素材として渡す。"""
+    path = ROOT / "src" / "content" / "レビュー" / slug / "analysis" / "dlsite_reviews.auto.json"
+    if not path.is_file():
+        return ""
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return ""
+    reviews = data.get("reviews") or []
+    lines: list[str] = []
+    for r in reviews[:max_reviews]:
+        title = sanitize_dlsite_review_text((r.get("title") or "").strip(), slug)
+        text = sanitize_dlsite_review_text(
+            re.sub(r"\s+", " ", (r.get("text") or "").strip()), slug
+        )
+        if len(text) > 360:
+            text = text[:360] + "…"
+        if title or text:
+            lines.append(f"- 《{title}》 {text}")
+    if not lines:
+        return ""
+    return (
+        "【DLsite購入者レビュー抜粋（主観の参考。原文コピー禁止・CV名・サークル名は感想に載せない）】\n"
+        + "\n".join(lines)
     )
 
 
@@ -679,11 +747,13 @@ def run_impression_loop(
     label: str,
     max_attempts: int = 6,
     validate: bool = True,
+    opening_angles: list[str] | None = None,
 ) -> list[str]:
     paragraphs: list[str] = []
     raw = ""
+    angles = opening_angles or OPENING_ANGLES
     for attempt in range(1, max_attempts + 1):
-        angle = random.choice(OPENING_ANGLES)
+        angle = random.choice(angles)
         prompt = build_prompt_fn(angle, attempt)
         if attempt == 1:
             print(f"[impression] {label} Gemini ({model}) … 構成: {angle[:40]}…")
@@ -731,23 +801,52 @@ def main() -> None:
     )
     args = p.parse_args()
 
+    index_path = ROOT / "src" / "content" / "レビュー" / args.slug / "index.md"
+    index_text = index_path.read_text(encoding="utf-8") if index_path.is_file() else ""
+    all_ages = is_all_ages_doujin_review(index_text)
+
     ctx = gather_context(args.slug)
+    dlsite = gather_dlsite_reviews_brief(args.slug)
+    if dlsite:
+        ctx = f"{ctx}\n\n{dlsite}"
     if not ctx:
         print("[エラー] index.md から文脈を取得できませんでした")
         sys.exit(1)
 
+    banned_tags = [
+        n
+        for n in gather_impression_banned_names(args.slug)
+        if n not in ("めめめのすゝめ", "浅木ゆめみ")
+    ]
+    tag_ban_line = ""
+    if banned_tags:
+        tag_ban_line = (
+            "【必須除外・タグ語】感想本文に次の語は書かない（言い換える）: "
+            + " / ".join(banned_tags)
+            + " … 例: 添い寝→同衾・寝そば、認知シャッフル→電話越しの睡眠導入。\n"
+        )
     extra_note = (
         "【必須除外】作品感想にサークル名・声優名（CV）・「○○氏」は一切書かない。"
-        "語り手は「語り手」「この声」「語りかけ」等で指す。\n"
-        "【必須除外】★・三軸の点数・数値（7.5 / 総合★9 / トランス10 等）は一切書かない。"
-        "弱点は聴いた体感・場面で書く。\n\n"
+        "語り手は「語り手」「この声」「語りかけ」「メイド」「楓」等で指す。\n"
+        "【必須除外】★・三軸の点数・数値・軸名（没入度・満足度 等）は一切書かない。"
+        "弱点は聴いた体感・場面で書く。\n"
+        f"{tag_ban_line}"
+        "【引用】各段落の「」台詞は0〜1箇所・短く。DLsite原文の転記禁止。\n"
     )
+    if dlsite:
+        extra_note += (
+            "【DLsite購入者レビュー】上記抜粋の温度（包まれる・救い救われ・"
+            "一人で眠れない夜に寄り添う・電話パートで涙）を**解析室レビュアー自身の所感**として再構成。"
+            "購入者の文言転記・「素晴らしい」「感動」連発は禁止。\n"
+        )
+    extra_note += "\n"
     if args.note.strip():
         extra_note += f"【ユーザー追加指示（必須）】\n{args.note.strip()}\n\n"
 
-    guide = load_guide_excerpts_for_impression()
+    guide = load_guide_excerpts_for_impression(args.slug)
     forbidden = load_forbidden_rules()
-    sensitive = is_sensitive_work_context(ctx)
+    sensitive = is_sensitive_work_context(ctx) and not all_ages
+    opening_angles = ALL_AGES_OPENING_ANGLES if all_ages else OPENING_ANGLES
     base_ctx = sanitize_prompt_context(ctx) if sensitive else ctx
     neutral_meta = gather_neutral_meta(args.slug)
     fact_lexicon = gather_fact_lexicon(args.slug)
@@ -759,17 +858,27 @@ def main() -> None:
         include_usotsuki: bool,
         ctx_note: str = "",
     ) -> str:
-        style_shots = load_style_few_shot(include_usotsuki=include_usotsuki)
-        refs = (
-            "見本A（grim）・見本B（usotsuki）"
-            if include_usotsuki
-            else "見本A（grim）"
+        style_shots = load_style_few_shot(
+            include_usotsuki=include_usotsuki and not all_ages,
+            all_ages=all_ages,
         )
-        tail = (
-            "段落役割は見本B型（場面→肝→手触り→向く人）を基本に今回の作品だけで書く。"
-            if include_usotsuki
-            else "段落役割は見本B型（場面→肝→手触り→向く人）を意識して書く。"
-        )
+        if all_ages:
+            refs = "見本C（shinitagari・全年齢）"
+            tail = (
+                "段落役割は見本C型（入り方→関係の芯→手触り+留保→向く人）を"
+                "今回の作品だけで書く。"
+            )
+        elif include_usotsuki:
+            refs = "見本A（grim）・見本B（usotsuki）"
+            tail = (
+                "段落役割は見本B型（場面→肝→手触り→向く人）を基本に"
+                "今回の作品だけで書く。"
+            )
+        else:
+            refs = "見本A（grim）"
+            tail = (
+                "段落役割は見本B型（場面→肝→手触り→向く人）を意識して書く。"
+            )
         return (
             f"{forbidden}\n\n{guide}\n\n{BAD_IMPRESSION_PATTERNS}\n\n"
             f"{style_shots}\n\n"
@@ -850,7 +959,10 @@ def main() -> None:
         include_usotsuki: bool,
         include_fact_lexicon: bool = True,
     ) -> str:
-        style_shots = load_style_few_shot(include_usotsuki=include_usotsuki)
+        style_shots = load_style_few_shot(
+            include_usotsuki=include_usotsuki and not all_ages,
+            all_ages=all_ages,
+        )
         draft_json = json.dumps({"paragraphs": draft}, ensure_ascii=False, indent=2)
         fact_block = f"{fact_lexicon}\n\n" if include_fact_lexicon and fact_lexicon else ""
         refs = (
@@ -910,6 +1022,7 @@ def main() -> None:
                 client,
                 model=model,
                 slug=args.slug,
+                opening_angles=opening_angles,
                 build_prompt_fn=revise_draft_prompt,
                 label="作品感想・添削下書き",
                 max_attempts=6,
@@ -932,6 +1045,7 @@ def main() -> None:
                 client,
                 model=model,
                 slug=args.slug,
+                opening_angles=opening_angles,
                 build_prompt_fn=revise_polish_prompt,
                 label="作品感想・添削正本",
                 max_attempts=8,
@@ -948,6 +1062,7 @@ def main() -> None:
                 client,
                 model=model,
                 slug=args.slug,
+                opening_angles=opening_angles,
                 build_prompt_fn=revise_prompt,
                 label="作品感想・添削",
                 max_attempts=8,
@@ -975,6 +1090,7 @@ def main() -> None:
             client,
             model=model,
             slug=args.slug,
+            opening_angles=opening_angles,
             build_prompt_fn=draft_prompt,
             label="作品感想・下書き",
             max_attempts=6,
@@ -993,6 +1109,7 @@ def main() -> None:
             client,
             model=model,
             slug=args.slug,
+            opening_angles=opening_angles,
             build_prompt_fn=polish_prompt,
             label="作品感想・正本調整",
             max_attempts=6,
@@ -1002,18 +1119,24 @@ def main() -> None:
             print("[エラー] 第2段（正本調整）に失敗しました。")
             sys.exit(1)
     else:
-        print("[impression] 正本見本A（grim）+ 正本見本B（usotsuki）を few-shot に使用")
+        if all_ages:
+            print("[impression] 全年齢: 正本見本C（shinitagari）を few-shot に使用")
+        else:
+            print("[impression] 正本見本A（grim）+ 正本見本B（usotsuki）を few-shot に使用")
 
         def single_prompt(angle: str, attempt: int) -> str:
             ctx_use = ctx if attempt <= 4 else gather_context(args.slug, minimal=True)
             if attempt > 4:
                 print("[impression] minimal コンテキストに切替")
-            return build_content_prompt(ctx_use, angle, include_usotsuki=True)
+            return build_content_prompt(
+                ctx_use, angle, include_usotsuki=not all_ages
+            )
 
         paragraphs = run_impression_loop(
             client,
             model=model,
             slug=args.slug,
+            opening_angles=opening_angles,
             build_prompt_fn=single_prompt,
             label="作品感想",
             max_attempts=6,

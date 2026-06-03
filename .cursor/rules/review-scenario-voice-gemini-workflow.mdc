@@ -1,0 +1,38 @@
+---
+description: シチュエーションボイスレビュー作成時はシチュガイド＋Gemini --scenario-voice（催眠ワークフロー同型）
+globs: src/content/レビュー/**/index.md
+alwaysApply: false
+---
+
+# シチュエーションボイス — Gemini 執筆（必須）
+
+**判定** … `tags` に `同人音声`、または `authorName: 同人音声レビュー室`（催眠タグのみの作品は `review-hypnosis-gemini-workflow.mdc`）。
+
+## 正本
+
+| 用途 | 正本 |
+|------|------|
+| 執筆・採点・完成チェック | **`docs/シチュエーションボイス執筆ガイド.md`** ＋ **`docs/全年齢シチュエーションボイス執筆ガイド.md`**（差分） |
+| 完成記事の型 | `dakimakura-kanojo-pretty-holic-yurukawa-kouhai` |
+| パイプライン | `scripts/gemini-hypnosis-review/auto_review.py` **`--scenario-voice`** |
+| 出力キー | `writer_output_keys_scenario.md` |
+
+## 誰が何をするか（催眠と同型）
+
+| 作業 | 担当 |
+|------|------|
+| **記事本文 `[KEY]` 初稿** | **Gemini**（`--scenario-voice --writer-only` 等） |
+| **五軸・★・notes 確定** | **Cursor**（聴取・§3・シナリオ3パス。Gemini 五軸 eval は未実装時は人手） |
+| **DLsite・RJ・quickGuide・goLiveAt** | **Cursor** |
+| **旧 index 本文コピー** | **禁止**（`review-no-past-article-reference.mdc`） |
+
+## 実行（標準）
+
+1. 五軸採点確定 → `_分析データ.json` `schemaVersion: 2`
+2. `py -3 auto_review.py --scenario-voice [--all-ages] --writer-only --skip-eval --force --slug …`
+3. `merge_scenario_index.py [--all-ages]` で `index.md` 組み立て（**dakimakura 型**。B型催眠マージは使わない）
+4. `generate_review_triangle.py` → `generate_work_impression.py --write-tsx` → `validate-prose` / `audit-scenario` / `audit-kansei`
+
+**全面作り直し** … 旧 `eval_results`・`review_output.md` 削除、`--no-preserve-sections` 相当で旧散文を差し戻さない。
+
+関連: `review-doujin-canon.mdc`・`docs/シチュエーションボイス執筆ガイド.md`

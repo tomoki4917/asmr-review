@@ -24,6 +24,7 @@ import {
 } from "@/lib/format-published-at";
 import { buildReviewListHref, HOME_REVIEW_LIST_BASE } from "@/lib/review-list-href";
 import { getAllReviews, getBeginnerGuides } from "@/lib/reviews";
+import { SITE_NAME } from "@/lib/site-brand";
 import type { Review } from "@/lib/types";
 
 /** ピックアップに並べる最大件数（直近・高評価のうち先頭から） */
@@ -345,7 +346,7 @@ function HomeEditorialColumns({ reviews }: { reviews: Review[] }) {
             </h2>
           </header>
           <p className="mt-2 text-pretty text-xs leading-relaxed text-slate-500">
-            解析室で紹介した作品のうち、いま値下げ中のものです。
+            {SITE_NAME}で紹介した作品のうち、いま値下げ中のものです。
           </p>
           <HomeSaleColumn reviews={onSaleAll} previewMax={HOME_SIDE_LIST_MAX} />
         </aside>

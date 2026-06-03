@@ -2,7 +2,7 @@ import { ReviewCard } from "@/components/ReviewCard";
 import {
   isReviewVisibleByGoLiveAt,
   isReviewVisibleOnSite,
-} from "@/lib/reviews";
+} from "@/lib/review-visibility";
 import type { Review } from "@/lib/types";
 
 export function AllAgesReviewList({ reviews }: { reviews: Review[] }) {

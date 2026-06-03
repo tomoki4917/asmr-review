@@ -49,6 +49,10 @@ import {
   mergedReviewMatchesSearchQuery,
   normalizeReviewListSearchQuery,
 } from "@/lib/review-list-search";
+import {
+  isReviewVisibleByGoLiveAt,
+  isReviewVisibleOnSite,
+} from "@/lib/review-visibility";
 import type { Review } from "@/lib/types";
 import { FileMarkdownArticleCard } from "@/components/FileMarkdownArticleCard";
 import { ReviewCard } from "@/components/ReviewCard";
@@ -371,6 +375,10 @@ type Props = {
   compact?: boolean;
   /** 専用ハブで CategoryHubHeader を使うとき、一覧の h2 を隠す */
   hideListHeading?: boolean;
+  /** 全年齢一覧：`goLiveAt` 前は「準備中」・本番ではリンク無効 */
+  listPreparingMode?: boolean;
+  /** ジャンル（催眠／同人）プルダウンを非表示 */
+  hideGenreFilter?: boolean;
 };
 
 export function HomeReviewList({
@@ -381,9 +389,12 @@ export function HomeReviewList({
   listHeading = "記事一覧",
   compact = false,
   hideListHeading = false,
+  listPreparingMode = false,
+  hideGenreFilter = false,
 }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const listNow = useMemo(() => new Date(), []);
   const starsRaw = searchParams.get("stars");
   const starFilter: number | "lte5" | null =
     starsRaw === "lte5"
@@ -804,7 +815,7 @@ export function HomeReviewList({
                     </option>
                   </select>
                 </>
-              ) : (
+              ) : hideGenreFilter ? null : (
                 <>
                   <span className={filterBarLabel}>ジャンル:</span>
                   <select
@@ -1005,7 +1016,15 @@ export function HomeReviewList({
                     <ReviewCard
                       review={item.review}
                       priorityImage={index < 2}
-                      showNew={isReviewNewPublication(item.review, new Date())}
+                      showNew={isReviewNewPublication(item.review, listNow)}
+                      preparing={
+                        listPreparingMode &&
+                        !isReviewVisibleByGoLiveAt(item.review, listNow)
+                      }
+                      linkable={
+                        !listPreparingMode ||
+                        isReviewVisibleOnSite(item.review, listNow)
+                      }
                     />
                   ) : (
                     <LocalPostedCard review={item.review} />

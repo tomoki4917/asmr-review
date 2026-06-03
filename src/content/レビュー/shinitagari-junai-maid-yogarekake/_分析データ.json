@@ -1,46 +1,23 @@
 {
   "schemaVersion": 2,
-  "workName": "死にたがり。～純愛メイドと壊れかけのあなた～【CV.浅木ゆめみ】",
+  "notes": [
+    "全年齢五軸再採点（2026-06-02）— 睡眠・覚醒軸を採用",
+    "シナリオ内部観点: 空間/心理・一貫性・ギミック機能・導入/転換の独自性",
+    "比較: michikusa（★10）— 満足度・総合★10"
+  ],
   "scores": {
-    "immersion": 8.5,
-    "scenario": 9,
-    "sleepWake": 9.5,
-    "acoustic": 8.5,
-    "satisfaction": 9
+    "immersion": 9.0,
+    "scenario": 9.0,
+    "pleasure": 9.3,
+    "acoustic": 9.0,
+    "satisfaction": 10.0
   },
   "radarAxisLabels": {
     "immersion": "没入度",
     "scenario": "シナリオ",
-    "sleepWake": "睡眠・覚醒",
+    "pleasure": "睡眠・覚醒",
     "acoustic": "音響",
     "satisfaction": "満足度"
   },
-  "notes": [
-    "全年齢五軸（_全年齢同人執筆ガイド.md）。十サブ：リアリティ／展開の必然性、マイク・録音品質／環境音、空間定位・音像／距離感・密着度、入眠・脱力の誘導／覚醒・日常復帰、コンセプトの達成度／余韻の質。",
-    "本編8トラック査定。おまけは採点外（notes のみ）。モノラル収録（販売ページ注意）。",
-    "【シナリオ正本・3パス照合済】プロローグ＝屋上はサボ・翌日の死を会話でやめる。本編晩餐＝メイドがご主人様を止める。",
-    "【DLsite購入者レビュー（文章）】全37件。繰り返し言及: 肯定感・独り占め(11)、添い寝・安眠(8)、イチャラブ・あまあま(8)。おすすめ反映の目安: あまあま・純愛の甘さを長尺で味わいたい層／添い寝・安眠寄りの聴き方もしたい層。合わない目安: 最後まで一気通貫で刺激だけ追い続けたい層（寝落ちしやすい）。原文コピペ禁止・言い換えて薄く反映。"
-  ],
-  "subScores": {
-    "scenario": {
-      "reality": 9,
-      "inevitability": 8.8
-    },
-    "acoustic": {
-      "recording": 8.5,
-      "environment": 8.3
-    },
-    "immersion": {
-      "spatial": 8.2,
-      "distance": 8.8
-    },
-    "sleepWake": {
-      "induction": 9.6,
-      "awakening": 9.2
-    },
-    "satisfaction": {
-      "concept": 9.2,
-      "yoin": 8.8
-    }
-  }
+  "workName": "死にたがり。～純愛メイドと壊れかけのあなた～【CV.浅木ゆめみ】"
 }

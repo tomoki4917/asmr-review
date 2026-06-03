@@ -9,6 +9,9 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parent.parent
 GUIDE_PATH = ROOT / "docs" / "催眠音声執筆ガイド.md"
+ALL_AGES_SCENARIO_GUIDE_PATH = (
+    ROOT / "docs" / "全年齢シチュエーションボイス執筆ガイド.md"
+)
 FORBIDDEN_PATH = SCRIPT_DIR / "writer_forbidden.md"
 REVIEWS_DIR = ROOT / "src" / "content" / "レビュー"
 
@@ -46,6 +49,18 @@ PLEASURE_URGE_NOT_RECOMMENDED_PATTERNS = (
     "すぐに絶頂へ",
     "じれった",
     "深化に時間をかけ",
+)
+
+# 全年齢同人：R18 前提の当たり前を合わない理由にしない（全年齢シチュガイド §5.1）
+ALL_AGES_R18_NOT_RECOMMENDED_PATTERNS = (
+    "直接的な性的描写",
+    "露骨な性的描写",
+    "性描写を期待",
+    "性描写がない",
+    "エロ描写",
+    "R18向け",
+    "R18向",
+    "全年齢なのに",
 )
 
 SUMMARY_TIME_BANNED_SUBSTRINGS = (
@@ -120,8 +135,26 @@ def load_guide_excerpts_for_writer() -> str:
     return sec
 
 
-def load_guide_excerpts_for_impression() -> str:
-    """作品感想用: §8.4 + 禁止語。"""
+def load_guide_excerpts_for_impression(slug: str | None = None) -> str:
+    """作品感想用: 催眠 §8.4 または全年齢 §10 + 禁止語。"""
+    index_text = ""
+    if slug:
+        index_path = ROOT / "src" / "content" / "レビュー" / slug / "index.md"
+        if index_path.is_file():
+            index_text = index_path.read_text(encoding="utf-8")
+
+    if index_text and is_all_ages_doujin_review(index_text):
+        if not ALL_AGES_SCENARIO_GUIDE_PATH.is_file():
+            return load_forbidden_rules()
+        guide = ALL_AGES_SCENARIO_GUIDE_PATH.read_text(encoding="utf-8")
+        sec10 = extract_guide_section(
+            guide,
+            "## 10. 作品感想",
+            ("## 11.", "---"),
+        )
+        parts = [load_forbidden_rules(), sec10]
+        return "\n\n".join(p for p in parts if p.strip())
+
     if not GUIDE_PATH.is_file():
         return load_forbidden_rules()
     guide = GUIDE_PATH.read_text(encoding="utf-8")
@@ -154,9 +187,19 @@ def _plain_without_kotei_exceptions(plain: str) -> str:
     return re.sub(r"【[^】]*固定[^】]*】", "", plain)
 
 
+def _plain_without_official_headings(plain: str) -> str:
+    """同人総評の公式見出し（設計の要点 等）は禁止語検査から除外。"""
+    lines = []
+    for line in plain.splitlines():
+        if re.match(r"^### 【設計の要点】\s*$", line.strip()):
+            continue
+        lines.append(line)
+    return "\n".join(lines)
+
+
 def find_forbidden_in_text(text: str) -> list[str]:
     warnings: list[str] = []
-    plain = strip_block_quotes(text)
+    plain = _plain_without_official_headings(strip_block_quotes(text))
     for label, pattern in FORBIDDEN_IN_PROSE:
         if label == "ほどく":
             if re.search(pattern, plain):
@@ -184,6 +227,22 @@ def find_pleasure_urge_not_recommended(text: str) -> list[str]:
     for pattern in PLEASURE_URGE_NOT_RECOMMENDED_PATTERNS:
         if pattern in plain:
             warnings.append(f"合わない: 快感欲求理由「{pattern}」")
+    return warnings
+
+
+def is_all_ages_doujin_review(text: str) -> bool:
+    return bool(re.search(r"^\s*-\s+全年齢同人\s*$", text, re.MULTILINE))
+
+
+def find_all_ages_r18_not_recommended(text: str) -> list[str]:
+    """全年齢同人：性描写の有無を合わない理由にしない。"""
+    warnings: list[str] = []
+    plain = strip_block_quotes(text)
+    for pattern in ALL_AGES_R18_NOT_RECOMMENDED_PATTERNS:
+        if pattern in plain:
+            warnings.append(f"全年齢合わない禁止「{pattern}」")
+    if re.search(r"肉体的な刺激を求める", plain):
+        warnings.append("全年齢合わない禁止「肉体的な刺激を求める」")
     return warnings
 
 
@@ -385,6 +444,9 @@ def validate_index_md(text: str) -> list[str]:
             errors.append(f"index.md: {w}")
         for w in find_pleasure_urge_not_recommended(section):
             errors.append(f"index.md: {w}")
+        if is_all_ages_doujin_review(text):
+            for w in find_all_ages_r18_not_recommended(section):
+                errors.append(f"index.md: {w}")
     from merge_preserve_sections import count_part_analysis_headings  # noqa: PLC0415
 
     if count_part_analysis_headings(text) > 1:
@@ -415,10 +477,17 @@ def validate_slug(slug: str, *, draft_path: Path | None = None) -> list[str]:
     errors: list[str] = []
     index_path = REVIEWS_DIR / slug / "index.md"
     draft = draft_path or SCRIPT_DIR / "review_output.md"
+    index_text = index_path.read_text(encoding="utf-8") if index_path.is_file() else ""
     if draft.is_file():
         errors.extend(validate_prose_keys(parse_review_output_keys(draft)))
+        if is_all_ages_doujin_review(index_text):
+            for key, val in parse_review_output_keys(draft).items():
+                if not key.startswith("NOT_RECOMMENDED") or not val.strip():
+                    continue
+                for w in find_all_ages_r18_not_recommended(val):
+                    errors.append(f"{key}: {w}")
     if index_path.is_file():
-        errors.extend(validate_index_md(index_path.read_text(encoding="utf-8")))
+        errors.extend(validate_index_md(index_text))
     errors.extend(validate_work_impression_for_slug(slug))
     return errors
 

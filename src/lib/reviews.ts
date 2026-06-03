@@ -4,6 +4,11 @@ import matter from "gray-matter";
 import { cache } from "react";
 import { DEFAULT_WORK_IMPRESSION_AVATAR_SRC } from "./default-work-impression-avatar";
 import { reviewPublicationTimeMs } from "./format-published-at";
+import {
+  goLiveStartMs,
+  isReviewVisibleByGoLiveAt,
+  isReviewVisibleOnSite,
+} from "./review-visibility";
 import type {
   AffiliateLink,
   AffiliateVendor,
@@ -104,18 +109,6 @@ function parseOptionalDlsiteProductId(raw: unknown): string | undefined {
 
 const GO_LIVE_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-/**
- * `goLiveAt` の開始瞬間（ms）。`YYYY-MM-DD` のときは UTC 0:00 開始。
- * ISO 日時のときは `Date.parse`（タイムゾーン付き推奨。例: `2026-04-18T13:59:00+09:00`）。
- */
-function goLiveStartMs(goLiveAt: string): number {
-  const s = goLiveAt.trim();
-  if (GO_LIVE_DATE_RE.test(s)) {
-    return Date.parse(`${s}T00:00:00.000Z`);
-  }
-  return Date.parse(s);
-}
-
 /** 作品販売日（暦日のみ）。`publishedAt` と同じ `YYYY-MM-DD` 形式。 */
 function parseOptionalSaleDate(raw: unknown): string | undefined {
   if (raw == null || raw === "") return undefined;
@@ -161,49 +154,6 @@ function parseOptionalGoLiveAt(raw: unknown): string | undefined {
     );
   }
   return s;
-}
-
-/** 現在時刻が goLiveAt 以降なら true（未指定なら常に true） */
-export function isReviewVisibleByGoLiveAt(review: Review, now: Date): boolean {
-  if (!review.goLiveAt?.trim()) return true;
-  const start = goLiveStartMs(review.goLiveAt.trim());
-  if (Number.isNaN(start)) return true;
-  return now.getTime() >= start;
-}
-
-/**
- * 一覧・サイトマップ・本文公開可否。`applyGoLiveFilter` と同じルール。
- *
- * - `REVIEW_IGNORE_GO_LIVE` … 常に公開扱い。
- * - `REVIEW_RESPECT_GO_LIVE` … dev / `next start` でも goLive を厳密に適用。
- * - それ以外で **`npm run dev` / `npm run start`**（`npm_lifecycle_event` が dev または start）や
- *   **`NODE_ENV===development`** のときは、検証用サーバーとして **goLive 前も表示**（静的 `out` の
- *   `npm run build` フェーズでは lifecycle が build のためこの扱いにならない）。
- * - Docker 等で `npm` が無いときは `REVIEW_PREVIEW_SERVER=true`。
- */
-export function isReviewVisibleOnSite(review: Review, now: Date): boolean {
-  const forceShowAll =
-    process.env.REVIEW_IGNORE_GO_LIVE === "1" ||
-    process.env.REVIEW_IGNORE_GO_LIVE === "true";
-  if (forceShowAll) return true;
-
-  const respectGoLive =
-    process.env.REVIEW_RESPECT_GO_LIVE === "1" ||
-    process.env.REVIEW_RESPECT_GO_LIVE === "true";
-
-  if (!respectGoLive) {
-    if (process.env.NODE_ENV === "development") return true;
-    const ev = process.env.npm_lifecycle_event;
-    if (ev === "dev" || ev === "start") return true;
-    if (
-      process.env.REVIEW_PREVIEW_SERVER === "1" ||
-      process.env.REVIEW_PREVIEW_SERVER === "true"
-    ) {
-      return true;
-    }
-  }
-
-  return isReviewVisibleByGoLiveAt(review, now);
 }
 
 /**
@@ -532,3 +482,9 @@ export function getReviewsForRecommendation(): {
       tags: r.tags,
     }));
 }
+
+export {
+  goLiveStartMs,
+  isReviewVisibleByGoLiveAt,
+  isReviewVisibleOnSite,
+} from "./review-visibility";

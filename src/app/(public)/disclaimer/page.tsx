@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DisclaimerContent } from "@/components/DisclaimerContent";
+import { SITE_NAME } from "@/lib/site-brand";
 
 export const metadata: Metadata = {
   title: "免責事項",
   description:
-    "催眠音声解析室のレビュー内容、健康上の注意、効果保証、外部リンク、アフィリエイトに関する免責です。",
+    `${SITE_NAME}のレビュー内容、健康上の注意、効果保証、外部リンク、アフィリエイトに関する免責です。`,
 };
 
 export default function DisclaimerPage() {

@@ -106,6 +106,34 @@ const CHECKS = [
     fail: (t) => hasForbiddenGraphSubParen(t),
   },
   {
+    id: "graph_scenario_legacy_sub",
+    label: "グラフ: 旧十サブ（リアリティ等）または軸行括弧サブ点",
+    fail: (t) =>
+      isDoujinReview(t) &&
+      t.includes("**グラフ評価内訳**") &&
+      (/\*\*シナリオ\s+[0-9.]+（/.test(t) ||
+        /\*\*音響\s+[0-9.]+（/.test(t) ||
+        /\*\*没入度\s+[0-9.]+（/.test(t) ||
+        /\*\*快楽度\s+[0-9.]+（/.test(t) ||
+        /\*\*満足度\s+[0-9.]+（/.test(t) ||
+        /\*\*リアリティ\*\*/.test(t) ||
+        /\*\*展開の必然性\*\*/.test(t) ||
+        /\*\*マイク・録音品質\*\*/.test(t) ||
+        /\*\*環境音\*\*/.test(t) ||
+        /\*\*コンセプトの達成度\*\*/.test(t) ||
+        /\*\*余韻の質\*\*/.test(t)),
+  },
+  {
+    id: "graph_scenario_factor_headings",
+    label: "グラフ: 五軸評価要因のサブ見出し（心理・空間の生々しさ等）",
+    fail: (t) =>
+      isDoujinReview(t) &&
+      t.includes("**グラフ評価内訳**") &&
+      /\*\*(心理・空間の生々しさ|世界観の内的一貫性|ギミックの機能性|フックの独自性|台詞の明瞭さ|情景音と静寂の配分|定位の追従性|親密距離の持続|声色の関係連動|峰と間の配分|売り文句の回収|終端の気持ちよさ)\*\*/.test(
+        t
+      ),
+  },
+  {
     id: "chui_kotei",
     label: "禁止語「固定」系",
     fail: (t) => hasForbiddenKotei(t),
@@ -204,6 +232,11 @@ const CHECKS = [
     id: "all_ages_no_taikan",
     label: "全年齢: パート解説に体感禁止",
     fail: (t) => isAllAgesDoujinReview(t) && /\*\*体感:\*\*/.test(t),
+  },
+  {
+    id: "all_ages_no_r18_not_recommended",
+    label: "全年齢: 合わないに性描写の有無を書かない",
+    fail: (t) => hasForbiddenAllAgesR18NotRecommended(t),
   },
 ];
 
@@ -383,6 +416,27 @@ function hasForbiddenPleasureUrgeNotRecommended(text) {
     /すぐに絶頂へ/,
     /じれった/,
     /深化に時間をかけ/,
+  ];
+  return patterns.some((re) => re.test(withoutQuotes));
+}
+
+/** 全年齢同人：性描写の有無を合わない理由にしない（全年齢シチュガイド §5.1） */
+function hasForbiddenAllAgesR18NotRecommended(text) {
+  if (!isAllAgesDoujinReview(text)) return false;
+  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  if (!body.includes("**【合わない可能性がある人】**")) return false;
+  const section = body.split("**【合わない可能性がある人】**")[1];
+  if (!section) return false;
+  const block = section.split("\n\n---", 1)[0];
+  const withoutQuotes = block.replace(/^>.*$/gm, "");
+  const patterns = [
+    /直接的な性的描写/,
+    /露骨な性的描写/,
+    /性描写を期待/,
+    /性描写がない/,
+    /肉体的な刺激を求める/,
+    /エロ描写/,
+    /全年齢なのに/,
   ];
   return patterns.some((re) => re.test(withoutQuotes));
 }

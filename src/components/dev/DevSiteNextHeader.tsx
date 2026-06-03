@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useId, useState } from "react";
 import { SiteRatingSwitch } from "@/components/SiteRatingSwitch";
 import { buildReviewListHref, DEV_SITE_NEXT_LIST_BASE } from "@/lib/review-list-href";
+import { SITE_NAME } from "@/lib/site-brand";
 import { SITE_NEXT_DRAWER_LINKS } from "@/lib/site-next-draft-links";
 
 function SearchIcon({ className }: { className?: string }) {
@@ -76,7 +77,7 @@ export function DevSiteNextHeader() {
           ロゴ
         </Link>
         <p className="min-w-0 flex-1 text-center text-sm font-bold tracking-tight text-slate-50 sm:text-base">
-          催眠音声解析室
+          {SITE_NAME}
         </p>
         <div className="flex shrink-0 items-center gap-0.5">
           <Link

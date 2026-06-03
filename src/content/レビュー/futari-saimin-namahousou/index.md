@@ -26,8 +26,8 @@ itemDescription: |
 authorName: 催眠音声解析室
 
 saleDate: "2017-09-15"
-publishedAt: "2026-06-03"
-goLiveAt: "2026-06-03T12:00:00+09:00"
+publishedAt: "2026-07-01"
+goLiveAt: "2026-07-01T12:00:00+09:00"
 
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ206000/RJ205378_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ205378.html

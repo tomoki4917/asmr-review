@@ -65,6 +65,13 @@ WRITER_SYSTEM_FILE = Path(
     )
 )
 HYPNOSIS_WRITING_GUIDE = ROOT / "docs" / "催眠音声執筆ガイド.md"
+SCENARIO_VOICE_WRITING_GUIDE = ROOT / "docs" / "シチュエーションボイス執筆ガイド.md"
+ALL_AGES_SCENARIO_WRITING_GUIDE = (
+    ROOT / "docs" / "全年齢シチュエーションボイス執筆ガイド.md"
+)
+ALL_AGES_SCORING_DEF = ROOT / "docs" / "全年齢シチュボイス五軸評価定義.md"
+WRITER_OUTPUT_KEYS_SCENARIO = SCRIPT_DIR / "writer_output_keys_scenario.md"
+SCENARIO_SAMPLE_SLUG = "dakimakura-kanojo-pretty-holic-yurukawa-kouhai"
 MERGE_TEMPLATE_FILE = Path(
     os.environ.get(
         "HYPNOSIS_MERGE_TEMPLATE",
@@ -136,6 +143,73 @@ GEMINI_KEYS = [
     "CONCLUSION_PLEASURE",
     "CONCLUSION_FINAL",
 ]
+
+SCENARIO_GEMINI_KEYS = [
+    "SUMMARY",
+    "ITEM_DESCRIPTION",
+    "TAGS_YAML",
+    "SALE_DATE_DISPLAY",
+    "GENRE_TYPE",
+    "CV_MALE",
+    "CV_FEMALE",
+    "ILLUSTRATOR",
+    "LOGO",
+    "PACKAGE_FILES",
+    "RECOMMENDED_1",
+    "RECOMMENDED_1_REASON",
+    "RECOMMENDED_2",
+    "RECOMMENDED_2_REASON",
+    "RECOMMENDED_3",
+    "RECOMMENDED_3_REASON",
+    "NOT_RECOMMENDED_1",
+    "NOT_RECOMMENDED_1_REASON",
+    "NOT_RECOMMENDED_2",
+    "NOT_RECOMMENDED_2_REASON",
+    "RATING_VALUE",
+    "ORGASM_SCENE_COUNT",
+    "SCORE_IMMERSION",
+    "SCORE_SCENARIO",
+    "SCORE_PLEASURE",
+    "SCORE_ACOUSTIC",
+    "SCORE_SATISFACTION",
+    "MAJOR_FETISH",
+    "SITUATION_TYPE",
+    "GRAPH_BREAKDOWN",
+    "PART_ANALYSIS",
+    "CONCLUSION_DESIGN",
+    "CONCLUSION_ACOUSTIC",
+    "CONCLUSION_FINAL",
+]
+
+
+def scenario_voice_mode(args: argparse.Namespace) -> bool:
+    return bool(getattr(args, "scenario_voice", False))
+
+
+def active_gemini_keys(args: argparse.Namespace) -> list[str]:
+    return SCENARIO_GEMINI_KEYS if scenario_voice_mode(args) else GEMINI_KEYS
+
+
+def all_ages_scenario_mode(args: argparse.Namespace) -> bool:
+    return scenario_voice_mode(args) and bool(getattr(args, "all_ages", False))
+
+
+def writing_guide_path(args: argparse.Namespace) -> Path:
+    if all_ages_scenario_mode(args):
+        return ALL_AGES_SCENARIO_WRITING_GUIDE
+    return (
+        SCENARIO_VOICE_WRITING_GUIDE
+        if scenario_voice_mode(args)
+        else HYPNOSIS_WRITING_GUIDE
+    )
+
+
+def writer_keys_path(args: argparse.Namespace) -> Path:
+    return (
+        WRITER_OUTPUT_KEYS_SCENARIO
+        if scenario_voice_mode(args)
+        else SCRIPT_DIR / "writer_output_keys.md"
+    )
 
 
 def load_file(path: Path, description: str) -> str:
@@ -512,11 +586,18 @@ def merge_keys(template: str, keys: dict[str, str]) -> str:
 def extract_score_number(eval_text: str) -> float | None:
     """評価脳テキストから最終スコアらしき数値を拾う（フォールバック）。"""
     stage = re.search(
-        r"最終(?:トランス|快楽|満足)スコア[：:]\s*\*?\*?\s*(\d+(?:\.\d+)?)\s*/\s*10",
+        r"最終(?:トランス|快楽|満足|シナリオ|音響|没入)スコア[：:]\s*\*?\*?\s*(\d+(?:\.\d+)?)\s*/\s*10",
         eval_text,
     )
     if stage:
         return float(stage.group(1))
+    heading = re.search(
+        r"###\s*(?:シナリオ|音響|没入度|快楽度|満足度|Acoustic|Scenario)[^\n:]*:\s*(\d+(?:\.\d+)?)",
+        eval_text,
+        re.I,
+    )
+    if heading:
+        return float(heading.group(1))
     nums = re.findall(r"(?:合計|総合|最終|スコア)[^\d]{0,20}(\d+(?:\.\d+)?)", eval_text)
     if nums:
         return float(nums[-1])
@@ -531,7 +612,20 @@ EVAL_AXIS_LABELS = {
     "trance": "トランス度（没入・誘導の深さ）",
     "pleasure": "快楽度（快感設計・絶頂シーン）",
     "satisfaction": "満足度（着地・余韻・尺対密度）",
+    "scenario": "シナリオ",
+    "acoustic": "音響",
+    "immersion": "没入度",
 }
+
+SCENARIO_EVAL_SYSTEM_FILE = SCRIPT_DIR / "eval_system_scenario_repo.md"
+SCENARIO_SCORING_DEF = ROOT / "docs" / "シチュボイス五軸評価定義.md"
+SCENARIO_EVAL_AXIS_ORDER: list[tuple[str, str]] = [
+    ("scenario", "シナリオ"),
+    ("acoustic", "音響"),
+    ("immersion", "没入度"),
+    ("pleasure", "快楽度"),
+    ("satisfaction", "満足度"),
+]
 
 AXIS_MANUAL_FILES = {
     "trance": "催眠トランス度採点マニュアル.txt",
@@ -619,6 +713,148 @@ def build_eval_prompt(
             else ""
         )
     )
+
+
+def load_scenario_eval_repo_context(*, all_ages: bool = False) -> str:
+    parts: list[str] = []
+    scoring = ALL_AGES_SCORING_DEF if all_ages else SCENARIO_SCORING_DEF
+    writing = ALL_AGES_SCENARIO_WRITING_GUIDE if all_ages else SCENARIO_VOICE_WRITING_GUIDE
+    for path in (
+        SCENARIO_EVAL_SYSTEM_FILE,
+        scoring,
+        writing,
+        SCORING_OPS_FILE,
+    ):
+        if path.is_file():
+            parts.append(path.read_text(encoding="utf-8"))
+    return "\n\n".join(parts)
+
+
+def build_scenario_eval_prompt(
+    source_context: str,
+    axis: str,
+    *,
+    prior: dict[str, float | None],
+) -> str:
+    label = EVAL_AXIS_LABELS.get(axis, axis)
+    prior_lines: list[str] = []
+    if axis == "acoustic" and prior.get("scenario") is not None:
+        prior_lines.append(f"【前提】シナリオ {prior['scenario']:.1f}")
+    if axis == "immersion" and prior.get("acoustic") is not None:
+        prior_lines.append(f"【前提】音響 {prior['acoustic']:.1f}")
+    if axis == "pleasure" and prior.get("scenario") is not None:
+        prior_lines.append(
+            f"【前提】シナリオ {prior['scenario']:.1f} / "
+            f"没入 {prior.get('immersion') or '—'}"
+        )
+    if axis == "satisfaction":
+        bits = [
+            f"{EVAL_AXIS_LABELS[k]} {prior[k]:.1f}"
+            for k in ("scenario", "pleasure", "acoustic")
+            if prior.get(k) is not None
+        ]
+        if bits:
+            prior_lines.append(f"【前提】{' / '.join(bits)}")
+    factor_hint = {
+        "scenario": (
+            "評価要因4つ（心理・空間の生々しさ／世界観の内的一貫性／"
+            "ギミックの機能性／フックの独自性）を先に書き、最後に主軸点。"
+        ),
+        "acoustic": "要因: 台詞の明瞭さ／情景音と静寂の配分。",
+        "immersion": "要因: 定位の追従性／親密距離の持続。",
+        "pleasure": "要因: 声色の関係連動／峰と間の配分。",
+        "satisfaction": "要因: 売り文句の回収／終端の気持ちよさ。",
+    }.get(axis, "")
+    return (
+        f"{source_context}\n\n"
+        f"今回採点: **{label}**\n"
+        "正本: シチュボイス五軸評価定義。Whisper のみ根拠。要因に点数は付けない。\n"
+        f"{factor_hint}\n"
+        "比較: dakimakura（★9） / michikusa（★10）。\n"
+        + "\n".join(prior_lines)
+    )
+
+
+def eval_axis_label(axis: str, *, all_ages: bool = False) -> str:
+    if all_ages and axis == "pleasure":
+        return "睡眠・覚醒"
+    for key, label in SCENARIO_EVAL_AXIS_ORDER:
+        if key == axis:
+            return label
+    return EVAL_AXIS_LABELS.get(axis, axis)
+
+
+def run_scenario_five_axis_eval(
+    client: genai.Client,
+    source_context: str,
+    slug: str,
+    *,
+    all_ages: bool = False,
+) -> tuple[dict[str, str], dict[str, float | None]]:
+    eval_dir = SCRIPT_DIR / "eval_results"
+    eval_dir.mkdir(exist_ok=True)
+    results: dict[str, str] = {}
+    scores: dict[str, float | None] = {}
+    sys_instruction = load_scenario_eval_repo_context(all_ages=all_ages)
+    for axis, _ in SCENARIO_EVAL_AXIS_ORDER:
+        label = eval_axis_label(axis, all_ages=all_ages)
+        print(f"[eval] {label} 採点...")
+        res = gemini_generate(
+            client,
+            model=EVAL_MODEL,
+            contents=build_scenario_eval_prompt(source_context, axis, prior=scores),
+            system_instruction=sys_instruction,
+            temperature=0.0,
+            label=f"{label}採点",
+        )
+        results[axis] = res
+        scores[axis] = extract_score_number(res)
+        (eval_dir / f"{slug}_{axis}.md").write_text(res, encoding="utf-8")
+    print(
+        "[eval] 五軸完了: "
+        + " ".join(
+            f"{eval_axis_label(a, all_ages=all_ages)}={scores[a]}"
+            for a, _ in SCENARIO_EVAL_AXIS_ORDER
+        )
+    )
+    return results, scores
+
+
+def patch_analysis_scores_scenario(
+    path: Path,
+    results: dict[str, str],
+    *,
+    note: str = "",
+    all_ages: bool = False,
+) -> None:
+    scores_out: dict[str, float] = {}
+    for axis, _ in SCENARIO_EVAL_AXIS_ORDER:
+        val = extract_score_number(results.get(axis, ""))
+        if val is not None:
+            scores_out[axis] = round(val, 1)
+    if path.is_file():
+        data = json.loads(path.read_text(encoding="utf-8"))
+    else:
+        data = {"schemaVersion": 2, "notes": []}
+    data["schemaVersion"] = 2
+    prev = data.get("scores") or {}
+    data["scores"] = {
+        "immersion": scores_out.get("immersion", prev.get("immersion", 0)),
+        "scenario": scores_out.get("scenario", prev.get("scenario", 0)),
+        "pleasure": scores_out.get("pleasure", prev.get("pleasure", 0)),
+        "acoustic": scores_out.get("acoustic", prev.get("acoustic", 0)),
+        "satisfaction": scores_out.get("satisfaction", prev.get("satisfaction", 0)),
+    }
+    notes = list(data.get("notes") or [])
+    stamp = f"五軸再採点（{today_jst_ymd()}）— シチュガイド Gemini"
+    if stamp not in notes:
+        notes.insert(0, stamp)
+    if note and note not in notes:
+        notes.insert(1, note)
+    if all_ages:
+        data["radarAxisLabels"] = {"pleasure": "睡眠・覚醒"}
+    data["notes"] = notes
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def run_three_axis_eval(
@@ -756,6 +992,145 @@ def build_writer_prompt(
         f"・## 見出しや「クイック解析」セクション形式での出力は禁止（[KEY] のみ）。\n\n"
         f"【出力形式 — 厳守】\n{keys_section}\n"
     )
+
+
+def build_writer_prompt_scenario(
+    eval_block: str,
+    keys_doc: str,
+    product_facts: str,
+    only_keys: list[str] | None = None,
+    *,
+    all_ages: bool = False,
+) -> str:
+    keys_section = keys_doc
+    if only_keys:
+        keys_section = (
+            f"今回出力するキーは次のみ: {', '.join(only_keys)}\n"
+            f"該当する [KEY] ブロックだけを出力すること。他キー・挨拶・説明は禁止。\n\n"
+            f"{keys_doc}"
+        )
+    orgasm_rule = (
+        "・全年齢: ORGASM_SCENE_COUNT は出力禁止。総合評価に絶頂行なし。"
+        "グラフ第4軸は睡眠・覚醒。\n"
+        if all_ages
+        else "・ORGASM_SCENE_COUNT は聴取の到達回収のみ（§0.2）。括弧注釈禁止。ドライ／ウェット表記禁止。\n"
+    )
+    return (
+        f"【作品メタ（創作禁止・この事実を優先）】\n{product_facts}\n\n"
+        f"【評価脳の解析結果 — 必ず反映】\n\n{eval_block}\n\n"
+        f"--------------------------------------------------\n"
+        f"【執筆指示 — 厳守】\n"
+        f"・既存の当サイトレビュー・過去原稿の文章を参照・模倣・流用してはならない。\n"
+        f"・事実は今回渡した Whisper / 作品メタ / 確定スコア のみ。台詞引用は実在する文だけ。\n"
+        f"・執筆正本は `docs/シチュエーションボイス執筆ガイド.md` §0 と `writer_output_keys_scenario.md`。\n"
+        f"・SUMMARY=1〜2段落・ITEM_DESCRIPTION=肉付け、おすすめ第1軸=心情（誘導主目的禁止）。\n"
+        f"{orgasm_rule}"
+        f"・四表・INDUCTION_FLOW・体験感度Lv・催眠三軸キーは出力禁止。\n"
+        f"・読者向け散文の禁止語: `芯` `手順` `設計`（台詞引用 `> ` 行のみ可）。\n"
+        f"・## 見出しや「クイック解析」セクション形式での出力は禁止（[KEY] のみ）。\n\n"
+        f"【出力形式 — 厳守】\n{keys_section}\n"
+    )
+
+
+def load_scenario_eval_context(
+    slug: str, analysis_path: Path, *, all_ages: bool = False
+) -> str:
+    eval_dir = SCRIPT_DIR / "eval_results"
+    axes: list[tuple[str, str]] = [
+        ("scenario", "シナリオ"),
+        ("acoustic", "音響"),
+        ("immersion", "没入度"),
+        ("pleasure", "睡眠・覚醒" if all_ages else "快楽度"),
+        ("satisfaction", "満足度"),
+    ]
+    parts: list[str] = []
+    for suffix, label in axes:
+        p = eval_dir / f"{slug}_{suffix}.md"
+        if p.is_file():
+            parts.append(f"■ {label}:\n{p.read_text(encoding='utf-8')}\n")
+    if parts:
+        return "\n".join(parts)
+    if analysis_path.is_file():
+        try:
+            data = json.loads(analysis_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            data = {}
+        scores = data.get("scores") or {}
+        notes_raw = data.get("notes") or []
+        if isinstance(notes_raw, list):
+            notes = "\n".join(str(n) for n in notes_raw)
+        else:
+            notes = str(notes_raw).strip()
+        block = (
+            "■ 確定スコア（_分析データ.json・採点完了後に執筆）:\n"
+            + json.dumps(scores, ensure_ascii=False, indent=2)
+        )
+        if notes:
+            block += f"\n\n■ notes:\n{notes}"
+        return block
+    return "（採点未確定 — eval_results または _分析データ.json scores を先に用意）"
+
+
+def build_writer_instruction_parts(
+    args: argparse.Namespace,
+    *,
+    table_hint: str = "",
+) -> list[str]:
+    guide_label = (
+        "全年齢シチュエーションボイス執筆ガイド"
+        if all_ages_scenario_mode(args)
+        else (
+            "シチュエーションボイス執筆ガイド"
+            if scenario_voice_mode(args)
+            else "催眠音声執筆ガイド"
+        )
+    )
+    writing_guide = load_file(writing_guide_path(args), guide_label)
+    if scenario_voice_mode(args):
+        sample = (
+            f"見本記事: {SCENARIO_SAMPLE_SLUG}（完成系・グラフ5軸要約文・パート解析3要素の型のみ。"
+            "文言コピー禁止）。"
+        )
+        if all_ages_scenario_mode(args):
+            sample += (
+                " 全年齢トーン参考: shinitagari-junai-maid-yogarekake"
+                "（記事グリッドは dakimakura と同一）。"
+            )
+        extras = [
+            "【シチュボイス厳守】催眠の四表・主要誘導の流れ・体験感度Lv・ドライ/ウェット/脳イキ主語は禁止。",
+            "【GRAPH_BREAKDOWN】各軸は `- **シナリオ n**` のあと2〜3文のみ。"
+            "評価要因（心理・空間の生々しさ等）を太字見出しにしない。括弧サブ点禁止。要因は要約して織り込む。",
+            "【PART_ANALYSIS】引用 → 物語の流れ → 感想（`心情の変化` 禁止）。"
+            "感想は各パートの特徴・強み・主観1〜2文・購入意欲をそそる具体。"
+            "聴き手は〜同型連発禁止。"
+            + (
+                " 全年齢: 総合評価に絶頂行なし。第4軸表示名は睡眠・覚醒。"
+                if all_ages_scenario_mode(args)
+                else " 総合評価の絶頂行は 絶頂シーン n回 のみ。"
+            ),
+            "出力は writer_output_keys_scenario の [KEY] のみ。",
+        ]
+    else:
+        sample = (
+            "見本記事: kuchikou-saimin-count-trip-nouiki（完成系・SUMMARY・おすすめ理由・"
+            "主要誘導・身体の変化の型のみ。文言コピー禁止）。"
+        )
+        extras = [
+            "【追加厳守】出力は writer_output_keys の [KEY] ブロックまたは単一 JSON のみ。",
+            "【用語】ドライオーガズムと脳イキは別物。同一視・括弧併記禁止（§0.1.1）。",
+        ]
+    parts = [
+        load_file(WRITER_SYSTEM_FILE, "執筆ガイド（ライター脳）"),
+        load_forbidden_rules(),
+        load_guide_excerpts_for_writer(),
+        load_desktop_writer_guide(),
+        f"【執筆正本（§0 ライター脳含む）】\n{writing_guide}",
+        table_hint or sample,
+        *extras,
+        "既存の当該 slug の index.md・旧 review_output は参照しない。",
+        "Markdown の ## 見出し・クイック解析セクション形式は禁止。",
+    ]
+    return parts
 
 
 def replace_key_block(draft_text: str, key: str, new_content: str) -> str:
@@ -992,6 +1367,16 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="三軸採点のみ（eval_results + _分析データ.json scores）。index.md は更新しない",
     )
+    p.add_argument(
+        "--scenario-voice",
+        action="store_true",
+        help="シチュエーションボイス（五軸・writer_output_keys_scenario.md）。B型マージは行わない",
+    )
+    p.add_argument(
+        "--all-ages",
+        action="store_true",
+        help="全年齢シチュ（--scenario-voice と併用。睡眠・覚醒軸・絶頂行なし）",
+    )
     return p.parse_args()
 
 
@@ -1005,6 +1390,9 @@ def main() -> None:
             "[警告] --preserve-sections: 旧 index からグラフ内訳・パート別解析を差し戻します。"
             " 全面作り直しでは使わないでください。"
         )
+
+    if scenario_voice_mode(args) and args.eval_only:
+        pass  # eval_only 分岐で五軸採点
 
     if not args.eval_only and not args.item_name.strip():
         print("[エラー] --item-name が必要です（--eval-only 時は省略可）")
@@ -1027,22 +1415,31 @@ def main() -> None:
         sys.exit(1)
 
     print("--------------------------------------------------")
-    print(" 催眠音声レビュー -> B型 index.md 自動生成 ")
+    if scenario_voice_mode(args):
+        print(" シチュエーションボイス -> review_output.md ([KEY]) ")
+    else:
+        print(" 催眠音声レビュー -> B型 index.md 自動生成 ")
     print("--------------------------------------------------")
 
     only_keys = [k.strip() for k in args.keys.split(",") if k.strip()]
     if args.optimize_tables:
         only_keys = list(ANALYSIS_TABLE_KEYS)
         args.skip_eval = True
+    allowed_keys = active_gemini_keys(args)
     for k in only_keys:
-        if k not in GEMINI_KEYS:
+        if k not in allowed_keys:
             print(f"[エラー] 未知のキー: {k}")
             sys.exit(1)
 
     print("[1/6] 正本・原紙テンプレートを読み込み...")
-    print(f"       採点: リポジトリ採点正本 + デスクトップ採点マニュアル（{manual_dir()}）")
-    print("       本文: B型原紙 + docs/催眠音声執筆ガイド.md + 執筆ガイド.txt")
-    merge_template = load_file(MERGE_TEMPLATE_FILE, "B型マージ原紙")
+    if scenario_voice_mode(args):
+        print("       採点: 人手五軸（_分析データ.json）または eval_results/<slug>_*.md")
+        print("       本文: docs/シチュエーションボイス執筆ガイド.md + writer_output_keys_scenario.md")
+        merge_template = ""
+    else:
+        print(f"       採点: リポジトリ採点正本 + デスクトップ採点マニュアル（{manual_dir()}）")
+        print("       本文: B型原紙 + docs/催眠音声執筆ガイド.md + 執筆ガイド.txt")
+        merge_template = load_file(MERGE_TEMPLATE_FILE, "B型マージ原紙")
 
     res_t = res_p = res_s = ""
     generated = ""
@@ -1061,8 +1458,25 @@ def main() -> None:
         whisper_data = load_file(WHISPER_FILE, "WhisperX")
         librosa_data = load_file(LIBROSA_FILE, "Librosa")
         source_context = f"【WhisperX】\n{whisper_data}\n\n【Librosa】\n{librosa_data}"
-        print(f"       採点正本: eval_system_repo + 三軸定義 + 運用ガイド + {manual_dir()}")
         client = genai.Client(api_key=get_api_key())
+        if scenario_voice_mode(args):
+            print("[3/6] 五軸採点（--eval-only・シチュガイド）...")
+            results, _ = run_scenario_five_axis_eval(
+                client,
+                source_context,
+                args.slug,
+                all_ages=all_ages_scenario_mode(args),
+            )
+            patch_analysis_scores_scenario(
+                analysis_path,
+                results,
+                note="比較: dakimakura（★9） / michikusa（★10）",
+                all_ages=all_ages_scenario_mode(args),
+            )
+            print(f"[完了] eval_results + {analysis_path} scores のみ更新。")
+            print("       次: ratingValue・絶頂行確定 → --writer-only または --force")
+            return
+        print(f"       採点正本: eval_system_repo + 三軸定義 + 運用ガイド + {manual_dir()}")
         print("[3/6] 三軸採点（--eval-only）...")
         res_t, res_p, res_s, _, _, _ = run_three_axis_eval(client, source_context, args.slug)
         anchor_note = (
@@ -1078,14 +1492,14 @@ def main() -> None:
         return
 
     if args.merge_only:
+        if scenario_voice_mode(args):
+            print("[エラー] --scenario-voice では B型 --merge-only を使いません（review_output を Cursor が index に組み立て）")
+            sys.exit(1)
         print("[2-4/6] スキップ（--merge-only）")
         generated = load_file(draft_path, "Gemini 生出力")
     elif only_keys:
         require_api_key()
-        desktop_writer = load_desktop_writer_guide()
-        writer_system = load_file(WRITER_SYSTEM_FILE, "執筆ガイド（ライター脳）")
-        hypnosis_guide = load_file(HYPNOSIS_WRITING_GUIDE, "催眠音声執筆ガイド")
-        keys_doc = load_file(SCRIPT_DIR / "writer_output_keys.md", "出力キー定義")
+        keys_doc = load_file(writer_keys_path(args), "出力キー定義")
         res_t, res_p, res_s = load_eval_results(args.slug)
 
         if args.analysis_dir:
@@ -1115,9 +1529,21 @@ def main() -> None:
         client = genai.Client(api_key=get_api_key())
         print(f"[2-3/6] スキップ（--keys {','.join(only_keys)}）")
         print("[4/6] 部分執筆（Gemini）...")
-        writer_prompt = build_writer_prompt(
-            res_t, res_p, res_s, keys_doc, product_facts, only_keys=only_keys
-        )
+        if scenario_voice_mode(args):
+            eval_block = load_scenario_eval_context(
+                args.slug, analysis_path, all_ages=all_ages_scenario_mode(args)
+            )
+            writer_prompt = build_writer_prompt_scenario(
+                eval_block,
+                keys_doc,
+                product_facts,
+                only_keys=only_keys,
+                all_ages=all_ages_scenario_mode(args),
+            )
+        else:
+            writer_prompt = build_writer_prompt(
+                res_t, res_p, res_s, keys_doc, product_facts, only_keys=only_keys
+            )
         extra_flow = ""
         if "INDUCTION_FLOW" in only_keys:
             extra_flow = (
@@ -1141,22 +1567,24 @@ def main() -> None:
                 "使用技法は【】内・台本の手続き名（CFバイパス等の論文語禁止）。"
                 "Librosa・採点・ステージ・同相バインド等のメタ語禁止。"
             )
+        if "PART_ANALYSIS" in only_keys:
+            extra_flow = (
+                (extra_flow or "")
+                + "【追加・PART_ANALYSIS】docs/シチュエーションボイス執筆ガイド.md §6 厳守。"
+                "各パート: #### 見出し → 引用 → **物語の流れ:**（2文）→ **感想:**（1〜2文）。"
+                "**心情の変化:** は出力禁止。**感想:** は当パートの特徴・強み・レビュアー主観。"
+                "購入したくなる具体（声・密着・刺激の型・この場面だけの見どころ）。"
+                "全パート `聴き手は` で始める横滑り禁止。ボーナス（フリートーク・NG）は載せない。"
+            )
         writer_prompt = f"{source_context}\n\n{writer_prompt}\n{extra_flow}"
         table_hint = ""
         if set(only_keys) & set(ANALYSIS_TABLE_KEYS):
             table_hint = (
                 "見本: asmr-saimin-aman-toro-lip の四表（特性名は具体名）。"
             )
-        writer_instruction_parts = [
-            writer_system,
-            load_forbidden_rules(),
-            load_guide_excerpts_for_writer(),
-            desktop_writer,
-            "【執筆正本】\n" + hypnosis_guide,
-            table_hint
-            or "見本: kuchikou-saimin-count-trip-nouiki の主要誘導の流れ（型のみ・文言コピー禁止）。",
-            "出力は指定 [KEY] のみ。",
-        ]
+        writer_instruction_parts = build_writer_instruction_parts(
+            args, table_hint=table_hint
+        )
         partial = gemini_generate(
             client,
             model=WRITER_MODEL,
@@ -1178,10 +1606,7 @@ def main() -> None:
         draft_path.write_text(generated, encoding="utf-8")
     elif args.skip_eval or args.writer_only:
         require_api_key()
-        desktop_writer = load_desktop_writer_guide()
-        writer_system = load_file(WRITER_SYSTEM_FILE, "執筆ガイド（ライター脳）")
-        hypnosis_guide = load_file(HYPNOSIS_WRITING_GUIDE, "催眠音声執筆ガイド")
-        keys_doc = load_file(SCRIPT_DIR / "writer_output_keys.md", "出力キー定義")
+        keys_doc = load_file(writer_keys_path(args), "出力キー定義")
         res_t, res_p, res_s = load_eval_results(args.slug)
 
         if args.analysis_dir:
@@ -1211,22 +1636,23 @@ def main() -> None:
         client = genai.Client(api_key=get_api_key())
         print("[3/6] スキップ（--skip-eval / --writer-only）")
         print("[4/6] 記事本文執筆（Gemini）...")
-        writer_prompt = build_writer_prompt(
-            res_t, res_p, res_s, keys_doc, product_facts, only_keys=None
-        )
+        if scenario_voice_mode(args):
+            eval_block = load_scenario_eval_context(
+                args.slug, analysis_path, all_ages=all_ages_scenario_mode(args)
+            )
+            writer_prompt = build_writer_prompt_scenario(
+                eval_block,
+                keys_doc,
+                product_facts,
+                only_keys=None,
+                all_ages=all_ages_scenario_mode(args),
+            )
+        else:
+            writer_prompt = build_writer_prompt(
+                res_t, res_p, res_s, keys_doc, product_facts, only_keys=None
+            )
         writer_prompt = f"{source_context}\n\n{writer_prompt}"
-        writer_instruction_parts = [
-            writer_system,
-            load_forbidden_rules(),
-            load_guide_excerpts_for_writer(),
-            desktop_writer,
-            "【執筆正本（§0 ライター脳含む）】\n" + hypnosis_guide,
-            "見本記事: kuchikou-saimin-count-trip-nouiki（完成系・SUMMARY・おすすめ理由・主要誘導・身体の変化の型のみ。文言コピー禁止）。",
-            "【追加厳守】出力は writer_output_keys の [KEY] ブロックまたは単一 JSON のみ。",
-            "Markdown の ## 見出し・クイック解析セクション形式は禁止。",
-            "既存の当該 slug の index.md・旧 review_output は参照しない。Whisper 実データのみ根拠に。",
-            "【用語】ドライオーガズムと脳イキは別物。同一視・括弧併記（ドライオーガズム（脳イキ）等）禁止。台本がドライと言う箇所はドライオーガズムと書く（§0.1.1）。",
-        ]
+        writer_instruction_parts = build_writer_instruction_parts(args)
         generated = gemini_generate(
             client,
             model=WRITER_MODEL,
@@ -1238,10 +1664,7 @@ def main() -> None:
         draft_path.write_text(generated, encoding="utf-8")
     else:
         require_api_key()
-        desktop_writer = load_desktop_writer_guide()
-        writer_system = load_file(WRITER_SYSTEM_FILE, "執筆ガイド（ライター脳）")
-        hypnosis_guide = load_file(HYPNOSIS_WRITING_GUIDE, "催眠音声執筆ガイド")
-        keys_doc = load_file(SCRIPT_DIR / "writer_output_keys.md", "出力キー定義")
+        keys_doc = load_file(writer_keys_path(args), "出力キー定義")
 
         if args.analysis_dir:
             import subprocess
@@ -1274,37 +1697,95 @@ def main() -> None:
 
         client = genai.Client(api_key=get_api_key())
 
-        print("[3/6] 三軸採点（Gemini・採点正本＋デスクトップマニュアル）...")
-        res_t, res_p, res_s, _, _, _ = run_three_axis_eval(client, source_context, args.slug)
-
-        print("[4/6] 記事本文執筆（Gemini・B型原紙 + 執筆ガイド）...")
-        writer_prompt = build_writer_prompt(res_t, res_p, res_s, keys_doc, product_facts)
-        writer_instruction_parts = [
-            writer_system,
-            load_forbidden_rules(),
-            load_guide_excerpts_for_writer(),
-            desktop_writer,
-            "【執筆正本（§0 ライター脳含む）】\n" + hypnosis_guide,
-            "見本記事: kuchikou-saimin-count-trip-nouiki（完成系・SUMMARY・おすすめ理由・主要誘導・身体の変化の型のみ。文言コピー禁止）。",
-            "【追加厳守】出力は writer_output_keys の [KEY] ブロックまたは単一 JSON のみ。",
-            "Markdown の ## 見出し・クイック解析セクション形式は禁止。",
-            "既存の当該 slug の index.md・旧 review_output は参照しない。Whisper 実データのみ根拠に。",
-            "【用語】ドライオーガズムと脳イキは別物。同一視・括弧併記（ドライオーガズム（脳イキ）等）禁止。台本がドライと言う箇所はドライオーガズムと書く（§0.1.1）。",
-        ]
-        generated = gemini_generate(
-            client,
-            model=WRITER_MODEL,
-            contents=writer_prompt,
-            system_instruction="\n\n".join(p for p in writer_instruction_parts if p.strip()),
-            temperature=0.2,
-            label="記事本文執筆",
-        )
+        if scenario_voice_mode(args):
+            print("[3/6] 五軸採点（Gemini・シチュガイド）...")
+            results, _ = run_scenario_five_axis_eval(
+                client,
+                source_context,
+                args.slug,
+                all_ages=all_ages_scenario_mode(args),
+            )
+            patch_analysis_scores_scenario(
+                analysis_path,
+                results,
+                note="比較: dakimakura（★9） / michikusa（★10）",
+                all_ages=all_ages_scenario_mode(args),
+            )
+            print("[4/6] 記事本文執筆（Gemini・シチュガイド）...")
+            eval_block = load_scenario_eval_context(
+                args.slug, analysis_path, all_ages=all_ages_scenario_mode(args)
+            )
+            writer_prompt = build_writer_prompt_scenario(
+                eval_block,
+                keys_doc,
+                product_facts,
+                only_keys=None,
+                all_ages=all_ages_scenario_mode(args),
+            )
+            writer_prompt = f"{source_context}\n\n{writer_prompt}"
+            writer_instruction_parts = build_writer_instruction_parts(args)
+            generated = gemini_generate(
+                client,
+                model=WRITER_MODEL,
+                contents=writer_prompt,
+                system_instruction="\n\n".join(
+                    p for p in writer_instruction_parts if p.strip()
+                ),
+                temperature=0.2,
+                label="記事本文執筆",
+            )
+        else:
+            print("[3/6] 三軸採点（Gemini・採点正本＋デスクトップマニュアル）...")
+            res_t, res_p, res_s, _, _, _ = run_three_axis_eval(
+                client, source_context, args.slug
+            )
+            print("[4/6] 記事本文執筆（Gemini・B型原紙 + 執筆ガイド）...")
+            writer_prompt = build_writer_prompt(
+                res_t, res_p, res_s, keys_doc, product_facts
+            )
+            writer_instruction_parts = build_writer_instruction_parts(args)
+            generated = gemini_generate(
+                client,
+                model=WRITER_MODEL,
+                contents=writer_prompt,
+                system_instruction="\n\n".join(
+                    p for p in writer_instruction_parts if p.strip()
+                ),
+                temperature=0.2,
+                label="記事本文執筆",
+            )
 
         draft_path.write_text(generated, encoding="utf-8")
 
     keys = parse_gemini_keys(generated)
 
     prose_violations = validate_prose_keys(keys)
+
+    if scenario_voice_mode(args) and not args.optimize_tables:
+        print("[5/6] シチュボイス - B型 index マージをスキップ（Cursor が review_output を index に組み立て）")
+        if prose_violations:
+            print("\n[エラー] 執筆ルール違反（review_output.md を修正して再実行）:")
+            for w in prose_violations:
+                print(f"  - {w}")
+            print(
+                "  正本: docs/シチュエーションボイス執筆ガイド.md / "
+                "scripts/gemini-hypnosis-review/writer_forbidden.md"
+            )
+            print(f"  検証: npm run review:validate-prose -- --slug {args.slug}")
+            sys.exit(1)
+        print("\n【完了】Gemini 生出力のみ")
+        print(f"  review_output  → {draft_path}")
+        print("\n残作業（必須）:")
+        print("  Cursor: [KEY] を dakimakura 型 index.md に組み立て")
+        print(f"  py -3 scripts/generate_review_triangle.py {args.slug}")
+        print(
+            f"  py -3 scripts/gemini-hypnosis-review/generate_work_impression.py "
+            f"{args.slug} --write-tsx"
+        )
+        print(f"  npm run review:validate-prose -- --slug {args.slug}")
+        print(f"  npm run review:audit-scenario -- {args.slug}")
+        print(f"  npm run review:audit-kansei -- --slug {args.slug}")
+        return
 
     if args.optimize_tables:
         print("[5/6] 四表のみ index.md へ差し替え...")
@@ -1373,7 +1854,7 @@ def main() -> None:
         optional_empty = {k for k in OPTIONAL_BASIC_INFO if not keys.get(k, "").strip()}
         missing = [
             k
-            for k in GEMINI_KEYS
+            for k in active_gemini_keys(args)
             if f"[{k}]" in index_md and k not in optional_empty
         ]
     else:

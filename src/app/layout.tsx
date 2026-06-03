@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Noto_Sans_JP } from "next/font/google";
 import { AgeGate } from "@/components/AgeGate";
+import { SITE_NAME } from "@/lib/site-brand";
 import "./globals.css";
-
-const siteName = "催眠音声解析室";
 
 const notoSansJp = Noto_Sans_JP({
   subsets: ["latin"],
@@ -15,8 +14,8 @@ const notoSansJp = Noto_Sans_JP({
 
 export const metadata: Metadata = {
   title: {
-    default: siteName,
-    template: `%s | ${siteName}`,
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
   },
   description:
     "催眠音声のレビューと紹介、心理学的な読み解き。個人ブログ。",

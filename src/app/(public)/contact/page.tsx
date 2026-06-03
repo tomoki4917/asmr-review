@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { ContactForm, ContactFormEnvNote } from "@/components/ContactForm";
+import { SITE_NAME } from "@/lib/site-brand";
 
 export const metadata: Metadata = {
   title: "お問い合わせ",
   description:
-    "催眠音声解析室へのお問い合わせフォームです。名前・メール・件名・内容をご記入ください。",
+    `${SITE_NAME}へのお問い合わせフォームです。名前・メール・件名・内容をご記入ください。`,
 };
 
 export default function ContactPage() {

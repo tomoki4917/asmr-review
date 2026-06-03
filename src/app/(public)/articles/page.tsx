@@ -4,11 +4,12 @@ import { DevSiteNextHeader } from "@/components/dev/DevSiteNextHeader";
 import { ArticleList } from "@/components/ArticleList";
 import { ARTICLES_LIST_HUB_PATH } from "@/lib/review-list-href";
 import { getAllReviews } from "@/lib/reviews";
+import { SITE_NAME } from "@/lib/site-brand";
 
 export const metadata: Metadata = {
   title: "記事一覧",
   description:
-    "催眠音声の解説・用語・視聴環境・おすすめ特集など、解析室の記事一覧です。",
+    `催眠音声の解説・用語・視聴環境・おすすめ特集など、${SITE_NAME}の記事一覧です。`,
   alternates: { canonical: ARTICLES_LIST_HUB_PATH },
 };
 

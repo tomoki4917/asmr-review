@@ -1,3 +1,5 @@
+import { SITE_NAME } from "@/lib/site-brand";
+
 /** プライバシーポリシー本文（ページ内表示用） */
 export function PrivacyPolicyContent() {
   return (
@@ -7,7 +9,7 @@ export function PrivacyPolicyContent() {
           1. はじめに
         </h2>
         <p className="mt-3">
-          「催眠音声解析室」（以下「当サイト」）は、催眠・同人音声
+          「{SITE_NAME}」（以下「当サイト」）は、催眠・同人音声
           作品のレビューおよび関連する解説を掲載する個人ブログです。当サイトでは、利用者の個人情報を適切に取り扱うため、本ポリシーに従います。
         </p>
       </section>
