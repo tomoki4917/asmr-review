@@ -14,3 +14,34 @@ DLsite 作品ごとの **税込現在価格・定価・セール率** など。
 
 レビュー詳細の JSON-LD は `src/components/ReviewJsonLd.tsx` が **`@graph`** で `Review` と `Product` を出す。Google が `Product` に求める **`offers` / `review` / `aggregateRating`** のうち、`review` と `aggregateRating` は常にコードで付与し、価格が取れているときだけ `offers` を追加する。  
 手でページに別の `Product` マークアップを足さない（重複・不整合で GSC のエラー原因になる）。価格表示・`offers` のため、上記の **`dlsiteProductId` + `products.json` + `update-prices`** は従来どおり推奨。
+
+---
+
+# `dlsite-rankings.json`
+
+DLsite **ランキング順位**（トップのブログパーツと同じ `site: home`）。一覧カード・詳細の **「7日間 ○位」バッジ** のソース。
+
+## 取りに行くために必要なもの
+
+| 項目 | 内容 |
+|------|------|
+| **ネットワーク** | ビルド／開発マシンから `www.dlsite.com` へ HTTPS で到達できること |
+| **依存** | リポジトリに入っている `axios`（`devDependencies`。価格取得と同じ） |
+| **レビュー側** | 対象記事のフロントマターに **`dlsiteProductId`（RJ）** があること |
+| **実行** | リポジトリルートで **`npm run update-dlsite-rankings`** |
+| **任意** | `DLSITE_RANKING_SITE=maniax` … 同人専用ランキング軸に切り替え（既定は `home`＝トップ総合） |
+
+ブラウザから DLsite API を直接叩くことは **CORS なしのため不可**。静的サイトでは **JSON をコミットまたはデプロイ前に更新**する運用になる。
+
+## 更新の目安
+
+- API は **各期間あたり最大 31 位** まで（`day` / `week` / `month` / `year` / `total` をまとめて取得）
+- バッジ表示は **`week`（週間ランキング）・`month`（月間ランキング）**（該当する期間だけ **1期間＝1枚** で縦に並べる）
+- 順位は DLsite 側で変わるため、**週1回程度**または **デプロイ前**に `update-dlsite-rankings` を回すとよい
+- `fetched_at` … 最終取得時刻（ISO）
+
+## フィールド
+
+- `site` … `home` または `maniax`
+- `fetched_at`
+- `periods.week.entries[]` … `{ rank, product_id }`（他の `period` も同構造）

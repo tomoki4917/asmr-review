@@ -1,16 +1,10 @@
 import Link from "next/link";
 import { formatReviewPublishedForList } from "@/lib/format-published-at";
-import {
-  getDlsiteProductById,
-  isDlsiteProductShinsaku,
-} from "@/lib/dlsite-product-catalog";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import type { Review } from "@/lib/types";
 import { ReviewCover } from "./ReviewCover";
 import { ReviewDlsiteListPrice } from "./ReviewDlsiteListPrice";
-import { ReviewNewBadge } from "./ReviewNewBadge";
-import { ReviewPreparingBadge } from "./ReviewPreparingBadge";
-import { ShinsakuBadge } from "./ShinsakuBadge";
+import { ReviewOverlayBadges } from "./ReviewOverlayBadges";
 import { StarRating } from "./StarRating";
 
 type Props = {
@@ -32,13 +26,6 @@ export function ReviewCard({
 }: Props) {
   const best = review.ratingBest ?? 10;
   const titleOne = reviewTitleSingleLine(review.title);
-  const now = new Date();
-  const dlsiteProduct =
-    review.dlsiteProductId != null
-      ? getDlsiteProductById(review.dlsiteProductId)
-      : undefined;
-  const showShinsaku = isDlsiteProductShinsaku(dlsiteProduct, now);
-  const showBadgeStack = showNew || showShinsaku || preparing;
   const cardClassName = [
     "block min-w-0 max-w-full overflow-hidden rounded-3xl border bg-slate-800/50 shadow-md shadow-slate-950/20 ring-1",
     preparing
@@ -49,13 +36,11 @@ export function ReviewCard({
   const inner = (
     <>
         <div className="relative">
-          {showBadgeStack ? (
-            <div className="absolute right-3 top-3 z-10 flex max-w-[min(100%,calc(100%-1.5rem))] flex-wrap justify-end gap-1.5">
-              {preparing ? <ReviewPreparingBadge variant="overlay" /> : null}
-              {showNew ? <ReviewNewBadge variant="overlay" /> : null}
-              {showShinsaku ? <ShinsakuBadge variant="overlay" /> : null}
-            </div>
-          ) : null}
+          <ReviewOverlayBadges
+            review={review}
+            showNew={showNew}
+            preparing={preparing}
+          />
           <ReviewCover
             coverImage={review.coverImage}
             alt={titleOne}

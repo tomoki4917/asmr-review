@@ -9,8 +9,7 @@ import { ArticleNextNav } from "@/components/ArticleNextNav";
 import { ReviewMarkdown } from "@/components/ReviewMarkdown";
 import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { StarRating } from "@/components/StarRating";
-import { ReviewNewBadge } from "@/components/ReviewNewBadge";
-import { ShinsakuBadge } from "@/components/ShinsakuBadge";
+import { ReviewHeaderBadges } from "@/components/ReviewHeaderBadges";
 import { DlsitePricePanel } from "@/components/DlsitePricePanel";
 import {
   REVIEW_DETAIL_MODE_BUTTON_LABEL,
@@ -47,6 +46,7 @@ import {
   isDlsiteProductShinsaku,
   resolveDlsiteSaleDisplay,
 } from "@/lib/dlsite-product-catalog";
+import { getDlsiteRankingBadgesForProduct } from "@/lib/dlsite-ranking-catalog";
 import { resolveDlsiteAffiliateHref } from "@/lib/resolve-dlsite-affiliate-href";
 import type { AffiliateLink, Review } from "@/lib/types";
 
@@ -302,7 +302,14 @@ export default async function ReviewPage({ params }: Props) {
   const showNewBadge = isReviewNewPublication(review, nowBadges);
   const showShinsakuBadge =
     !isArticle && isDlsiteProductShinsaku(dlsiteProduct, nowBadges);
-  const showHeaderBadges = showNewBadge || showShinsakuBadge;
+  const dlsiteRankingBadges =
+    !isArticle
+      ? getDlsiteRankingBadgesForProduct(review.dlsiteProductId)
+      : [];
+  const showHeaderBadges =
+    showNewBadge ||
+    showShinsakuBadge ||
+    dlsiteRankingBadges.length > 0;
   const relatedReviews = pickRelatedReviews(review);
 
   const coverEl = (
@@ -1980,21 +1987,16 @@ export default async function ReviewPage({ params }: Props) {
                   : "px-4"
               }`}
             >
-              <div
-                className={`flex flex-wrap items-start gap-2 sm:gap-3 ${showHeaderBadges ? "items-center" : ""}`}
-              >
+              <div className="flex flex-col gap-3 sm:gap-4">
                 {showHeaderBadges ? (
-                  <div className="flex shrink-0 flex-wrap items-center gap-1.5">
-                    {showNewBadge ? (
-                      <ReviewNewBadge className="mt-0.5 sm:mt-1" />
-                    ) : null}
-                    {showShinsakuBadge ? (
-                      <ShinsakuBadge variant="inline" className="mt-0.5 sm:mt-1" />
-                    ) : null}
-                  </div>
+                  <ReviewHeaderBadges
+                    showNew={showNewBadge}
+                    showShinsaku={showShinsakuBadge}
+                    rankingEntries={dlsiteRankingBadges}
+                  />
                 ) : null}
                 <h1
-                  className={`min-w-0 flex-1 text-2xl font-bold leading-tight tracking-tight text-slate-50 sm:text-3xl ${isArticle || titleHasBreak ? "whitespace-pre-line text-pretty" : "text-balance"} ${isArticle ? "max-sm:text-[1.7rem] max-sm:leading-snug" : ""}`}
+                  className={`w-full min-w-0 text-2xl font-bold leading-snug tracking-tight text-slate-50 sm:text-3xl sm:leading-tight ${isArticle || titleHasBreak ? "whitespace-pre-line text-pretty" : "text-balance"} ${isArticle ? "max-sm:text-[1.7rem] max-sm:leading-snug" : ""}`}
                 >
                   {review.title}
                 </h1>

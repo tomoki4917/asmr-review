@@ -4,12 +4,7 @@ import { SummaryMarkdown } from "@/components/SummaryMarkdown";
 import { ReviewCover } from "@/components/ReviewCover";
 import { ReviewDlsiteListPrice } from "@/components/ReviewDlsiteListPrice";
 import { StarRating } from "@/components/StarRating";
-import { ReviewNewBadge } from "@/components/ReviewNewBadge";
-import { ShinsakuBadge } from "@/components/ShinsakuBadge";
-import {
-  getDlsiteProductById,
-  isDlsiteProductShinsaku,
-} from "@/lib/dlsite-product-catalog";
+import { ReviewOverlayBadges } from "@/components/ReviewOverlayBadges";
 import { isReviewNewPublication } from "@/lib/review-new-badge";
 import { reviewTitleSingleLine } from "@/lib/review-title";
 import { reviewPublicationTimeMs } from "@/lib/format-published-at";
@@ -43,13 +38,6 @@ export function AllAgesHomeEditorial({ reviews }: Props) {
 
   const now = new Date();
   const spotlightNew = isReviewNewPublication(spotlight, now);
-  const spotlightShinsaku = isDlsiteProductShinsaku(
-    spotlight.dlsiteProductId
-      ? getDlsiteProductById(spotlight.dlsiteProductId)
-      : undefined,
-    now
-  );
-  const spotlightBadges = spotlightNew || spotlightShinsaku;
 
   return (
     <section
@@ -76,14 +64,10 @@ export function AllAgesHomeEditorial({ reviews }: Props) {
             className="group mt-5 block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400/45"
           >
             <div className="relative overflow-hidden bg-slate-900">
-              {spotlightBadges ? (
-                <div className="absolute right-3 top-3 z-10 flex max-w-[min(100%,calc(100%-1.5rem))] flex-wrap justify-end gap-1.5">
-                  {spotlightNew ? <ReviewNewBadge variant="overlay" /> : null}
-                  {spotlightShinsaku ? (
-                    <ShinsakuBadge variant="overlay" />
-                  ) : null}
-                </div>
-              ) : null}
+              <ReviewOverlayBadges
+                review={spotlight}
+                showNew={spotlightNew}
+              />
               <ReviewCover
                 coverImage={spotlight.coverImage}
                 alt={reviewTitleSingleLine(spotlight.title)}
