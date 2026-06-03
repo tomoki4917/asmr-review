@@ -1,4 +1,4 @@
-﻿---
+---
 slug: futari-saimin-namahousou
 
 title: 【レビュー】【バイノーラル】2人で催眠生放送【初見さん歓迎♪】

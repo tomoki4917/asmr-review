@@ -16,6 +16,17 @@ export const DLSITE_RANKING_PERIOD_OPTIONS: ReadonlyArray<{
 
 export const DEFAULT_DLSITE_RANKING_PERIOD: DlsiteRankingPeriod = "week";
 
+export const DLSITE_SALES_RANKING_SECTION_TITLE = "DLサイト内販売数ランキング";
+
+/** サイドバー用（例: DLサイト内での販売本数7日間ランキングです） */
+export function dlsiteSalesRankingDescription(period: DlsiteRankingPeriod): string {
+  const label =
+    DLSITE_RANKING_PERIOD_OPTIONS.find((o) => o.value === period)?.label ??
+    "ランキング";
+  const term = label.replace(/ランキング$/, "").trim() || label;
+  return `DLサイト内での販売本数${term}ランキングです`;
+}
+
 export const DEFAULT_DLSITE_BLOGPARTS_AID =
   process.env.NEXT_PUBLIC_DLSITE_AFFILIATE_AID?.trim() || "reviewLab";
 

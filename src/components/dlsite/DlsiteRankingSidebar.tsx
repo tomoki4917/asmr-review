@@ -4,7 +4,9 @@ import { useEffect, useId, useRef, useState } from "react";
 import {
   buildDlsiteRankingBlogpartsConfig,
   DLSITE_RANKING_PERIOD_OPTIONS,
+  DLSITE_SALES_RANKING_SECTION_TITLE,
   DEFAULT_DLSITE_RANKING_PERIOD,
+  dlsiteSalesRankingDescription,
   type DlsiteBlogpartsSite,
   type DlsiteRankingBlogpartsConfig,
   type DlsiteRankingPeriod,
@@ -104,9 +106,7 @@ export function DlsiteRankingSidebar({
   );
   const [loadError, setLoadError] = useState<string | null>(null);
 
-  const periodLabel =
-    DLSITE_RANKING_PERIOD_OPTIONS.find((opt) => opt.value === period)?.label ??
-    "ランキング";
+  const description = dlsiteSalesRankingDescription(period);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -140,7 +140,7 @@ export function DlsiteRankingSidebar({
       <header className="border-t border-slate-500/70 pt-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="font-serif text-xl font-bold tracking-tight text-slate-50 sm:text-[1.35rem]">
-            ランキング
+            {DLSITE_SALES_RANKING_SECTION_TITLE}
           </h2>
           <label htmlFor={selectId} className="sr-only">
             ランキングの集計期間
@@ -162,7 +162,7 @@ export function DlsiteRankingSidebar({
         </div>
       </header>
       <p className="mt-2 text-pretty text-xs leading-relaxed text-slate-500">
-        {periodLabel}（DLsite アフィリエイト）
+        {description}
       </p>
       {loadError ? (
         <p className="mt-4 text-pretty text-sm text-amber-200/90" role="alert">
