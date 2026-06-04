@@ -113,9 +113,6 @@ def assemble(
     basic_extra = f"- **イラスト：** {ill}\n" if ill else ""
     genre = keys.get("GENRE_TYPE", "同人音声").strip()
     pkg = package_to_table(keys.get("PACKAGE_FILES", ""))
-    part = keys.get("PART_ANALYSIS", "").strip()
-    if part and not re.search(r"^##\s+パート解析\s*$", part, re.MULTILINE):
-        part = f"## パート解析\n\n{part}"
 
     graph_axes = (
         "没入度・シナリオ・睡眠・覚醒・音響・満足度"
@@ -194,7 +191,6 @@ dlsiteProductId: {rj}
 
 **★{rating} / 10**
 {orgasm_block}
-{part}
 
 ## 総評：本作品の結論
 
@@ -258,7 +254,7 @@ def main() -> None:
     all_ages = args.all_ages or bool(
         re.search(r"^\s*-\s+全年齢同人\s*$", keys.get("TAGS_YAML", ""), re.MULTILINE)
     )
-    for req in ("SUMMARY", "GRAPH_BREAKDOWN", "PART_ANALYSIS"):
+    for req in ("SUMMARY", "GRAPH_BREAKDOWN"):
         if not keys.get(req, "").strip():
             print(f"[エラー] 必須キー不足: {req}")
             sys.exit(1)

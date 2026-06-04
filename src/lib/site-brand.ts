@@ -3,6 +3,9 @@ import { ALL_AGES_SITE_BASE } from "@/lib/site-rating-switch";
 /** サイト名（R18・全年齢共通） */
 export const SITE_NAME = "ムキネコ解析室";
 
+/** 運営者 X（旧 Twitter）プロフィール */
+export const SITE_X_URL = "https://x.com/aimer010855";
+
 /** 成人向け【R18】サイト名 */
 export const SITE_NAME_R18 = SITE_NAME;
 

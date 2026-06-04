@@ -38,11 +38,12 @@ alwaysApply: true
 
 1. Cursor: 解析フォルダ → `prepare_analysis_inputs`（`auto_review.py --analysis-dir` で可）
 2. Cursor: DLsite で **サークル・販売日・トラック名** を確認 → `--circle` `--rj` `--sale-date` `--item-name`（`【レビュー】` は原紙が付与するので **商品名のみ**）
-3. **Gemini**: `py -3 auto_review.py --force --no-preserve-sections --slug … --analysis-dir … --recommended-lv …`（全面再生成。**`--preserve-sections` なし**＝旧 index 保持禁止）
-4. Cursor: 生出力の誤メタ・脳イキ／ドライ混同・AI調を修正 → 必要なら **`patch_humanize_to_index.py`** または **`--merge-only`（§1.1 保持付き）**
-4b. 四表だけ均一配分・`特性名` プレースホルダのときは `--optimize-tables`（§3.1）
-4c. **修正・merge-only・人手改稿のときも** … `docs/催眠音声執筆ガイド.md` §7.1・§8.4・`writer_forbidden.md` を適用。**`npm run review:validate-prose -- --slug …`** で禁止語を通す（`auto_review.py` マージ時も同一チェックで **失敗時は exit 1**）
-5. Cursor: **`generate_review_triangle.py`（§7.0）** → **`restore_body_changes.py <slug>`（§4.5・体内→体感・三軸と整合）** → `humanize_graph_breakdown.py`（任意）→ **`generate_work_impression.py --write-tsx`（§8.4）** → `quickGuideBySlug` 同期 → **`npm run review:audit-kansei -- --slug …`**
+3. **Gemini + 後処理（一括）**: `py -3 auto_review.py --force --no-preserve-sections --slug … --analysis-dir … --circle … --rj … --sale-date … --cv … --recommended-lv …`  
+   - **merge 前** … `sanitize`（禁止語・メタ・GRAPH_BREAKDOWN・絶頂回数）**自動**（`--no-sanitize` で OFF）  
+   - **merge 後** … `review:ship`（triangle・§4.5・感想・validate・監査）**自動**（`--no-ship` で OFF）  
+   - 解析フォルダに **`product-meta.json`**（梱包・CV 正本）を置くと sanitize が確実（例: `scripts/gemini-hypnosis-review/product-meta.example.json`）
+4. **Cursor（エージェント必須・未自動化）** … **`quickGuideBySlug`**（`page.tsx`）・**`scenario-facts.json`（3パス）**・`goLiveAt`／メタ最終確認。DLsite でサークル・販売日・トラックを `--circle` `--sale-date` `--cv` に反映済みか確認
+5. 部分改稿のみ … **`patch_humanize_to_index.py`** または `--merge-only`（§1.1 保持付き・全面再生成では使わない）
 
 ## 修正時も執筆ルール全適用（必須）
 

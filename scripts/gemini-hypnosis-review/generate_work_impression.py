@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime
 import json
 import os
 import random
@@ -97,10 +98,10 @@ STYLE_REFERENCE_SLUGS = (
 ALL_AGES_STYLE_REFERENCE_SLUG = "shinitagari-junai-maid-yogarekake"
 
 ALL_AGES_OPENING_ANGLES = [
-    "4段落：第1=入り方の特異性+声の温度、第2=関係の芯（救い合い・逆転）、第3=手触り+音像留保1文、第4=向く人（心情）。",
-    "4段落：第1=プロローグの立場関係、第2=叱責と赦しの場面、第3=添い寝・電話の温かさ+弱点1文、第4=深い愛を求める人。",
-    "4段落：第1=重いテーマの入り、第2=メイド／語り手の執着と肯定、第3=睡眠支えの手触り+モノラル等の惜しい点、第4=一人で眠れない夜に寄り添う人。",
-    "3段落：第1=最初の場面+声、第2=関係の逆転と引用1つ、第3=向く人+留保。",
+    "4段落：第1=笑った・メタ・オウム返しの入り、第2=耳元のケアと密着（囁き・膝枕・耳舐め）、第3=ドキドキと眠気の両方+弱点1文、第4=向く人（DLsite読み取りメモ参照）。",
+    "4段落：第1=小生意気な語り手への第一印象、第2=嫉妬・キス・耳ふーの尖り、第3=全年齢枠のからかい+高揚、第4=向く人+合わない人。",
+    "3段落：第1=購入者レビューに近い温度（笑い・心臓・ゾクゾク）、第2=手触りと留保、第3=向く人。",
+    "3段落：第1=黒塗り・全年齢ギャグ、第2=耳かき棒顕現・KU100近接、第3=向く人+刺激だけ追う日は物足りない。",
 ]
 
 # usotsuki 見本全文 + 露骨な summary を同一プロンプトに載せると PROHIBITED_CONTENT になりやすい
@@ -450,6 +451,148 @@ def sanitize_dlsite_review_text(text: str, slug: str) -> str:
     return out
 
 
+DLsite_DIGEST_SYSTEM = """あなたは同人音声レビュー編集者です。DLsite購入者レビュー全文を読み、
+解析室の「作品感想」執筆用メモに整理します。
+
+## 出力（JSON のみ・前置き禁止）
+{
+  "listenerTemperature": ["購入者が感じた温度・口調（3〜8項目・短文）"],
+  "bodyAndSound": ["体感・音の手触り（耳元・眠気・ドキドキ等）"],
+  "characterAppeal": ["キャラ・掛け合いへの反応（メタ・笑い・可愛さ等）"],
+  "strengths": ["褒められている点"],
+  "caveats": ["物足りない・合わない・注意（あれば）"],
+  "recommendedFor": ["向く人の傾向（2〜4）"],
+  "notRecommendedFor": ["合わない人（0〜2）"]
+}
+
+## 禁止
+- 購入者レビューの原文コピペ・長い引用
+- 声優名・サークル名・RJ番号
+- ★・点数・三軸
+- パート番号（tr_2 等）の列挙だけのあらすじ
+"""
+
+
+def gather_dlsite_reviews_full(slug: str) -> tuple[list[dict], str]:
+    """digest 用に購入者レビュー全文を読み込む。戻り値 (reviews, trends_one_line)。"""
+    analysis_dir = ROOT / "src" / "content" / "レビュー" / slug / "analysis"
+    path = analysis_dir / "dlsite_reviews.auto.json"
+    if not path.is_file():
+        return [], ""
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return [], ""
+    reviews = data.get("reviews") or []
+    trends_line = ""
+    trends_path = analysis_dir / "dlsite_review_trends.auto.json"
+    if trends_path.is_file():
+        try:
+            tr = json.loads(trends_path.read_text(encoding="utf-8"))
+            themes = tr.get("recurringThemes") or []
+            theme_s = "、".join(
+                f"{t.get('label', '')}({t.get('count', 0)})" for t in themes[:8]
+            )
+            rec = " / ".join(tr.get("recommendedForHints") or [])[:200]
+            caution = " / ".join(tr.get("notRecommendedForHints") or [])[:200]
+            trends_line = (
+                f"機械抽出傾向: 言及={theme_s or '—'}; "
+                f"向く={rec or '—'}; 合わない={caution or '—'}"
+            )
+        except json.JSONDecodeError:
+            pass
+    return reviews, trends_line
+
+
+def format_dlsite_digest_for_prompt(digest: dict) -> str:
+    """Gemini digest JSON を作品感想プロンプト用テキストへ。"""
+    lines = ["【DLsite購入者レビュー（Gemini読み取りメモ・原文コピー禁止）】"]
+    for key, label in (
+        ("listenerTemperature", "聴き手の温度"),
+        ("bodyAndSound", "体・音"),
+        ("characterAppeal", "キャラ・掛け合い"),
+        ("strengths", "強み"),
+        ("caveats", "注意・弱点"),
+        ("recommendedFor", "向く人"),
+        ("notRecommendedFor", "合わない人"),
+    ):
+        items = digest.get(key) or []
+        if items:
+            lines.append(f"- {label}: " + " / ".join(str(x) for x in items[:8]))
+    return "\n".join(lines)
+
+
+def ensure_dlsite_gemini_digest(
+    client,
+    model: str,
+    slug: str,
+    *,
+    force: bool = False,
+) -> str:
+    """購入者レビューを Gemini で読み取り、digest を保存してプロンプト用文字列を返す。"""
+    analysis_dir = ROOT / "src" / "content" / "レビュー" / slug / "analysis"
+    digest_path = analysis_dir / "dlsite_reviews_gemini_digest.auto.json"
+    if digest_path.is_file() and not force:
+        try:
+            saved = json.loads(digest_path.read_text(encoding="utf-8"))
+            if saved.get("digest"):
+                print(f"[impression] DLsite digest 再利用: {digest_path.name}")
+                return format_dlsite_digest_for_prompt(saved["digest"])
+        except json.JSONDecodeError:
+            pass
+
+    reviews, trends_line = gather_dlsite_reviews_full(slug)
+    if not reviews:
+        print("[impression] dlsite_reviews.auto.json なし — digest スキップ")
+        return ""
+
+    blocks: list[str] = []
+    for i, r in enumerate(reviews, 1):
+        title = sanitize_dlsite_review_text((r.get("title") or "").strip(), slug)
+        text = sanitize_dlsite_review_text((r.get("text") or "").strip(), slug)
+        if title or text:
+            blocks.append(f"### レビュー{i} 《{title}》\n{text}")
+    if not blocks:
+        return ""
+
+    user_prompt = (
+        f"購入者レビュー {len(reviews)} 件を読み、作品感想執筆用メモに整理してください。\n"
+        f"{trends_line}\n\n"
+        + "\n\n".join(blocks)
+    )
+    raw = gemini_generate(
+        client,
+        model=model,
+        contents=user_prompt,
+        system_instruction=DLsite_DIGEST_SYSTEM,
+        temperature=0.35,
+        label="DLsite購入者レビュー読み取り",
+    )
+    m = re.search(r"\{[\s\S]*\}", raw)
+    if not m:
+        print("[警告] DLsite digest: JSON 取得失敗 — 生抜粋にフォールバック")
+        return gather_dlsite_reviews_brief(slug)
+    try:
+        digest_obj = json.loads(m.group(0))
+    except json.JSONDecodeError:
+        print("[警告] DLsite digest: JSON パース失敗 — 生抜粋にフォールバック")
+        return gather_dlsite_reviews_brief(slug)
+
+    payload = {
+        "digestedAt": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "model": model,
+        "reviewCount": len(reviews),
+        "digest": digest_obj,
+    }
+    analysis_dir.mkdir(parents=True, exist_ok=True)
+    digest_path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    print(f"[impression] DLsite digest 保存: {digest_path}")
+    return format_dlsite_digest_for_prompt(digest_obj)
+
+
 def gather_dlsite_reviews_brief(slug: str, *, max_reviews: int = 10) -> str:
     """analysis/dlsite_reviews.auto.json から購入者の主観を要約素材として渡す。"""
     path = ROOT / "src" / "content" / "レビュー" / slug / "analysis" / "dlsite_reviews.auto.json"
@@ -500,7 +643,13 @@ def gather_context(slug: str, *, minimal: bool = False) -> str:
     if m := re.search(r"itemName:\s*(.+)", text):
         parts.append(f"【作品名】{m.group(1).strip()}")
 
-    if re.search(r"ロケ|環境音|現場.*収録|実際.*音", text):
+    env_no_binaural = re.search(
+        r"環境音.*出せない|環境音は控えめ|環境音より会話|ロケ音.*使わない",
+        text,
+    )
+    if not env_no_binaural and re.search(
+        r"ロケ|現場.*収録|実際の環境音|ロケ音", text
+    ):
         parts.append(
             "【音声の特徴（感想に必ず活かす）】"
             "公園等の現場で収録した**実際の環境音（ロケ音）**を催眠誘導の軸に使う。"
@@ -799,44 +948,70 @@ def main() -> None:
         default="",
         help="追加指示（感想に必ず含める事実・角度）",
     )
+    p.add_argument(
+        "--refresh-dlsite-digest",
+        action="store_true",
+        help="DLsite購入者レビューの Gemini 読み取りを再実行",
+    )
+    p.add_argument(
+        "--no-dlsite-digest",
+        action="store_true",
+        help="DLsite digest をスキップ（生抜粋のみ）",
+    )
     args = p.parse_args()
 
     index_path = ROOT / "src" / "content" / "レビュー" / args.slug / "index.md"
     index_text = index_path.read_text(encoding="utf-8") if index_path.is_file() else ""
     all_ages = is_all_ages_doujin_review(index_text)
 
+    require_api_key()
+    model = os.environ.get("GEMINI_HUMANIZE_MODEL", "gemini-2.5-flash")
+    client = genai.Client(api_key=get_api_key())
+
+    dlsite_digest = ""
+    if not args.no_dlsite_digest:
+        dlsite_digest = ensure_dlsite_gemini_digest(
+            client,
+            model,
+            args.slug,
+            force=args.refresh_dlsite_digest,
+        )
+
     ctx = gather_context(args.slug)
-    dlsite = gather_dlsite_reviews_brief(args.slug)
-    if dlsite:
-        ctx = f"{ctx}\n\n{dlsite}"
+    if dlsite_digest:
+        ctx = f"{ctx}\n\n{dlsite_digest}"
+    else:
+        dlsite = gather_dlsite_reviews_brief(args.slug)
+        if dlsite:
+            ctx = f"{ctx}\n\n{dlsite}"
     if not ctx:
         print("[エラー] index.md から文脈を取得できませんでした")
         sys.exit(1)
 
-    banned_tags = [
-        n
-        for n in gather_impression_banned_names(args.slug)
-        if n not in ("めめめのすゝめ", "浅木ゆめみ")
-    ]
-    tag_ban_line = ""
-    if banned_tags:
-        tag_ban_line = (
-            "【必須除外・タグ語】感想本文に次の語は書かない（言い換える）: "
-            + " / ".join(banned_tags)
-            + " … 例: 添い寝→同衾・寝そば、認知シャッフル→電話越しの睡眠導入。\n"
+    circle_cv_names = gather_impression_banned_names(args.slug)
+    name_ban_line = ""
+    if circle_cv_names:
+        name_ban_line = (
+            "【必須除外・サークル・声優】感想本文に次の固有名は書かない: "
+            + " / ".join(circle_cv_names)
+            + " … 語り手は「語り手」「この声」等で指す。\n"
         )
     extra_note = (
         "【必須除外】作品感想にサークル名・声優名（CV）・「○○氏」は一切書かない。"
         "語り手は「語り手」「この声」「語りかけ」「メイド」「楓」等で指す。\n"
+        "【タグ・フェチ語】耳舐め・耳かき・添い寝・膝枕・神様など作品タグは**使用可**（サークル名・声優名だけ禁止）。\n"
         "【必須除外】★・三軸の点数・数値・軸名（没入度・満足度 等）は一切書かない。"
         "弱点は聴いた体感・場面で書く。\n"
-        f"{tag_ban_line}"
+        f"{name_ban_line}"
         "【引用】各段落の「」台詞は0〜1箇所・短く。DLsite原文の転記禁止。\n"
     )
-    if dlsite:
+    has_dlsite = bool(dlsite_digest) or (
+        ROOT / "src" / "content" / "レビュー" / args.slug / "analysis" / "dlsite_reviews.auto.json"
+    ).is_file()
+    if has_dlsite:
         extra_note += (
-            "【DLsite購入者レビュー】上記抜粋の温度（包まれる・救い救われ・"
-            "一人で眠れない夜に寄り添う・電話パートで涙）を**解析室レビュアー自身の所感**として再構成。"
+            "【DLsite購入者レビュー】上記の Gemini 読み取りメモの温度を"
+            "**解析室レビュアー自身の所感**として再構成（物語あらすじ・パート順説明禁止）。"
             "購入者の文言転記・「素晴らしい」「感動」連発は禁止。\n"
         )
     extra_note += "\n"
@@ -1000,10 +1175,6 @@ def main() -> None:
             print("[エラー] 既存 paragraphs が空です")
             sys.exit(1)
         return paras
-
-    require_api_key()
-    model = os.environ.get("GEMINI_HUMANIZE_MODEL", "gemini-2.5-flash")
-    client = genai.Client(api_key=get_api_key())
 
     paragraphs: list[str] = []
 

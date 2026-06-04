@@ -172,34 +172,6 @@
 
 
 
-[PART_ANALYSIS]
-
-## パート解析
-
-
-
-#### 公式パート名または場面見出し
-
-
-
-> 聴取で確認した台詞（1〜3文・創作禁止）
-
-
-
-**物語の流れ:** （2文）
-
-
-
-**感想:** （1〜2文・パートの特徴・強み・主観。購入意欲をそそる具体性。`聴き手は` 連発禁止）
-
-
-
-（パート数は作品に合わせる。誘導・カウント・深化を主目的にしない）
-
-[/PART_ANALYSIS]
-
-
-
 [CONCLUSION_DESIGN]
 
 ### 【設計の要点】
@@ -232,5 +204,5 @@
 
 
 
-**禁止キー（出力してはいけない）** … `INDUCTION_*` `SUGGESTION_*` `DRY_SCENE_COUNT` `WET_SCENE_COUNT` `SCORE_TRANSE` `INDUCTION_FLOW` `SENSITIVITY_*`
+**禁止キー（出力してはいけない）** … `INDUCTION_*` `SUGGESTION_*` `DRY_SCENE_COUNT` `WET_SCENE_COUNT` `SCORE_TRANSE` `INDUCTION_FLOW` `SENSITIVITY_*` **`PART_ANALYSIS`**
 

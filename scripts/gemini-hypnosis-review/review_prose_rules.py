@@ -265,7 +265,10 @@ def extract_index_summary(text: str) -> str:
 
 
 def gather_impression_banned_names(slug: str) -> list[str]:
-    """作品感想に書いてはいけないサークル名・声優名（index 正本）。"""
+    """作品感想に書いてはいけないサークル名・声優名のみ（index / quickGuide）。
+
+    tags のフェチ・作品タグ（耳舐め・添い寝・神様 等）は禁止しない。
+    """
     index_path = REVIEWS_DIR / slug / "index.md"
     if not index_path.is_file():
         return []
@@ -286,30 +289,6 @@ def gather_impression_banned_names(slug: str) -> list[str]:
     if m := re.search(r"\*\*CV：\*\* (.+)", text):
         for part in re.split(r"[／/、,]", m.group(1)):
             add(part.strip())
-
-    tag_skip = {
-        "催眠音声",
-        "同人音声",
-        "バイノーラル",
-        "睡眠導入",
-        "多段深化",
-        "ドライオーガズム",
-        "脳イキ",
-        "サラウンド",
-        "妖精",
-        "催眠ショー",
-        "リアルヒプノシリーズ",
-        "アンノウンヒプノ",
-    }
-    for m in re.finditer(r"^tags:\s*\n([\s\S]*?)(?=\n\w|\n---)", text, re.MULTILINE):
-        for tag in re.findall(r"^\s*-\s+(.+)$", m.group(1), re.MULTILINE):
-            t = tag.strip()
-            if t in tag_skip or t.startswith("RJ"):
-                continue
-            if re.search(r"系$|向け|責め|カウント|前立腺|裏筋|ステージ|MC", t):
-                continue
-            if len(t) <= 12 and not re.search(r"[・/／]", t):
-                add(t)
 
     page_path = ROOT / "src" / "app" / "(public)" / "reviews" / "[slug]" / "page.tsx"
     if page_path.is_file():

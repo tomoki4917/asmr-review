@@ -50,8 +50,28 @@ copy .env.example .env
 |------|----------|
 | 解析 SRT/TXT 等 | `--analysis-dir` → `whisper_output.txt` / `librosa_output.txt` |
 | 作品メタ | 解析フォルダの `info.txt`（DLsite 確認済み） |
+| 梱包・CV 正本（推奨） | 解析フォルダの `product-meta.json`（例: `product-meta.example.json`） |
 
-## 三軸採点のみ（§1.0・推奨）
+## 軽量フロー（merge 前 sanitize + ship 一括）
+
+**`auto_review.py` は merge 前に自動で `sanitize` を実行**（`--no-sanitize` で無効化）。
+
+```powershell
+# merge 前だけ手動で直す場合
+npm run review:sanitize -- --slug <slug> --circle "サークル" --cv "声優" `
+  --sale-date 2024-10-28 --analysis-dir "C:\path\to\解析フォルダ"
+
+# merge 成功後
+npm run review:ship -- --slug <slug>
+```
+
+| コマンド | 内容 |
+|----------|------|
+| `review:sanitize` | 禁止語置換・CLI/product-meta で CV・販売日・tags・梱包・GRAPH_BREAKDOWN・絶頂回数 |
+| `review:ship` | triangle → restore_body → workImpression → validate-prose → audit |
+
+`review:ship --skip-restore` … Gemini API 不要で validate + audit のみ。
+
 
 ```powershell
 py -3 auto_review.py --eval-only `
@@ -62,17 +82,24 @@ py -3 auto_review.py --eval-only `
 - `eval_results/<slug>_*.md` + `_分析データ.json` の `scores` のみ更新
 - **`index.md` は触らない** → ガイド §1.0 の Cursor 人手整合 → グラフ・★ 同期
 
-## フル生成
+## フル生成（sanitize + merge + ship まで一括）
 
 ```powershell
 py -3 auto_review.py `
+  --force --no-preserve-sections `
   --slug <slug> `
   --item-name "作品名" `
   --circle "サークル" `
+  --cv "声優" `
   --rj RJxxxxxx `
+  --sale-date 2024-10-28 `
   --analysis-dir "C:\path\to\解析フォルダ" `
-  --force
+  --recommended-lv 2
 ```
+
+- **1コマンドで** 三軸採点 → 本文 → sanitize → index マージ → triangle → §4.5 → 感想 → 監査まで実行
+- 解析フォルダに **`product-meta.json`** を置くと梱包・tags が自動反映（例: `product-meta.example.json`）
+- エージェント残作業: **`quickGuideBySlug`**・**`scenario-facts.json`**
 
 ## 四表だけ最適化（解析データタブ）
 

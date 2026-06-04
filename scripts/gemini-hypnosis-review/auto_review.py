@@ -175,7 +175,6 @@ SCENARIO_GEMINI_KEYS = [
     "MAJOR_FETISH",
     "SITUATION_TYPE",
     "GRAPH_BREAKDOWN",
-    "PART_ANALYSIS",
     "CONCLUSION_DESIGN",
     "CONCLUSION_ACOUSTIC",
     "CONCLUSION_FINAL",
@@ -1088,7 +1087,7 @@ def build_writer_instruction_parts(
     writing_guide = load_file(writing_guide_path(args), guide_label)
     if scenario_voice_mode(args):
         sample = (
-            f"見本記事: {SCENARIO_SAMPLE_SLUG}（完成系・グラフ5軸要約文・パート解析3要素の型のみ。"
+            f"見本記事: {SCENARIO_SAMPLE_SLUG}（完成系・グラフ5軸要約文の型のみ。"
             "文言コピー禁止）。"
         )
         if all_ages_scenario_mode(args):
@@ -1099,15 +1098,13 @@ def build_writer_instruction_parts(
         extras = [
             "【シチュボイス厳守】催眠の四表・主要誘導の流れ・体験感度Lv・ドライ/ウェット/脳イキ主語は禁止。",
             "【GRAPH_BREAKDOWN】各軸は `- **シナリオ n**` のあと2〜3文のみ。"
-            "評価要因（心理・空間の生々しさ等）を太字見出しにしない。括弧サブ点禁止。要因は要約して織り込む。",
-            "【PART_ANALYSIS】引用 → 物語の流れ → 感想（`心情の変化` 禁止）。"
-            "感想は各パートの特徴・強み・主観1〜2文・購入意欲をそそる具体。"
-            "聴き手は〜同型連発禁止。"
+            "評価要因（心理・空間の生々しさ等）を太字見出しにしない。括弧サブ点禁止。要因は要約して織り込む。"
             + (
                 " 全年齢: 総合評価に絶頂行なし。第4軸表示名は睡眠・覚醒。"
                 if all_ages_scenario_mode(args)
                 else " 総合評価の絶頂行は 絶頂シーン n回 のみ。"
-            ),
+            )
+            + " **`## パート解析`／`[PART_ANALYSIS]` は出力禁止**（2026-06 廃止）。",
             "出力は writer_output_keys_scenario の [KEY] のみ。",
         ]
     else:
@@ -1302,7 +1299,18 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--slug", required=True, help="レビュー slug（英小文字・ハイフン）")
     p.add_argument("--item-name", default="", help="商品名")
     p.add_argument("--circle", default="（記入）", help="サークル名")
+    p.add_argument("--cv", default="", help="CV（単一・sanitize で TAGS/CV_FEMALE へ反映）")
     p.add_argument("--rj", default="", help="DLsite RJ 番号")
+    p.add_argument(
+        "--no-sanitize",
+        action="store_true",
+        help="merge 前の review_output 正規化（禁止語・メタ・GRAPH_BREAKDOWN）をスキップ",
+    )
+    p.add_argument(
+        "--no-ship",
+        action="store_true",
+        help="merge 後の review:ship（triangle・restore・感想・監査）をスキップ",
+    )
     p.add_argument("--sale-date", default="2000-01-01", help="saleDate YYYY-MM-DD")
     p.add_argument("--published-at", default="", help="publishedAt YYYY-MM-DD")
     p.add_argument("--recommended-lv", type=int, default=2, choices=range(1, 6))
@@ -1567,15 +1575,6 @@ def main() -> None:
                 "使用技法は【】内・台本の手続き名（CFバイパス等の論文語禁止）。"
                 "Librosa・採点・ステージ・同相バインド等のメタ語禁止。"
             )
-        if "PART_ANALYSIS" in only_keys:
-            extra_flow = (
-                (extra_flow or "")
-                + "【追加・PART_ANALYSIS】docs/シチュエーションボイス執筆ガイド.md §6 厳守。"
-                "各パート: #### 見出し → 引用 → **物語の流れ:**（2文）→ **感想:**（1〜2文）。"
-                "**心情の変化:** は出力禁止。**感想:** は当パートの特徴・強み・レビュアー主観。"
-                "購入したくなる具体（声・密着・刺激の型・この場面だけの見どころ）。"
-                "全パート `聴き手は` で始める横滑り禁止。ボーナス（フリートーク・NG）は載せない。"
-            )
         writer_prompt = f"{source_context}\n\n{writer_prompt}\n{extra_flow}"
         table_hint = ""
         if set(only_keys) & set(ANALYSIS_TABLE_KEYS):
@@ -1757,6 +1756,19 @@ def main() -> None:
 
         draft_path.write_text(generated, encoding="utf-8")
 
+    if not args.no_sanitize and not scenario_voice_mode(args):
+        from sanitize_review_output import sanitize_draft
+
+        generated, sanitize_log = sanitize_draft(
+            generated,
+            args,
+            slug=args.slug,
+            write_back=True,
+            draft_path=draft_path,
+        )
+        for msg in sanitize_log:
+            print(f"  [sanitize] {msg}")
+
     keys = parse_gemini_keys(generated)
 
     prose_violations = validate_prose_keys(keys)
@@ -1879,26 +1891,24 @@ def main() -> None:
         print(f"  検証: npm run review:validate-prose -- --slug {args.slug}")
         sys.exit(1)
 
-    triangle_script = ROOT / "scripts" / "generate_review_triangle.py"
-    if analysis_path.is_file() and triangle_script.is_file():
-        import subprocess
+    if not args.no_ship and not scenario_voice_mode(args):
+        from review_ship import run_review_ship
 
-        print("\n[7/7] review_triangle.png を生成（_分析データ.json・小数表示）...")
-        subprocess.run(
-            [sys.executable, str(triangle_script), args.slug],
-            cwd=str(ROOT),
-            check=True,
-        )
+        print("\n[8/8] review:ship（triangle・§4.5・感想・監査）...")
+        if not run_review_ship(args.slug):
+            print("\n[エラー] review:ship が失敗しました。修正後:")
+            print(f"  npm run review:ship -- --slug {args.slug}")
+            sys.exit(1)
 
     print("\n【完了】")
     print(f"  index.md      → {index_path}")
     print(f"  _分析データ.json → {analysis_path}")
     print(f"  Gemini生出力  → {draft_path}")
-    print("\n残作業（必須）:")
-    print(f"  npm run review:validate-prose -- --slug {args.slug}")
-    print(f"  py -3 scripts/gemini-hypnosis-review/restore_body_changes.py {args.slug}")
-    print(f"  py -3 scripts/gemini-hypnosis-review/generate_work_impression.py {args.slug} --write-tsx")
-    print("  quickGuideBySlug のその他フィールド / products.json / audit-kansei")
+    if args.no_ship:
+        print("\n残作業（--no-ship のため未実行）:")
+        print(f"  npm run review:ship -- --slug {args.slug}")
+    print("\n残作業（未自動化）:")
+    print("  quickGuideBySlug（page.tsx）・scenario-facts.json（3パス）")
     print("  （dev 時は npm run dev で画像同期）")
 
 

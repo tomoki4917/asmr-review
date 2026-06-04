@@ -57,6 +57,10 @@ dlsiteProductId: {{DLSITE_PRODUCT_ID}}
 
 ![作品評価グラフ（トランス度・快楽度・満足度）](/content/reviews/{{SLUG}}/review_triangle.png)
 
+**グラフ評価内訳**
+
+[GRAPH_BREAKDOWN]
+
 ## 解析結論
 
 ### 【推奨感度Lv：{{RECOMMENDED_LV}}以上】

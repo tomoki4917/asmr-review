@@ -26,6 +26,8 @@
     "review:create-genkami": "node scripts/create-hypnosis-review-shell.mjs",
     "review:audit-kansei": "node scripts/audit-review-kansei.mjs",
     "review:validate-prose": "py -3 scripts/gemini-hypnosis-review/review_prose_rules.py",
+    "review:sanitize": "py -3 scripts/gemini-hypnosis-review/sanitize_review_output.py",
+    "review:ship": "py -3 scripts/gemini-hypnosis-review/review_ship.py",
     "review:audit-scenario": "node scripts/audit-review-scenario.mjs",
     "review:score-doujin-graph": "node scripts/score-doujin-graph-features.mjs",
     "review:audit-doujin-transcript": "node scripts/audit-doujin-transcript.mjs",
