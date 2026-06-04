@@ -34,13 +34,15 @@ py -3 restore_body_changes.py <slug>
 
 `docs/催眠音声執筆ガイド.md` §4.5 準拠（ドーパミン等のメカニズム＋`その結果、`）。`_分析データ.json` の三軸を読み、**全作品で身体の変化を採点と整合**（高評価は厚く、低評価は薄く／不足を正直に）。
 
-**クイック「作品感想」（必須）**
+**クイック「作品感想」（必須・DLsite 2段）**
 
 ```bash
+node scripts/fetch-dlsite-user-reviews.mjs RJxxxxxx <slug> --update-notes
 py -3 generate_work_impression.py <slug> --write-tsx
+# 購入者レビュー更新時: --refresh-dlsite-digest
 ```
 
-§8.4 準拠。**【合わない可能性がある人】の直下**に出る `workImpressionParagraphs`。**`quickGuideBySlug` 登録作品は欠落不可**（Gemini で **2〜4 段落**・**AI調排除・忖度無し**のレビュアー所感）。弱点1文以上・★7以下は短所段落必須。禁止語: `芯` `手順`。構成・入り方は毎回変える（固定テンプレ・グリム型コピー・全段落称賛禁止）。見本: A=grim-grimm / B=usotsuki / C=shinri-test（低評価）。
+§8.4・**§8.4.1** 準拠。**第1段** … 購入者レビュー全文を Gemini が `analysis/dlsite_reviews_gemini_digest.auto.json` に整理。**第2段** … digest ＋ Whisper で **2〜4 段落**の所感。**【合わない可能性がある人】の直下**に表示。欠落不可。弱点1文以上。**禁止** … サークル・声優名・★・三軸数値・購入者原文コピペ。**許可** … tags のフェチ語（耳舐め等）。見本: A=grim / B=usotsuki / C=shinri-test。全年齢シチュは shinitagari（構造のみ）。
 pip install -r requirements.txt
 copy .env.example .env
 # .env に GEMINI_API_KEY=

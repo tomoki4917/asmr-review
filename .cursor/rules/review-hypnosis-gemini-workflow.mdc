@@ -40,7 +40,7 @@ alwaysApply: true
 2. Cursor: DLsite で **サークル・販売日・トラック名** を確認 → `--circle` `--rj` `--sale-date` `--item-name`（`【レビュー】` は原紙が付与するので **商品名のみ**）
 3. **Gemini + 後処理（一括）**: `py -3 auto_review.py --force --no-preserve-sections --slug … --analysis-dir … --circle … --rj … --sale-date … --cv … --recommended-lv …`  
    - **merge 前** … `sanitize`（禁止語・メタ・GRAPH_BREAKDOWN・絶頂回数）**自動**（`--no-sanitize` で OFF）  
-   - **merge 後** … `review:ship`（triangle・§4.5・感想・validate・監査）**自動**（`--no-ship` で OFF）  
+   - **merge 後** … `review:ship`（triangle・§4.5・**DLsite digest → 感想**・validate・監査）**自動**（`--no-ship` で OFF）。感想単体は **`fetch-dlsite-user-reviews.mjs`** → **`generate_work_impression.py --write-tsx`**（`docs/催眠音声執筆ガイド.md` §8.4.1）  
    - 解析フォルダに **`product-meta.json`**（梱包・CV 正本）を置くと sanitize が確実（例: `scripts/gemini-hypnosis-review/product-meta.example.json`）
 4. **Cursor（エージェント必須・未自動化）** … **`quickGuideBySlug`**（`page.tsx`）・**`scenario-facts.json`（3パス）**・`goLiveAt`／メタ最終確認。DLsite でサークル・販売日・トラックを `--circle` `--sale-date` `--cv` に反映済みか確認
 5. 部分改稿のみ … **`patch_humanize_to_index.py`** または `--merge-only`（§1.1 保持付き・全面再生成では使わない）

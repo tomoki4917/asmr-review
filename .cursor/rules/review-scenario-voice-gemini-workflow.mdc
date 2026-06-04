@@ -31,7 +31,7 @@ alwaysApply: false
 1. 五軸採点確定 → `_分析データ.json` `schemaVersion: 2`
 2. `py -3 auto_review.py --scenario-voice [--all-ages] --writer-only --skip-eval --force --slug …`
 3. `merge_scenario_index.py [--all-ages]` で `index.md` 組み立て（**dakimakura 型**。B型催眠マージは使わない）
-4. `generate_review_triangle.py` → `generate_work_impression.py --write-tsx` → `validate-prose` / `audit-scenario` / `audit-kansei`
+4. `generate_review_triangle.py` → **`fetch-dlsite-user-reviews.mjs RJ… <slug> --update-notes`** → **`generate_work_impression.py <slug> --write-tsx`**（**§8.4.1**: Gemini が購入者レビュー digest → 感想）→ `validate-prose` / `audit-scenario` / `audit-kansei`
 
 **全面作り直し** … 旧 `eval_results`・`review_output.md` 削除、`--no-preserve-sections` 相当で旧散文を差し戻さない。
 

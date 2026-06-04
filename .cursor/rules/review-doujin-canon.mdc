@@ -41,9 +41,9 @@ alwaysApply: false
 
 ## DLsite 購入者レビュー（必須）
 
-**`dlsiteProductId` がある同人記事**は、執筆前に `node scripts/fetch-dlsite-user-reviews.mjs RJ… <slug> --update-notes` を実行する。
+**`dlsiteProductId` がある同人記事**は `node scripts/fetch-dlsite-user-reviews.mjs RJ… <slug> --update-notes` を実行する（執筆前〜グラフ確定後のどちらでも可。**感想の直前に未実行なら必須**）。
 
-**第三者の傾向**を **`おすすめ3`・`合わない2`・グラフ・総評** へ言い換えて反映し、完成度を上げる（詳細は `_同人音声執筆ガイド2.md`「DLsite 購入者レビューの記事反映」）。**「DLsiteのレビューでも」・原文引用・星は禁止**。
+**第三者の傾向**を **`おすすめ3`・`合わない2`・グラフ・総評** へ言い換えて反映（詳細は `_同人音声執筆ガイド2.md`「DLsite 購入者レビューの記事反映」）。**作品感想**は **`generate_work_impression.py`** が購入者レビューを **Gemini で digest → 感想**（`docs/催眠音声執筆ガイド.md` §8.4.1）。**原文引用・星・「DLsiteのレビューでも」禁止**。感想の**タグ語（耳舐め等）は可**・**サークル・声優名のみ禁止**。
 
 ## 十サブ代理採点（精度向上・2026-05-24）
 

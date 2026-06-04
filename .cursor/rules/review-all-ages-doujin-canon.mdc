@@ -35,7 +35,7 @@ alwaysApply: false
 
 ## 作品感想
 
-`workImpressionParagraphs` 必須。`generate_work_impression.py --write-tsx`（全年齢は shinitagari 見本C）。
+`workImpressionParagraphs` 必須。**DLsite 2段（Gemini）** … `fetch-dlsite-user-reviews.mjs` → `generate_work_impression.py --write-tsx`（digest 自動・`docs/催眠音声執筆ガイド.md` §8.4.1）。全年齢は shinitagari 見本C（構造のみ・物語解説コピー禁止）。**タグ語（耳舐め等）は可・サークル・声優名のみ禁止**。
 
 ## シナリオ3パス
 
