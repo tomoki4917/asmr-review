@@ -518,8 +518,116 @@ def format_dlsite_digest_for_prompt(digest: dict) -> str:
     ):
         items = digest.get(key) or []
         if items:
-            lines.append(f"- {label}: " + " / ".join(str(x) for x in items[:8]))
+            lines.append(f"- {label}: " + " / ".join(str(x) for x in items[:12]))
     return "\n".join(lines)
+
+
+DIGEST_LIST_KEYS = (
+    "listenerTemperature",
+    "bodyAndSound",
+    "characterAppeal",
+    "strengths",
+    "caveats",
+    "recommendedFor",
+    "notRecommendedFor",
+)
+
+DIGEST_BATCH_SIZE = 5
+
+
+def merge_digest_parts(parts: list[dict]) -> dict:
+    """バッチ digest を1つに統合（重複除去）。"""
+    merged: dict[str, list[str]] = {k: [] for k in DIGEST_LIST_KEYS}
+    seen: dict[str, set[str]] = {k: set() for k in DIGEST_LIST_KEYS}
+    for part in parts:
+        for key in DIGEST_LIST_KEYS:
+            for item in part.get(key) or []:
+                text = str(item).strip()
+                if text and text not in seen[key]:
+                    seen[key].add(text)
+                    merged[key].append(text)
+    return merged
+
+
+def parse_digest_json(raw: str) -> dict | None:
+    m = re.search(r"\{[\s\S]*\}", raw)
+    if not m:
+        return None
+    try:
+        return json.loads(m.group(0))
+    except json.JSONDecodeError:
+        return None
+
+
+def run_dlsite_digest_gemini(
+    client,
+    model: str,
+    *,
+    blocks: list[str],
+    trends_line: str,
+    review_count: int,
+    batch_label: str,
+) -> dict | None:
+    user_prompt = (
+        f"購入者レビュー {review_count} 件（{batch_label}）を読み、作品感想執筆用メモに整理してください。\n"
+        f"{trends_line}\n\n"
+        + "\n\n".join(blocks)
+    )
+    raw = gemini_generate(
+        client,
+        model=model,
+        contents=user_prompt,
+        system_instruction=DLsite_DIGEST_SYSTEM,
+        temperature=0.35,
+        label=f"DLsite購入者レビュー読み取り（{batch_label}）",
+    )
+    return parse_digest_json(raw)
+
+
+def digest_reviews_batched(
+    client,
+    model: str,
+    blocks: list[str],
+    trends_line: str,
+) -> dict | None:
+    """件数が多い／露骨な題材向けに小分け digest して統合。"""
+    parts: list[dict] = []
+    total = len(blocks)
+    for start in range(0, total, DIGEST_BATCH_SIZE):
+        chunk = blocks[start : start + DIGEST_BATCH_SIZE]
+        batch_no = start // DIGEST_BATCH_SIZE + 1
+        batch_total = (total + DIGEST_BATCH_SIZE - 1) // DIGEST_BATCH_SIZE
+        label = f"バッチ{batch_no}/{batch_total}・{len(chunk)}件"
+        part = run_dlsite_digest_gemini(
+            client,
+            model,
+            blocks=chunk,
+            trends_line=trends_line if batch_no == 1 else "",
+            review_count=len(chunk),
+            batch_label=label,
+        )
+        if part:
+            parts.append(part)
+        else:
+            print(f"[警告] DLsite digest {label}: JSON 取得失敗 — 1件ずつ再試行")
+            for j, single_block in enumerate(chunk, start=start + 1):
+                single = run_dlsite_digest_gemini(
+                    client,
+                    model,
+                    blocks=[single_block],
+                    trends_line="",
+                    review_count=1,
+                    batch_label=f"単件{j}/{total}",
+                )
+                if single:
+                    parts.append(single)
+                else:
+                    print(f"[警告] DLsite digest 単件{j}: スキップ")
+    if not parts:
+        return None
+    if len(parts) == 1:
+        return parts[0]
+    return merge_digest_parts(parts)
 
 
 def ensure_dlsite_gemini_digest(
@@ -555,33 +663,39 @@ def ensure_dlsite_gemini_digest(
     if not blocks:
         return ""
 
-    user_prompt = (
-        f"購入者レビュー {len(reviews)} 件を読み、作品感想執筆用メモに整理してください。\n"
-        f"{trends_line}\n\n"
-        + "\n\n".join(blocks)
-    )
-    raw = gemini_generate(
-        client,
-        model=model,
-        contents=user_prompt,
-        system_instruction=DLsite_DIGEST_SYSTEM,
-        temperature=0.35,
-        label="DLsite購入者レビュー読み取り",
-    )
-    m = re.search(r"\{[\s\S]*\}", raw)
-    if not m:
+    digest_obj: dict | None = None
+    batched = False
+    if len(blocks) > DIGEST_BATCH_SIZE:
+        print(
+            f"[impression] DLsite digest バッチ処理（{len(blocks)}件 → "
+            f"{DIGEST_BATCH_SIZE}件ずつ）"
+        )
+        digest_obj = digest_reviews_batched(client, model, blocks, trends_line)
+        batched = True
+    else:
+        digest_obj = run_dlsite_digest_gemini(
+            client,
+            model,
+            blocks=blocks,
+            trends_line=trends_line,
+            review_count=len(reviews),
+            batch_label="全件",
+        )
+
+    if digest_obj is None and len(blocks) > 1:
+        print("[impression] 一括 digest 失敗 — バッチ digest へフォールバック")
+        digest_obj = digest_reviews_batched(client, model, blocks, trends_line)
+        batched = True
+
+    if not digest_obj:
         print("[警告] DLsite digest: JSON 取得失敗 — 生抜粋にフォールバック")
-        return gather_dlsite_reviews_brief(slug)
-    try:
-        digest_obj = json.loads(m.group(0))
-    except json.JSONDecodeError:
-        print("[警告] DLsite digest: JSON パース失敗 — 生抜粋にフォールバック")
-        return gather_dlsite_reviews_brief(slug)
+        return gather_dlsite_reviews_brief(slug, max_reviews=len(reviews))
 
     payload = {
         "digestedAt": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "model": model,
         "reviewCount": len(reviews),
+        "batched": batched,
         "digest": digest_obj,
     }
     analysis_dir.mkdir(parents=True, exist_ok=True)

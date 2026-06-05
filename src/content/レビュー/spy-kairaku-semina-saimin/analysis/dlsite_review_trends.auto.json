@@ -1,0 +1,48 @@
+{
+  "fetchedAt": "2026-06-05T05:09:26.776Z",
+  "source": "review_text_only",
+  "total": 32,
+  "textReviewCount": 32,
+  "recurringThemes": [
+    {
+      "label": "イチャラブ・あまあま",
+      "count": 6
+    },
+    {
+      "label": "密着・耳元",
+      "count": 1
+    },
+    {
+      "label": "穏やか・オホ声なし",
+      "count": 1
+    }
+  ],
+  "axisHints": [
+    {
+      "axis": "pleasure",
+      "count": 14
+    },
+    {
+      "axis": "immersion",
+      "count": 7
+    },
+    {
+      "axis": "scenario",
+      "count": 5
+    },
+    {
+      "axis": "satisfaction",
+      "count": 4
+    },
+    {
+      "axis": "acoustic",
+      "count": 1
+    }
+  ],
+  "recommendedForHints": [
+    "あまあま・純愛の甘さを長尺で味わいたい層"
+  ],
+  "notRecommendedForHints": [
+    "オホ声・過激喘ぎ一発高揚を主目的にする層"
+  ]
+}
