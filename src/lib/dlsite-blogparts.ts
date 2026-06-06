@@ -18,6 +18,17 @@ export const DEFAULT_DLSITE_RANKING_PERIOD: DlsiteRankingPeriod = "week";
 
 export const DLSITE_SALES_RANKING_SECTION_TITLE = "DLサイト内販売数ランキング";
 
+export const DLSITE_SALES_RANKING_SECTION_TITLE_MANIAX =
+  "成人向けDLサイト内販売数ランキング";
+
+export function dlsiteSalesRankingSectionTitle(
+  site: DlsiteBlogpartsSite
+): string {
+  return site === "maniax"
+    ? DLSITE_SALES_RANKING_SECTION_TITLE_MANIAX
+    : DLSITE_SALES_RANKING_SECTION_TITLE;
+}
+
 /** サイドバー用（例: DLサイト内での販売本数7日間ランキングです） */
 export function dlsiteSalesRankingDescription(period: DlsiteRankingPeriod): string {
   const label =
@@ -30,8 +41,15 @@ export function dlsiteSalesRankingDescription(period: DlsiteRankingPeriod): stri
 export const DEFAULT_DLSITE_BLOGPARTS_AID =
   process.env.NEXT_PUBLIC_DLSITE_AFFILIATE_AID?.trim() || "reviewLab";
 
-/** DLsite 発行の 7日間ランキング用タグ（そのまま貼り付け可能） */
-export const DLSITE_WEEK_RANKING_BLOGPARTS_INLINE = `blogparts={"base":"https://www.dlsite.com/","type":"ranking","site":"home","query":{"period":"week"},"title":"ランキング","display":"vertical","detail":"1","column":"h","image":"small","count":"5","wrapper":"1","autorotate":true,"aid":"reviewLab"}`;
+/** DLsite 発行の 7日間ランキング（全年齢 home） */
+export const DLSITE_WEEK_RANKING_BLOGPARTS_INLINE_HOME = `blogparts={"base":"https://www.dlsite.com/","type":"ranking","site":"home","query":{"period":"week"},"title":"ランキング","display":"vertical","detail":"1","column":"h","image":"small","count":"5","wrapper":"1","autorotate":true,"aid":"reviewLab"}`;
+
+/** DLsite 発行の 7日間ランキング（18禁同人 maniax） */
+export const DLSITE_WEEK_RANKING_BLOGPARTS_INLINE_MANIAX = `blogparts={"base":"https://www.dlsite.com/","type":"ranking","site":"maniax","query":{"period":"week"},"title":"ランキング","display":"vertical","detail":"1","column":"h","image":"small","count":"3","wrapper":"1","autorotate":true,"aid":"reviewLab"}`;
+
+/** @deprecated `DLSITE_WEEK_RANKING_BLOGPARTS_INLINE_HOME` を使用 */
+export const DLSITE_WEEK_RANKING_BLOGPARTS_INLINE =
+  DLSITE_WEEK_RANKING_BLOGPARTS_INLINE_HOME;
 
 export type DlsiteRankingBlogpartsConfig = {
   base: string;
@@ -83,7 +101,17 @@ export function serializeDlsiteRankingBlogpartsInline(
     config.title === "ランキング" &&
     config.count === "5"
   ) {
-    return DLSITE_WEEK_RANKING_BLOGPARTS_INLINE;
+    return DLSITE_WEEK_RANKING_BLOGPARTS_INLINE_HOME;
+  }
+
+  if (
+    config.site === "maniax" &&
+    config.query.period === "week" &&
+    config.aid === "reviewLab" &&
+    config.title === "ランキング" &&
+    config.count === "3"
+  ) {
+    return DLSITE_WEEK_RANKING_BLOGPARTS_INLINE_MANIAX;
   }
 
   return (

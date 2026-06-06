@@ -4,9 +4,9 @@ import { useEffect, useId, useRef, useState } from "react";
 import {
   buildDlsiteRankingBlogpartsConfig,
   DLSITE_RANKING_PERIOD_OPTIONS,
-  DLSITE_SALES_RANKING_SECTION_TITLE,
   DEFAULT_DLSITE_RANKING_PERIOD,
   dlsiteSalesRankingDescription,
+  dlsiteSalesRankingSectionTitle,
   type DlsiteBlogpartsSite,
   type DlsiteRankingBlogpartsConfig,
   type DlsiteRankingPeriod,
@@ -86,17 +86,20 @@ function renderRankingIntoMount(
 }
 
 type Props = {
-  /** DLsite ランキングのサイト軸（既定: home＝トップ総合） */
+  /** DLsite ランキングのサイト軸（home＝全年齢 / maniax＝18禁同人） */
   site?: DlsiteBlogpartsSite;
+  /** 表示件数（maniax 公式タグは 3、home は 5） */
+  count?: number;
   className?: string;
 };
 
 /**
- * DLsite 公式ブログパーツ（ランキング・縦5件）。
+ * DLsite 公式ブログパーツ（ランキング・縦表示）。
  * 公式タグは `document.writeln` 前提のため、マウント要素へ手動で blogparts を呼ぶ。
  */
 export function DlsiteRankingSidebar({
-  site = "home",
+  site = "maniax",
+  count,
   className = "",
 }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -107,6 +110,7 @@ export function DlsiteRankingSidebar({
   const [loadError, setLoadError] = useState<string | null>(null);
 
   const description = dlsiteSalesRankingDescription(period);
+  const sectionTitle = dlsiteSalesRankingSectionTitle(site);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -115,7 +119,11 @@ export function DlsiteRankingSidebar({
     let cancelled = false;
     setLoadError(null);
 
-    const config = buildDlsiteRankingBlogpartsConfig({ period, site });
+    const config = buildDlsiteRankingBlogpartsConfig({
+      period,
+      site,
+      count: count ?? (site === "maniax" ? 3 : 5),
+    });
 
     loadDlsiteBlogpartsScript()
       .then(() => {
@@ -133,14 +141,14 @@ export function DlsiteRankingSidebar({
       cancelled = true;
       mount.replaceChildren();
     };
-  }, [period, site]);
+  }, [period, site, count]);
 
   return (
     <aside className={`min-w-0 ${className}`.trim()}>
       <header className="border-t border-slate-500/70 pt-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="font-serif text-xl font-bold tracking-tight text-slate-50 sm:text-[1.35rem]">
-            {DLSITE_SALES_RANKING_SECTION_TITLE}
+            {sectionTitle}
           </h2>
           <label htmlFor={selectId} className="sr-only">
             ランキングの集計期間

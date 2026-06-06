@@ -45,7 +45,7 @@ export function AllAgesHomeEditorial({ reviews }: Props) {
       aria-label="注目エリア"
     >
       <div className="grid items-start gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.55fr)] lg:gap-x-10">
-        <DlsiteRankingSidebar site="home" />
+        <DlsiteRankingSidebar site="home" count={5} />
 
         <article
           className="min-w-0 lg:px-1"

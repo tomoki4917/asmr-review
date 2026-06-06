@@ -1,0 +1,38 @@
+{
+  "fetchedAt": "2026-06-06T04:57:42.594Z",
+  "source": "review_text_only",
+  "total": 26,
+  "textReviewCount": 26,
+  "recurringThemes": [
+    {
+      "label": "イチャラブ・あまあま",
+      "count": 1
+    }
+  ],
+  "axisHints": [
+    {
+      "axis": "pleasure",
+      "count": 5
+    },
+    {
+      "axis": "scenario",
+      "count": 4
+    },
+    {
+      "axis": "immersion",
+      "count": 3
+    },
+    {
+      "axis": "acoustic",
+      "count": 1
+    },
+    {
+      "axis": "satisfaction",
+      "count": 1
+    }
+  ],
+  "recommendedForHints": [
+    "あまあま・純愛の甘さを長尺で味わいたい層"
+  ],
+  "notRecommendedForHints": []
+}
