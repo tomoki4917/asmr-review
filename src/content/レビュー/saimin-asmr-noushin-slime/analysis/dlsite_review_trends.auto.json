@@ -1,0 +1,50 @@
+{
+  "fetchedAt": "2026-06-07T12:46:41.557Z",
+  "source": "review_text_only",
+  "total": 6,
+  "textReviewCount": 6,
+  "recurringThemes": [
+    {
+      "label": "添い寝・安眠",
+      "count": 5
+    },
+    {
+      "label": "耳舐め",
+      "count": 2
+    },
+    {
+      "label": "イチャラブ・あまあま",
+      "count": 1
+    }
+  ],
+  "axisHints": [
+    {
+      "axis": "pleasure",
+      "count": 4
+    },
+    {
+      "axis": "acoustic",
+      "count": 2
+    },
+    {
+      "axis": "scenario",
+      "count": 0
+    },
+    {
+      "axis": "immersion",
+      "count": 0
+    },
+    {
+      "axis": "satisfaction",
+      "count": 0
+    }
+  ],
+  "recommendedForHints": [
+    "あまあま・純愛の甘さを長尺で味わいたい層",
+    "キス・耳舐め・密着スキンシップを主役にしたい層",
+    "添い寝・安眠寄りの聴き方もしたい層"
+  ],
+  "notRecommendedForHints": [
+    "最後まで一気通貫で刺激だけ追い続けたい層（寝落ちしやすい）"
+  ]
+}
