@@ -270,12 +270,16 @@ def count_dry_scenes(analysis_dir: Path | None) -> int | None:
     if not text.strip():
         return None
     peaks = 0
-    if re.search(r"0いっちゃえ|0\s*いっちゃえ", text):
+    if re.search(r"0[.、．\s]*(?:ほら[、,]?\s*)?いっちゃえ|0いっちゃえ|0\s*いっちゃえ", text):
         peaks += 1
     if re.search(r"3210", text) and re.search(r"またいっちゃえ|握り潰|絞りカス", text):
         peaks += 1
     if re.search(r"せーの[^\n]{0,40}いっちゃえ|最後[^\n]{0,20}いっちゃえ", text):
         peaks += 1
+    # 吸盤剥がし系（3-2-1→0 / 321ゼロ の到達回収）
+    if re.search(r"3・2・1[^\n]{0,80}0[^\n]{0,80}(?:引き剥が|剥が)", text):
+        peaks += 1
+    peaks += len(re.findall(r"321\s*ゼロ", text))
     return peaks if peaks > 0 else 0
 
 
