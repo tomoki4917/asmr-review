@@ -101,6 +101,17 @@ FORBIDDEN_IN_PROSE = (
     ("固定", "固定"),
 )
 
+# 論文・Gemini 典型の抽象積み上げ（§7.1 AI調・総評三柱）
+AI_PHRASE_PATTERNS = (
+    ("上位帯の厚み", "上位帯の厚み"),
+    ("融合と重なり", "融合と重なり"),
+    ("畳みかけとして", "畳みかけとして"),
+    ("体験を提供", "体験を提供"),
+    ("多角的に組み合わせ", "多角的に組み合わせ"),
+    ("緻密な構成が特徴", "緻密な構成が特徴"),
+    ("成功した体験", "成功した体験"),
+)
+
 
 def load_forbidden_rules() -> str:
     if FORBIDDEN_PATH.is_file():
@@ -197,6 +208,16 @@ def _plain_without_official_headings(plain: str) -> str:
     return "\n".join(lines)
 
 
+def find_ai_phrases_in_text(text: str) -> list[str]:
+    """論文調・説明書調の AI 典型句（場面・身体感で書き直す）。"""
+    warnings: list[str] = []
+    plain = _plain_without_official_headings(strip_block_quotes(text))
+    for label, pattern in AI_PHRASE_PATTERNS:
+        if pattern in plain:
+            warnings.append(f"AI調「{label}」")
+    return warnings
+
+
 def find_forbidden_in_text(text: str) -> list[str]:
     warnings: list[str] = []
     plain = _plain_without_official_headings(strip_block_quotes(text))
@@ -209,6 +230,7 @@ def find_forbidden_in_text(text: str) -> list[str]:
                 warnings.append(f"禁止語「{label}」")
         elif pattern in plain:
             warnings.append(f"禁止語「{label}」")
+    warnings.extend(find_ai_phrases_in_text(text))
     return warnings
 
 

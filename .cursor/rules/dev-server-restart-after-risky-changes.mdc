@@ -1,11 +1,32 @@
 ---
-description: 変更後に開発サーバーでエラーが出うるときはコマンド実行後に dev を再起動する
+description: dev 再起動の前に DLsite ランキング更新、変更後は dev を再起動する
 alwaysApply: true
 ---
 
 # 開発サーバー再起動（リスクがある変更のあと）
 
 ユーザーが開発サーバー（`npm run dev`）を開いている想定で、**実行したコマンドや変更のあとにブラウザでエラーが出うる場合は、その応答のなかで毎回 `npm run dev` を再起動する**（ポート3000の待受プロセスを終了してから立ち上げ直す）。
+
+## DLsite ランキング更新（dev 再起動の前に必須）
+
+**`npm run dev` を再起動するたび**（ユーザーが「サーバー再起動」と言ったとき・リスク変更後・エラー修正後を問わず）、**先に** 次を実行する。
+
+```bash
+npm run update-dlsite-rankings
+```
+
+| 項目 | 内容 |
+|------|------|
+| 更新先 | `data/dlsite-rankings.json`（一覧・詳細の週間／月間バッジ） |
+| 正本 | `scripts/fetch-dlsite-rankings.mjs` |
+| 失敗時 | ネットワーク／API エラーならログを伝える。**古い JSON のままでも dev 再起動は続行**（閲覧優先） |
+
+**再起動の固定手順**
+
+1. `npm run update-dlsite-rankings`
+2. ポート3000の `Listen` を `Stop-Process`
+3. リポジトリルートから `npm run dev` をバックグラウンド起動
+4. `Ready in` が出るまで確認
 
 **目安（再起動を検討するトリガー）**
 
@@ -18,4 +39,4 @@ alwaysApply: true
 
 - 純粋に `src/content/**/*.md` だけの文言修正で、ユーザーがサーバーを動かしていないとわかっているときは不要な場合がある（ユーザーが明示的に再起動を求めたら実行する）。
 
-再起動は PowerShell でポート3000の `Listen` を `Stop-Process` したうえで、リポジトリルートから `npm run dev` をバックグラウンド起動し、`Ready in` が出るまで確認する。
+再起動は上記 **固定手順** に従う（PowerShell でポート3000停止 → `npm run dev` バックグラウンド → `Ready in` 確認）。**手順1（ランキング更新）を省略しない。**

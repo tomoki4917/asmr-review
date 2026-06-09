@@ -50,7 +50,7 @@ alwaysApply: true
 - **`--merge-only` だけ** … Gemini 本文生成をスキップ。**全面再生成では使わない。** 部分改稿時のみ **`merge_preserve_sections.py` で既存 index から保持**（ユーザー明示時）。**`--force` フル生成は常に `--no-preserve-sections`**（`review-no-past-article-reference.mdc`）。
 - **`humanize_prose.py --merge`** … **`patch_humanize_to_index.py` を実行**（全置換 merge-only 禁止・§1.1）。
 - **人手で `review_output.md` / `index.md` を直す前** … `writer_forbidden.md` と `docs/催眠音声執筆ガイド.md` を参照。
-- **保存前（毎回）** … `npm run review:validate-prose -- --slug <slug>` ＋ `npm run review:audit-kansei -- --slug <slug>`。
+- **保存前（毎回）** … `npm run review:validate-prose -- --slug <slug>` ＋ `npm run review:audit-kansei -- --slug <slug>`。`validate-prose` は **AI調**（`上位帯の厚み` `融合と重なり` `体験を提供` 等・`writer_forbidden.md`）も検出する。
 - **`auto_review.py` マージ完了時** … `review_prose_rules.validate_*` で禁止語違反なら **index を書き込んだあと rollback せず exit 1**（修正して再マージ）。
 
 ## 再発防止
