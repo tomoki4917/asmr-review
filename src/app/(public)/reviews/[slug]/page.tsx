@@ -1851,7 +1851,7 @@ export default async function ReviewPage({ params }: Props) {
       majorFetish: "触手 / 人外娘 / 意識を食べる / ASMR / 連続絶頂",
       kinkType: "ノーマル〜M向け",
       recommendedLevel:
-        "初級トランス（重感・深い脱力まで導入できる）以上の方",
+        "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
       recording: "本編約1時間5分",
       recommendedFor: [
         "催眠による乳首、お尻へ快楽を溜めるのが好きな方",

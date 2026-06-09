@@ -74,9 +74,9 @@ dlsiteProductId: RJ01339925
 
 ## 解析結論
 
-### 【推奨感度Lv：2以上】
+### 【推奨感度Lv：3以上】
 
-**初級トランス**
+**中級トランス**
 
 ### 体験感度Lv（一覧）
 
@@ -90,16 +90,16 @@ dlsiteProductId: RJ01339925
 </div>
 </div>
 
-<div class="review-sensitivity-lv-card review-sensitivity-lv-card--pick" role="listitem">
-<span class="review-sensitivity-lv-card__lv">Lv2<small>推奨</small></span>
+<div class="review-sensitivity-lv-card" role="listitem">
+<span class="review-sensitivity-lv-card__lv">Lv2</span>
 <div class="review-sensitivity-lv-card__main">
 <span class="review-sensitivity-lv-card__grade">初級トランス</span>
 <span class="review-sensitivity-lv-card__desc">重感・深い脱力まで導入できる</span>
 </div>
 </div>
 
-<div class="review-sensitivity-lv-card" role="listitem">
-<span class="review-sensitivity-lv-card__lv">Lv3</span>
+<div class="review-sensitivity-lv-card review-sensitivity-lv-card--pick" role="listitem">
+<span class="review-sensitivity-lv-card__lv">Lv3<small>推奨</small></span>
 <div class="review-sensitivity-lv-card__main">
 <span class="review-sensitivity-lv-card__grade">中級トランス</span>
 <span class="review-sensitivity-lv-card__desc">暗示を受け入れられる（絶頂反応は未達）</span>
