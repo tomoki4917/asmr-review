@@ -1,0 +1,23 @@
+---
+description: 「向いた」系の向き判定は【こんな人におすすめ】のみ（結論・summary・感想禁止）
+globs: src/content/レビュー/**/index.md
+alwaysApply: false
+---
+
+# 「向いた」系 → おすすめへ
+
+**`向いた` `向いている` `向いています` `向いた一本`** など、読者への**向き／おすすめ判定**は次の場所**だけ**に書く。
+
+| 書いてよい | 書かない |
+|---|---|
+| `**【こんな人におすすめ】**` ブロック（`RECOMMENDED_*`・`*_REASON`） | `summary`・`itemDescription`・グラフ内訳 |
+| `quickGuideBySlug.recommendedFor`（ラベルのみ） | `## 総評` 三柱（特に `### 【結論】`） |
+| | `workImpressionParagraphs` |
+
+**結論** … 余韻・収穫・関係の進みで締める（例：`聴き終わったあと〜が残る`）。
+
+**例外** … 公式トラック名（`気が向いたから`）・台詞引用（`> `）・`### パートの長さ` 表。
+
+**関連禁止（別ルール）** … `向きます`（全文）・`向きにくい`（合わない含む）。
+
+検証: `npm run review:validate-prose -- --slug <slug>`（`muki_ita_outside_rec`）・`writer_forbidden.md`

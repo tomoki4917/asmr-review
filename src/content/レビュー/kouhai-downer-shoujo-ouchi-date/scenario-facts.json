@@ -1,0 +1,40 @@
+{
+  "slug": "kouhai-downer-shoujo-ouchi-date",
+  "dlsiteProductId": "RJ01636129",
+  "passes": 3,
+  "scenarioAuditNote": "パス1: 解析フォルダ txt/json/info を確認。パス2: review_output の構成を照合。パス3: index.md と Whisper 台詞を突合。",
+  "roles": {
+    "cast": "東雲凪（後輩幼馴染・CV川村玲奈）",
+    "listener": "先輩（男子／女子どちらでも可）"
+  },
+  "timeline": [
+    {
+      "phase": "来訪・日常",
+      "notes": "文化祭当日、ゲームに没頭する凪の部屋へ先輩が迎えに来る。焼きそば作りと皿洗い。"
+    },
+    {
+      "phase": "寝落ちゲーム（耳かき）",
+      "notes": "「寝落ちしたら負け」を口実に長時間の耳かき・囁き。癒し勝負が本編の中心。"
+    },
+    {
+      "phase": "添い寝・告白",
+      "notes": "同じ布団、膝枕、照れと嫉妬を経て告白・キスへ。"
+    },
+    {
+      "phase": "EX（恋人の日常）",
+      "notes": "恋人になったあとのすれ違いと仲直り、耳かきルーティン、寝息。"
+    }
+  ],
+  "orgasmArrivals": [
+    {
+      "label": "全年齢作品",
+      "notes": "直接的な性的到達回収は扱わない（総合評価は絶頂行なし）。"
+    }
+  ],
+  "forbiddenMisreads": [
+    "催眠・暗示主体の作品として解釈する",
+    "ダウナー後輩を純粋なツンデレ作品としてのみ説明する",
+    "旧index散文や他作品本文を流用する"
+  ],
+  "verifiedAt": "2026-06-11"
+}

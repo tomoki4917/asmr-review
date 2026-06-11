@@ -101,6 +101,22 @@ FORBIDDEN_IN_PROSE = (
     ("固定", "固定"),
 )
 
+# 「向いた」系は【こんな人におすすめ】のみ（writer_forbidden.md・2026-06-11）
+MUKIITA_OUTSIDE_RECOMMENDED_REGEX = re.compile(
+    r"向いた|向いている|向いています|向いていました"
+)
+
+PROSE_KEYS_ALLOW_MUKIITA = frozenset(
+    {
+        "RECOMMENDED_1",
+        "RECOMMENDED_2",
+        "RECOMMENDED_3",
+        "RECOMMENDED_1_REASON",
+        "RECOMMENDED_2_REASON",
+        "RECOMMENDED_3_REASON",
+    }
+)
+
 # 論文・Gemini 典型の抽象積み上げ（§7.1 AI調・総評三柱）
 AI_PHRASE_PATTERNS = (
     ("上位帯の厚み", "上位帯の厚み"),
@@ -403,6 +419,7 @@ def validate_work_impression_for_slug(slug: str) -> list[str]:
     blob = "\n".join(paras)
     warnings = find_circle_cv_in_impression(blob, gather_impression_banned_names(slug))
     warnings.extend(find_score_in_impression(blob))
+    warnings.extend(find_mukiita_outside_recommended(blob))
     return warnings
 
 
@@ -412,9 +429,18 @@ def validate_prose_keys(keys: dict[str, str]) -> list[str]:
     for key, val in keys.items():
         if not val.strip():
             continue
-        if key in PROSE_KEY_SUFFIXES or key.endswith("_REASON"):
+        prose_checked = (
+            key in PROSE_KEY_SUFFIXES
+            or key.endswith("_REASON")
+            or key.startswith("CONCLUSION_")
+            or key in ("GRAPH_BREAKDOWN", "SUMMARY", "ITEM_DESCRIPTION")
+        )
+        if prose_checked:
             for w in find_forbidden_in_text(val):
                 warnings.append(f"{key}: {w}")
+            if key not in PROSE_KEYS_ALLOW_MUKIITA:
+                for w in find_mukiita_outside_recommended(val):
+                    warnings.append(f"{key}: {w}")
         if key == "SUMMARY":
             for w in find_summary_time_banned(val):
                 warnings.append(f"{key}: {w}")
@@ -431,6 +457,44 @@ def validate_prose_keys(keys: dict[str, str]) -> list[str]:
 
 def strip_frontmatter(text: str) -> str:
     return re.sub(r"^---[\s\S]*?---\n?", "", text)
+
+
+def strip_recommended_audience_section(body: str) -> str:
+    """おすすめブロック（向いた系の許可ゾーン）を検査対象から除外。"""
+    if "**【こんな人におすすめ】**" not in body:
+        return body
+    before, rest = body.split("**【こんな人におすすめ】**", 1)
+    if "**【合わない可能性がある人】**" in rest:
+        _, after = rest.split("**【合わない可能性がある人】**", 1)
+        return before + after
+    return before
+
+
+def strip_part_length_catalog(body: str) -> str:
+    """公式トラック名（気が向いたから 等）を検査対象から除外。"""
+    lines: list[str] = []
+    skip = False
+    for line in body.splitlines():
+        if re.match(r"^### パートの長さ\s*$", line.strip()):
+            skip = True
+            continue
+        if skip:
+            if re.match(r"^## ", line):
+                skip = False
+                lines.append(line)
+            continue
+        lines.append(line)
+    return "\n".join(lines)
+
+
+def find_mukiita_outside_recommended(text: str) -> list[str]:
+    """向き判定は【こんな人におすすめ】へ。他ブロック禁止。"""
+    plain = strip_part_length_catalog(
+        strip_recommended_audience_section(strip_block_quotes(text))
+    )
+    if MUKIITA_OUTSIDE_RECOMMENDED_REGEX.search(plain):
+        return ["「向いた」系は【こんな人におすすめ】へ（結論・summary・感想等に書かない）"]
+    return []
 
 
 def validate_index_md(text: str) -> list[str]:
@@ -456,6 +520,8 @@ def validate_index_md(text: str) -> list[str]:
     if summary:
         for w in find_summary_time_banned(summary):
             errors.append(f"index.md summary: {w}")
+    for w in find_mukiita_outside_recommended(body):
+        errors.append(f"index.md: {w}")
     return errors
 
 

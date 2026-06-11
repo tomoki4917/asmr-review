@@ -184,6 +184,11 @@ const CHECKS = [
     fail: (t) => hasForbiddenMukiMasu(t),
   },
   {
+    id: "muki_ita_outside_rec",
+    label: "「向いた」系はおすすめへ",
+    fail: (t) => hasForbiddenMukiItaOutsideRecommended(t),
+  },
+  {
     id: "listening_premise_line",
     label: "禁止: 総合評価直下の視聴前提一文",
     fail: (t) => hasForbiddenListeningPremiseLine(t),
@@ -310,6 +315,42 @@ function hasForbiddenMukiMasu(text) {
   const body = text.replace(/^---[\s\S]*?---\n?/, "");
   const withoutQuotes = body.replace(/^>.*$/gm, "");
   return /向きます/.test(withoutQuotes);
+}
+
+/** `向いた` 系は【こんな人におすすめ】のみ（writer_forbidden.md・2026-06-11） */
+function stripRecommendedAudienceBlock(body) {
+  if (!body.includes("**【こんな人におすすめ】**")) return body;
+  const [before, rest] = body.split("**【こんな人におすすめ】**", 2);
+  if (!rest.includes("**【合わない可能性がある人】**")) return before;
+  const after = rest.split("**【合わない可能性がある人】**", 2)[1];
+  return before + after;
+}
+
+function stripPartLengthCatalog(body) {
+  const lines = [];
+  let skip = false;
+  for (const line of body.split("\n")) {
+    if (/^### パートの長さ\s*$/.test(line.trim())) {
+      skip = true;
+      continue;
+    }
+    if (skip) {
+      if (/^## /.test(line)) {
+        skip = false;
+        lines.push(line);
+      }
+      continue;
+    }
+    lines.push(line);
+  }
+  return lines.join("\n");
+}
+
+function hasForbiddenMukiItaOutsideRecommended(text) {
+  let body = text.replace(/^---[\s\S]*?---\n?/, "");
+  body = body.replace(/^>.*$/gm, "");
+  body = stripPartLengthCatalog(stripRecommendedAudienceBlock(body));
+  return /向いた|向いている|向いています|向いていました/.test(body);
 }
 
 /** 総合評価直下の視聴前提宣言（同人ガイド2・評価時の視聴前提）。台詞引用（> 行）は除外 */
