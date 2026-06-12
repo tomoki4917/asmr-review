@@ -1,0 +1,40 @@
+{
+  "slug": "gokujou-oneesan-yoshiyoshi-amayakashu-tokubetsu-jikan",
+  "dlsiteProductId": "RJ01644019",
+  "passes": 3,
+  "scenarioAuditNote": "パス1: 解析フォルダ txt/info を確認。パス2: review_output と五軸 eval を照合。パス3: index.md と Whisper を突合。",
+  "roles": {
+    "cast": "お姉さん（CVエトラ・あおぎり高校所属VTuber）",
+    "listener": "疲れ気味のあなた（聴き手）"
+  },
+  "timeline": [
+    {
+      "phase": "歓迎・労い",
+      "notes": "ルイボスティー、ウィンドチャイム、悩みを聞く導入。"
+    },
+    {
+      "phase": "甘やかしタイム",
+      "notes": "膝枕、耳タッピング、耳かき、こんにゃくスポンジマッサージ。"
+    },
+    {
+      "phase": "シャンプー台",
+      "notes": "ブラッシング、炭酸シャンプー、頭皮マッサージ、ドライヤー。"
+    },
+    {
+      "phase": "添い寝・安眠",
+      "notes": "雨音、耳塞ぎ、ハグ、背中トントン、心音、おやすみのキス。"
+    }
+  ],
+  "orgasmArrivals": [
+    {
+      "label": "全年齢作品",
+      "notes": "直接的な性的到達回収は扱わない（総合評価は絶頂行なし）。"
+    }
+  ],
+  "forbiddenMisreads": [
+    "催眠・暗示主体の作品として解釈する",
+    "R18向けの快感・絶頂作品として採点する",
+    "早期購入特典・DL達成特典を本編採点に含める"
+  ],
+  "verifiedAt": "2026-06-12"
+}

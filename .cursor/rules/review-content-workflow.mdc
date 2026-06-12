@@ -12,7 +12,7 @@ alwaysApply: false
 
 **催眠音声レビュー（`authorName: 催眠音声解析室` 等）** … 執筆正本は **`docs/催眠音声執筆ガイド.md`**（`.cursor/rules/review-hypnosis-gemini-workflow.mdc`）。**分析・採点・本文初稿はすべて Gemini**（`auto_review.py`）。**DLsite メタ・`quickGuideBySlug`・予約日は Cursor**。**`index.md` を白紙から手書きしない。** 失敗時は API キー・503 リトライ。校正のみ差分編集可。
 
-**同人**では **`node scripts/fetch-dlsite-user-reviews.mjs RJ… <slug> --update-notes`**（購入者レビュー**文章**→**summary・おすすめ・本文**へ言い換え・星は使わない）。**作品感想**は同 JSON を **`generate_work_impression.py`** が **Gemini 2段**（digest 読み取り → 感想生成・`docs/催眠音声執筆ガイド.md` §8.4.1）で書く。**手書き感想禁止**。**.wav のみ**のフォルダでも手順1をスキップしない。生成物を**採点材料**とし、本文にスクリプト名や生数値列を晒さない。
+**同人**では **`node scripts/fetch-dlsite-user-reviews.mjs RJ… <slug> --update-notes`**（購入者レビュー**文章**→**温度感メモ**のみ・星は使わない・**summary・おすすめ・本文へ内容反映禁止**・§8.4.3）。**作品感想**は **`generate_work_impression.py`** が **Gemini 2段**（digest → 感想・§8.4.1）で書く。**手書き感想禁止**。**.wav のみ**のフォルダでも手順1をスキップしない。生成物を**採点材料**とし、本文にスクリプト名や生数値列を晒さない。
 
 1. `npm run sync:content-assets` を実行する（画像・表紙の反映）。
 2. **新規レビューで `dlsiteProductId` を付けた／変えたとき** … **`data/products.json`** に **`id` + `url`** を1件追加したら、**直後に必ず `npm run update-price:one RJ…`**（`fetched_at` が埋まるまで完了としない）。**`current_price: 0` の手書きプレースホルダー禁止**（未取得 0 は「無料」と誤表示される）。無料作品も先に `update-price:one` で 0 を取り込む。機械チェック: **`npm run validate:dlsite-prices`**（`.cursor/rules/review-dlsite-price-placeholder.mdc`）。

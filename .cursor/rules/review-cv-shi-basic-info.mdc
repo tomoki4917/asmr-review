@@ -1,0 +1,19 @@
+---
+description: 基本情報の声優／CV行は DLsite 名＋氏（中の人敬称）
+globs: src/content/レビュー/**/index.md
+alwaysApply: false
+---
+
+# 基本情報の声優は「氏」
+
+**`### 基本情報`** の **`- **声優：**`** または **`- **CV：**`** 行では、DLsite CV 表記の**名前の直後に「氏」**を付ける（中の人への敬称）。
+
+| 付ける | 付けない |
+|--------|----------|
+| `### 基本情報` の声優／CV 行 | `tags`・`title`・`itemName` |
+| 複数 CV は各名に氏（例：`みもりあいの氏・和水創太氏`） | `quickGuideBySlug.voiceActor` |
+| VTuber 補足は **氏の後**に括弧 | グラフ・総評・`workImpressionParagraphs` |
+
+**正本** … `docs/催眠音声執筆ガイド.md` §0.1.4・`docs/シチュエーションボイス執筆ガイド.md` §0.3.1・`_同人音声執筆ガイド2.md`
+
+**例** … `- **声優：** エトラ氏（あおぎり高校所属VTuber／YouTube「étraチャンネル」）`

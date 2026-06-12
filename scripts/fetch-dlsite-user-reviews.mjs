@@ -1,5 +1,6 @@
 /**
- * DLsite 購入者レビュー（文章のみ）から傾向を抽出する。
+ * DLsite 購入者レビュー（文章のみ）を取得し、温度感メモ用の傾向を機械抽出する。
+ * index 本文・グラフ・総評・おすすめへ内容反映は禁止（docs/催眠音声執筆ガイド.md §8.4.3）。
  *
  * 使い方:
  *   node scripts/fetch-dlsite-user-reviews.mjs RJ01531480
@@ -198,8 +199,8 @@ function trendsNoteLine(trends) {
   const rec = trends.recommendedForHints.slice(0, 3).join("／") || "—";
   const avoid = trends.notRecommendedForHints.slice(0, 2).join("／") || "—";
   return (
-    `【DLsite購入者レビュー（文章）】全${trends.textReviewCount}件。繰り返し言及: ${themes || "—"}。` +
-    `おすすめ反映の目安: ${rec}。合わない目安: ${avoid}。原文コピペ禁止・言い換えて薄く反映。`
+    `【DLsite購入者レビュー（温度感メモ・内部用）】全${trends.textReviewCount}件。言及テーマ: ${themes || "—"}。` +
+    `温度参考: ${rec}。注意参考: ${avoid}。index本文・グラフ・総評・おすすめへ内容反映禁止（§8.4.3）。感想は温度のみ。`
   );
 }
 

@@ -98,9 +98,9 @@ STYLE_REFERENCE_SLUGS = (
 ALL_AGES_STYLE_REFERENCE_SLUG = "shinitagari-junai-maid-yogarekake"
 
 ALL_AGES_OPENING_ANGLES = [
-    "4段落：第1=笑った・メタ・オウム返しの入り、第2=耳元のケアと密着（囁き・膝枕・耳舐め）、第3=ドキドキと眠気の両方+弱点1文、第4=向く人（DLsite読み取りメモ参照）。",
+    "4段落：第1=笑った・メタ・オウム返しの入り、第2=耳元のケアと密着（囁き・膝枕・耳舐め）、第3=ドキドキと眠気の両方+弱点1文、第4=向く人（音声根拠）。",
     "4段落：第1=小生意気な語り手への第一印象、第2=嫉妬・キス・耳ふーの尖り、第3=全年齢枠のからかい+高揚、第4=向く人+合わない人。",
-    "3段落：第1=購入者レビューに近い温度（笑い・心臓・ゾクゾク）、第2=手触りと留保、第3=向く人。",
+    "3段落：第1=聴いたあとの温度（笑い・心臓・ゾクゾク）、第2=手触りと留保、第3=向く人（音声根拠）。",
     "3段落：第1=黒塗り・全年齢ギャグ、第2=耳かき棒顕現・KU100近接、第3=向く人+刺激だけ追う日は物足りない。",
 ]
 
@@ -459,22 +459,19 @@ def sanitize_dlsite_review_text(text: str, slug: str) -> str:
 DLsite_DIGEST_SYSTEM = """あなたは同人音声レビュー編集者です。DLsite購入者レビュー全文を読み、
 解析室の「作品感想」執筆用メモに整理します。
 
-## 出力（JSON のみ・前置き禁止）
+## 出力（JSON のみ・前置き禁止）— 温度感のみ
 {
-  "listenerTemperature": ["購入者が感じた温度・口調（3〜8項目・短文）"],
-  "bodyAndSound": ["体感・音の手触り（耳元・眠気・ドキドキ等）"],
-  "characterAppeal": ["キャラ・掛け合いへの反応（メタ・笑い・可愛さ等）"],
-  "strengths": ["褒められている点"],
-  "caveats": ["物足りない・合わない・注意（あれば）"],
-  "recommendedFor": ["向く人の傾向（2〜4）"],
-  "notRecommendedFor": ["合わない人（0〜2）"]
+  "listenerTemperature": ["購入者が感じた温度・気分（3〜8項目・短文。例: 眠気・癒し・笑い・ドキドキ・温かさ）"],
+  "bodyAndSound": ["体・音の手触り（耳元の近さ・寝落ちしやすさ・甘さの感触等）"],
+  "emotionalColor": ["感情の色（可愛さ・安心・満足の手触り等。あらすじ・設定は書かない）"]
 }
 
 ## 禁止
 - 購入者レビューの原文コピペ・長い引用
 - 声優名・サークル名・RJ番号
 - ★・点数・三軸
-- パート番号（tr_2 等）の列挙だけのあらすじ
+- あらすじ・設定・キャラ解釈・「誰が何をした」・向く人／合わない人の列挙
+- パート番号（tr_2 等）の列挙だけの内容説明
 """
 
 
@@ -514,12 +511,10 @@ def format_dlsite_digest_for_prompt(digest: dict) -> str:
     lines = ["【DLsite購入者レビュー（Gemini読み取りメモ・原文コピー禁止）】"]
     for key, label in (
         ("listenerTemperature", "聴き手の温度"),
-        ("bodyAndSound", "体・音"),
-        ("characterAppeal", "キャラ・掛け合い"),
-        ("strengths", "強み"),
-        ("caveats", "注意・弱点"),
-        ("recommendedFor", "向く人"),
-        ("notRecommendedFor", "合わない人"),
+        ("bodyAndSound", "体・音の手触り"),
+        ("emotionalColor", "感情の色"),
+        # 旧 digest 互換（温度系のみ採用）
+        ("characterAppeal", "感情の色（旧）"),
     ):
         items = digest.get(key) or []
         if items:
@@ -530,11 +525,8 @@ def format_dlsite_digest_for_prompt(digest: dict) -> str:
 DIGEST_LIST_KEYS = (
     "listenerTemperature",
     "bodyAndSound",
-    "characterAppeal",
-    "strengths",
-    "caveats",
-    "recommendedFor",
-    "notRecommendedFor",
+    "emotionalColor",
+    "characterAppeal",  # 旧 digest 互換
 )
 
 DIGEST_BATCH_SIZE = 5
