@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
+import { AgeVerificationGate } from "@/components/AgeGate";
+import { isAgeVerified } from "@/lib/age-verification";
+import { isAllAgesPath, isYouTubeWelcomePath } from "@/lib/site-brand";
 import {
-  ALL_AGES_SITE_BASE,
   getAllAgesSiteUrl,
   getR18SiteUrl,
   isExternalSiteUrl,
@@ -26,40 +29,74 @@ function segmentClass(active: boolean, compact: boolean, fullWidth: boolean) {
   return `${pad}${width} font-medium text-slate-300 transition hover:bg-slate-700/70 hover:text-sky-100`;
 }
 
-function RatingSegment({
+function AllAgesSegment({
   active,
-  href,
-  label,
   compact,
   fullWidth,
 }: {
   active: boolean;
-  href: string;
-  label: string;
   compact: boolean;
   fullWidth: boolean;
 }) {
   const className = segmentClass(active, compact, fullWidth);
+  const href = getAllAgesSiteUrl();
 
   if (active) {
     return (
       <span className={className} aria-current="page">
-        {label}
+        全年齢向け
       </span>
-    );
-  }
-
-  if (isExternalSiteUrl(href)) {
-    return (
-      <a href={href} className={className}>
-        {label}
-      </a>
     );
   }
 
   return (
     <Link href={href} className={className}>
-      {label}
+      全年齢向け
+    </Link>
+  );
+}
+
+function R18Segment({
+  active,
+  compact,
+  fullWidth,
+  onRequestR18,
+}: {
+  active: boolean;
+  compact: boolean;
+  fullWidth: boolean;
+  onRequestR18: () => void;
+}) {
+  const className = segmentClass(active, compact, fullWidth);
+  const href = getR18SiteUrl();
+
+  if (active) {
+    return (
+      <span className={className} aria-current="page">
+        成人向け【R18】
+      </span>
+    );
+  }
+
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (isAgeVerified()) {
+      return;
+    }
+    event.preventDefault();
+    onRequestR18();
+  };
+
+  if (isExternalSiteUrl(href)) {
+    return (
+      <a href={href} className={className} onClick={handleClick}>
+        成人向け【R18】
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={className} onClick={handleClick}>
+      成人向け【R18】
     </Link>
   );
 }
@@ -71,28 +108,63 @@ export function SiteRatingSwitch({
   className = "",
 }: SiteRatingSwitchProps) {
   const pathname = usePathname() ?? "/";
-  const isAllAges = pathname.startsWith(ALL_AGES_SITE_BASE);
+  const router = useRouter();
+  const isAllAges = isAllAgesPath(pathname);
+  const lockAllAges = isYouTubeWelcomePath(pathname);
+  const [gateOpen, setGateOpen] = useState(false);
+
+  const navigateR18 = useCallback(() => {
+    const href = getR18SiteUrl();
+    if (isExternalSiteUrl(href)) {
+      window.location.href = href;
+      return;
+    }
+    router.push(href);
+  }, [router]);
+
+  if (lockAllAges) {
+    return (
+      <div
+        role="group"
+        aria-label="サイト区分（全年齢向け固定）"
+        className={`${fullWidth ? "flex w-full" : "inline-flex"} max-w-full shrink-0 overflow-hidden rounded-full border border-slate-500/55 bg-slate-800/75 p-0.5 shadow-sm ring-1 ring-white/5 ${className}`}
+      >
+        <span
+          className={segmentClass(true, compact, fullWidth)}
+          aria-current="page"
+        >
+          全年齢向け
+        </span>
+      </div>
+    );
+  }
 
   return (
-    <div
-      role="group"
-      aria-label="サイト区分の切り替え"
-      className={`${fullWidth ? "flex w-full" : "inline-flex"} max-w-full shrink-0 overflow-hidden rounded-full border border-slate-500/55 bg-slate-800/75 p-0.5 shadow-sm ring-1 ring-white/5 ${className}`}
-    >
-      <RatingSegment
-        active={isAllAges}
-        href={getAllAgesSiteUrl()}
-        label="全年齢向け"
-        compact={compact}
-        fullWidth={fullWidth}
+    <>
+      <div
+        role="group"
+        aria-label="サイト区分の切り替え"
+        className={`${fullWidth ? "flex w-full" : "inline-flex"} max-w-full shrink-0 overflow-hidden rounded-full border border-slate-500/55 bg-slate-800/75 p-0.5 shadow-sm ring-1 ring-white/5 ${className}`}
+      >
+        <AllAgesSegment
+          active={isAllAges}
+          compact={compact}
+          fullWidth={fullWidth}
+        />
+        <R18Segment
+          active={!isAllAges}
+          compact={compact}
+          fullWidth={fullWidth}
+          onRequestR18={() => setGateOpen(true)}
+        />
+      </div>
+      <AgeVerificationGate
+        open={gateOpen}
+        onVerified={() => {
+          setGateOpen(false);
+          navigateR18();
+        }}
       />
-      <RatingSegment
-        active={!isAllAges}
-        href={getR18SiteUrl()}
-        label="成人向け【R18】"
-        compact={compact}
-        fullWidth={fullWidth}
-      />
-    </div>
+    </>
   );
 }

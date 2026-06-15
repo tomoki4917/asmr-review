@@ -56,6 +56,10 @@ EVAL_SYSTEM_FILE = Path(
         SCRIPT_DIR / "eval_system_repo.md",
     )
 )
+TRANCE_RUBRIC_FILE = SCRIPT_DIR / "eval_trance_rubric.md"
+PLEASURE_RUBRIC_FILE = SCRIPT_DIR / "eval_pleasure_rubric.md"
+SATISFACTION_RUBRIC_FILE = SCRIPT_DIR / "eval_satisfaction_rubric.md"
+SCENARIO_RUBRIC_FILE = SCRIPT_DIR / "eval_scenario_rubric.md"
 SCORING_DEF_FILE = ROOT / "docs" / "レビュー三軸評価定義.md"
 SCORING_OPS_FILE = ROOT / "docs" / "レビュー執筆・採点運用ガイド.md"
 WRITER_SYSTEM_FILE = Path(
@@ -585,18 +589,24 @@ def merge_keys(template: str, keys: dict[str, str]) -> str:
 def extract_score_number(eval_text: str) -> float | None:
     """評価脳テキストから最終スコアらしき数値を拾う（フォールバック）。"""
     stage = re.search(
-        r"最終(?:トランス|快楽|満足|シナリオ|音響|没入)スコア[：:]\s*\*?\*?\s*(\d+(?:\.\d+)?)\s*/\s*10",
+        r"最終(?:トランス|快楽|満足|シナリオ|音響|没入)(?:度|スコア)[：:]\s*\*?\*?\s*(\d+(?:\.\d+)?)\s*/\s*10",
         eval_text,
     )
     if stage:
         return float(stage.group(1))
     heading = re.search(
+        r"##\s*(?:トランス|快楽|満足)度[：:]\s*(\d+(?:\.\d+)?)",
+        eval_text,
+    )
+    if heading:
+        return float(heading.group(1))
+    heading2 = re.search(
         r"###\s*(?:シナリオ|音響|没入度|快楽度|満足度|Acoustic|Scenario)[^\n:]*:\s*(\d+(?:\.\d+)?)",
         eval_text,
         re.I,
     )
-    if heading:
-        return float(heading.group(1))
+    if heading2:
+        return float(heading2.group(1))
     nums = re.findall(r"(?:合計|総合|最終|スコア)[^\d]{0,20}(\d+(?:\.\d+)?)", eval_text)
     if nums:
         return float(nums[-1])
@@ -607,10 +617,389 @@ def extract_score_number(eval_text: str) -> float | None:
     return float(nums[-1]) if nums else None
 
 
+TRANCE_LANES: dict[str, dict[str, object]] = {
+    "deepening": {
+        "label": "深化型",
+        "weights": [("入り", 0.20), ("深さ", 0.35), ("暗示の効き", 0.20), ("維持", 0.25)],
+    },
+    "acceptance": {
+        "label": "受容・支配型",
+        "weights": [("入り", 0.25), ("深さ", 0.20), ("暗示の効き", 0.30), ("維持", 0.25)],
+    },
+    "sensory": {
+        "label": "感覚・ASMR型",
+        "weights": [("入り", 0.25), ("深さ", 0.15), ("暗示の効き", 0.30), ("維持", 0.30)],
+    },
+    "trigger": {
+        "label": "トリガー型",
+        "weights": [("入り", 0.20), ("深さ", 0.20), ("暗示の効き", 0.35), ("維持", 0.25)],
+    },
+    "minimal": {
+        "label": "薄い催眠型",
+        "weights": [("入り", 0.25), ("深さ", 0.25), ("暗示の効き", 0.25), ("維持", 0.25)],
+    },
+}
+
+PLEASURE_C0: dict[str, dict[str, object]] = {
+    "brain": {
+        "label": "脳イキ寄り",
+        "weights": [
+            ("コンセプト整合", 0.25),
+            ("刺激・報酬", 0.30),
+            ("クライマックス", 0.25),
+            ("起伏・焦らし", 0.20),
+        ],
+    },
+    "emotional": {
+        "label": "情緒・幸せ寄り",
+        "weights": [
+            ("コンセプト整合", 0.30),
+            ("刺激・報酬", 0.25),
+            ("クライマックス", 0.20),
+            ("起伏・焦らし", 0.25),
+        ],
+    },
+    "corruption": {
+        "label": "堕落・背徳寄り",
+        "weights": [
+            ("コンセプト整合", 0.25),
+            ("刺激・報酬", 0.25),
+            ("クライマックス", 0.25),
+            ("起伏・焦らし", 0.25),
+        ],
+    },
+    "dry": {
+        "label": "ドライ寄り",
+        "weights": [
+            ("コンセプト整合", 0.30),
+            ("刺激・報酬", 0.30),
+            ("クライマックス", 0.25),
+            ("起伏・焦らし", 0.15),
+        ],
+    },
+    "trigger": {
+        "label": "トリガー寄り",
+        "weights": [
+            ("コンセプト整合", 0.20),
+            ("刺激・報酬", 0.35),
+            ("クライマックス", 0.25),
+            ("起伏・焦らし", 0.20),
+        ],
+    },
+    "other": {
+        "label": "その他・複合",
+        "weights": [
+            ("コンセプト整合", 0.25),
+            ("刺激・報酬", 0.25),
+            ("クライマックス", 0.25),
+            ("起伏・焦らし", 0.25),
+        ],
+    },
+}
+
+SATISFACTION_WEIGHTS: list[tuple[str, float]] = [
+    ("約束の着地", 0.30),
+    ("解除・戻し", 0.25),
+    ("余韻・情緒", 0.25),
+    ("尺対密度", 0.20),
+]
+
+SCENARIO_LANES: dict[str, dict[str, object]] = {
+    "pure_progression": {
+        "label": "純愛・関係進展型",
+        "scenario_weights": [
+            ("心理", 0.30),
+            ("一貫性", 0.25),
+            ("ギミック", 0.20),
+            ("フック", 0.25),
+        ],
+        "immersion_weights": [("定位", 0.45), ("親密距離", 0.55)],
+    },
+    "taboo_corruption": {
+        "label": "背徳・NTR型",
+        "scenario_weights": [
+            ("心理", 0.30),
+            ("一貫性", 0.25),
+            ("ギミック", 0.25),
+            ("フック", 0.20),
+        ],
+        "immersion_weights": [("定位", 0.50), ("親密距離", 0.50)],
+    },
+    "gimmick_driven": {
+        "label": "ギミック驱动型",
+        "scenario_weights": [
+            ("心理", 0.20),
+            ("一貫性", 0.20),
+            ("ギミック", 0.35),
+            ("フック", 0.25),
+        ],
+        "immersion_weights": [("定位", 0.45), ("親密距離", 0.55)],
+    },
+    "intimate_asmr": {
+        "label": "密着ASMR型",
+        "scenario_weights": [
+            ("心理", 0.25),
+            ("一貫性", 0.15),
+            ("ギミック", 0.30),
+            ("フック", 0.30),
+        ],
+        "immersion_weights": [("定位", 0.35), ("親密距離", 0.65)],
+    },
+    "healing_allages": {
+        "label": "癒し・安眠型",
+        "scenario_weights": [
+            ("心理", 0.35),
+            ("一貫性", 0.25),
+            ("ギミック", 0.15),
+            ("フック", 0.25),
+        ],
+        "immersion_weights": [("定位", 0.40), ("親密距離", 0.60)],
+    },
+}
+
+SCENARIO_AXIS_DEFAULT_WEIGHTS: dict[str, list[tuple[str, float]]] = {
+    "acoustic": [("台詞", 0.55), ("情景音", 0.45)],
+    "immersion": [("定位", 0.50), ("親密距離", 0.50)],
+    "pleasure": [("声色", 0.50), ("峰と間", 0.50)],
+    "pleasure_all_ages": [("入眠", 0.55), ("覚醒", 0.45)],
+    "satisfaction": [("回収", 0.55), ("終端", 0.45)],
+}
+
+SCENARIO_FINAL_SCORE_HEADERS: dict[str, str] = {
+    "scenario": "最終シナリオ度",
+    "acoustic": "最終音響度",
+    "immersion": "最終没入度",
+    "pleasure": "最終快楽度",
+    "satisfaction": "最終満足度",
+}
+
+
+def apply_weak_factor_cap(composite: float, dimensions: dict[str, float]) -> float:
+    if not dimensions:
+        return composite
+    min_factor = min(dimensions.values())
+    max_factor = max(dimensions.values())
+    if min_factor <= 6.0:
+        composite = min(composite, min_factor + 1.5)
+    elif min_factor <= 7.0 and (max_factor - min_factor) >= 2.0:
+        composite = min(composite, round(composite * 0.85 + min_factor * 0.15, 1))
+    return round(composite, 1)
+
+
+def extract_scenario_lane(eval_text: str) -> str:
+    lane = extract_lane_id(eval_text, SCENARIO_LANES, "シチュレーン")
+    return lane or "gimmick_driven"
+
+
+def get_scenario_axis_weights(
+    axis: str,
+    lane: str,
+    *,
+    all_ages: bool = False,
+) -> list[tuple[str, float]]:
+    if axis == "scenario":
+        return list(SCENARIO_LANES[lane]["scenario_weights"])  # type: ignore[arg-type]
+    if axis == "immersion":
+        return list(SCENARIO_LANES[lane]["immersion_weights"])  # type: ignore[arg-type]
+    if axis == "pleasure" and all_ages:
+        return SCENARIO_AXIS_DEFAULT_WEIGHTS["pleasure_all_ages"]
+    if axis in SCENARIO_AXIS_DEFAULT_WEIGHTS:
+        return SCENARIO_AXIS_DEFAULT_WEIGHTS[axis]
+    return []
+
+
+def extract_scenario_axis_score(
+    axis: str,
+    eval_text: str,
+    *,
+    lane: str | None = None,
+    all_ages: bool = False,
+) -> float | None:
+    header = SCENARIO_FINAL_SCORE_HEADERS.get(axis, f"最終{axis}")
+    if axis == "pleasure" and all_ages:
+        explicit = re.search(
+            r"最終(?:睡眠・覚醒|睡眠覚醒)度[：:]\s*\*?\*?\s*(\d+(?:\.\d+)?)\s*/\s*10",
+            eval_text,
+        )
+    else:
+        explicit = re.search(
+            rf"{re.escape(header)}[：:]\s*\*?\*?\s*(\d+(?:\.\d+)?)\s*/\s*10",
+            eval_text,
+        )
+    if explicit:
+        return float(explicit.group(1))
+    resolved_lane = lane or extract_scenario_lane(eval_text)
+    weights = get_scenario_axis_weights(axis, resolved_lane, all_ages=all_ages)
+    if not weights:
+        return extract_score_number(eval_text)
+    labels = [label for label, _ in weights]
+    dims = extract_dimension_scores(eval_text, labels)
+    weighted = compute_weighted_score(dims, weights)
+    if weighted is None:
+        return extract_score_number(eval_text)
+    return apply_weak_factor_cap(weighted, dims)
+
+
+def build_scenario_scoring_metadata(
+    axis: str,
+    eval_text: str,
+    *,
+    lane: str | None = None,
+    all_ages: bool = False,
+) -> dict[str, object]:
+    resolved_lane = lane or extract_scenario_lane(eval_text)
+    weights = get_scenario_axis_weights(axis, resolved_lane, all_ages=all_ages)
+    labels = [label for label, _ in weights]
+    dims = extract_dimension_scores(eval_text, labels)
+    meta: dict[str, object] = {
+        "dimensions": dims,
+        "rubricVersion": "eval_scenario_rubric.md",
+    }
+    if axis == "scenario":
+        meta["lane"] = resolved_lane
+        meta["laneLabel"] = SCENARIO_LANES[resolved_lane]["label"]
+    if axis == "pleasure" and all_ages:
+        meta["axisLabel"] = "睡眠・覚醒"
+    return meta
+
+
+def extract_dimension_scores(eval_text: str, labels: list[str]) -> dict[str, float]:
+    scores: dict[str, float] = {}
+    for label in labels:
+        table_row = re.search(
+            rf"\|\s*{re.escape(label)}\s*\|\s*(\d+(?:\.\d+)?)\s*\|",
+            eval_text,
+        )
+        if table_row:
+            scores[label] = float(table_row.group(1))
+            continue
+        m = re.search(
+            rf"{re.escape(label)}[^\d]{{0,28}}(\d+(?:\.\d+)?)",
+            eval_text,
+        )
+        if m:
+            scores[label] = float(m.group(1))
+    return scores
+
+
+def extract_lane_id(eval_text: str, lanes: dict[str, dict[str, object]], header: str) -> str:
+    m = re.search(rf"{re.escape(header)}[：:]\s*(\w+)", eval_text, re.I)
+    if m:
+        key = m.group(1).lower()
+        if key in lanes:
+            return key
+    for key, meta in lanes.items():
+        if str(meta.get("label", "")) in eval_text:
+            return key
+    return ""
+
+
+def compute_weighted_score(
+    dimensions: dict[str, float],
+    weights: list[tuple[str, float]],
+) -> float | None:
+    if len(dimensions) < len(weights):
+        return None
+    total = sum(dimensions[label] * weight for label, weight in weights)
+    return round(total, 1)
+
+
+def extract_trance_lane(eval_text: str) -> str:
+    lane = extract_lane_id(eval_text, TRANCE_LANES, "トランスレーン")
+    return lane or "acceptance"
+
+
+def extract_pleasure_c0(eval_text: str) -> str:
+    c0 = extract_lane_id(eval_text, PLEASURE_C0, "快楽C-0")
+    return c0 or "other"
+
+
+def extract_trance_score(eval_text: str) -> float | None:
+    explicit = re.search(
+        r"最終トランス度[：:]\s*\*?\*?\s*(\d+(?:\.\d+)?)\s*/\s*10",
+        eval_text,
+    )
+    if explicit:
+        return float(explicit.group(1))
+    lane = extract_trance_lane(eval_text)
+    weights = list(TRANCE_LANES[lane]["weights"])  # type: ignore[arg-type]
+    labels = [label for label, _ in weights]
+    weighted = compute_weighted_score(extract_dimension_scores(eval_text, labels), weights)
+    if weighted is not None:
+        return weighted
+    return extract_score_number(eval_text)
+
+
+def extract_pleasure_score(eval_text: str) -> float | None:
+    explicit = re.search(
+        r"最終快楽度[：:]\s*\*?\*?\s*(\d+(?:\.\d+)?)\s*/\s*10",
+        eval_text,
+    )
+    if explicit:
+        return float(explicit.group(1))
+    c0 = extract_pleasure_c0(eval_text)
+    weights = list(PLEASURE_C0[c0]["weights"])  # type: ignore[arg-type]
+    labels = [label for label, _ in weights]
+    weighted = compute_weighted_score(extract_dimension_scores(eval_text, labels), weights)
+    if weighted is not None:
+        return weighted
+    return extract_score_number(eval_text)
+
+
+def extract_satisfaction_score(eval_text: str) -> float | None:
+    explicit = re.search(
+        r"最終満足度[：:]\s*\*?\*?\s*(\d+(?:\.\d+)?)\s*/\s*10",
+        eval_text,
+    )
+    if explicit:
+        return float(explicit.group(1))
+    labels = [label for label, _ in SATISFACTION_WEIGHTS]
+    weighted = compute_weighted_score(
+        extract_dimension_scores(eval_text, labels),
+        SATISFACTION_WEIGHTS,
+    )
+    if weighted is not None:
+        return weighted
+    return extract_score_number(eval_text)
+
+
+def build_axis_scoring_metadata(eval_text: str, axis: str) -> dict[str, object]:
+    if axis == "trance":
+        lane = extract_trance_lane(eval_text)
+        weights = list(TRANCE_LANES[lane]["weights"])  # type: ignore[arg-type]
+        labels = [label for label, _ in weights]
+        dims = extract_dimension_scores(eval_text, labels)
+        return {
+            "lane": lane,
+            "laneLabel": TRANCE_LANES[lane]["label"],
+            "dimensions": dims,
+            "rubricVersion": "eval_trance_rubric.md",
+        }
+    if axis == "pleasure":
+        c0 = extract_pleasure_c0(eval_text)
+        weights = list(PLEASURE_C0[c0]["weights"])  # type: ignore[arg-type]
+        labels = [label for label, _ in weights]
+        dims = extract_dimension_scores(eval_text, labels)
+        return {
+            "c0": c0,
+            "c0Label": PLEASURE_C0[c0]["label"],
+            "dimensions": dims,
+            "rubricVersion": "eval_pleasure_rubric.md",
+        }
+    if axis == "satisfaction":
+        labels = [label for label, _ in SATISFACTION_WEIGHTS]
+        dims = extract_dimension_scores(eval_text, labels)
+        return {
+            "dimensions": dims,
+            "rubricVersion": "eval_satisfaction_rubric.md",
+        }
+    return {}
+
+
 EVAL_AXIS_LABELS = {
-    "trance": "トランス度（没入・誘導の深さ）",
-    "pleasure": "快楽度（快感設計・絶頂シーン）",
-    "satisfaction": "満足度（着地・余韻・尺対密度）",
+    "trance": "トランス度（レーン別4次元：入り・深さ・暗示の効き・維持）",
+    "pleasure": "快楽度（C-0別4次元：整合・刺激・クライマックス・起伏）",
+    "satisfaction": "満足度（4次元：着地・戻し・余韻・密度）",
     "scenario": "シナリオ",
     "acoustic": "音響",
     "immersion": "没入度",
@@ -665,6 +1054,33 @@ def build_axis_eval_instruction(axis_manual: str) -> str:
     return "\n\n".join(p for p in (load_eval_repo_context(), axis_manual) if p.strip())
 
 
+def build_trance_eval_instruction(trance_manual: str) -> str:
+    rubric = ""
+    if TRANCE_RUBRIC_FILE.is_file():
+        rubric = TRANCE_RUBRIC_FILE.read_text(encoding="utf-8")
+    return "\n\n".join(
+        p for p in (load_eval_repo_context(), rubric, trance_manual) if p.strip()
+    )
+
+
+def build_pleasure_eval_instruction(pleasure_manual: str) -> str:
+    rubric = ""
+    if PLEASURE_RUBRIC_FILE.is_file():
+        rubric = PLEASURE_RUBRIC_FILE.read_text(encoding="utf-8")
+    return "\n\n".join(
+        p for p in (load_eval_repo_context(), rubric, pleasure_manual) if p.strip()
+    )
+
+
+def build_satisfaction_eval_instruction(satisfaction_manual: str) -> str:
+    rubric = ""
+    if SATISFACTION_RUBRIC_FILE.is_file():
+        rubric = SATISFACTION_RUBRIC_FILE.read_text(encoding="utf-8")
+    return "\n\n".join(
+        p for p in (load_eval_repo_context(), rubric, satisfaction_manual) if p.strip()
+    )
+
+
 def load_desktop_writer_guide() -> str:
     path = manual_dir() / DESKTOP_WRITER_GUIDE
     if path.is_file():
@@ -687,6 +1103,26 @@ def build_eval_prompt(
         "上限 unknown-hypno-daijobu-koe-ni-yudanete（★10・三軸10）。"
         "約30分で本編大半が報酬・RPの作品は深さを甘く見ない（運用ガイド §2）。"
     )
+    trance_note = ""
+    if axis == "trance":
+        trance_note = (
+            "\n【必須】eval_trance_rubric.md … ①トランスレーン5種を1つ決定 "
+            "②4次元（入り・深さ・暗示の効き・維持）③レーン別重み合成 "
+            "④レーン内アンカー比較。出力フォーマット厳守。"
+        )
+    pleasure_note = ""
+    if axis == "pleasure":
+        pleasure_note = (
+            "\n【必須】eval_pleasure_rubric.md … ①快楽C-0を1つ "
+            "②4次元 ③C-0別重み合成。最終快楽度: x.x / 10.0 を必ず出力。"
+        )
+    satisfaction_note = ""
+    if axis == "satisfaction":
+        satisfaction_note = (
+            "\n【必須】eval_satisfaction_rubric.md … 4次元（約束の着地・解除・戻し・"
+            "余韻・情緒・尺対密度）→ 固定重み合成。"
+            "最終満足度: x.x / 10.0 を必ず出力。"
+        )
     prior = ""
     if axis == "pleasure" and trance_score is not None:
         prior = (
@@ -705,7 +1141,7 @@ def build_eval_prompt(
         "上記の WhisperX / Librosa と、system 指示（リポジトリ採点正本＋デスクトップ採点マニュアル）"
         "のみに基づき採点してください。"
         "マニュアル指定の出力フォーマットに従い、最終スコアを明示してください。"
-        f"{anchor_note}{prior}"
+        f"{anchor_note}{trance_note}{pleasure_note}{satisfaction_note}{prior}"
         + (
             " 快楽軸: ドライオーガズムと脳イキは別物。C-0がドライ型なら【ドライ型】目安で判定し、同一視しない。"
             if axis == "pleasure"
@@ -729,18 +1165,37 @@ def load_scenario_eval_repo_context(*, all_ages: bool = False) -> str:
     return "\n\n".join(parts)
 
 
+def build_scenario_eval_instruction(*, all_ages: bool = False) -> str:
+    rubric = ""
+    if SCENARIO_RUBRIC_FILE.is_file():
+        rubric = SCENARIO_RUBRIC_FILE.read_text(encoding="utf-8")
+    return "\n\n".join(
+        p for p in (load_scenario_eval_repo_context(all_ages=all_ages), rubric) if p.strip()
+    )
+
+
 def build_scenario_eval_prompt(
     source_context: str,
     axis: str,
     *,
     prior: dict[str, float | None],
+    lane: str = "",
+    all_ages: bool = False,
 ) -> str:
     label = EVAL_AXIS_LABELS.get(axis, axis)
+    if all_ages and axis == "pleasure":
+        label = "睡眠・覚醒"
     prior_lines: list[str] = []
+    if lane:
+        prior_lines.append(
+            f"【シチュレーン】{lane}（{SCENARIO_LANES[lane]['label']}）— シナリオ軸で確定済み。"
+        )
     if axis == "acoustic" and prior.get("scenario") is not None:
         prior_lines.append(f"【前提】シナリオ {prior['scenario']:.1f}")
     if axis == "immersion" and prior.get("acoustic") is not None:
-        prior_lines.append(f"【前提】音響 {prior['acoustic']:.1f}")
+        prior_lines.append(
+            f"【前提】シナリオ {prior.get('scenario') or '—'} / 音響 {prior['acoustic']:.1f}"
+        )
     if axis == "pleasure" and prior.get("scenario") is not None:
         prior_lines.append(
             f"【前提】シナリオ {prior['scenario']:.1f} / "
@@ -754,22 +1209,39 @@ def build_scenario_eval_prompt(
         ]
         if bits:
             prior_lines.append(f"【前提】{' / '.join(bits)}")
-    factor_hint = {
+    rubric_notes = {
         "scenario": (
-            "評価要因4つ（心理・空間の生々しさ／世界観の内的一貫性／"
-            "ギミックの機能性／フックの独自性）を先に書き、最後に主軸点。"
+            "【必須】eval_scenario_rubric.md … ①シチュレーン5種を1つ "
+            "②4要因（心理・一貫性・ギミック・フック）に点数 "
+            "③レーン別重み合成 ④弱い要因引きずり "
+            "⑤最終シナリオ度: x.x / 10.0"
         ),
-        "acoustic": "要因: 台詞の明瞭さ／情景音と静寂の配分。",
-        "immersion": "要因: 定位の追従性／親密距離の持続。",
-        "pleasure": "要因: 声色の関係連動／峰と間の配分。",
-        "satisfaction": "要因: 売り文句の回収／終端の気持ちよさ。",
+        "acoustic": (
+            "【必須】要因2つ（台詞・情景音）に点数 → 重み合成 → 弱い要因引きずり → "
+            "最終音響度: x.x / 10.0"
+        ),
+        "immersion": (
+            "【必須】要因2つ（定位・親密距離）に点数 → レーン別重み → 引きずり → "
+            "最終没入度: x.x / 10.0"
+        ),
+        "pleasure": (
+            "【必須】要因2つ（"
+            + ("入眠・覚醒" if all_ages else "声色・峰と間")
+            + "）に点数 → 重み合成 → 引きずり → 最終"
+            + ("睡眠・覚醒度" if all_ages else "快楽度")
+            + ": x.x / 10.0"
+        ),
+        "satisfaction": (
+            "【必須】要因2つ（回収・終端）に点数 → 重み合成 → 引きずり → "
+            "最終満足度: x.x / 10.0"
+        ),
     }.get(axis, "")
     return (
         f"{source_context}\n\n"
         f"今回採点: **{label}**\n"
-        "正本: シチュボイス五軸評価定義。Whisper のみ根拠。要因に点数は付けない。\n"
-        f"{factor_hint}\n"
-        "比較: dakimakura（★9） / michikusa（★10）。\n"
+        "正本: eval_scenario_rubric.md ＋ シチュボイス五軸評価定義。Whisper のみ根拠。\n"
+        f"{rubric_notes}\n"
+        "比較: dakimakura（★9） / michikusa（★10） / shinitagari-junai-maid-yogarekake。\n"
         + "\n".join(prior_lines)
     )
 
@@ -794,20 +1266,34 @@ def run_scenario_five_axis_eval(
     eval_dir.mkdir(exist_ok=True)
     results: dict[str, str] = {}
     scores: dict[str, float | None] = {}
-    sys_instruction = load_scenario_eval_repo_context(all_ages=all_ages)
+    sys_instruction = build_scenario_eval_instruction(all_ages=all_ages)
+    lane = ""
     for axis, _ in SCENARIO_EVAL_AXIS_ORDER:
         label = eval_axis_label(axis, all_ages=all_ages)
         print(f"[eval] {label} 採点...")
         res = gemini_generate(
             client,
             model=EVAL_MODEL,
-            contents=build_scenario_eval_prompt(source_context, axis, prior=scores),
+            contents=build_scenario_eval_prompt(
+                source_context,
+                axis,
+                prior=scores,
+                lane=lane,
+                all_ages=all_ages,
+            ),
             system_instruction=sys_instruction,
             temperature=0.0,
             label=f"{label}採点",
         )
         results[axis] = res
-        scores[axis] = extract_score_number(res)
+        if axis == "scenario" and not lane:
+            lane = extract_scenario_lane(res)
+        scores[axis] = extract_scenario_axis_score(
+            axis,
+            res,
+            lane=lane or None,
+            all_ages=all_ages,
+        )
         (eval_dir / f"{slug}_{axis}.md").write_text(res, encoding="utf-8")
     print(
         "[eval] 五軸完了: "
@@ -815,6 +1301,7 @@ def run_scenario_five_axis_eval(
             f"{eval_axis_label(a, all_ages=all_ages)}={scores[a]}"
             for a, _ in SCENARIO_EVAL_AXIS_ORDER
         )
+        + (f" lane={lane}" if lane else "")
     )
     return results, scores
 
@@ -826,9 +1313,15 @@ def patch_analysis_scores_scenario(
     note: str = "",
     all_ages: bool = False,
 ) -> None:
+    lane = extract_scenario_lane(results.get("scenario", ""))
     scores_out: dict[str, float] = {}
     for axis, _ in SCENARIO_EVAL_AXIS_ORDER:
-        val = extract_score_number(results.get(axis, ""))
+        val = extract_scenario_axis_score(
+            axis,
+            results.get(axis, ""),
+            lane=lane,
+            all_ages=all_ages,
+        )
         if val is not None:
             scores_out[axis] = round(val, 1)
     if path.is_file():
@@ -844,12 +1337,31 @@ def patch_analysis_scores_scenario(
         "acoustic": scores_out.get("acoustic", prev.get("acoustic", 0)),
         "satisfaction": scores_out.get("satisfaction", prev.get("satisfaction", 0)),
     }
+    data["scenarioLane"] = lane
+    data["scenarioLaneLabel"] = SCENARIO_LANES[lane]["label"]
+    for axis, _ in SCENARIO_EVAL_AXIS_ORDER:
+        key = f"{axis}Scoring"
+        if results.get(axis):
+            data[key] = build_scenario_scoring_metadata(
+                axis,
+                results[axis],
+                lane=lane,
+                all_ages=all_ages,
+            )
     notes = list(data.get("notes") or [])
-    stamp = f"五軸再採点（{today_jst_ymd()}）— シチュガイド Gemini"
+    stamp = (
+        f"五軸再採点（{today_jst_ymd()}）— eval_scenario_rubric.md 経由 Gemini"
+    )
     if stamp not in notes:
         notes.insert(0, stamp)
+    factor_stamp = (
+        "scenario-v2-four-factor-lane-weighted（心理・一貫性・ギミック・フック）"
+        "— eval_scenario_rubric.md"
+    )
+    if factor_stamp not in notes:
+        notes.insert(1, factor_stamp)
     if note and note not in notes:
-        notes.insert(1, note)
+        notes.insert(2, note)
     if all_ages:
         data["radarAxisLabels"] = {"pleasure": "睡眠・覚醒"}
     data["notes"] = notes
@@ -866,35 +1378,35 @@ def run_three_axis_eval(
     pleasure_manual = load_axis_manual("pleasure")
     satisfaction_manual = load_axis_manual("satisfaction")
 
-    print("[eval] トランス度採点...")
+    print("[eval] トランス度採点（レーン別4次元）...")
     res_t = gemini_generate(
         client,
         model=EVAL_MODEL,
         contents=build_eval_prompt(source_context, "trance", trance_manual),
-        system_instruction=build_axis_eval_instruction(trance_manual),
+        system_instruction=build_trance_eval_instruction(trance_manual),
         temperature=0.0,
         label="トランス度採点",
     )
-    trance_score = extract_score_number(res_t)
+    trance_score = extract_trance_score(res_t)
 
     pleasure_sys = pleasure_manual
     if trance_score is not None:
         pleasure_sys = pleasure_sys.replace("[TRANS_SCORE]", f"{trance_score:.1f}")
 
-    print("[eval] 快楽度採点...")
+    print("[eval] 快楽度採点（C-0別4次元）...")
     res_p = gemini_generate(
         client,
         model=EVAL_MODEL,
         contents=build_eval_prompt(
             source_context, "pleasure", pleasure_manual, trance_score=trance_score
         ),
-        system_instruction=build_axis_eval_instruction(pleasure_sys),
+        system_instruction=build_pleasure_eval_instruction(pleasure_sys),
         temperature=0.0,
         label="快楽度採点",
     )
-    pleasure_score = extract_score_number(res_p)
+    pleasure_score = extract_pleasure_score(res_p)
 
-    print("[eval] 満足度採点...")
+    print("[eval] 満足度採点（4次元）...")
     res_s = gemini_generate(
         client,
         model=EVAL_MODEL,
@@ -905,11 +1417,11 @@ def run_three_axis_eval(
             trance_score=trance_score,
             pleasure_score=pleasure_score,
         ),
-        system_instruction=build_axis_eval_instruction(satisfaction_manual),
+        system_instruction=build_satisfaction_eval_instruction(satisfaction_manual),
         temperature=0.0,
         label="満足度採点",
     )
-    satisfaction_score = extract_score_number(res_s)
+    satisfaction_score = extract_satisfaction_score(res_s)
 
     eval_dir = SCRIPT_DIR / "eval_results"
     eval_dir.mkdir(exist_ok=True)
@@ -931,9 +1443,9 @@ def patch_analysis_scores_from_eval(
     note: str = "",
 ) -> None:
     """eval_results から scores のみ更新（本文・表は触らない）。"""
-    trance = extract_score_number(res_t)
-    pleasure = extract_score_number(res_p)
-    satisfaction = extract_score_number(res_s)
+    trance = extract_trance_score(res_t)
+    pleasure = extract_pleasure_score(res_p)
+    satisfaction = extract_satisfaction_score(res_s)
     if trance is None or pleasure is None or satisfaction is None:
         print("[警告] eval からスコアを抽出できませんでした。_分析データ.json は未更新。")
         return
@@ -946,6 +1458,9 @@ def patch_analysis_scores_from_eval(
         "pleasure": round(pleasure, 1),
         "satisfaction": round(satisfaction, 1),
     }
+    data["tranceScoring"] = build_axis_scoring_metadata(res_t, "trance")
+    data["pleasureScoring"] = build_axis_scoring_metadata(res_p, "pleasure")
+    data["satisfactionScoring"] = build_axis_scoring_metadata(res_s, "satisfaction")
     notes = list(data.get("notes") or [])
     stamp = f"三軸再採点（{today_jst_ymd()}）— リポジトリ採点正本＋デスクトップマニュアル経由 Gemini"
     if stamp not in notes:
@@ -1488,9 +2003,7 @@ def main() -> None:
         print("[3/6] 三軸採点（--eval-only）...")
         res_t, res_p, res_s, _, _, _ = run_three_axis_eval(client, source_context, args.slug)
         anchor_note = (
-            "比較アンカー: saimin-shinri-test-dame-iwakareru（★3）より導入・解除・犬化往復は明確に上。"
-            "unknown-hypno-daijobu-koe-ni-yudanete（★10）より連続深化密度・語り緻密さは届かない。"
-            "約31分・後半RP報酬中心のため深さは厳しめに見る（運用ガイド §2）。"
+            "三軸: eval_trance/pleasure/satisfaction_rubric（レーン・C-0別4次元合成）。"
         )
         patch_analysis_scores_from_eval(
             analysis_path, res_t, res_p, res_s, note=anchor_note

@@ -1,10 +1,13 @@
+import { R18_SITE_BASE } from "@/lib/site-rating-switch";
+
 /** 絞り込みバー（カテゴリボタンからのジャンプ先） */
 export const REVIEWS_LIST_FILTERS_ID = "reviews-list-filters";
 
 /** 一覧見出し（`id="reviews-heading"`・後方互換のアンカー） */
 export const REVIEWS_LIST_SECTION_ID = "reviews-heading";
 
-export const HOME_REVIEW_LIST_BASE = "/";
+/** 成人向けトップのレビュー一覧アンカー（`/r18/`） */
+export const HOME_REVIEW_LIST_BASE = R18_SITE_BASE;
 export const DEV_SITE_NEXT_LIST_BASE = "/dev/site-next/";
 
 export type ReviewListHrefOptions = {

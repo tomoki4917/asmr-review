@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Noto_Sans_JP } from "next/font/google";
-import { AgeGate } from "@/components/AgeGate";
 import { SITE_NAME } from "@/lib/site-brand";
 import "./globals.css";
 
@@ -38,7 +37,6 @@ export default function RootLayout({
     <html lang="ja" className={`dark ${notoSansJp.variable}`}>
       <body className="font-sans">
         {children}
-        <AgeGate />
         {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
       </body>
     </html>

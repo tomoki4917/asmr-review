@@ -22,7 +22,7 @@ alwaysApply: false
 | 作業 | 担当 |
 |------|------|
 | **記事本文 `[KEY]` 初稿** | **Gemini**（`--scenario-voice --writer-only` 等） |
-| **五軸・★・notes 確定** | **Cursor**（聴取・§3・シナリオ3パス。Gemini 五軸 eval は未実装時は人手） |
+| **五軸・★・notes 確定** | **Gemini**（`--scenario-voice --eval-only` → `eval_scenario_rubric.md`）＋ Cursor 校正 |
 | **DLsite・RJ・quickGuide・goLiveAt** | **Cursor** |
 | **旧 index 本文コピー** | **禁止**（`review-no-past-article-reference.mdc`） |
 

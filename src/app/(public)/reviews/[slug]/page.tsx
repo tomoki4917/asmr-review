@@ -279,11 +279,15 @@ export default async function ReviewPage({ params }: Props) {
   const best = review.ratingBest ?? 10;
 
   const isArticle = review.contentKind === "article";
+  const isHypnosisReview =
+    review.authorName === "催眠音声解析室" ||
+    review.tags?.includes("催眠音声") === true;
   const isDoujinReview =
-    review.authorName === "同人音声レビュー室" ||
-    review.authorName === "同人音声解析室" ||
-    review.tags?.includes("同人音声") === true ||
-    review.tags?.includes("全年齢同人") === true;
+    !isHypnosisReview &&
+    (review.authorName === "同人音声レビュー室" ||
+      review.authorName === "同人音声解析室" ||
+      review.tags?.includes("同人音声") === true ||
+      review.tags?.includes("全年齢同人") === true);
   const quickSpecTypeLabel = isDoujinReview ? "シチュエーション" : "誘導タイプ";
   const titleHasBreak = review.title.includes("\n");
   const nextReview = review.nextSlug
@@ -440,6 +444,32 @@ export default async function ReviewPage({ params }: Props) {
       workImpressionParagraphs: [
         "本作を聴き終えて、まず感じたのはその誘導の緻密さです。多層的なアプローチで意識が深く沈み込み、抗う間もなくトランス状態へと誘われる感覚は非常に印象的でした。特に、乳首への「カリカリ」というキラー暗示が強烈で、乳首の感覚を主軸に脳イキ型の絶頂へと強制的に導かれる体験は、まさに衝撃的と呼べるでしょう。カウントダウンによる焦らしと期待の演出も巧みで、快感が段階的に高まっていくのがよく分かります。",
         "この作品は、深い催眠状態での脳イキ体験を求める方に特におすすめしたい一本です。意識の変容を深く楽しみたい方や、乳首起点で強力な暗示による自律的な快感を味わいたい方には、間違いなく響くはずです。解除後も日常に乳首の余韻が残る後催眠暗示も特徴的で、作品世界への没入感を長く味わいたい方にも最適な作品だと私は思います。",
+      ],
+    },
+    "kowakuma-asmr-haishin-mimi-kando-mazo-trance": {
+      scoreLabel: "9.0 / 10",
+      oneLine:
+        "心地のいい催眠によるオナサポ。小悪魔配信者の限定配信から耳舐め・寸止め射精管理まで、浅い没入のままラポールが続く約1時間8分のKU100バイノーラル",
+      inductionType: "支配暗示系 / 行動制御系 / 感覚転換系",
+      voiceActor: "伊ヶ崎綾香",
+      majorFetish: "小悪魔 / マゾ / 耳舐め / 射精管理 / 寸止め / ASMR配信",
+      kinkType: "M向け",
+      recommendedLevel: "初級トランス（重感・深い脱力まで導入できる）以上の方",
+      recording: "約1時間8分2秒（注意・限定配信・解除）",
+      recommendedFor: [
+        "支配される快感に身を委ねたい方",
+        "耳・身体の感覚増幅で引き込まれたい方",
+        "言葉による行動制御で興奮したい方",
+      ],
+      notRecommendedFor: [
+        "穏やかな催眠誘導だけを好む方",
+        "明確な物語没入を重視する方",
+      ],
+      workImpressionParagraphs: [
+        "耳舐めの快感がいちばん先に残り、聴き終えてもその余韻が長く続きました。深く意識を落とす催眠というより、語り手に寄り添われながら快感を追いかけていく、心地よい催眠寄りのオナサポだと感じます。限定配信という距離感も、背徳より「二人きりの特別枠」として心に響き、親密な距離感が保たれていました。",
+        "催眠の深さは浅めですが、だからこそ語り手とのラポールが途切れにくく、注意パートから本編まで終始浅瀬を漂うような感覚が続きます。意識が一気に深く沈み込むというより、語り手の声に乗って身体が自然に反応していく緩やかな流れの方がはっきりしていました。",
+        "耳の敏感化カウント以降は舌先の刺激がさらに濃厚になり、聴こえる音がそのまま肌の触覚へ転がり続ける時間が長く感じられます。寸止めや射精管理はマゾ寄りですが、耳舐めだけ抜き出して聴いても満足できる厚みがあり、乳首や禁止暗示へ広がる起伏も飽きさせません。",
+        "全体として長すぎず、同じ系統の刺激が続いてもだらだらしにくいです。多段深化で意識を何度も落としたい人には物足りないかもしれませんが、語り手に心地よく寄り添われながら快感を追いたい人にはかなり合う一本だと感じました。",
       ],
     },
     "kyokuon-hikyo-kaimin-esthe-salon": {
@@ -2130,7 +2160,7 @@ export default async function ReviewPage({ params }: Props) {
         "長尺でじっくりと催眠に浸りたい方",
       ],
       notRecommendedFor: [
-        "直接的な性的展開を求める方",
+        "短時間で実践誘導だけを聴きたい方",
         "物語劇やキャラ会話を重視する方",
       ],
       workImpressionParagraphs: [

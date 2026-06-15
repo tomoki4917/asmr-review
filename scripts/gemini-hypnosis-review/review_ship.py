@@ -77,6 +77,12 @@ def run_review_ship(
         ):
             return False
 
+    if not run(
+        ["npm", "run", "sync:content-assets"],
+        label="public/content へ画像ミラー（review_triangle 等）",
+    ):
+        return False
+
     print("\n【review:ship 完了】")
     print(f"  {index_path}")
     return True

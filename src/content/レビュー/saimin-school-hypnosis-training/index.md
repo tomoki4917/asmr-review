@@ -5,6 +5,7 @@ summary: |
   9名の声優が同一台本を読み、聴き比べで自分に合う声を見つけやすい催眠スクール型作品です。基礎講義から多段イメージ誘導まで段階的に進み、催眠にかかりにくい人でも体験の入口を掴みやすい構成です。
 
 tags:
+  - 全年齢同人
   - 催眠音声
   - 催眠スクール
   - 声優比較
@@ -30,11 +31,11 @@ publishedAt: "2026-05-24"
 circleName: エロトランス
 
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ232000/RJ231054_img_main.jpg
-coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ231054.html
+coverAffiliateHref: https://dlaf.jp/home/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ231054.html
 workImpressionAvatar: /content/reviews/saimin-school-hypnosis-training/review_impression_mascot.png
 affiliateLinks:
   - vendor: dlsite
-    href: https://dlaf.jp/maniax/dlaf/=/t/n/link/work/aid/reviewLab/id/RJ231054.html
+    href: https://dlaf.jp/home/dlaf/=/t/n/link/work/aid/reviewLab/id/RJ231054.html
     label: 体験版はこちら
 dlsiteProductId: RJ231054
 ---
@@ -51,7 +52,7 @@ dlsiteProductId: RJ231054
 
 - **サークル：** エロトランス
 - **販売日：** 2018年9月15日（販売ページ表記）
-- **種類：** 催眠音声（催眠スクール・声優比較・イメージ誘導）
+- **種類：** 催眠音声（全年齢・催眠スクール・声優比較・イメージ誘導）
 - **CV：** かの仔、みもりあいの、陽向葵ゅか、あきら、一条ひらめ、ユメノシオリ、山田じぇみ子、月村望、御上みみ（同一台本）
 ### 梱包ファイル
 
@@ -160,8 +161,8 @@ dlsiteProductId: RJ231054
 - **すぐに実践的な誘導を始めたい方**  
   作品の約半分が催眠の基礎知識を解説する座学パートのため、導入に時間をかけたくない方には長く感じるかもしれません。
 
-- **直接的な性的快感を求める方**  
-  本作は純粋なトランス形成と脳内の快感、情緒的な幸福感を追求しており、直接的な性的描写やウェットな快感は含まれません。
+- **物語劇やキャラ会話を重視する方**  
+  講義形式とイメージ誘導が主役で、キャラクター同士の会話劇や物語の厚みは薄めです。
 
 ---
 

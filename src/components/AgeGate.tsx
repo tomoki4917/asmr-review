@@ -1,50 +1,31 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import {
+  setAgeVerified,
+} from "@/lib/age-verification";
 
-const STORAGE_KEY = "asmr_review_age_verified_until_v3";
-const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
+type AgeVerificationGateProps = {
+  open: boolean;
+  onVerified?: () => void;
+};
 
-function getVerifiedUntil(): number | null {
-  if (typeof window === "undefined") {
+/** 年齢確認モーダル（文言・ボタンは従来どおり） */
+export function AgeVerificationGate({
+  open,
+  onVerified,
+}: AgeVerificationGateProps) {
+  if (!open) {
     return null;
   }
-
-  const raw = window.localStorage.getItem(STORAGE_KEY);
-  if (!raw) {
-    return null;
-  }
-
-  const parsed = Number(raw);
-  return Number.isFinite(parsed) ? parsed : null;
-}
-
-export function AgeGate() {
-  const [isReady, setIsReady] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
-  const now = useMemo(() => Date.now(), []);
-
-  useEffect(() => {
-    const verifiedUntil = getVerifiedUntil();
-    if (verifiedUntil && verifiedUntil > now) {
-      setIsVerified(true);
-    }
-    setIsReady(true);
-  }, [now]);
 
   const handleConfirm = () => {
-    const verifiedUntil = Date.now() + NINETY_DAYS_MS;
-    window.localStorage.setItem(STORAGE_KEY, String(verifiedUntil));
-    setIsVerified(true);
+    setAgeVerified();
+    onVerified?.();
   };
 
   const handleDeny = () => {
     window.location.href = "https://www.google.com/";
   };
-
-  if (!isReady || isVerified) {
-    return null;
-  }
 
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-950/90 px-4">

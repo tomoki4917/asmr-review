@@ -16,7 +16,8 @@ export const DLSITE_RANKING_PERIOD_OPTIONS: ReadonlyArray<{
 
 export const DEFAULT_DLSITE_RANKING_PERIOD: DlsiteRankingPeriod = "week";
 
-export const DLSITE_SALES_RANKING_SECTION_TITLE = "DLサイト内販売数ランキング";
+export const DLSITE_SALES_RANKING_SECTION_TITLE =
+  "全年齢向けDLサイト内販売数ランキング";
 
 export const DLSITE_SALES_RANKING_SECTION_TITLE_MANIAX =
   "成人向けDLサイト内販売数ランキング";

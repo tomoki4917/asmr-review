@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { SocialLandingArticleList } from "@/components/SocialLandingArticleList";
 import { SocialLandingHypnosisIntroSection } from "@/components/SocialLandingHypnosisIntroSection";
 import { SocialLandingTopLink } from "@/components/SocialLandingTopLink";
+import { WelcomeFromYouTubePage } from "@/components/social-landing/WelcomeFromYouTubePage";
 import { getBeginnerGuides, getReviewsForExternalLanding } from "@/lib/reviews";
 
 const PLATFORMS = ["tiktok", "youtube"] as const;
@@ -31,7 +32,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const label = PLATFORM_LABEL[platform];
   return {
     title: `${label} からのご案内`,
-    description: `${label} の説明欄などからアクセスされた方向け。一般向けの解説記事への案内です。`,
+    description:
+      platform === "youtube"
+        ? "YouTube の説明欄などからアクセスされた方向け。全年齢向けレビューページへの案内です。"
+        : `${label} の説明欄などからアクセスされた方向け。一般向けの解説記事への案内です。`,
   };
 }
 
@@ -41,6 +45,11 @@ export default async function WelcomeFromSnsPage({ params }: Props) {
 
   const label = PLATFORM_LABEL[platform];
   const reviews = getReviewsForExternalLanding();
+
+  if (platform === "youtube") {
+    return <WelcomeFromYouTubePage reviews={reviews} />;
+  }
+
   const beginnerGuides = getBeginnerGuides();
 
   return (

@@ -43,6 +43,7 @@ export const QUICK_GUIDE_KINK_BY_SLUG: Record<string, string> = {
   "mimikaki-saimin": "ノーマル〜M向け",
   "higengo-saimin-giseigo-pavlov-another": "ノーマル〜M向け",
   "saimin-jutsushi-itazura-hypno-show-stage": "ノーマル〜M向け",
+  "kowakuma-asmr-haishin-mimi-kando-mazo-trance": "M向け",
   "saimin-school-hypnosis-training": "ノーマル",
   "shoshinsha-mugen-rakka-ecstasy": "ノーマル",
   "shoshinsha-nouiki-ho-whiteout": "ノーマル",
