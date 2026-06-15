@@ -13,7 +13,7 @@ import type { Review } from "@/lib/types";
 
 /** 全年齢トップのピックアップ固定 slug（`null` で ★9 以上・新しい順） */
 const ALL_AGES_SPOTLIGHT_SLUG: string | null =
-  "shinitagari-junai-maid-yogarekake";
+  "saimin-school-hypnosis-training";
 
 function pickSpotlight(reviews: Review[]): Review | undefined {
   if (ALL_AGES_SPOTLIGHT_SLUG) {
