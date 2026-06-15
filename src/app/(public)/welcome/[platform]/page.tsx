@@ -47,7 +47,7 @@ export default async function WelcomeFromSnsPage({ params }: Props) {
   const reviews = getReviewsForExternalLanding();
 
   if (platform === "youtube") {
-    return <WelcomeFromYouTubePage reviews={reviews} />;
+    return <WelcomeFromYouTubePage />;
   }
 
   const beginnerGuides = getBeginnerGuides();
