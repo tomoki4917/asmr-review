@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "workName": "悪の組織の双子女幹部による脳イジリ裏切り洗脳射精",
+  "notes": [
+    "Gemini auto_review.py 生成（2026-06-16） — 採点:デスクトップ採点マニュアル3種。本文:催眠音声執筆ガイド+B型原紙。旧稿未参照。",
+    "四表最適化（2026-06-16）— Gemini + Whisper/Librosa（§3.1）"
+  ],
+  "scores": {
+    "trance": 8.4,
+    "pleasure": 9.3,
+    "satisfaction": 9.0
+  },
+  "orgasmSummary": "絶頂目安（本文総合評価と同期）: ドライシーン複数回・ウェットシーン1回",
+  "analysisTables": {
+    "optimizedAt": "2026-06-16",
+    "inductionComposition": [
+      {
+        "label": "論理性",
+        "value": "2.0",
+        "detail": "【状況設定】 / 【パラドックス暗示】"
+      },
+      {
+        "label": "強制力",
+        "value": "2.5",
+        "detail": "【抵抗無力化】 / 【反復暗示】"
+      },
+      {
+        "label": "突破力",
+        "value": "2.5",
+        "detail": "【ガス誘導】 / 【思考停止】"
+      },
+      {
+        "label": "浸透力",
+        "value": "2.0",
+        "detail": "【認知書き換え】 / 【快感連結】"
+      },
+      {
+        "label": "身体性",
+        "value": "1.0",
+        "detail": "【全身脱力】 / 【オナニー誘導】"
+      }
+    ],
+    "strongInduction": [
+      {
+        "label": "強制的な思考停止と抵抗無力化",
+        "value": "4.5 / 5",
+        "detail": "ガス誘導とパラドックス暗示により、聴き手の思考と抵抗を初期段階から強力に無力化し、受容状態へと引き込みます。"
+      },
+      {
+        "label": "人格書き換えを伴う支配誘導",
+        "value": "4.4 / 5",
+        "detail": "反復暗示と認知暗示を組み合わせ、聴き手の自己認識を「雑魚戦闘員」へと書き換え、支配下での行動を促します。"
+      }
+    ],
+    "suggestionComposition": [
+      {
+        "label": "感覚暗示",
+        "value": "2.0",
+        "detail": "【ガスによる感覚変容】 / 【快感の紐付け】"
+      },
+      {
+        "label": "認知暗示",
+        "value": "2.5",
+        "detail": "【自己認識の書き換え】 / 【人格排出】"
+      },
+      {
+        "label": "反応暗示",
+        "value": "2.0",
+        "detail": "【オナニー誘導】 / 【射精タイミング制御】"
+      },
+      {
+        "label": "関係性暗示",
+        "value": "1.5",
+        "detail": "【支配と服従】 / 【所属意識の植え付け】"
+      },
+      {
+        "label": "トリガー暗示",
+        "value": "1.0",
+        "detail": "【反復キーワード】 / 【カウントダウン】"
+      },
+      {
+        "label": "否定暗示",
+        "value": "0.5",
+        "detail": "【抵抗の無効化】 / 【元の自己の否定】"
+      },
+      {
+        "label": "時間歪曲暗示",
+        "value": "0.5",
+        "detail": "【時間の感覚の曖昧化】 / 【集中力の操作】"
+      }
+    ],
+    "strongSuggestion": [
+      {
+        "label": "自己認識を書き換える認知暗示",
+        "value": "4.6 / 5",
+        "detail": "「雑魚戦闘員」という言葉と反復暗示により、聴き手の自我を排出し、支配下での新たな自己認識を強力に植え付けます。"
+      },
+      {
+        "label": "快感と結びつく反復トリガー",
+        "value": "4.5 / 5",
+        "detail": "「戦闘員くん？はい」というキーワードやカウントダウンが快感と繰り返し結び付けられ、脳イキを伴う絶頂へと導きます。"
+      }
+    ]
+  },
+  "tranceScoring": {
+    "lane": "acceptance",
+    "laneLabel": "受容・支配型",
+    "dimensions": {
+      "入り": 8.5,
+      "深さ": 7.0,
+      "暗示の効き": 9.0,
+      "維持": 8.5
+    },
+    "rubricVersion": "eval_trance_rubric.md"
+  },
+  "pleasureScoring": {
+    "c0": "brain",
+    "c0Label": "脳イキ寄り",
+    "dimensions": {
+      "コンセプト整合": 9.5,
+      "刺激・報酬": 9.0,
+      "クライマックス": 9.5,
+      "起伏・焦らし": 9.0
+    },
+    "rubricVersion": "eval_pleasure_rubric.md"
+  },
+  "satisfactionScoring": {
+    "dimensions": {
+      "約束の着地": 9.5,
+      "解除・戻し": 9.0,
+      "余韻・情緒": 8.5,
+      "尺対密度": 9.0
+    },
+    "rubricVersion": "eval_satisfaction_rubric.md"
+  }
+}

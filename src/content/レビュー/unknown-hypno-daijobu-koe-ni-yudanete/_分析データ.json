@@ -3,11 +3,13 @@
   "workName": "アンノウンヒプノ ～大丈夫、私の声に委ねて～",
   "scores": {
     "trance": 10.0,
-    "pleasure": 10.0,
+    "pleasure": 9.7,
     "satisfaction": 10.0
   },
   "orgasmSummary": "絶頂目安（本文総合評価と同期）: ドライシーン複数回回・ウェットシーン0回",
   "notes": [
+    "三軸再採点（2026-06-16）— リポジトリ採点正本＋デスクトップマニュアル経由 Gemini",
+    "三軸: eval_trance/pleasure/satisfaction_rubric（レーン・C-0別4次元合成）。",
     "Gemini auto_review.py 生成（2026-05-30） — 採点:デスクトップ採点マニュアル3種。本文:催眠音声執筆ガイド+B型原紙。旧稿未参照。",
     "【参照データ】解析フォルダ Whisper（6パート・合計約110分）。",
     "トランス度 10 … 往復深化・扉暗示・無意識同一化で長尺深度を維持。",
@@ -107,5 +109,36 @@
         "detail": "心の幸福感から頭の脳イキ、そして全身へと波状に広がる絶頂感を段階的に暗示し、快感を最大化します。"
       }
     ]
+  },
+  "tranceScoring": {
+    "lane": "deepening",
+    "laneLabel": "深化型",
+    "dimensions": {
+      "入り": 10.0,
+      "深さ": 10.0,
+      "暗示の効き": 10.0,
+      "維持": 10.0
+    },
+    "rubricVersion": "eval_trance_rubric.md"
+  },
+  "pleasureScoring": {
+    "c0": "brain",
+    "c0Label": "脳イキ寄り",
+    "dimensions": {
+      "コンセプト整合": 9.5,
+      "刺激・報酬": 9.8,
+      "クライマックス": 9.7,
+      "起伏・焦らし": 9.6
+    },
+    "rubricVersion": "eval_pleasure_rubric.md"
+  },
+  "satisfactionScoring": {
+    "dimensions": {
+      "約束の着地": 10.0,
+      "解除・戻し": 10.0,
+      "余韻・情緒": 10.0,
+      "尺対密度": 10.0
+    },
+    "rubricVersion": "eval_satisfaction_rubric.md"
   }
 }
