@@ -9,7 +9,7 @@ alwaysApply: false
 - 物差しの正本は `docs/レビュー三軸評価定義.md` の **「トランスありき」**。新規・改稿では **`scores.trance` を先に決め、`scores.pleasure` / `scores.satisfaction` を矛盾しない範囲で付ける**（催眠として誘導が薄いのに快楽・満足だけ突出させない）。
 - **例外**（催眠とは別経路が前面）は `_分析データ.json` の `notes` にだけ明示する。
 - **`index.md`** … 読者向けにドキュメント名や「トランスありき」の説教調を足さない（`.cursor/rules/review-graph-no-boilerplate.mdc` と同旨）。
-- **物差し** … トランス `eval_trance_rubric.md`（5レーン×4次元）／快楽 `eval_pleasure_rubric.md`（C-0×4次元）／満足 `eval_satisfaction_rubric.md`（4次元）。
+- **物差し** … トランス `eval_trance_rubric.md`（5レーン×4次元）＋ **`trance_scoring_guards.py`**（報酬・RP主の acceptance 過大を自動補正）／快楽 `eval_pleasure_rubric.md`（C-0×4次元）／満足 `eval_satisfaction_rubric.md`（4次元）。
 - **比較** … トランスはレーン内アンカー3本。快楽はC-0成功定義＋既決トランス上限。
 - **完成度比較を固定する。** 新規・改稿では、`saimin-shinri-test-dame-iwakareru`（★3）と `unknown-hypno-daijobu-koe-ni-yudanete`（★10）を比較アンカーとして参照し、対象作がその間のどこにあるかを `_分析データ.json` `notes` に明記する。
 - **総合が★7以下の作品**では、`index.md` の `## 作品感想` に「どうすればもっと良くなるか」の個人的アドバイスを1文入れる（具体的に、短く）。**ルート B（`## 総評：…` で締める構成）で感想が無いとき**は、同趣旨を **`## 総評` 内の結論側**に1文入れるか、`_分析データ.json` の `notes` に回す。

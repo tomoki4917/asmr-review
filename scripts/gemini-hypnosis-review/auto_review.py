@@ -31,6 +31,10 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parent.parent
 
 sys.path.insert(0, str(SCRIPT_DIR))
+from trance_scoring_guards import (  # noqa: E402
+    apply_trance_scoring_guards,
+    cap_pleasure_for_trance,
+)
 from review_prose_rules import (  # noqa: E402
     load_forbidden_rules,
     load_guide_excerpts_for_writer,
@@ -906,7 +910,7 @@ def compute_weighted_score(
 
 def extract_trance_lane(eval_text: str) -> str:
     lane = extract_lane_id(eval_text, TRANCE_LANES, "トランスレーン")
-    return lane or "acceptance"
+    return lane or "minimal"
 
 
 def extract_pleasure_c0(eval_text: str) -> str:
@@ -914,20 +918,44 @@ def extract_pleasure_c0(eval_text: str) -> str:
     return c0 or "other"
 
 
-def extract_trance_score(eval_text: str) -> float | None:
-    explicit = re.search(
-        r"最終トランス度[：:]\s*\*?\*?\s*(\d+(?:\.\d+)?)\s*/\s*10",
-        eval_text,
-    )
+def guarded_trance_result(eval_text: str) -> tuple[float | None, dict[str, object], list[str]]:
+    """eval 本文からガード適用後のトランス度・メタデータを返す。"""
+    guarded = apply_trance_scoring_guards(eval_text)
+    if guarded.score is not None:
+        meta: dict[str, object] = {
+            "lane": guarded.lane,
+            "laneLabel": TRANCE_LANES[guarded.lane]["label"],
+            "dimensions": guarded.dimensions,
+            "rubricVersion": "eval_trance_rubric.md",
+        }
+        if guarded.guard_notes:
+            meta["guardNotes"] = guarded.guard_notes
+        return guarded.score, meta, guarded.guard_notes
     if explicit:
-        return float(explicit.group(1))
+        score: float | None = float(explicit.group(1))
+    else:
+        lane = extract_trance_lane(eval_text)
+        weights = list(TRANCE_LANES[lane]["weights"])  # type: ignore[arg-type]
+        labels = [label for label, _ in weights]
+        score = compute_weighted_score(extract_dimension_scores(eval_text, labels), weights)
+        if score is None:
+            raw = extract_score_number(eval_text)
+            score = float(raw) if raw is not None else None
     lane = extract_trance_lane(eval_text)
     weights = list(TRANCE_LANES[lane]["weights"])  # type: ignore[arg-type]
     labels = [label for label, _ in weights]
-    weighted = compute_weighted_score(extract_dimension_scores(eval_text, labels), weights)
-    if weighted is not None:
-        return weighted
-    return extract_score_number(eval_text)
+    meta: dict[str, object] = {
+        "lane": lane,
+        "laneLabel": TRANCE_LANES[lane]["label"],
+        "dimensions": extract_dimension_scores(eval_text, labels),
+        "rubricVersion": "eval_trance_rubric.md",
+    }
+    return score, meta, []
+
+
+def extract_trance_score(eval_text: str) -> float | None:
+    score, _, _ = guarded_trance_result(eval_text)
+    return score
 
 
 def extract_pleasure_score(eval_text: str) -> float | None:
@@ -965,16 +993,8 @@ def extract_satisfaction_score(eval_text: str) -> float | None:
 
 def build_axis_scoring_metadata(eval_text: str, axis: str) -> dict[str, object]:
     if axis == "trance":
-        lane = extract_trance_lane(eval_text)
-        weights = list(TRANCE_LANES[lane]["weights"])  # type: ignore[arg-type]
-        labels = [label for label, _ in weights]
-        dims = extract_dimension_scores(eval_text, labels)
-        return {
-            "lane": lane,
-            "laneLabel": TRANCE_LANES[lane]["label"],
-            "dimensions": dims,
-            "rubricVersion": "eval_trance_rubric.md",
-        }
+        _, meta, _ = guarded_trance_result(eval_text)
+        return meta
     if axis == "pleasure":
         c0 = extract_pleasure_c0(eval_text)
         weights = list(PLEASURE_C0[c0]["weights"])  # type: ignore[arg-type]
@@ -1109,6 +1129,10 @@ def build_eval_prompt(
             "\n【必須】eval_trance_rubric.md … ①トランスレーン5種を1つ決定 "
             "②4次元（入り・深さ・暗示の効き・維持）③レーン別重み合成 "
             "④レーン内アンカー比較。出力フォーマット厳守。"
+            "\n【再発防止】導入後すぐ性的命令・耳責めが本編大半なら acceptance ではなく "
+            "**minimal**（または sensory）。エロ命令が刺さる＝暗示の効き高い、とトランスに載せない。"
+            "深さ根拠に「報酬・RP主・深化限定的／読み取れない」と書くなら該当次元は **0〜1**、"
+            "入り断片のみ **1〜2**、合成 **2.0 超禁止**（8.0 台は構造上あり得ない）。"
         )
     pleasure_note = ""
     if axis == "pleasure":
@@ -1388,6 +1412,9 @@ def run_three_axis_eval(
         label="トランス度採点",
     )
     trance_score = extract_trance_score(res_t)
+    _, _, guard_notes = guarded_trance_result(res_t)
+    if guard_notes:
+        print(f"[eval] trance_scoring_guards: {'; '.join(guard_notes)}")
 
     pleasure_sys = pleasure_manual
     if trance_score is not None:
@@ -1405,6 +1432,14 @@ def run_three_axis_eval(
         label="快楽度採点",
     )
     pleasure_score = extract_pleasure_score(res_p)
+    pleasure_capped = cap_pleasure_for_trance(pleasure_score, trance_score)
+    if (
+        pleasure_score is not None
+        and pleasure_capped is not None
+        and pleasure_capped != pleasure_score
+    ):
+        print(f"[eval] 快楽度をトランスありきで上限: {pleasure_score}→{pleasure_capped}")
+        pleasure_score = pleasure_capped
 
     print("[eval] 満足度採点（4次元）...")
     res_s = gemini_generate(
@@ -1445,10 +1480,12 @@ def patch_analysis_scores_from_eval(
     """eval_results から scores のみ更新（本文・表は触らない）。"""
     trance = extract_trance_score(res_t)
     pleasure = extract_pleasure_score(res_p)
+    pleasure = cap_pleasure_for_trance(pleasure, trance)
     satisfaction = extract_satisfaction_score(res_s)
     if trance is None or pleasure is None or satisfaction is None:
         print("[警告] eval からスコアを抽出できませんでした。_分析データ.json は未更新。")
         return
+    _, trance_meta, guard_notes = guarded_trance_result(res_t)
     if path.is_file():
         data = json.loads(path.read_text(encoding="utf-8"))
     else:
@@ -1458,13 +1495,17 @@ def patch_analysis_scores_from_eval(
         "pleasure": round(pleasure, 1),
         "satisfaction": round(satisfaction, 1),
     }
-    data["tranceScoring"] = build_axis_scoring_metadata(res_t, "trance")
+    data["tranceScoring"] = trance_meta
     data["pleasureScoring"] = build_axis_scoring_metadata(res_p, "pleasure")
     data["satisfactionScoring"] = build_axis_scoring_metadata(res_s, "satisfaction")
     notes = list(data.get("notes") or [])
     stamp = f"三軸再採点（{today_jst_ymd()}）— リポジトリ採点正本＋デスクトップマニュアル経由 Gemini"
     if stamp not in notes:
         notes.insert(0, stamp)
+    if guard_notes:
+        guard_stamp = "トランス guard: " + "; ".join(guard_notes)
+        if guard_stamp not in notes:
+            notes.insert(1, guard_stamp)
     if note and note not in notes:
         notes.insert(1, note)
     data["notes"] = notes

@@ -327,8 +327,7 @@ def apply_metadata(
             log.append("GRAPH_BREAKDOWN を eval_results から生成")
 
     dry = count_dry_scenes(Path(args.analysis_dir) if args.analysis_dir else None)
-    current_dry = keys.get("DRY_SCENE_COUNT", "").strip()
-    if dry is not None and (not current_dry or current_dry == "0"):
+    if dry is not None:
         text = apply_scalar_line(text, "DRY_SCENE_COUNT", str(dry))
         log.append(f"DRY_SCENE_COUNT ← Whisper 回収 {dry}")
 
