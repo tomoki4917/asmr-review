@@ -22,8 +22,8 @@ itemDescription: |
 authorName: 催眠音声解析室
 
 saleDate: "2025-07-14"
-publishedAt: "2026-07-08"
-goLiveAt: "2026-07-08T12:00:00+09:00"
+publishedAt: "2026-06-18"
+goLiveAt: "2026-06-18T12:00:00+09:00"
 
 circleName: 空心菜館
 
