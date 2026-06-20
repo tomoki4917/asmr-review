@@ -29,6 +29,7 @@ from review_prose_rules import (  # noqa: E402
     find_score_in_impression,
     is_all_ages_doujin_review,
 )
+from prompt_sanitize import is_sensitive_work_context, sanitize_prompt_context  # noqa: E402
 
 load_dotenv(SCRIPT_DIR / ".env")
 
@@ -104,23 +105,6 @@ ALL_AGES_OPENING_ANGLES = [
     "3段落：第1=黒塗り・全年齢ギャグ、第2=耳かき棒顕現・KU100近接、第3=向く人+刺激だけ追う日は物足りない。",
 ]
 
-# usotsuki 見本全文 + 露骨な summary を同一プロンプトに載せると PROHIBITED_CONTENT になりやすい
-SENSITIVE_CONTEXT_MARKERS = (
-    "TS",
-    "女体化",
-    "敗北",
-    "サキュバス",
-    "搾精",
-    "NTR",
-    "催眠姦",
-    "洗脳",
-    "家畜",
-    "触手",
-    "ディルド",
-    "射精",
-    "メスイキ",
-)
-
 BAD_IMPRESSION_PATTERNS = """
 ## NG見本（この型は絶対に書かない）
 - 各段落が「」台詞の連打だけで、聴いた人の温度が無い解説カタログ
@@ -183,38 +167,6 @@ REVISE_AI_PATTERNS = """
 """
 
 
-def sanitize_prompt_context(text: str) -> str:
-    """API入力ブロック回避のため作品コンテキストのみ軽量化（出力は記事事実と一致させる）。"""
-    replacements = (
-        ("体外式ポルチオ刺激", "体外刺激"),
-        ("体外式ポルチオ", "体外刺激"),
-        ("ドライオーガズム", "ドライ絶頂"),
-        ("唾液汚染", "接触暗示による受容"),
-        ("女の子へと強制的に転換", "女性化への転換"),
-        ("女体化", "女性化"),
-        ("敗北TS", "敗北・TS"),
-        ("催眠姦", "催眠"),
-        ("搾精", "快感回収"),
-        ("射精以外で行く", "絶頂以外の到達"),
-        ("射精", "絶頂"),
-        ("前立腺焦らし", "焦らし刺激"),
-        ("前立腺", "重点部位"),
-        ("メスイキ", "ドライ絶頂"),
-        ("ノーハンド", "手を使わない回収"),
-        ("触れずに", "接触なしで"),
-        ("ラブホ女子会", "女子会"),
-        ("アナル", "後方刺激"),
-        ("ケツ", "後方"),
-        ("おちんぽ", "男性器"),
-        ("ディルド", "道具"),
-        ("寸止め自動手コキ", "寸止め快感"),
-    )
-    out = text
-    for old, new in replacements:
-        out = out.replace(old, new)
-    return out
-
-
 def restore_impression_terms(paragraphs: list[str]) -> list[str]:
     """API入力用サニタイズ語を、出力では作品の具体語へ戻す。"""
     restores = (
@@ -244,6 +196,47 @@ def restore_impression_terms(paragraphs: list[str]) -> list[str]:
         text = text.replace("快感が回収", "快感が連なる")
         out.append(text)
     return out
+
+
+def validate_impression_paragraphs(
+    paragraphs: list[str], slug: str | None = None
+) -> list[str]:
+    warnings: list[str] = []
+    banned_openings = (
+        "聴き終わった印象としては",
+        "この作品いちばんの特徴だと感じました",
+        "本作は、約",
+        "約50分という長さで、本作は",
+        "約50分という長さで",
+        "聴き終えて残ったのは",
+        "言葉と想像が織り",
+        "深く誘い込",
+        "印象に残りました",
+    )
+    for i, para in enumerate(paragraphs, 1):
+        for w in find_forbidden_in_text(para):
+            warnings.append(f"段落{i}: {w}")
+        for op in banned_openings:
+            if para.startswith(op):
+                warnings.append(f"段落{i}: 禁止の書き出し「{op}」")
+        for phrase in BANNED_IMPRESSION_PHRASES:
+            if phrase in para:
+                warnings.append(f"段落{i}: NGフレーズ「{phrase}」")
+        for w in find_summary_time_banned(para):
+            warnings.append(f"段落{i}: {w}")
+        if para.count("「") >= 3:
+            warnings.append(f"段落{i}: 台詞引用が多すぎ（カタログ化）")
+        if para.count("でしょう") > 1:
+            warnings.append(f"段落{i}: でしょう が多い")
+    if slug:
+        blob = "\n".join(paragraphs)
+        for w in find_circle_cv_in_impression(
+            blob, gather_impression_banned_names(slug)
+        ):
+            warnings.append(w)
+        for w in find_score_in_impression(blob):
+            warnings.append(w)
+    return warnings
 
 
 def cleanup_impression_prose(paragraphs: list[str]) -> list[str]:
@@ -319,51 +312,6 @@ def load_style_few_shot(*, include_usotsuki: bool = True, all_ages: bool = False
         + "\n\n".join(blocks)
         + tail
     )
-
-
-def is_sensitive_work_context(ctx: str) -> bool:
-    return any(marker in ctx for marker in SENSITIVE_CONTEXT_MARKERS)
-
-
-def validate_impression_paragraphs(
-    paragraphs: list[str], slug: str | None = None
-) -> list[str]:
-    warnings: list[str] = []
-    banned_openings = (
-        "聴き終わった印象としては",
-        "この作品いちばんの特徴だと感じました",
-        "本作は、約",
-        "約50分という長さで、本作は",
-        "約50分という長さで",
-        "聴き終えて残ったのは",
-        "言葉と想像が織り",
-        "深く誘い込",
-        "印象に残りました",
-    )
-    for i, para in enumerate(paragraphs, 1):
-        for w in find_forbidden_in_text(para):
-            warnings.append(f"段落{i}: {w}")
-        for op in banned_openings:
-            if para.startswith(op):
-                warnings.append(f"段落{i}: 禁止の書き出し「{op}」")
-        for phrase in BANNED_IMPRESSION_PHRASES:
-            if phrase in para:
-                warnings.append(f"段落{i}: NGフレーズ「{phrase}」")
-        for w in find_summary_time_banned(para):
-            warnings.append(f"段落{i}: {w}")
-        if para.count("「") >= 3:
-            warnings.append(f"段落{i}: 台詞引用が多すぎ（カタログ化）")
-        if para.count("でしょう") > 1:
-            warnings.append(f"段落{i}: でしょう が多い")
-    if slug:
-        blob = "\n".join(paragraphs)
-        for w in find_circle_cv_in_impression(
-            blob, gather_impression_banned_names(slug)
-        ):
-            warnings.append(w)
-        for w in find_score_in_impression(blob):
-            warnings.append(w)
-    return warnings
 
 
 def gather_whisper_snippets(slug: str, *, max_lines: int = 10) -> str:

@@ -17,6 +17,7 @@ ROOT = SCRIPT_DIR.parents[1]
 sys.path.insert(0, str(SCRIPT_DIR))
 
 from auto_review import gemini_generate, get_api_key, load_file, require_api_key  # noqa: E402
+from prompt_sanitize import is_sensitive_work_context, sanitize_prompt_context  # noqa: E402
 
 load_dotenv(SCRIPT_DIR / ".env")
 
@@ -323,15 +324,20 @@ def main() -> None:
         ]
         for s in chunk:
             arc = step_arc_hint(int(s["n"]), n_steps, s["title"])
+            quote = sanitize_prompt_context(s["quote"] or "（なし）")
+            method = sanitize_prompt_context(s["method"])
+            title = sanitize_prompt_context(s["title"])
             prompt_parts.append(
-                f"### 手順{s['n']}: {s['title']}\n"
+                f"### 手順{s['n']}: {title}\n"
                 f"作品内位置: {arc}\n"
-                f"引用（当該場面）: {s['quote'] or '（なし）'}\n"
-                f"誘導方法: {s['method']}\n"
+                f"引用（当該場面・API向け婉曲語）: {quote}\n"
+                f"誘導方法: {method}\n"
                 f"生理・催眠上の要点: {abstract_method_hint(s['title'], scores)}\n"
             )
         prompt_parts.append(
             f"\n手順 {', '.join(nums)} の [BODY_N]…[/BODY_N] のみ出力（N={nums[0]}〜{nums[-1]}）。"
+            "\n【注意】引用・誘導方法はAPI向けに婉曲語化済み。"
+            "出力の**身体の変化**は元の意味（催眠・快感・変容）に合わせること。"
         )
         prompt = "\n".join(prompt_parts)
         system = SYSTEM.replace(
@@ -346,6 +352,7 @@ def main() -> None:
             system_instruction=system,
             temperature=0.2,
             label="身体の変化",
+            fallback_contents=sanitize_prompt_context(prompt, aggressive=True),
         )
         if not (out or "").strip():
             print("[エラー] Gemini が空応答を返しました（API キー・クォータを確認）")

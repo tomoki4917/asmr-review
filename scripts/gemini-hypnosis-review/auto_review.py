@@ -46,6 +46,7 @@ from merge_preserve_sections import (  # noqa: E402
     extract_preserved_sections,
     inject_preserved_sections,
 )
+from prompt_sanitize import build_source_context  # noqa: E402
 
 try:
     from dotenv import load_dotenv
@@ -252,6 +253,7 @@ def gemini_generate(
     temperature: float,
     label: str,
     max_attempts: int = 5,
+    fallback_contents: str | None = None,
 ) -> str:
     last_err: Exception | None = None
     for attempt in range(1, max_attempts + 1):
@@ -270,6 +272,23 @@ def gemini_generate(
                 fb = resp.prompt_feedback
                 print(
                     f"[警告] {label} 空応答（prompt block: {getattr(fb, 'block_reason', fb)}）"
+                )
+            if (
+                not text.strip()
+                and fallback_contents
+                and fallback_contents.strip()
+                and fallback_contents != contents
+            ):
+                print(f"[警告] {label} → 入力サニタイズ再試行")
+                return gemini_generate(
+                    client,
+                    model=model,
+                    contents=fallback_contents,
+                    system_instruction=system_instruction,
+                    temperature=temperature,
+                    label=f"{label}・再試行",
+                    max_attempts=max_attempts,
+                    fallback_contents=None,
                 )
             return text
         except Exception as exc:  # noqa: BLE001 — API 503 等を再試行
@@ -2021,7 +2040,7 @@ def main() -> None:
         print("[2/6] Whisper / Librosa を読み込み...")
         whisper_data = load_file(WHISPER_FILE, "WhisperX")
         librosa_data = load_file(LIBROSA_FILE, "Librosa")
-        source_context = f"【WhisperX】\n{whisper_data}\n\n【Librosa】\n{librosa_data}"
+        source_context = build_source_context(whisper_data, librosa_data)
         client = genai.Client(api_key=get_api_key())
         if scenario_voice_mode(args):
             print("[3/6] 五軸採点（--eval-only・シチュガイド）...")
@@ -2086,7 +2105,7 @@ def main() -> None:
 
         whisper_data = load_file(WHISPER_FILE, "WhisperX")
         librosa_data = load_file(LIBROSA_FILE, "Librosa")
-        source_context = f"【WhisperX】\n{whisper_data}\n\n【Librosa】\n{librosa_data}"
+        source_context = build_source_context(whisper_data, librosa_data)
 
         client = genai.Client(api_key=get_api_key())
         print(f"[2-3/6] スキップ（--keys {','.join(only_keys)}）")
@@ -2184,7 +2203,7 @@ def main() -> None:
 
         whisper_data = load_file(WHISPER_FILE, "WhisperX")
         librosa_data = load_file(LIBROSA_FILE, "Librosa")
-        source_context = f"【WhisperX】\n{whisper_data}\n\n【Librosa】\n{librosa_data}"
+        source_context = build_source_context(whisper_data, librosa_data)
 
         client = genai.Client(api_key=get_api_key())
         print("[3/6] スキップ（--skip-eval / --writer-only）")
@@ -2246,7 +2265,7 @@ def main() -> None:
         print("[2/6] Whisper / Librosa を読み込み...")
         whisper_data = load_file(WHISPER_FILE, "WhisperX")
         librosa_data = load_file(LIBROSA_FILE, "Librosa")
-        source_context = f"【WhisperX】\n{whisper_data}\n\n【Librosa】\n{librosa_data}"
+        source_context = build_source_context(whisper_data, librosa_data)
 
         client = genai.Client(api_key=get_api_key())
 
