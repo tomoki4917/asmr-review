@@ -902,14 +902,14 @@
   {
     "id": "RJ01644165",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01644165.html",
-    "current_price": 825,
+    "current_price": 1650,
     "original_price": 1650,
-    "discount_rate": 50,
-    "on_sale": true,
-    "sale_limit": "6月22日 00:00まで",
-    "sale_end_iso": "2026-06-21T15:00:00.000Z",
+    "discount_rate": 0,
+    "on_sale": false,
+    "sale_limit": "",
+    "sale_end_iso": "",
     "release_date_iso": "2026-06-11T15:00:00.000Z",
-    "fetched_at": "2026-06-20T19:14:01.881Z"
+    "fetched_at": "2026-06-21T16:50:34.430Z"
   },
   {
     "id": "RJ01633653",
