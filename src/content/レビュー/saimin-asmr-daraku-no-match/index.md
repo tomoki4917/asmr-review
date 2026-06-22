@@ -25,7 +25,7 @@ authorName: 催眠音声解析室
 
 saleDate: "2024-03-29"
 publishedAt: "2026-06-22"
-goLiveAt: "2026-06-22T12:00:00+09:00"
+goLiveAt: "2026-06-22T13:00:00+09:00"
 
 circleName: 帽子屋
 
