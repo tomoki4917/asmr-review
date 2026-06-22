@@ -47,6 +47,7 @@ from merge_preserve_sections import (  # noqa: E402
     inject_preserved_sections,
 )
 from prompt_sanitize import build_source_context  # noqa: E402
+from orgasm_scene_count import DRY_SCENE_GEMINI_RULE, WET_SCENE_GEMINI_RULE  # noqa: E402
 
 try:
     from dotenv import load_dotenv
@@ -1561,7 +1562,9 @@ def build_writer_prompt(
         f"・デスクトップ `催眠音声執筆ガイド.txt` は system 短縮版。\n"
         f"サイト掲載用は出力キー（[KEY]）／JSON のみ。\n"
         f"・SCORE_* / RATING_VALUE / 表の行名は keys 定義どおり。捏造の CV・販売日・トラック名禁止。\n"
-        f"・DRY_SCENE_COUNT / WET_SCENE_COUNT は Whisper の到達回収のみ数える（§0.1.2）。1回と決め打ち禁止。\n"
+        f"・DRY_SCENE_COUNT / WET_SCENE_COUNT は Whisper 全トラック走査（§0.1.2）。1回と決め打ち禁止。\n"
+        f"・WET_SCENE_COUNT … {WET_SCENE_GEMINI_RULE}\n"
+        f"・DRY_SCENE_COUNT … {DRY_SCENE_GEMINI_RULE}\n"
         f"・読者向け散文の禁止語: `芯` `手順` `設計`（台詞引用 `> ` 行のみ可）。代用: 流れ・構成・進め方・段階・順番。\n"
         f"・## 見出しや「クイック解析」セクション形式での出力は禁止（[KEY] のみ）。\n\n"
         f"【出力形式 — 厳守】\n{keys_section}\n"
@@ -2135,9 +2138,9 @@ def main() -> None:
         if "DRY_SCENE_COUNT" in only_keys or "WET_SCENE_COUNT" in only_keys:
             extra_flow = (
                 (extra_flow or "")
-                + "【追加】DRY_SCENE_COUNT/WET_SCENE_COUNT: Whisper 全トラックを走査。"
-                "ドライシーン＝射精を伴わない明確な到達回収（0/ゼロ合図・弾ける・ドライオーガズム宣言後の回収）。"
-                "予告・焦らし・同一波内の繰り返しは含めない。とろとろ本編・乳首・亀頭・耳など別峰は別カウント。"
+                + "【追加】DRY_SCENE_COUNT/WET_SCENE_COUNT: Whisper 全トラックを走査。\n"
+                f"{DRY_SCENE_GEMINI_RULE}\n"
+                f"{WET_SCENE_GEMINI_RULE}\n"
             )
         if set(only_keys) & set(ANALYSIS_TABLE_KEYS):
             extra_flow = (

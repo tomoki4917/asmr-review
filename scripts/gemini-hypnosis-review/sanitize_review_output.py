@@ -251,36 +251,21 @@ def build_graph_breakdown(slug: str, keys: dict[str, str]) -> str:
 
 
 def whisper_texts(analysis_dir: Path) -> str:
-    chunks: list[str] = []
-    for pat in ("*.txt", "*.srt"):
-        for path in sorted(analysis_dir.glob(pat)):
-            if path.name.lower().startswith("info"):
-                continue
-            try:
-                chunks.append(path.read_text(encoding="utf-8"))
-            except OSError:
-                pass
-    return "\n".join(chunks)
+    from orgasm_scene_count import whisper_texts as _whisper_texts  # noqa: PLC0415
+
+    return _whisper_texts(analysis_dir)
 
 
 def count_dry_scenes(analysis_dir: Path | None) -> int | None:
-    if not analysis_dir or not Path(analysis_dir).is_dir():
-        return None
-    text = whisper_texts(Path(analysis_dir))
-    if not text.strip():
-        return None
-    peaks = 0
-    if re.search(r"0[.、．\s]*(?:ほら[、,]?\s*)?いっちゃえ|0いっちゃえ|0\s*いっちゃえ", text):
-        peaks += 1
-    if re.search(r"3210", text) and re.search(r"またいっちゃえ|握り潰|絞りカス", text):
-        peaks += 1
-    if re.search(r"せーの[^\n]{0,40}いっちゃえ|最後[^\n]{0,20}いっちゃえ", text):
-        peaks += 1
-    # 吸盤剥がし系（3-2-1→0 / 321ゼロ の到達回収）
-    if re.search(r"3・2・1[^\n]{0,80}0[^\n]{0,80}(?:引き剥が|剥が)", text):
-        peaks += 1
-    peaks += len(re.findall(r"321\s*ゼロ", text))
-    return peaks if peaks > 0 else 0
+    from orgasm_scene_count import count_dry_scenes as _count_dry  # noqa: PLC0415
+
+    return _count_dry(analysis_dir)
+
+
+def count_wet_scenes(analysis_dir: Path | None) -> int | None:
+    from orgasm_scene_count import count_wet_scenes as _count_wet  # noqa: PLC0415
+
+    return _count_wet(analysis_dir)
 
 
 def apply_metadata(
@@ -326,10 +311,25 @@ def apply_metadata(
             text = replace_block(text, "GRAPH_BREAKDOWN", gb)
             log.append("GRAPH_BREAKDOWN を eval_results から生成")
 
-    dry = count_dry_scenes(Path(args.analysis_dir) if args.analysis_dir else None)
+    from orgasm_scene_count import resolve_analysis_dir  # noqa: PLC0415
+
+    analysis_dir = resolve_analysis_dir(slug, args.analysis_dir or None, ROOT)
+
+    dry = count_dry_scenes(analysis_dir)
     if dry is not None:
         text = apply_scalar_line(text, "DRY_SCENE_COUNT", str(dry))
-        log.append(f"DRY_SCENE_COUNT ← Whisper 回収 {dry}")
+        log.append(f"DRY_SCENE_COUNT ← Whisper 到達回収 {dry}")
+
+    wet = count_wet_scenes(analysis_dir)
+    if wet is not None:
+        prev = (parse_gemini_keys(text).get("WET_SCENE_COUNT") or "").strip()
+        text = apply_scalar_line(text, "WET_SCENE_COUNT", str(wet))
+        if prev and prev.isdigit() and int(prev) != wet:
+            log.append(
+                f"WET_SCENE_COUNT ← Whisper 自慰指示 {wet}（Gemini/旧稿 {prev} を上書き）"
+            )
+        else:
+            log.append(f"WET_SCENE_COUNT ← Whisper 自慰指示 {wet}")
 
     return text, log
 

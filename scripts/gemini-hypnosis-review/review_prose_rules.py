@@ -555,6 +555,9 @@ def validate_slug(slug: str, *, draft_path: Path | None = None) -> list[str]:
                     errors.append(f"{key}: {w}")
     if index_path.is_file():
         errors.extend(validate_index_md(index_text))
+        from orgasm_scene_count import validate_orgasm_counts_for_slug  # noqa: PLC0415
+
+        errors.extend(validate_orgasm_counts_for_slug(slug, index_text, ROOT))
     errors.extend(validate_work_impression_for_slug(slug))
     return errors
 
