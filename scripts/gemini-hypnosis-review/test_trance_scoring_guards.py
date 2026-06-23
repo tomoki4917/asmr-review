@@ -38,6 +38,24 @@ class TranceScoringGuardsTest(unittest.TestCase):
         self.assertEqual(cap_pleasure_for_trance(9.2, 0.8), 4.3)
         self.assertEqual(cap_pleasure_for_trance(6.0, 8.0), 6.0)
 
+    def test_reward_primary_with_hypno_tech_not_capped_to_two(self) -> None:
+        """生放送型: 深化技法あり＋快楽移行は 2.0 に落とさない。"""
+        eval_text = """
+## トランス度: 7.0
+### トランスレーン: minimal（薄い催眠型）
+| 次元 | スコア | 根拠 |
+| 入り | 6.0 | ラジオ導入 |
+| 深さ | 4.5 | カウントダウンと呼吸誘導はあるが、その後の展開が刺激追求に移行するため、深さの持続性は限定的。 |
+| 暗示の効き | 7.0 | 無意識への働きかけ |
+| 維持 | 5.5 | セルフ指示以降は興奮維持 |
+### 最終トランス度: 7.0 / 10.0
+"""
+        result = apply_trance_scoring_guards(eval_text)
+        self.assertIsNotNone(result.score)
+        assert result.score is not None
+        self.assertGreaterEqual(result.score, 5.5)
+        self.assertGreater(result.score, 2.0)
+
 
 if __name__ == "__main__":
     unittest.main()

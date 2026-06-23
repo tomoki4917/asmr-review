@@ -1,17 +1,144 @@
 {
   "schemaVersion": 1,
-  "workName": "【バイノーラル】2人で催眠生放送【初見さん歓迎♪】（RJ205378）",
+  "workName": "【バイノーラル】2人で催眠生放送【初見さん歓迎♪】",
   "scores": {
-    "trance": 8,
-    "pleasure": 8,
-    "satisfaction": 8
+    "trance": 5.8,
+    "pleasure": 8.5,
+    "satisfaction": 7.0
   },
-  "orgasmSummary": "ドライ2回（スイ帯・メロ帯の絶頂シーン／分岐で体感は変動）／ウェット0回（音声のみ）",
+  "orgasmSummary": "絶頂目安（本文総合評価と同期）: ドライシーン1回・ウェットシーン1回",
   "notes": [
+    "三軸再採点（2026-06-23）— リポジトリ採点正本＋デスクトップマニュアル経由 Gemini",
+    "トランス guard: reward_primary 判定だが深化技法ありのため 2.0 上限ガードをスキップ",
+    "Gemini auto_review.py 生成（2026-06-23） — 採点:デスクトップ採点マニュアル3種。本文:催眠音声執筆ガイド+B型原紙。旧稿未参照。",
     "評価は docs/レビュー三軸評価定義.md に準拠（鑑賞用・臨床非保証）。",
     "通し尺は作品ページ「※約95分（分岐パート含め）」の表記に準拠。解析フォルダに各トラックの .srt と *_waveform.csv を置き、import-review-analysis.py → analyze_review_auto.py を再実行すると derived_metrics・events・パート別の秒が揃う。",
     "主軸は『生放送ドラマで二人掛け合いの文脈固定』『古典誘導へ接続』『媚薬・人形系の快楽帯（スイ／メロ）』『覚醒とエピローグ』。",
     "クレジットは RJ205378 の販売ページ（CV・イラスト・企画／シナリオ表記）を正とする。",
-    "比較アンカー: 下限は短尺ラジオ風のみ、上限は二声掛け合いと分岐本編が揃った生放送型として把握。"
-  ]
+    "比較アンカー: 下限は短尺ラジオ風のみ、上限は二声掛け合いと分岐本編が揃った生放送型として把握。",
+    "【自動補助根拠】derived_metrics.json: duration=8108.327s / rms_mean=0.00514613 / silence_ratio=0.4906 / surge_events_per_min=30.065。",
+    "【自動補助根拠】keyword_counts: 可愛い=1, ワン=0, 行け=1, 泣=0。event_counts: countdown=12, trigger=32, release=14。",
+    "【自動補助根拠】sections.auto.json: 導入0.0-300.0 / 深化300.0-650.0 / 快楽650.0-7948.327 / 解除7948.327-8108.327。",
+    "四表最適化（2026-06-23）— Gemini + Whisper/Librosa（§3.1）"
+  ],
+  "analysisTables": {
+    "optimizedAt": "2026-06-23",
+    "inductionComposition": [
+      {
+        "label": "入り",
+        "value": "6.0",
+        "detail": "【呼びかけ】 / 【雑談】"
+      },
+      {
+        "label": "深さ",
+        "value": "4.5",
+        "detail": "【感覚的表現】 / 【カウントダウン】"
+      },
+      {
+        "label": "暗示の効き",
+        "value": "7.0",
+        "detail": "【身体への暗示】 / 【感覚的変化】"
+      },
+      {
+        "label": "維持",
+        "value": "5.5",
+        "detail": "【誘導の長さ】 / 【刺激追求】"
+      },
+      {
+        "label": "合成",
+        "value": "5.75",
+        "detail": "minimal"
+      }
+    ],
+    "strongInduction": [
+      {
+        "label": "声への注意喚起",
+        "value": "4.0 / 5",
+        "detail": "「私の声だけを～聞いている」「私の声があなたの頭の中に直接語りかけている」といった表現で、声への注意を向けさせ、ラポールを形成しようとしている。"
+      },
+      {
+        "label": "感覚的刺激追求",
+        "value": "4.2 / 5",
+        "detail": "液体化や薬の注入といった刺激的な展開が中心となり、感覚的な刺激とそれに伴う快楽の追求が主軸となっている。"
+      }
+    ],
+    "suggestionComposition": [
+      {
+        "label": "コンセプト整合",
+        "value": "9.0",
+        "detail": "【液体化・女性化】 / 【お人形さん設定】"
+      },
+      {
+        "label": "刺激・報酬",
+        "value": "8.5",
+        "detail": "【非日常体験】 / 【女性化による快感増幅】"
+      },
+      {
+        "label": "クライマックス",
+        "value": "8.0",
+        "detail": "【絶頂感増幅】 / 【生放送晒し】"
+      },
+      {
+        "label": "起伏・焦らし",
+        "value": "8.0",
+        "detail": "【段階的変化】 / 【快感増幅】"
+      },
+      {
+        "label": "ゼロ合図連結",
+        "value": "0.0 / 5",
+        "detail": "（該当なし）"
+      },
+      {
+        "label": "とろとろ反復刻印",
+        "value": "0.0 / 5",
+        "detail": "（該当なし）"
+      },
+      {
+        "label": "合成",
+        "value": "8.375",
+        "detail": "corruption"
+      }
+    ],
+    "strongSuggestion": [
+      {
+        "label": "背徳的状況想起",
+        "value": "4.5 / 5",
+        "detail": "「生放送で全世界に晒される」という背徳的な状況の想起が、クライマックスにおける快感体験を増幅させている。"
+      },
+      {
+        "label": "刺激と快感の追求",
+        "value": "4.3 / 5",
+        "detail": "液体化や薬の注入といった刺激的な展開が、コンセプトに沿って効果的に機能し、聴き手に快感を提供している。"
+      }
+    ]
+  },
+  "tranceScoring": {
+    "lane": "minimal",
+    "laneLabel": "薄い催眠型",
+    "dimensions": {
+      "入り": 6.0,
+      "深さ": 4.5,
+      "暗示の効き": 7.0,
+      "維持": 5.5
+    },
+    "rubricVersion": "eval_trance_rubric.md",
+    "guardNotes": [
+      "reward_primary 判定だが深化技法ありのため 2.0 上限ガードをスキップ"
+    ]
+  },
+  "pleasureScoring": {
+    "c0": "corruption",
+    "c0Label": "堕落・背徳寄り",
+    "dimensions": {
+      "コンセプト整合": 9.0,
+      "刺激・報酬": 8.5,
+      "クライマックス": 8.0,
+      "起伏・焦らし": 8.0
+    },
+    "rubricVersion": "eval_pleasure_rubric.md"
+  },
+  "satisfactionScoring": {
+    "dimensions": {},
+    "rubricVersion": "eval_satisfaction_rubric.md"
+  }
 }

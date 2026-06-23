@@ -1,40 +1,62 @@
 {
-  "version": "v0.1-placeholder",
+  "version": "v0.1-auto",
   "source": {
-    "waveforms": [],
-    "srts": []
+    "waveforms": [
+      "1.注意事項_waveform.csv",
+      "2.催眠生放送_waveform.csv",
+      "3.催眠誘導_waveform.csv",
+      "4.スイパート　セルフ指示有り_waveform.csv",
+      "4.スイパート　セルフ指示無し_waveform.csv",
+      "5.スイパート　カウントリピート_waveform.csv",
+      "6.スイパート　覚醒_waveform.csv",
+      "7.スイパート　エピローグ_waveform.csv",
+      "8.メロパート_waveform.csv",
+      "9.メロパート　エピローグ_waveform.csv"
+    ],
+    "srts": [
+      "1.注意事項.srt",
+      "2.催眠生放送.srt",
+      "3.催眠誘導.srt",
+      "4.スイパート　セルフ指示有り.srt",
+      "4.スイパート　セルフ指示無し.srt",
+      "5.スイパート　カウントリピート.srt",
+      "6.スイパート　覚醒.srt",
+      "7.スイパート　エピローグ.srt",
+      "8.メロパート.srt",
+      "9.メロパート　エピローグ.srt"
+    ]
   },
-  "duration_sec": 5700,
-  "rms_mean": 0.02,
-  "rms_std": 0.02,
-  "rms_p95": 0.05,
-  "centroid_mean_hz": 2000,
-  "centroid_std_hz": 1500,
-  "silence_ratio_rms_lt_0_002": 0.35,
-  "surge_events_per_min_rms_gt_p95": 30,
+  "duration_sec": 8108.327,
+  "rms_mean": 0.00514613,
+  "rms_std": 0.00766616,
+  "rms_p95": 0.01996429,
+  "centroid_mean_hz": 2587.863,
+  "centroid_std_hz": 1612.333,
+  "silence_ratio_rms_lt_0_002": 0.4906,
+  "surge_events_per_min_rms_gt_p95": 30.065,
   "keyword_counts": {
-    "可愛い": 0,
+    "可愛い": 1,
     "泣": 0,
-    "気持ちいい": 0,
+    "気持ちいい": 31,
     "暗示": 0,
     "解除": 0,
     "ワン": 0,
-    "行け": 0,
+    "行け": 1,
     "お仕置き": 0
   },
   "keyword_density_per_min": {
-    "可愛い": 0,
-    "泣": 0,
-    "気持ちいい": 0,
-    "暗示": 0,
-    "解除": 0,
-    "ワン": 0,
-    "行け": 0,
-    "お仕置き": 0
+    "可愛い": 0.007,
+    "泣": 0.0,
+    "気持ちいい": 0.229,
+    "暗示": 0.0,
+    "解除": 0.0,
+    "ワン": 0.0,
+    "行け": 0.007,
+    "お仕置き": 0.0
   },
   "event_counts": {
-    "countdown": 0,
-    "trigger": 0,
-    "release": 0
+    "countdown": 12,
+    "trigger": 32,
+    "release": 14
   }
 }

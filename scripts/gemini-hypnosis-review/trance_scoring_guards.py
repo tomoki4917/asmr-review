@@ -193,6 +193,22 @@ def apply_trance_scoring_guards(eval_text: str) -> TranceGuardResult:
             dimensions=dims,
         )
 
+    # カウントダウン・呼吸・無意識等が eval 根拠にある作品は、
+    # 「快楽パートへ移行する」だけで 2.0 上限に落とさない（生放送型古典誘導の誤判定防止）。
+    if has_hypno_tech:
+        weights = TRANCE_LANE_WEIGHTS[original_lane]
+        return TranceGuardResult(
+            score=compute_weighted_score(dims, weights),
+            lane=original_lane,
+            dimensions=dims,
+            guard_notes=(
+                ["reward_primary 判定だが深化技法ありのため 2.0 上限ガードをスキップ"]
+                if reward_primary
+                else []
+            ),
+            applied=reward_primary,
+        )
+
     notes: list[str] = []
     lane = "minimal"
     if original_lane != "minimal":
