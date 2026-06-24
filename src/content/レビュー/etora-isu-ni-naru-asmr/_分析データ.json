@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 2,
+  "notes": [
+    "五軸再採点（2026-06-24）— eval_scenario_rubric.md 経由 Gemini",
+    "scenario-v2-four-factor-lane-weighted（心理・一貫性・ギミック・フック）— eval_scenario_rubric.md",
+    "比較: dakimakura（★9） / michikusa（★10）",
+    "【DLsite購入者レビュー（温度感メモ・内部用）】全44件。言及テーマ: 添い寝・安眠(4)、イチャラブ・あまあま(3)、密着・耳元(3)。温度参考: あまあま・純愛の甘さを長尺で味わいたい層／添い寝・安眠寄りの聴き方もしたい層。注意参考: 最後まで一気通貫で刺激だけ追い続けたい層（寝落ちしやすい）。index本文・グラフ・総評・おすすめへ内容反映禁止（§8.4.3）。感想は温度のみ。"
+  ],
+  "scores": {
+    "immersion": 9,
+    "scenario": 9,
+    "pleasure": 7.2,
+    "acoustic": 9,
+    "satisfaction": 9.1
+  },
+  "scenarioLane": "healing_allages",
+  "scenarioLaneLabel": "癒し・安眠型",
+  "scenarioScoring": {
+    "dimensions": {
+      "心理": 9,
+      "一貫性": 9.5,
+      "ギミック": 8.8,
+      "フック": 9.2
+    },
+    "rubricVersion": "eval_scenario_rubric.md",
+    "lane": "healing_allages",
+    "laneLabel": "癒し・安眠型"
+  },
+  "acousticScoring": {
+    "dimensions": {
+      "台詞": 9.5,
+      "情景音": 9.3
+    },
+    "rubricVersion": "eval_scenario_rubric.md"
+  },
+  "immersionScoring": {
+    "dimensions": {
+      "定位": 7.5,
+      "親密距離": 9
+    },
+    "rubricVersion": "eval_scenario_rubric.md"
+  },
+  "pleasureScoring": {
+    "dimensions": {
+      "入眠": 6.5,
+      "覚醒": 8
+    },
+    "rubricVersion": "eval_scenario_rubric.md",
+    "axisLabel": "睡眠・覚醒"
+  },
+  "satisfactionScoring": {
+    "dimensions": {
+      "回収": 9,
+      "終端": 9.2
+    },
+    "rubricVersion": "eval_scenario_rubric.md"
+  },
+  "radarAxisLabels": {
+    "pleasure": "睡眠・覚醒"
+  },
+  "workName": "エトラの座るイスになるASMR【CV.エトラ】"
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 2,
+  "notes": [
+    "五軸再採点（2026-06-24）— eval_scenario_rubric.md 経由 Gemini",
+    "scenario-v2-four-factor-lane-weighted（心理・一貫性・ギミック・フック）— eval_scenario_rubric.md",
+    "比較: dakimakura（★9） / michikusa（★10）",
+    "【DLsite購入者レビュー（温度感メモ・内部用）】全1件。言及テーマ: 耳舐め(2)、密着・耳元(1)。温度参考: キス・耳舐め・密着スキンシップを主役にしたい層。注意参考: —。index本文・グラフ・総評・おすすめへ内容反映禁止（§8.4.3）。感想は温度のみ。"
+  ],
+  "scores": {
+    "immersion": 9,
+    "scenario": 9,
+    "pleasure": 8.8,
+    "acoustic": 9,
+    "satisfaction": 8.5
+  },
+  "scenarioLane": "gimmick_driven",
+  "scenarioLaneLabel": "ギミック驱动型",
+  "scenarioScoring": {
+    "dimensions": {
+      "心理": 8.5,
+      "一貫性": 9,
+      "ギミック": 9.5,
+      "フック": 8
+    },
+    "rubricVersion": "eval_scenario_rubric.md",
+    "lane": "gimmick_driven",
+    "laneLabel": "ギミック驱动型"
+  },
+  "acousticScoring": {
+    "dimensions": {
+      "台詞": 8.5,
+      "情景音": 8.5
+    },
+    "rubricVersion": "eval_scenario_rubric.md"
+  },
+  "immersionScoring": {
+    "dimensions": {
+      "定位": 8.5,
+      "親密距離": 8.5
+    },
+    "rubricVersion": "eval_scenario_rubric.md"
+  },
+  "pleasureScoring": {
+    "dimensions": {
+      "声色": 9,
+      "峰と間": 8.6
+    },
+    "rubricVersion": "eval_scenario_rubric.md"
+  },
+  "satisfactionScoring": {
+    "dimensions": {
+      "回収": 8.5,
+      "終端": 8.5
+    },
+    "rubricVersion": "eval_scenario_rubric.md"
+  },
+  "workName": "優秀なアナタのための専属耳舐めパートナー～人気No1あざとい系女子による政府公認耳奥舐めサービス～"
+}
