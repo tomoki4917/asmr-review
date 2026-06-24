@@ -2,7 +2,7 @@
 slug: yuushu-ana-mimi-nabe-azatoi
 title: 【レビュー】優秀なアナタのための専属耳舐めパートナー～人気No1あざとい系女子による政府公認耳奥舐めサービス～
 summary: |
-  成績優秀者に与えられる政府公認の「耳舐めパートナー」に、綾瀬いちかが就いたシチュエーションボイスです。専属パートナーとしての初ご奉仕から、校舎裏・保健室・自宅へ場面が進み、耳奥舐めを軸に関係が深まっていきます。
+  成績優秀者に与えられる政府公認の「耳舐めパートナー」があなたへ就くシチュエーションボイスです。専属パートナーとしての初ご奉仕から、学校での様々なシチュエーションでの耳奥舐めを軸に関係が深まっていきます。
 tags:
   - 同人音声
   - 耳舐め
@@ -22,8 +22,8 @@ itemDescription: |
 authorName: 同人音声レビュー室
 circleName: オトヨメ
 saleDate: "2026-06-13"
-publishedAt: "2026-07-09"
-goLiveAt: "2026-07-09T12:00:00+09:00"
+publishedAt: "2026-06-24"
+goLiveAt: "2026-06-24T12:00:00+09:00"
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01610000/RJ01609552_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ01609552.html
 affiliateLinks:
