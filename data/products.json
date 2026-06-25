@@ -38,13 +38,13 @@
   {
     "id": "RJ01517030",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01517030.html",
-    "current_price": 1122,
+    "current_price": 1320,
     "original_price": 1320,
-    "discount_rate": 15,
-    "on_sale": true,
-    "sale_limit": "6月26日 00:00まで",
-    "sale_end_iso": "2026-06-25T15:00:00.000Z",
-    "fetched_at": "2026-06-20T18:59:12.342Z",
+    "discount_rate": 0,
+    "on_sale": false,
+    "sale_limit": "",
+    "sale_end_iso": "",
+    "fetched_at": "2026-06-25T17:16:30.004Z",
     "release_date_iso": "2025-12-18T15:00:00.000Z"
   },
   {
