@@ -794,14 +794,14 @@
   {
     "id": "RJ01632189",
     "url": "https://www.dlsite.com/home/work/=/product_id/RJ01632189.html",
-    "current_price": 990,
+    "current_price": 1320,
     "original_price": 1320,
-    "discount_rate": 25,
-    "on_sale": true,
-    "sale_limit": "6月29日 00:00まで",
-    "sale_end_iso": "2026-06-28T15:00:00.000Z",
+    "discount_rate": 0,
+    "on_sale": false,
+    "sale_limit": "",
+    "sale_end_iso": "",
     "release_date_iso": "2026-05-31T15:00:00.000Z",
-    "fetched_at": "2026-06-27T19:06:52.988Z"
+    "fetched_at": "2026-06-28T16:14:48.414Z"
   },
   {
     "id": "RJ203898",
