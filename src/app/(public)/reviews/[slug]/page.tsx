@@ -233,9 +233,11 @@ export default async function ReviewPage({ params }: Props) {
   const now = new Date();
   if (!isReviewVisibleOnSite(review, now)) {
     const titleOne = reviewTitleSingleLine(review.title);
-    const when = review.goLiveAt?.trim()
-      ? formatGoLiveForReader(review.goLiveAt)
-      : "予定時刻が設定されていません";
+    const when = !review.publishedAt?.trim()
+      ? "投稿日未定"
+      : review.goLiveAt?.trim()
+        ? formatGoLiveForReader(review.goLiveAt)
+        : "予定時刻が設定されていません";
     return (
       <article className="mx-auto w-full min-w-0 max-w-3xl py-8 sm:py-10 lg:max-w-4xl xl:max-w-5xl xl:py-11">
         <Link
@@ -570,6 +572,35 @@ export default async function ReviewPage({ params }: Props) {
         "30から0への逆カウントに「意識がなくなっていく」「何も考えられない」が厚く重なり、批判的な思考が飽和していく感覚が強いです。魂が凝縮されていくようなコンフュージョンは、他作ではあまり味わえない没入の質だと感じました。",
         "「私はMです／Sだ」の自己暗示で役割に染まり、人外の感覚がシンクロしていく流れが面白いです。「もっと感じたい」が快感を増幅し、乳首・クリ・アナル・挿入とカウント絶頂が連続する一方、分岐が多いぶん特定フェチだけを深掘りしたい方には物足りなく感じるかもしれません。",
         "長尺でありながら深化の線が途切れにくく、解除の「おまじない」まで丁寧に着地する一本です。脳イキを求める方には、おすすめの作品だと感じます。",
+      ],
+    },
+    "fukagyaku-iki-kuse-kokuin-tentacle": {
+      scoreLabel: "10.0 / 10",
+      oneLine:
+        "奴隷の巨大モン娘ダリアがイキ癖刻印で連続絶頂へ導き、触手・催淫ガスから前立腺・乳首の多峰、搾精でウェット着地するドM向け触手催眠",
+      inductionType: "支配暗示系 / カウント誘導系 / 反復刷り込み系",
+      voiceActor: "架月らみゅ",
+      majorFetish:
+        "イキ癖刻印 / 触手 / 前立腺 / 乳首責め / メスイキ",
+      kinkType: "ドM向け",
+      recommendedLevel:
+        "中級トランス（暗示を受け入れられる・絶頂反応は未達）以上の方",
+      recording:
+        "約1時間39分（プロローグ〜解除6本・バイブ音無しVer・バイノーラル）",
+      recommendedFor: [
+        "支配的な溺愛調教と触手責めが好きな方",
+        "イキ癖刻印とカウント絶頂の長尺多峰が好きな方",
+        "前立腺、脳イキ（乳首）を好まれる方",
+      ],
+      notRecommendedFor: [
+        "穏やかなリラックス催眠だけを求める方",
+        "暗示残存を望まない方",
+      ],
+      workImpressionParagraphs: [
+        "えーー、正直圧巻の完成度です。約1時間40分前後という催眠音声としては、長尺に差し掛かるか差し掛からないくらいのなかで、これでもかと要素を詰め込んだ、聴いていて飽きない作品でした。",
+        "催眠の感覚はわかるけど、前立腺イキや乳首イキをしたことがない中級者の方に、非常におすすめな一本だと感じます。モン娘のダリアが終始甘々だけど執拗に責めてくるのは、個人的に大好物なシチュエーションでした。",
+        "イかされるたびにカウントが徐々に短くなっていくのですが、連続区間は浅イキで連続絶頂を味わえたので、疲れすぎずいい塩梅でした。ここは体質や好みの差が出ると思います。",
+        "色々書きましたが、フェチやおすすめの方に当てはまっている方には購入する価値ありです。てか買ってください。そのくらいおすすめです。",
       ],
     },
     "futarigake-saimin-melty-orgasm": {

@@ -49,5 +49,7 @@ export function isReviewVisibleOnSite(review: Review, now: Date): boolean {
     }
   }
 
+  if (!review.publishedAt?.trim()) return false;
+
   return isReviewVisibleByGoLiveAt(review, now);
 }

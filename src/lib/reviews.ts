@@ -227,7 +227,10 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
     authorName: asString(d.authorName, "authorName"),
     saleDate: parseOptionalSaleDate(d.saleDate),
     circleName: parseOptionalCircleName(d.circleName),
-    publishedAt: asString(d.publishedAt, "publishedAt"),
+    publishedAt:
+      typeof d.publishedAt === "string" && d.publishedAt.trim()
+        ? d.publishedAt.trim()
+        : "",
     goLiveAt: parseOptionalGoLiveAt(d.goLiveAt),
     affiliateLinks: parseAffiliateLinks(d.affiliateLinks),
     nextSlug: parseOptionalNextSlug(d.nextSlug),
@@ -242,7 +245,7 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
       d.excludeFromReviewIndex === true ? true : undefined,
   };
 
-  if (Number.isNaN(Date.parse(review.publishedAt))) {
+  if (review.publishedAt && Number.isNaN(Date.parse(review.publishedAt))) {
     throw new Error(
       `publishedAt が日付として解釈できません: ${review.publishedAt}`
     );
@@ -353,13 +356,20 @@ export function isAllAgesReview(review: Review): boolean {
   return review.tags.includes(ALL_AGES_REVIEW_TAG);
 }
 
+/** 投稿日未定（`publishedAt` 未設定） */
+export function isUnscheduledReview(review: Review): boolean {
+  return !review.publishedAt?.trim();
+}
+
 /** 一覧・サイトマップ・関連記事に載せない内部用レビュー（原紙プレビュー等） */
 export function isExcludedFromReviewIndex(review: Review): boolean {
   return review.excludeFromReviewIndex === true;
 }
 
 function filterListedReviews(reviews: Review[]): Review[] {
-  return reviews.filter((r) => !isExcludedFromReviewIndex(r));
+  return reviews.filter(
+    (r) => !isExcludedFromReviewIndex(r) && !isUnscheduledReview(r)
+  );
 }
 
 /** 成人向け【R18】サイトの一覧・サイトマップ用 */
@@ -463,7 +473,9 @@ export function getReviewBySlug(slug: string): Review | undefined {
 }
 
 export function getAllSlugs(): string[] {
-  return filterListedReviews(getAllReviewsIncludingScheduled()).map((r) => r.slug);
+  return getAllReviewsIncludingScheduled()
+    .filter((r) => !isExcludedFromReviewIndex(r))
+    .map((r) => r.slug);
 }
 
 /** Gemini 用に軽量な一覧（全文送信を避ける） */

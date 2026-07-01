@@ -4,6 +4,7 @@ export const QUICK_GUIDE_KINK_BY_SLUG: Record<string, string> = {
   "ryomimi-bug-kinshi-anji": "M推奨",
   "kyoku-mugen-zekkyou-count-chikuni": "M推奨",
   "futarigake-saimin-melty-orgasm": "ノーマル〜M向け",
+  "fukagyaku-iki-kuse-kokuin-tentacle": "ドM向け",
   "unknown-hypno-daijobu-koe-ni-yudanete": "ノーマル〜M向け",
   "kuchikou-saimin-count-trip-nouiki": "ノーマル〜M向け",
   "asmr-saimin-aman-toro-lip": "ノーマル〜M向け",

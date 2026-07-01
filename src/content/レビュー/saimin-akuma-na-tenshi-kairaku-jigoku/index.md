@@ -25,8 +25,8 @@ itemDescription: |
 authorName: 催眠音声解析室
 
 saleDate: "2016-09-16"
-publishedAt: "2026-07-06"
-goLiveAt: "2026-07-06T12:00:00+09:00"
+
+# 投稿日未定（publishedAt / goLiveAt は公開確定時に設定）
 
 circleName: 帽子屋
 
