@@ -10,6 +10,18 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 
+TRANSCRIPT_COMPANION_EXTS = (".srt", ".tsv", ".vtt", ".json", ".wav")
+
+
+def read_text_any(path: Path) -> str:
+    """UTF-8 → cp932 → UTF-8(ignore) の順で読む（注意事項が Shift-JIS のことがある）。"""
+    for enc in ("utf-8", "cp932", "utf-8-sig"):
+        try:
+            return path.read_text(encoding=enc)
+        except UnicodeDecodeError:
+            continue
+    return path.read_text(encoding="utf-8", errors="ignore")
+
 
 def summarize_waveform(csv_path: Path) -> str:
     rms_vals: list[float] = []
@@ -50,16 +62,22 @@ def main() -> None:
     whisper_parts: list[str] = []
     stems = sorted({p.stem.replace("_waveform", "") for p in ad.glob("*")})
     for stem in stems:
-        if stem.lower() == "info":
+        if stem.lower() in ("info", "product-meta"):
             continue
         srt = ad / f"{stem}.srt"
         txt = ad / f"{stem}.txt"
+        # 字幕・波形などトランスクリプトの相方が無い .txt（注意事項・説明書き）は除外
+        has_companion = any(
+            (ad / f"{stem}{ext}").is_file() for ext in TRANSCRIPT_COMPANION_EXTS
+        )
+        if not has_companion:
+            continue
         if srt.is_file():
             whisper_parts.append(f"\n===== {stem} (SRT) =====\n")
-            whisper_parts.append(srt.read_text(encoding="utf-8"))
+            whisper_parts.append(read_text_any(srt))
         elif txt.is_file():
             whisper_parts.append(f"\n===== {stem} (TXT) =====\n")
-            whisper_parts.append(txt.read_text(encoding="utf-8"))
+            whisper_parts.append(read_text_any(txt))
 
     librosa_lines = ["# Librosa 波形サマリ（トラック別）", ""]
     for wf in sorted(ad.glob("*_waveform.csv")):

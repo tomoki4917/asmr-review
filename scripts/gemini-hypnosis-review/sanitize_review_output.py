@@ -209,9 +209,28 @@ def eval_prose_for_axis(slug: str, axis: str) -> str:
     lines = [ln.strip() for ln in path.read_text(encoding="utf-8").splitlines() if ln.strip()]
     if len(lines) < 2:
         return ""
-    body = lines[1]
-    if body.startswith("###"):
-        body = lines[2] if len(lines) > 2 else body
+    body = ""
+    # 1) 明示の「レーン判定根拠」段落（トランス）
+    for ln in lines[1:]:
+        if ln.startswith("レーン判定根拠"):
+            body = ln
+            break
+    # 2) 見出し直後の散文（表・見出し・計算行でなければ）
+    if not body:
+        cand = lines[1]
+        if not cand.startswith("#") and not cand.startswith("|") and not cand.startswith(("(", "=")):
+            body = cand
+    # 3) 先頭のデータ行の根拠セル（快楽・満足は表始まりのことがある）
+    if not body:
+        for ln in lines:
+            if not ln.startswith("|") or re.fullmatch(r"\|[\s\-:|]+\|?", ln):
+                continue
+            cells = [c.strip() for c in ln.strip().strip("|").split("|")]
+            if len(cells) >= 2 and cells[0] not in ("次元", "特性", "項目", "根拠") and "スコア" not in " ".join(cells[:2]):
+                body = cells[-1]
+                break
+    if not body:
+        return ""
     parts = [p.strip() for p in re.split(r"(?<=[。！？])", body) if p.strip()]
     picked: list[str] = []
     for part in parts:
@@ -229,6 +248,12 @@ def strip_eval_timestamps(text: str) -> str:
     """採点ログの SRT・トラック連番を読者向けグラフ内訳から除去。"""
     text = re.sub(r"（\d{2}:\d{2}:\d{2}[^）]*）", "", text)
     text = re.sub(r"（00:[^）]+）", "", text)
+    # 半角括弧の (01.導入 0:01:25-…) / (04.凌◯ 12:27-) 等の時刻・トラック参照
+    text = re.sub(r"\([^)]*\d{1,2}:\d{2}[^)]*\)", "", text)
+    text = re.sub(r"\(\s*0\d\.[^)]*\)", "", text)
+    text = re.sub(r"\(\s*\d{2}\s*-\s*\d{2}\s*\)", "", text)
+    # 文中のトラック連番プレフィックス（03.成長・純愛パート → 成長・純愛パート）
+    text = re.sub(r"0\d\.(?=[^\s「」]+パート)", "", text)
     text = re.sub(r"「0\d\.[^」]+」", "", text)
     text = re.sub(r"続く「0\d\.[^」]+」", "本編", text)
     text = re.sub(r"まず「0\d\.[^」]+」", "「リラックス運動」", text)

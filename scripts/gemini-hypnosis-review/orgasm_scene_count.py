@@ -77,12 +77,27 @@ def resolve_analysis_dir(
     return analysis_dir_for_slug(slug, root)
 
 
+def _read_text_any(path: Path) -> str:
+    for enc in ("utf-8", "cp932", "utf-8-sig"):
+        try:
+            return path.read_text(encoding=enc)
+        except UnicodeDecodeError:
+            continue
+    return path.read_text(encoding="utf-8", errors="ignore")
+
+
 def iter_whisper_track_files(analysis_dir: Path) -> list[Path]:
     paths: list[Path] = []
+    companion_exts = (".srt", ".tsv", ".vtt", ".json", ".wav")
     for pat in ("*.txt", "*.srt"):
         for path in sorted(analysis_dir.glob(pat)):
             name = path.name.lower()
-            if name.startswith("info") or "dlsite" in name:
+            if name.startswith("info") or name.startswith("product-meta") or "dlsite" in name:
+                continue
+            # 字幕・波形など相方の無い .txt（注意事項・説明書き）は転写ではないので除外
+            if path.suffix.lower() == ".txt" and not any(
+                (analysis_dir / f"{path.stem}{ext}").is_file() for ext in companion_exts
+            ):
                 continue
             paths.append(path)
     # 同一トラックの txt / srt 重複を stem で統一
@@ -121,7 +136,7 @@ def count_wet_scenes(analysis_dir: Path | None) -> int | None:
     n = 0
     for path in iter_whisper_track_files(analysis_dir):
         try:
-            text = path.read_text(encoding="utf-8")
+            text = _read_text_any(path)
         except OSError:
             continue
         if track_has_wet_instruction(text):
@@ -133,7 +148,7 @@ def whisper_texts(analysis_dir: Path) -> str:
     chunks: list[str] = []
     for path in iter_whisper_track_files(analysis_dir):
         try:
-            chunks.append(path.read_text(encoding="utf-8"))
+            chunks.append(_read_text_any(path))
         except OSError:
             pass
     return "\n".join(chunks)
@@ -198,7 +213,7 @@ def count_dry_scenes(analysis_dir: Path | None) -> int | None:
     n = 0
     for path in iter_whisper_track_files(analysis_dir):
         try:
-            text = path.read_text(encoding="utf-8")
+            text = _read_text_any(path)
         except OSError:
             continue
         if track_has_dry_arrival(text):
