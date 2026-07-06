@@ -1064,7 +1064,7 @@ DESKTOP_WRITER_GUIDE = "催眠音声執筆ガイド.txt"
 DEFAULT_MANUAL_DIR = Path(
     os.environ.get(
         "HYPNOSIS_MANUAL_DIR",
-        r"C:\Users\tomok\Desktop\催眠音声記事作成マニュアル",
+        r"C:\Users\tomok\Desktop\作成マニュアル",
     )
 )
 

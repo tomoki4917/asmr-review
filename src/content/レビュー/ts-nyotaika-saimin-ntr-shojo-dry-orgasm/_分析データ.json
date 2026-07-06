@@ -2,104 +2,145 @@
   "schemaVersion": 1,
   "workName": "【TS女体化×催眠×NTR】キスしかしていない恋人の前で処女を奪われ何度も絶頂させられた…(ドライオーガズム)",
   "notes": [
-    "Gemini auto_review.py 生成（2026-07-04） — 採点:デスクトップ採点マニュアル3種。本文:催眠音声執筆ガイド+B型原紙。旧稿未参照。",
-    "四表最適化（2026-07-04）— Gemini + Whisper/Librosa（§3.1）"
+    "Gemini auto_review.py 生成（2026-07-06） — 採点:デスクトップ採点マニュアル3種。本文:催眠音声執筆ガイド+B型原紙。旧稿未参照。",
+    "三軸再採点（2026-07-06）— Gemini音声直接評価＋人手キャリブレーション。方法: gemini_audio_eval.py（全7トラック聴取）→ eval_results/*_audio_*.md → calibration.md",
+    "トランス7.0: 02.催眠パートの深化誘導は音声でも高品質。本編はRP興奮が主のため deepening 9.2は過大→triggerレーンで確定。旧1.2は過小。",
+    "快楽8.2: 堕落・背徳の刺激設計は音声で高密度（多CV・カウント絶頂）。販売表記ドライと中出し主体のズレで整合7.0。トランス上限適用。",
+    "満足8.0: 解除の多段カウントは丁寧。尺約89分・空転少。四葉物語の未解決はNTR型の後味として減点しない（性癖中立）。",
+    "比較: saimin-shinri-test-dame-iwakareru（★3）より明確に上。unknown-hypno-daijobu-koe-ni-yudanete（★10）の純深化には及ばず。",
+    "絶頂: ドライ1回・ウェット0回（orgasm_scene_count.py・RP内中出しはウェットカウント対象外）",
+    "四表最適化（2026-07-06）— Gemini + Whisper/Librosa（§3.1）"
   ],
   "scores": {
-    "trance": 1.4,
-    "pleasure": 2.7,
-    "satisfaction": 3.1
+    "trance": 7.0,
+    "pleasure": 8.2,
+    "satisfaction": 8.0
   },
   "orgasmSummary": "絶頂目安（本文総合評価と同期）: ドライシーン1回・ウェットシーン0回",
   "analysisTables": {
-    "optimizedAt": "2026-07-04",
+    "optimizedAt": "2026-07-06",
     "inductionComposition": [
       {
         "label": "論理性",
-        "value": "1.5",
-        "detail": "【物語の急展開】 / 【報酬への誘導】"
+        "value": "1.8",
+        "detail": "【異世界フレーミング】 / 【物語誘導】"
       },
       {
         "label": "強制力",
-        "value": "1.5",
-        "detail": "【ロールプレイへの没入】 / 【性的興奮の強調】"
+        "value": "2.5",
+        "detail": "【薬物暗示】 / 【羞恥煽り】"
       },
       {
         "label": "突破力",
-        "value": "1.0",
-        "detail": "【意識の表層】 / 【抵抗の維持】"
+        "value": "2.0",
+        "detail": "【カウントダウン】 / 【開眼比較】"
       },
       {
         "label": "浸透力",
-        "value": "1.5",
-        "detail": "【浅い集中】 / 【感覚への直接刺激】"
+        "value": "1.7",
+        "detail": "【全身弛緩】 / 【魂の状態】"
       },
       {
         "label": "身体性",
-        "value": "4.5",
-        "detail": "【性的刺激の描写】 / 【身体反応の強調】"
+        "value": "2.0",
+        "detail": "【多部位刺激】 / 【感度上昇】"
       }
     ],
     "strongInduction": [
       {
-        "label": "身体反応刺激誘導",
+        "label": "薬物暗示と羞恥煽り",
         "value": "4.5 / 5",
-        "detail": "薬物による感度上昇の暗示と、胸・クリトリス・陰部への直接的な刺激描写で、身体反応を強く引き出します。"
+        "detail": "薬物による感度上昇と恋人の前での羞恥心が、快感への強制力を高めます。"
       },
       {
-        "label": "背徳ロールプレイ誘導",
-        "value": "2.5 / 5",
-        "detail": "彼氏の前で犯される状況を畳みかけ、羞恥と快感のロールプレイへ意識を引き込みます。"
+        "label": "カウントダウン絶頂",
+        "value": "4.2 / 5",
+        "detail": "各パートで繰り返されるカウントダウンが、絶頂への期待と回収を明確にします。"
       }
     ],
     "suggestionComposition": [
       {
         "label": "感覚暗示",
-        "value": "2.0",
-        "detail": "【性的快感】 / 【羞恥心】"
+        "value": "2.5",
+        "detail": "【熱感】 / 【締まり】"
       },
       {
         "label": "認知暗示",
-        "value": "2.5",
-        "detail": "【TS女体化】 / 【状況の受容】"
+        "value": "1.5",
+        "detail": "【女体化】 / 【魂の状態】"
       },
       {
         "label": "反応暗示",
         "value": "2.0",
-        "detail": "【性的反応】 / 【快感への屈服】"
+        "detail": "【身体反応誘導】 / 【吐息誘導】"
       },
       {
         "label": "関係性暗示",
-        "value": "2.0",
-        "detail": "【NTR】 / 【支配】"
+        "value": "1.5",
+        "detail": "【恋人との関係性】 / 【凌辱者との関係性】"
       },
       {
         "label": "トリガー暗示",
-        "value": "1.0",
-        "detail": "【薬物効果】 / 【特定の言葉】"
+        "value": "1.5",
+        "detail": "【カウントトリガー】 / 【薬物トリガー】"
       },
       {
         "label": "否定暗示",
         "value": "0.5",
-        "detail": "【羞恥心の薄れ】 / 【抵抗の放棄】"
+        "detail": "【拒否の否定】"
       },
       {
         "label": "時間歪曲暗示",
-        "value": "0.0",
-        "detail": "【なし】"
+        "value": "0.5",
+        "detail": "【時間進行】"
       }
     ],
     "strongSuggestion": [
       {
-        "label": "TS女体化・状況受容暗示",
-        "value": "2.5 / 5",
-        "detail": "女子高生・四葉への女体化と、犯される状況を受け入れさせる認知の書き換えを段階的に刷り込みます。"
+        "label": "感度上昇と身体反応",
+        "value": "4.3 / 5",
+        "detail": "薬物暗示による感度上昇と、それに伴う身体の反応が強く誘導されます。"
       },
       {
-        "label": "性的快感・羞恥暗示",
-        "value": "2.0 / 5",
-        "detail": "「気持ちいい」「恥ずかしいでも嫌じゃない」といった言葉で、羞恥と快感を結びつけて反応を引き出します。"
+        "label": "羞恥と背徳の認知",
+        "value": "4.0 / 5",
+        "detail": "恋人の前で侵される状況が、羞恥心と背徳感を認知させ快感に転化させます。"
       }
     ]
+  },
+  "tranceScoring": {
+    "lane": "trigger",
+    "laneLabel": "トリガー型",
+    "dimensions": {
+      "入り": 8.0,
+      "深さ": 6.0,
+      "暗示の効き": 7.5,
+      "維持": 6.5
+    },
+    "rubricVersion": "eval_trance_rubric.md + gemini_audio_eval",
+    "guardNotes": [
+      "音声評価9.2→7.0にキャリブレーション（deepening過大: 本編RP興奮を深化と混同）",
+      "02.催眠パートの深化品質は音声で確認（旧minimal 1.2は過小）"
+    ]
+  },
+  "pleasureScoring": {
+    "c0": "corruption",
+    "c0Label": "堕落・背徳寄り",
+    "dimensions": {
+      "コンセプト整合": 7.0,
+      "刺激・報酬": 9.2,
+      "クライマックス": 8.8,
+      "起伏・焦らし": 8.5
+    },
+    "rubricVersion": "eval_pleasure_rubric.md + gemini_audio_eval"
+  },
+  "satisfactionScoring": {
+    "dimensions": {
+      "約束の着地": 7.5,
+      "解除・戻し": 8.5,
+      "余韻・情緒": 7.5,
+      "尺対密度": 8.5
+    },
+    "rubricVersion": "eval_satisfaction_rubric.md + gemini_audio_eval"
   }
 }
