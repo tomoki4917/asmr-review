@@ -24,7 +24,8 @@ authorName: 同人音声レビュー室
 circleName: あおぎり高校
 saleDate: "2026-02-23"
 publishedAt: "2026-07-08"
-goLiveAt: "2026-07-08T12:00:00+09:00"
+goLiveAt: "2099-12-31T12:00:00+09:00"
+excludeFromReviewIndex: true
 coverImage: https://img.dlsite.jp/modpub/images2/work/doujin/RJ01572000/RJ01571353_img_main.jpg
 coverAffiliateHref: https://dlaf.jp/home/dlaf/=/t/i/link/work/aid/reviewLab/id/RJ01571353.html
 affiliateLinks:

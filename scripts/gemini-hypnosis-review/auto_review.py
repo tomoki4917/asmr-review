@@ -90,6 +90,9 @@ MERGE_TEMPLATE_FILE = Path(
 )
 WHISPER_FILE = Path(os.environ.get("HYPNOSIS_WHISPER_FILE", SCRIPT_DIR / "whisper_output.txt"))
 LIBROSA_FILE = Path(os.environ.get("HYPNOSIS_LIBROSA_FILE", SCRIPT_DIR / "librosa_output.txt"))
+VOCAL_TONE_FILE = Path(
+    os.environ.get("HYPNOSIS_VOCAL_TONE_FILE", SCRIPT_DIR / "vocal_tone_output.txt")
+)
 REVIEWS_DIR = ROOT / "src" / "content" / "レビュー"
 
 EVAL_MODEL = os.environ.get("GEMINI_EVAL_MODEL", "gemini-2.5-flash")
@@ -226,6 +229,50 @@ def load_file(path: Path, description: str) -> str:
         print(f"[エラー] {description}（{path}）が見つかりません。")
         sys.exit(1)
     return path.read_text(encoding="utf-8")
+
+
+def load_optional_analysis_file(path: Path, label: str) -> str:
+    if path.is_file() and path.stat().st_size > 0:
+        return path.read_text(encoding="utf-8")
+    return f"（{label} 未生成）"
+
+
+def run_analysis_pipeline(
+    analysis_dir: Path,
+    slug: str,
+    *,
+    skip_vocal_tone: bool = False,
+    force_vocal_tone: bool = False,
+) -> None:
+    import subprocess
+
+    ad = Path(analysis_dir)
+    subprocess.run(
+        [sys.executable, str(SCRIPT_DIR / "prepare_analysis_inputs.py"), str(ad)],
+        check=True,
+    )
+    if skip_vocal_tone:
+        return
+    cmd = [
+        sys.executable,
+        str(SCRIPT_DIR / "gemini_vocal_tone_by_part.py"),
+        "--slug",
+        slug,
+        "--analysis-dir",
+        str(ad),
+    ]
+    if force_vocal_tone:
+        cmd.append("--force")
+    subprocess.run(cmd, check=True)
+
+
+def load_source_context_from_files() -> str:
+    whisper_data = load_file(WHISPER_FILE, "WhisperX")
+    librosa_data = load_file(LIBROSA_FILE, "Librosa")
+    vocal_data = load_optional_analysis_file(
+        VOCAL_TONE_FILE, "声質解析（パート別）"
+    )
+    return build_source_context(whisper_data, librosa_data, vocal_data)
 
 
 def get_api_key() -> str:
@@ -1693,6 +1740,7 @@ def build_writer_instruction_parts(
         extras = [
             "【追加厳守】出力は writer_output_keys の [KEY] ブロックまたは単一 JSON のみ。",
             "【用語】ドライオーガズムと脳イキは別物。同一視・括弧併記禁止（§0.1.1）。",
+            "【声質】声質解析（パート別）があるとき、甘さ・威圧感・距離感・演技はその正本を優先（writer_system 参照）。",
         ]
     parts = [
         load_file(WRITER_SYSTEM_FILE, "執筆ガイド（ライター脳）"),
@@ -1921,7 +1969,22 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--analysis-dir",
         default="",
-        help="解析フォルダ（指定時 whisper/librosa を自動生成）",
+        help="解析フォルダ（指定時 whisper/librosa/声質解析を自動生成）",
+    )
+    p.add_argument(
+        "--skip-vocal-tone",
+        action="store_true",
+        help="パート別声質解析（Gemini 音声）をスキップ",
+    )
+    p.add_argument(
+        "--force-vocal-tone",
+        action="store_true",
+        help="既存 vocal_tone_by_part.md があっても声質解析を再実行",
+    )
+    p.add_argument(
+        "--vocal-tone-only",
+        action="store_true",
+        help="パート別声質解析のみ（gemini_vocal_tone_by_part.py）",
     )
     p.add_argument(
         "--info-file",
@@ -1988,6 +2051,20 @@ def main() -> None:
         print(f"[エラー] slug が不正です: {args.slug}")
         sys.exit(1)
 
+    if args.vocal_tone_only:
+        if not args.analysis_dir:
+            print("[エラー] --vocal-tone-only には --analysis-dir が必要です")
+            sys.exit(1)
+        require_api_key()
+        run_analysis_pipeline(
+            Path(args.analysis_dir),
+            args.slug,
+            skip_vocal_tone=False,
+            force_vocal_tone=args.force_vocal_tone,
+        )
+        print("[完了] パート別声質解析のみ終了。")
+        return
+
     out_dir = REVIEWS_DIR / args.slug
     index_path = Path(args.output) if args.output else out_dir / "index.md"
     analysis_path = out_dir / "_分析データ.json"
@@ -2033,17 +2110,14 @@ def main() -> None:
     if args.eval_only:
         require_api_key()
         if args.analysis_dir:
-            import subprocess
-
-            ad = Path(args.analysis_dir)
-            subprocess.run(
-                [sys.executable, str(SCRIPT_DIR / "prepare_analysis_inputs.py"), str(ad)],
-                check=True,
+            run_analysis_pipeline(
+                Path(args.analysis_dir),
+                args.slug,
+                skip_vocal_tone=args.skip_vocal_tone,
+                force_vocal_tone=args.force_vocal_tone,
             )
-        print("[2/6] Whisper / Librosa を読み込み...")
-        whisper_data = load_file(WHISPER_FILE, "WhisperX")
-        librosa_data = load_file(LIBROSA_FILE, "Librosa")
-        source_context = build_source_context(whisper_data, librosa_data)
+        print("[2/6] Whisper / Librosa / 声質解析 を読み込み...")
+        source_context = load_source_context_from_files()
         client = genai.Client(api_key=get_api_key())
         if scenario_voice_mode(args):
             print("[3/6] 五軸採点（--eval-only・シチュガイド）...")
@@ -2087,12 +2161,11 @@ def main() -> None:
         res_t, res_p, res_s = load_eval_results(args.slug)
 
         if args.analysis_dir:
-            import subprocess
-
-            ad = Path(args.analysis_dir)
-            subprocess.run(
-                [sys.executable, str(SCRIPT_DIR / "prepare_analysis_inputs.py"), str(ad)],
-                check=True,
+            run_analysis_pipeline(
+                Path(args.analysis_dir),
+                args.slug,
+                skip_vocal_tone=args.skip_vocal_tone,
+                force_vocal_tone=args.force_vocal_tone,
             )
 
         info_path = Path(args.info_file) if args.info_file else None
@@ -2106,9 +2179,7 @@ def main() -> None:
             else "（info.txt なし）"
         )
 
-        whisper_data = load_file(WHISPER_FILE, "WhisperX")
-        librosa_data = load_file(LIBROSA_FILE, "Librosa")
-        source_context = build_source_context(whisper_data, librosa_data)
+        source_context = load_source_context_from_files()
 
         client = genai.Client(api_key=get_api_key())
         print(f"[2-3/6] スキップ（--keys {','.join(only_keys)}）")
@@ -2185,12 +2256,11 @@ def main() -> None:
         res_t, res_p, res_s = load_eval_results(args.slug)
 
         if args.analysis_dir:
-            import subprocess
-
-            ad = Path(args.analysis_dir)
-            subprocess.run(
-                [sys.executable, str(SCRIPT_DIR / "prepare_analysis_inputs.py"), str(ad)],
-                check=True,
+            run_analysis_pipeline(
+                Path(args.analysis_dir),
+                args.slug,
+                skip_vocal_tone=args.skip_vocal_tone,
+                force_vocal_tone=args.force_vocal_tone,
             )
 
         info_path = Path(args.info_file) if args.info_file else None
@@ -2204,9 +2274,7 @@ def main() -> None:
             else "（info.txt なし）"
         )
 
-        whisper_data = load_file(WHISPER_FILE, "WhisperX")
-        librosa_data = load_file(LIBROSA_FILE, "Librosa")
-        source_context = build_source_context(whisper_data, librosa_data)
+        source_context = load_source_context_from_files()
 
         client = genai.Client(api_key=get_api_key())
         print("[3/6] スキップ（--skip-eval / --writer-only）")
@@ -2242,12 +2310,11 @@ def main() -> None:
         keys_doc = load_file(writer_keys_path(args), "出力キー定義")
 
         if args.analysis_dir:
-            import subprocess
-
-            ad = Path(args.analysis_dir)
-            subprocess.run(
-                [sys.executable, str(SCRIPT_DIR / "prepare_analysis_inputs.py"), str(ad)],
-                check=True,
+            run_analysis_pipeline(
+                Path(args.analysis_dir),
+                args.slug,
+                skip_vocal_tone=args.skip_vocal_tone,
+                force_vocal_tone=args.force_vocal_tone,
             )
 
         info_path = Path(args.info_file) if args.info_file else None
@@ -2265,10 +2332,8 @@ def main() -> None:
             else "（info.txt なし）"
         )
 
-        print("[2/6] Whisper / Librosa を読み込み...")
-        whisper_data = load_file(WHISPER_FILE, "WhisperX")
-        librosa_data = load_file(LIBROSA_FILE, "Librosa")
-        source_context = build_source_context(whisper_data, librosa_data)
+        print("[2/6] Whisper / Librosa / 声質解析 を読み込み...")
+        source_context = load_source_context_from_files()
 
         client = genai.Client(api_key=get_api_key())
 

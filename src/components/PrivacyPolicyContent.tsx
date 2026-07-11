@@ -74,9 +74,7 @@ export function PrivacyPolicyContent() {
         </p>
       </section>
 
-      <p className="text-xs text-slate-500">
-        制定日: 2026年4月1日（例）
-      </p>
+      <p className="text-xs text-slate-500">制定日: 2026年4月1日</p>
     </div>
   );
 }

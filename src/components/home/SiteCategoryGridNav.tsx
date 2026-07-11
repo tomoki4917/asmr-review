@@ -34,7 +34,7 @@ export function SiteCategoryGridNav({
               >
                 {emoji}
               </span>
-              <span className="flex min-h-[2.35rem] w-full flex-col items-center justify-center text-[10px] font-semibold leading-tight text-slate-200 group-hover:text-sky-200 sm:min-h-[2.5rem] sm:text-[11px]">
+              <span className="flex min-h-[2.5rem] w-full flex-col items-center justify-center text-[11px] font-semibold leading-snug text-slate-200 group-hover:text-sky-200 sm:min-h-[2.35rem] sm:text-[10px]">
                 {mobileTitleLines ? (
                   mobileTitleLines.map((line) => <span key={line}>{line}</span>)
                 ) : (

@@ -126,6 +126,21 @@ function parseOptionalSaleDate(raw: unknown): string | undefined {
   return s;
 }
 
+/** 記事更新日（暦日のみ）。`YYYY-MM-DD`。 */
+function parseOptionalUpdatedAt(raw: unknown): string | undefined {
+  if (raw == null || raw === "") return undefined;
+  if (typeof raw !== "string" || !raw.trim()) return undefined;
+  const s = raw.trim();
+  if (!GO_LIVE_DATE_RE.test(s)) {
+    throw new Error(`updatedAt は YYYY-MM-DD のみ指定してください: ${s}`);
+  }
+  const t = Date.parse(`${s}T00:00:00.000Z`);
+  if (Number.isNaN(t)) {
+    throw new Error(`updatedAt が日付として解釈できません: ${s}`);
+  }
+  return s;
+}
+
 function parseOptionalCircleName(raw: unknown): string | undefined {
   if (raw == null || raw === "") return undefined;
   if (typeof raw !== "string" || !raw.trim()) return undefined;
@@ -232,6 +247,7 @@ function parseReviewFile(source: string, fallbackSlug: string): Review {
         ? d.publishedAt.trim()
         : "",
     goLiveAt: parseOptionalGoLiveAt(d.goLiveAt),
+    updatedAt: parseOptionalUpdatedAt(d.updatedAt),
     affiliateLinks: parseAffiliateLinks(d.affiliateLinks),
     nextSlug: parseOptionalNextSlug(d.nextSlug),
     workImpressionAvatar:

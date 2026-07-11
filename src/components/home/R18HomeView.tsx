@@ -20,6 +20,7 @@ import { reviewTitleSingleLine } from "@/lib/review-title";
 import { reviewPublicationTimeMs } from "@/lib/format-published-at";
 import { buildReviewListHref, HOME_REVIEW_LIST_BASE } from "@/lib/review-list-href";
 import { getAllReviews, getBeginnerGuides } from "@/lib/reviews";
+import { MatureContentNotice } from "@/components/MatureContentNotice";
 import { SITE_NAME } from "@/lib/site-brand";
 import type { Review } from "@/lib/types";
 
@@ -249,6 +250,8 @@ export function R18HomeView() {
   return (
     <main className="mx-auto w-full max-w-7xl py-10 sm:py-14">
       <HomeHeroSection />
+
+      <MatureContentNotice context="home" className="mx-4 mt-8 sm:mx-0" />
 
       {ENABLE_HOME_EDITORIAL_LAYOUT ? (
         <HomeEditorialColumns reviews={reviews} />

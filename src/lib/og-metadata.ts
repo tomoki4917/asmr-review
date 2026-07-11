@@ -5,8 +5,17 @@ import { reviewTitleSingleLine } from "@/lib/review-title";
  * フォールバック: `NEXT_PUBLIC_OGP_FALLBACK_IMAGE`（省略時は `/ogp-fallback.png`）
  */
 
+const PRODUCTION_SITE_URL = "https://asmr-reviewrabo.com";
+
 export function siteUrl(): string {
   return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+}
+
+/** sitemap / robots 等、本番ドメインが必要な静的出力用 */
+export function canonicalSiteUrl(): string {
+  const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (fromEnv) return fromEnv.replace(/\/$/, "");
+  return PRODUCTION_SITE_URL;
 }
 
 /** 記事サムネ（coverImage）を絶対 URL に。未設定・不正なら undefined */

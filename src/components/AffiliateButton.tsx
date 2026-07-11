@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { AffiliateLink, AffiliateVendor } from "@/lib/types";
+import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 
 const defaultLabels: Record<AffiliateVendor, string> = {
   dlsite: "DLsite",
@@ -11,13 +12,20 @@ export type AffiliateButtonProps = {
   className?: string;
   /** 将来: APIから注入するセール文言・バッジなど */
   badge?: ReactNode;
+  /** 購入ボタン直上のアフィリエイト開示（既定: false。ページ内で1回だけ表示する） */
+  showDisclosure?: boolean;
 };
 
 /**
  * アフィリエイト導線用ボタン。
  * `link.badgeText` は将来のAPI連携用の予約フィールド（現状は未使用でも拡張しやすい形に）。
  */
-export function AffiliateButton({ link, className = "", badge }: AffiliateButtonProps) {
+export function AffiliateButton({
+  link,
+  className = "",
+  badge,
+  showDisclosure = false,
+}: AffiliateButtonProps) {
   const label = link.label ?? defaultLabels[link.vendor] ?? link.vendor;
   const apiBadge = link.badgeText ? (
     <span className="relative z-[1] rounded-full border border-white/25 bg-white/10 px-2 py-0.5 text-xs font-medium text-white/95">
@@ -25,7 +33,7 @@ export function AffiliateButton({ link, className = "", badge }: AffiliateButton
     </span>
   ) : null;
 
-  return (
+  const button = (
     <a
       href={link.href}
       target="_blank"
@@ -45,6 +53,15 @@ export function AffiliateButton({ link, className = "", badge }: AffiliateButton
       {badge}
     </a>
   );
+
+  if (!showDisclosure) return button;
+
+  return (
+    <div className="flex w-full flex-col gap-2">
+      <AffiliateDisclosure />
+      {button}
+    </div>
+  );
 }
 
 export type AffiliateButtonGroupProps = {
@@ -52,22 +69,27 @@ export type AffiliateButtonGroupProps = {
   className?: string;
   /** リンクごとにバッジを差し込む（将来のセールAPI用） */
   renderBadge?: (link: AffiliateLink) => ReactNode;
+  /** 購入ボタン直上のアフィリエイト開示（既定: false。ページ内で1回だけ表示する） */
+  showDisclosure?: boolean;
 };
 
 export function AffiliateButtonGroup({
   links,
   className = "",
   renderBadge,
+  showDisclosure = false,
 }: AffiliateButtonGroupProps) {
   if (links.length === 0) return null;
 
   return (
     <div className={`flex flex-col gap-3 ${className}`}>
+      {showDisclosure ? <AffiliateDisclosure /> : null}
       {links.map((link, i) => (
         <AffiliateButton
           key={`${link.vendor}-${link.href}-${i}`}
           link={link}
           badge={renderBadge?.(link)}
+          showDisclosure={false}
         />
       ))}
     </div>

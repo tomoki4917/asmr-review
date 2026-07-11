@@ -1,0 +1,47 @@
+﻿# Cursor のインデックス対象から除外（IDE 軽量化）
+# .gitignore と揃えつつ、解析・生成物も除外
+
+node_modules/
+.next/
+out/
+.vercel/
+
+# sync-content-assets のミラー（原本は src/content）
+public/content/
+
+# ビルド・キャッシュ
+dist/
+.cache/
+*.tsbuildinfo
+coverage/
+
+# 環境・ログ
+.env
+.env.*
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Gemini / 音声解析の入出力（巨大になりやすい）
+scripts/gemini-hypnosis-review/whisper_output.txt
+scripts/gemini-hypnosis-review/librosa_output.txt
+scripts/gemini-hypnosis-review/review_output.md
+scripts/gemini-hypnosis-review/eval_results/
+
+# レビュー同梱の解析生データ（記事本文はインデックス対象のまま）
+src/content/レビュー/**/analysis/
+src/content/レビュー/**/*.wav
+src/content/レビュー/**/*.mp3
+src/content/レビュー/**/*.vtt
+src/content/レビュー/**/*.srt
+src/content/レビュー/**/*.tsv
+
+# バックアップ原稿
+src/content/**/*.bak-*
+
+# 旧稿・大きな生成物
+**/*.jsonl

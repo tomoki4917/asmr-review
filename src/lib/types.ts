@@ -50,6 +50,11 @@ export type Review = {
    * 未指定なら常に表示。本番ビルドでは未到来は一覧・詳細から除外。`next dev` では既定で全件表示（プレビュー用）。開発で厳密に試すときは `REVIEW_RESPECT_GO_LIVE=true`。
    */
   goLiveAt?: string;
+  /**
+   * 任意。記事の内容を改稿した暦日（`YYYY-MM-DD`）。
+   * `publishedAt`（初回公開日）は変えず、更新があったときだけ付ける。
+   */
+  updatedAt?: string;
   affiliateLinks: AffiliateLink[];
   /** 詳細ページ末尾の「次の記事」用（フロントマター `nextSlug`） */
   nextSlug?: string;

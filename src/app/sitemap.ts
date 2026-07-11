@@ -1,14 +1,14 @@
 import type { MetadataRoute } from "next";
 import { articlePublishedTimeIso } from "@/lib/format-published-at";
+import { canonicalSiteUrl } from "@/lib/og-metadata";
 import { getAllReviews } from "@/lib/reviews";
 
 /** `output: "export"` ではビルド時に sitemap を書き出す必要がある */
 export const dynamic = "force-static";
 
-const BASE_URL = "https://asmr-reviewrabo.com";
-
 export default function sitemap(): MetadataRoute.Sitemap {
   const reviews = getAllReviews();
+  const BASE_URL = canonicalSiteUrl();
 
   const staticEntries: MetadataRoute.Sitemap = [
     {
@@ -16,6 +16,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
+    },
+    {
+      url: `${BASE_URL}/start/`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.55,
+    },
+    {
+      url: `${BASE_URL}/about/`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.45,
     },
     {
       url: `${BASE_URL}/contact/`,
@@ -66,10 +78,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     {
+      url: `${BASE_URL}/r18/`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/all-ages/`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
+    {
       url: `${BASE_URL}/works/`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.75,
+    },
+    {
+      url: `${BASE_URL}/all-ages/works/`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
     },
     {
       url: `${BASE_URL}/knowledge/`,

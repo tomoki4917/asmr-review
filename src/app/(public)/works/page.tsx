@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DevSiteNextHeader } from "@/components/dev/DevSiteNextHeader";
+import { MatureContentNotice } from "@/components/MatureContentNotice";
 import { WorksListHub } from "@/components/WorksListHub";
 import {
   DEV_SITE_NEXT_LIST_BASE,
@@ -28,6 +29,10 @@ export default function WorksListPage() {
           </p>
           <DevSiteNextHeader />
         </>
+      ) : null}
+
+      {!useDevChrome ? (
+        <MatureContentNotice context="home" className="mx-4 mt-6 sm:mx-auto sm:max-w-6xl" />
       ) : null}
 
       <WorksListHub

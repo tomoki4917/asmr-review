@@ -118,10 +118,18 @@ def is_sensitive_work_context(ctx: str) -> bool:
 def build_source_context(
     whisper_data: str,
     librosa_data: str,
+    vocal_tone_data: str = "",
     *,
     aggressive: bool = False,
 ) -> str:
-    """Whisper / Librosa を Gemini 入力向けに婉曲化（index 本文には使わない）。"""
+    """Whisper / Librosa / 声質（任意）を Gemini 入力向けに婉曲化（index 本文には使わない）。"""
     w = sanitize_prompt_context(whisper_data, aggressive=aggressive)
     l = sanitize_prompt_context(librosa_data, aggressive=aggressive)
-    return f"【WhisperX】\n{w}\n\n【Librosa】\n{l}"
+    parts = [f"【WhisperX】\n{w}", f"【Librosa】\n{l}"]
+    vt = vocal_tone_data.strip()
+    if vt and "なし" not in vt[:40]:
+        parts.append(
+            "【声質解析（パート別・Gemini 音声直接）】\n"
+            + sanitize_prompt_context(vt, aggressive=aggressive)
+        )
+    return "\n\n".join(parts)

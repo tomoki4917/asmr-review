@@ -19,11 +19,11 @@ export type SiteCategoryLink = {
 
 export const SITE_CATEGORY_LINKS: SiteCategoryLink[] = [
   {
-    emoji: "🔰",
-    title: "催眠音声ビギナーズガイド",
-    mobileTitleLines: ["催眠音声", "ビギナーズガイド"],
-    href: "/beginner/",
-    subtitle: "導線（ルート切替）",
+    emoji: "📖",
+    title: "はじめての方へ",
+    mobileTitleLines: ["はじめて", "の方へ"],
+    href: "/start/",
+    subtitle: "サイトの使い方・入門",
   },
   {
     emoji: "🔍",
