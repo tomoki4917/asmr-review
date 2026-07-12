@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { ReviewMarkdown } from "@/components/ReviewMarkdown";
+import { linkifyPlainTextUrls } from "@/lib/linkify-plain-text-urls";
 
 type Props = {
   quickTitle: string;
@@ -287,7 +288,7 @@ export function ReviewModeSwitcher({
               </div>
               <div className="mt-2 space-y-3 text-sm leading-relaxed text-slate-200">
                 {quickWorkImpressionParagraphs.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
+                  <p key={paragraph}>{linkifyPlainTextUrls(paragraph)}</p>
                 ))}
               </div>
             </div>

@@ -30,8 +30,8 @@ itemDescription: |
 authorName: 催眠音声解析室
 
 saleDate: "2026-06-23"
-publishedAt: "2026-07-12"
-goLiveAt: "2026-07-12T12:00:00+09:00"
+publishedAt: "2026-07-14"
+goLiveAt: "2026-07-14T12:00:00+09:00"
 
 circleName: オナらぼ
 

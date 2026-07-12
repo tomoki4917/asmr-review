@@ -1,0 +1,30 @@
+{
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/out/**": true,
+    "**/public/content/**": true,
+    "**/public/**": true,
+    "**/__pycache__/**": true,
+    "**/scripts/gemini-hypnosis-review/eval_results/**": true,
+    "**/src/content/レビュー/**/analysis/**": true,
+    "**/*.wav": true,
+    "**/*.mp3": true,
+    "**/*.png": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/out": true,
+    "**/public/content": true,
+    "**/public": true,
+    "**/__pycache__": true,
+    "**/scripts/gemini-hypnosis-review/eval_results": true,
+    "**/data/products.json": true,
+    "**/data/dlsite-rankings.json": true
+  },
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.next": true
+  }
+}

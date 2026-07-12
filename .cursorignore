@@ -1,19 +1,18 @@
-﻿# Cursor のインデックス対象から除外（IDE 軽量化）
-# .gitignore と揃えつつ、解析・生成物も除外
+# Cursor のインデックス対象から除外（IDE 軽量化）
+# .gitignore と揃えつつ、解析・生成物・大量静的資産も除外
 
 node_modules/
 .next/
 out/
 .vercel/
+dist/
+.cache/
+coverage/
+*.tsbuildinfo
 
 # sync-content-assets のミラー（原本は src/content）
 public/content/
-
-# ビルド・キャッシュ
-dist/
-.cache/
-*.tsbuildinfo
-coverage/
+public/
 
 # 環境・ログ
 .env
@@ -26,22 +25,36 @@ __pycache__/
 .venv/
 venv/
 
+# よく変わる大きい JSON（価格・ランキング）
+data/products.json
+data/dlsite-rankings.json
+
 # Gemini / 音声解析の入出力（巨大になりやすい）
 scripts/gemini-hypnosis-review/whisper_output.txt
 scripts/gemini-hypnosis-review/librosa_output.txt
 scripts/gemini-hypnosis-review/review_output.md
 scripts/gemini-hypnosis-review/eval_results/
+scripts/gemini-hypnosis-review/body_compare_*.md
+scripts/gemini-hypnosis-review/vocal_tone_output.txt
+scripts/gemini-hypnosis-review/work_impression_*.json
+scripts/gemini-hypnosis-review/_run_*.log
+scripts/gemini-hypnosis-review/**/*.pyc
 
-# レビュー同梱の解析生データ（記事本文はインデックス対象のまま）
+# レビュー同梱の解析生データ・画像（記事本文 md は対象のまま）
 src/content/レビュー/**/analysis/
 src/content/レビュー/**/*.wav
 src/content/レビュー/**/*.mp3
 src/content/レビュー/**/*.vtt
 src/content/レビュー/**/*.srt
 src/content/レビュー/**/*.tsv
+src/content/レビュー/**/*.png
+src/content/レビュー/**/*.jpg
+src/content/レビュー/**/*.jpeg
+src/content/レビュー/**/*.webp
 
 # バックアップ原稿
 src/content/**/*.bak-*
 
 # 旧稿・大きな生成物
 **/*.jsonl
+**/agent-transcripts/
