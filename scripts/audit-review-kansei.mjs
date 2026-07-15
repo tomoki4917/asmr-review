@@ -282,9 +282,30 @@ function hasForbiddenTachiagari(text) {
   return /立ち上が/.test(withoutQuotes);
 }
 
-/** `積み` `積み上げ` `積み上が` `積み重ね` 等（§1（補）・同人ガイド2）。台詞引用（> 行）は除外 */
+/** `## 作品名` 〜次の `##` まで（公式タイトル行。販売名に禁止断片が含まれる場合あり） */
+function stripOfficialWorkTitleSection(body) {
+  const lines = [];
+  let skip = false;
+  for (const line of body.split("\n")) {
+    if (/^## 作品名\s*$/.test(line.trim())) {
+      skip = true;
+      continue;
+    }
+    if (skip) {
+      if (/^## /.test(line)) {
+        skip = false;
+        lines.push(line);
+      }
+      continue;
+    }
+    lines.push(line);
+  }
+  return lines.join("\n");
+}
+
+/** `積み` `積み上げ` `積み上が` `積み重ね` 等（§1（補）・同人ガイド2）。台詞引用（> 行）・公式タイトルは除外 */
 function hasForbiddenTsumi(text) {
-  const body = text.replace(/^---[\s\S]*?---\n?/, "");
+  const body = stripOfficialWorkTitleSection(text.replace(/^---[\s\S]*?---\n?/, ""));
   const withoutQuotes = body.replace(/^>.*$/gm, "");
   return /積み/.test(withoutQuotes);
 }

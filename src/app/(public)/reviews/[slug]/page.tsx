@@ -31,6 +31,7 @@ import {
   getAllSlugs,
   getReviewBySlug,
   isAllAgesReview,
+  isOwnerDraftReview,
   isReviewVisibleOnSite,
 } from "@/lib/reviews";
 import { extractDryWetCounts } from "@/lib/extractDryWetCounts";
@@ -288,6 +289,7 @@ export default async function ReviewPage({ params }: Props) {
   const displayUpdatedLabel = displayUpdatedIso
     ? formatPublishedAtForList(displayUpdatedIso)
     : "";
+  const isDraftPreview = isOwnerDraftReview(review);
 
   const canonicalUrl = `${siteUrl()}/reviews/${review.slug}/`;
   const best = review.ratingBest ?? 10;
@@ -407,6 +409,15 @@ export default async function ReviewPage({ params }: Props) {
         >
           <span aria-hidden>←</span> {backLink.label}
         </Link>
+
+        {isDraftPreview ? (
+          <p
+            role="status"
+            className="mt-5 rounded-2xl border border-amber-500/40 bg-amber-950/40 px-4 py-3 text-sm leading-relaxed text-amber-100/95"
+          >
+            下書きプレビューです。読者向けの一覧・サイトマップ・本番ビルドでは表示されません。投稿日を設定すると公開できます。
+          </p>
+        ) : null}
 
         {!isAllAgesReview(review) && review.contentKind === "review" ? (
           <MatureContentNotice context="review" className="mt-5" />

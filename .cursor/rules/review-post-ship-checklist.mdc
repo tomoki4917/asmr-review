@@ -8,7 +8,7 @@ alwaysApply: false
 
 `src/content/レビュー/<slug>/index.md` を新規作成または大幅更新したら、次を満たしてから完了とする。
 
-- **予約日時（ユーザーが `goLiveAt` を指示しないとき）:** `.cursor/rules/review-golive-schedule-default.mdc` に従い、**最新予約投稿日の翌日 12:00 JST** を設定する（`publishedAt` は原則同日）。
+- **公開日時（ユーザーが `goLiveAt`／`publishedAt` を指示しないとき）:** `.cursor/rules/review-golive-schedule-default.mdc` に従い、**投稿日未定の下書き**（`publishedAt` なし・`goLiveAt: 2099-12-31T12:00:00+09:00`・`excludeFromReviewIndex: true`）。日時指示があったときだけ翌日 12:00 JST 予約などを設定する。
 - **採点の根拠:** `.cursor/rules/review-audio-work-only-scoring.mdc` に従い、**星・三軸・総合評価は音声としての作品本体のみ**を根拠にする（パッケージのトラック数や未取得トラック、サイト運用での加减は点数理由にしない）。
 - **読者向け本文のトラック表現:** 同上および `.cursor/rules/review-prose-voice.mdc` に従い、**フリートーク・NG 集などボーナストラックを列挙したり「査定外」と書いたりしない**。**グラフ内訳・総評などの散文**では **`07 で〜` のように連番だけでパートを指さない**（公式題名または場面・役割の語で書く）。収録表にトラック番号を並べるのはカタログとして可だが、その**評価範囲の脚注**は付けない。
 - **読者向けにパイプライン語を出さない:** `summary`・`itemDescription`・パート表の説明文に **`derived_metrics.json`**・**`duration_sec`**・「解析字幕の終端」など**自動計測・ファイル由来が読める表現**を入れない（`.cursor/rules/review-prose-voice.mdc`）。

@@ -6,6 +6,7 @@ import { DEFAULT_WORK_IMPRESSION_AVATAR_SRC } from "./default-work-impression-av
 import { reviewPublicationTimeMs } from "./format-published-at";
 import {
   goLiveStartMs,
+  isOwnerPreviewServer,
   isReviewVisibleByGoLiveAt,
   isReviewVisibleOnSite,
 } from "./review-visibility";
@@ -383,6 +384,8 @@ export function isExcludedFromReviewIndex(review: Review): boolean {
 }
 
 function filterListedReviews(reviews: Review[]): Review[] {
+  // 執筆者プレビューでは下書きも一覧に出す（本番・サイトマップは除外のまま）
+  if (isOwnerPreviewServer()) return reviews;
   return reviews.filter(
     (r) => !isExcludedFromReviewIndex(r) && !isUnscheduledReview(r)
   );
@@ -488,10 +491,9 @@ export function getReviewBySlug(slug: string): Review | undefined {
   return getAllReviewsIncludingScheduled().find((r) => r.slug === slug);
 }
 
+/** 静的ルート用。下書きも含める（本番は本文非公開・プレースホルダのみ生成） */
 export function getAllSlugs(): string[] {
-  return getAllReviewsIncludingScheduled()
-    .filter((r) => !isExcludedFromReviewIndex(r))
-    .map((r) => r.slug);
+  return getAllReviewsIncludingScheduled().map((r) => r.slug);
 }
 
 /** Gemini 用に軽量な一覧（全文送信を避ける） */
@@ -513,6 +515,8 @@ export function getReviewsForRecommendation(): {
 
 export {
   goLiveStartMs,
+  isOwnerDraftReview,
+  isOwnerPreviewServer,
   isReviewVisibleByGoLiveAt,
   isReviewVisibleOnSite,
 } from "./review-visibility";

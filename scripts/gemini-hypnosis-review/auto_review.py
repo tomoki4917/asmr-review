@@ -1938,7 +1938,21 @@ def parse_args() -> argparse.Namespace:
         help="merge 後の review:ship（triangle・restore・感想・監査）をスキップ",
     )
     p.add_argument("--sale-date", default="2000-01-01", help="saleDate YYYY-MM-DD")
-    p.add_argument("--published-at", default="", help="publishedAt YYYY-MM-DD")
+    p.add_argument(
+        "--published-at",
+        default="",
+        help="publishedAt YYYY-MM-DD（省略時は投稿日未定の下書き＝読者非表示）",
+    )
+    p.add_argument(
+        "--go-live-at",
+        default="",
+        help="goLiveAt（--published-at 指定時のみ。省略時は publishedAt 当日 12:00 JST）",
+    )
+    p.add_argument(
+        "--no-draft",
+        action="store_true",
+        help="下書き化をスキップ（--published-at と併用で即公開用フロントマター）",
+    )
     p.add_argument("--recommended-lv", type=int, default=2, choices=range(1, 6))
     p.add_argument("--force", action="store_true", help="既存 index.md を上書き")
     p.add_argument(
@@ -2461,7 +2475,12 @@ def main() -> None:
     else:
         print("[5/6] B型原紙へマージ...")
         pick = next((g for lv, g, _ in SENSITIVITY_LEVELS if lv == args.recommended_lv), "初級トランス")
-        pub = args.published_at.strip() or today_jst_ymd()
+        # 投稿日未定が既定。公開日は --published-at 明示時のみ。
+        use_draft = (not args.published_at.strip()) and (not args.no_draft)
+        if use_draft:
+            pub = "2099-12-31"  # テンプレ置換用の仮。直後に draft_visibility で削除
+        else:
+            pub = args.published_at.strip() or today_jst_ymd()
         dlsite = build_dlsite_urls(args.rj.strip().upper())
 
         shell_vars = {
@@ -2501,6 +2520,40 @@ def main() -> None:
         print("[6/6] 保存...")
         index_path.parent.mkdir(parents=True, exist_ok=True)
         index_path.write_text(index_md, encoding="utf-8")
+        if use_draft:
+            from draft_visibility import DRAFT_GO_LIVE, patch_index_file
+
+            patch_index_file(index_path, go_live_at=DRAFT_GO_LIVE)
+            index_md = index_path.read_text(encoding="utf-8")
+            print(
+                f"[下書き] 投稿日未定を適用（読者非表示 / goLiveAt={DRAFT_GO_LIVE}）"
+            )
+        elif args.published_at.strip():
+            # 公開日指定時: goLiveAt を揃え、一覧除外フラグを外す
+            import re as _re
+
+            go = args.go_live_at.strip() or f"{pub}T12:00:00+09:00"
+            text = index_path.read_text(encoding="utf-8")
+            if _re.search(r"^goLiveAt\s*:", text, _re.M):
+                text = _re.sub(
+                    r"^goLiveAt\s*:.*$",
+                    f'goLiveAt: "{go}"',
+                    text,
+                    count=1,
+                    flags=_re.M,
+                )
+            else:
+                text = _re.sub(
+                    r"^(publishedAt\s*:.*)$",
+                    rf'\1\ngoLiveAt: "{go}"',
+                    text,
+                    count=1,
+                    flags=_re.M,
+                )
+            text = _re.sub(r"^excludeFromReviewIndex\s*:.*\n?", "", text, flags=_re.M)
+            index_path.write_text(text, encoding="utf-8")
+            index_md = text
+            print(f"[公開] publishedAt={pub} goLiveAt={go}")
         update_analysis_json(analysis_path, args.item_name, keys, res_t, res_p, res_s)
 
     if not args.optimize_tables:

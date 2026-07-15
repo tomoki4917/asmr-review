@@ -487,6 +487,23 @@ def strip_part_length_catalog(body: str) -> str:
     return "\n".join(lines)
 
 
+def strip_official_work_title_section(body: str) -> str:
+    """## 作品名 の公式タイトル行を禁止語検査から除外（販売名に禁止断片が含まれる場合）。"""
+    lines: list[str] = []
+    skip = False
+    for line in body.splitlines():
+        if re.match(r"^## 作品名\s*$", line.strip()):
+            skip = True
+            continue
+        if skip:
+            if re.match(r"^## ", line):
+                skip = False
+                lines.append(line)
+            continue
+        lines.append(line)
+    return "\n".join(lines)
+
+
 def find_mukiita_outside_recommended(text: str) -> list[str]:
     """向き判定は【こんな人におすすめ】へ。他ブロック禁止。"""
     plain = strip_part_length_catalog(
@@ -499,7 +516,7 @@ def find_mukiita_outside_recommended(text: str) -> list[str]:
 
 def validate_index_md(text: str) -> list[str]:
     """index.md 本文の禁止語（台詞引用 > 行は除外）。"""
-    body = strip_frontmatter(text)
+    body = strip_official_work_title_section(strip_frontmatter(text))
     hits = find_forbidden_in_text(body)
     errors = [f"index.md: {h}" for h in hits]
     if "**【合わない可能性がある人】**" in body:

@@ -50,6 +50,7 @@ import {
   normalizeReviewListSearchQuery,
 } from "@/lib/review-list-search";
 import {
+  isOwnerDraftReview,
   isReviewVisibleByGoLiveAt,
   isReviewVisibleOnSite,
 } from "@/lib/review-visibility";
@@ -1017,6 +1018,7 @@ export function HomeReviewList({
                       review={item.review}
                       priorityImage={index < 2}
                       showNew={isReviewNewPublication(item.review, listNow)}
+                      draft={isOwnerDraftReview(item.review)}
                       preparing={
                         listPreparingMode &&
                         !isReviewVisibleByGoLiveAt(item.review, listNow)

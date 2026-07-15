@@ -24,7 +24,7 @@ alwaysApply: true
 | 作業 | 担当 |
 |------|------|
 | **音声分析・三軸採点・記事本文の [KEY] 初稿** | **Gemini API**（`auto_review.py`。デスクトップ採点マニュアル3種＋催眠音声執筆ガイド） |
-| **DLsite・サークル名・販売日・トラック表・RJ・`quickGuideBySlug`・予約日** | **Cursor（エージェント）** — ブラウザ／`info.txt`／既存 `index.md` を確認してメタを合わせる |
+| **DLsite・サークル名・販売日・トラック表・RJ・`quickGuideBySlug`・公開日** | **Cursor（エージェント）** — ブラウザ／`info.txt`／既存 `index.md` を確認してメタを合わせる。**公開日未指定なら投稿日未定の下書き**（`draft_visibility.py`／`.cursor/rules/review-golive-schedule-default.mdc`） |
 | **旧 index の文言コピー** | **禁止**（全面作り直し時はバックアップ後、Whisper 実データのみ） |
 | **他 slug・旧 index の本文参照** | **禁止** — 詳細は **`review-no-past-article-reference.mdc`**（`merge_preserve`・grep 流用含む） |
 | **旧 `_分析データ.json`・旧 index の ★／三軸を採点の正本にする** | **禁止**（再生成・校正時に旧稿の点数へ戻さない） |
@@ -42,7 +42,7 @@ alwaysApply: true
    - **merge 前** … `sanitize`（禁止語・メタ・GRAPH_BREAKDOWN・絶頂回数）**自動**（`--no-sanitize` で OFF）  
    - **merge 後** … `review:ship`（triangle・§4.5・**DLsite digest → 感想**・validate・監査）**自動**（`--no-ship` で OFF）。感想単体は **`fetch-dlsite-user-reviews.mjs`** → **`generate_work_impression.py --write-tsx`**（`docs/催眠音声執筆ガイド.md` §8.4.1）  
    - 解析フォルダに **`product-meta.json`**（梱包・CV 正本）を置くと sanitize が確実（例: `scripts/gemini-hypnosis-review/product-meta.example.json`）
-4. **Cursor（エージェント必須・未自動化）** … **`quickGuideBySlug`**（`page.tsx`）・**`scenario-facts.json`（3パス）**・`goLiveAt`／メタ最終確認。DLsite でサークル・販売日・トラックを `--circle` `--sale-date` `--cv` に反映済みか確認
+4. **Cursor（エージェント必須・未自動化）** … **`quickGuideBySlug`**・**`scenario-facts.json`（3パス）**・公開メタ最終確認。日時未指定なら **下書きのまま**（`publishedAt` なし・`goLiveAt: 2099-12-31…`・`excludeFromReviewIndex: true`）。公開するときだけ `--published-at` / `goLiveAt` を付ける。DLsite のサークル・販売日・トラックを `--circle` `--sale-date` `--cv` に反映済みか確認
 5. 部分改稿のみ … **`patch_humanize_to_index.py`** または `--merge-only`（§1.1 保持付き・全面再生成では使わない）
 
 ## 修正時も執筆ルール全適用（必須）

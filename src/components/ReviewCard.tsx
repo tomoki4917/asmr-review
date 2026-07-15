@@ -14,6 +14,8 @@ type Props = {
   showNew?: boolean;
   /** 予約公開前（全年齢一覧）。リンクは `linkable` が false のとき無効 */
   preparing?: boolean;
+  /** 投稿日未定・一覧除外の下書き（執筆者プレビュー） */
+  draft?: boolean;
   linkable?: boolean;
 };
 
@@ -22,13 +24,14 @@ export function ReviewCard({
   priorityImage = false,
   showNew = false,
   preparing = false,
+  draft = false,
   linkable = true,
 }: Props) {
   const best = review.ratingBest ?? 10;
   const titleOne = reviewTitleSingleLine(review.title);
   const cardClassName = [
     "block min-w-0 max-w-full overflow-hidden rounded-3xl border bg-slate-800/50 shadow-md shadow-slate-950/20 ring-1",
-    preparing
+    preparing || draft
       ? "border-slate-600/35 ring-slate-700/25"
       : "group border-slate-600/40 ring-slate-700/30 transition hover:-translate-y-0.5 hover:border-sky-500/35 hover:shadow-lg hover:shadow-sky-950/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400/45",
   ].join(" ");
@@ -40,6 +43,7 @@ export function ReviewCard({
             review={review}
             showNew={showNew}
             preparing={preparing}
+            draft={draft}
           />
           <ReviewCover
             coverImage={review.coverImage}
@@ -51,8 +55,8 @@ export function ReviewCard({
         </div>
         <div className="p-5 sm:p-6">
           <p className="text-xs tabular-nums text-slate-500">
-            {preparing ? "公開予定" : "投稿"}{" "}
-            {formatReviewPublishedForList(review)}
+            {draft ? "下書き" : preparing ? "公開予定" : "投稿"}{" "}
+            {draft ? "（読者非表示）" : formatReviewPublishedForList(review)}
           </p>
           <h2
             className={`mt-1 text-lg font-semibold leading-snug tracking-tight line-clamp-2 ${

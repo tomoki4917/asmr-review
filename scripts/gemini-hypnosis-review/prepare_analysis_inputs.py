@@ -60,27 +60,43 @@ def main() -> None:
         sys.exit(1)
 
     whisper_parts: list[str] = []
-    stems = sorted({p.stem.replace("_waveform", "") for p in ad.glob("*")})
-    for stem in stems:
-        if stem.lower() in ("info", "product-meta"):
+    # トップ直下＋ネスト（音声/トラック配下の Whisper 出力）
+    candidate_files: list[Path] = []
+    for pat in ("*.srt", "*.txt"):
+        candidate_files.extend(ad.rglob(pat))
+
+    seen_stems: set[str] = set()
+    for path in sorted(candidate_files, key=lambda p: str(p).lower()):
+        stem = path.stem
+        low = path.name.lower()
+        if low in ("info.txt", "readme.txt", "product-meta.json"):
             continue
-        srt = ad / f"{stem}.srt"
-        txt = ad / f"{stem}.txt"
-        # 字幕・波形などトランスクリプトの相方が無い .txt（注意事項・説明書き）は除外
+        if stem.lower() in ("info", "product-meta", "readme"):
+            continue
+        # 波形CSVの相方だけなど除外済み。同一 stem の srt/txt は1回
+        rel_key = str(path.with_suffix("").relative_to(ad)).lower()
+        if rel_key in seen_stems:
+            continue
+        parent = path.parent
         has_companion = any(
-            (ad / f"{stem}{ext}").is_file() for ext in TRANSCRIPT_COMPANION_EXTS
+            (parent / f"{stem}{ext}").is_file() for ext in TRANSCRIPT_COMPANION_EXTS
         )
-        if not has_companion:
+        if path.suffix.lower() == ".txt" and not has_companion:
             continue
-        if srt.is_file():
-            whisper_parts.append(f"\n===== {stem} (SRT) =====\n")
-            whisper_parts.append(read_text_any(srt))
-        elif txt.is_file():
-            whisper_parts.append(f"\n===== {stem} (TXT) =====\n")
-            whisper_parts.append(read_text_any(txt))
+        seen_stems.add(rel_key)
+        label = path.relative_to(ad).as_posix()
+        if path.suffix.lower() == ".srt":
+            whisper_parts.append(f"\n===== {label} (SRT) =====\n")
+            whisper_parts.append(read_text_any(path))
+        elif path.suffix.lower() == ".txt":
+            # 同 stem の srt があれば txt はスキップ（重複）
+            if (parent / f"{stem}.srt").is_file():
+                continue
+            whisper_parts.append(f"\n===== {label} (TXT) =====\n")
+            whisper_parts.append(read_text_any(path))
 
     librosa_lines = ["# Librosa 波形サマリ（トラック別）", ""]
-    for wf in sorted(ad.glob("*_waveform.csv")):
+    for wf in sorted(ad.rglob("*_waveform.csv")):
         librosa_lines.append(summarize_waveform(wf))
 
     out_w = args.out_dir / "whisper_output.txt"
