@@ -2,25 +2,25 @@
   {
     "id": "RJ01414253",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01414253.html",
-    "current_price": 2200,
+    "current_price": 1100,
     "original_price": 2200,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
-    "fetched_at": "2026-07-16T07:25:55.167Z",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
+    "fetched_at": "2026-07-18T18:34:30.358Z",
     "release_date_iso": "2025-06-26T15:00:00.000Z"
   },
   {
     "id": "RJ01424137",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01424137.html",
-    "current_price": 1760,
+    "current_price": 880,
     "original_price": 1760,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
-    "fetched_at": "2026-07-16T07:26:05.785Z",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
+    "fetched_at": "2026-07-18T18:34:44.258Z",
     "release_date_iso": "2025-07-13T15:00:00.000Z"
   },
   {
@@ -33,7 +33,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-05-29T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:38:58.522Z"
+    "fetched_at": "2026-07-18T18:34:53.025Z"
   },
   {
     "id": "RJ01517030",
@@ -44,19 +44,19 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:39:10.097Z",
+    "fetched_at": "2026-07-18T18:35:05.417Z",
     "release_date_iso": "2025-12-18T15:00:00.000Z"
   },
   {
     "id": "RJ01541752",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01541752.html",
-    "current_price": 1100,
+    "current_price": 935,
     "original_price": 1100,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
-    "fetched_at": "2026-07-16T07:26:20.939Z",
+    "discount_rate": 15,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
+    "fetched_at": "2026-07-18T18:35:14.798Z",
     "release_date_iso": "2026-02-27T15:00:00.000Z"
   },
   {
@@ -68,7 +68,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:39:31.980Z",
+    "fetched_at": "2026-07-18T18:35:28.598Z",
     "release_date_iso": "2026-01-16T15:00:00.000Z"
   },
   {
@@ -80,7 +80,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:39:47.195Z",
+    "fetched_at": "2026-07-18T18:35:38.827Z",
     "release_date_iso": "2026-01-22T15:00:00.000Z"
   },
   {
@@ -92,19 +92,19 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:40:00.843Z",
+    "fetched_at": "2026-07-18T18:35:50.948Z",
     "release_date_iso": "2026-04-17T15:00:00.000Z"
   },
   {
     "id": "RJ213951",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ213951.html",
-    "current_price": 1100,
+    "current_price": 550,
     "original_price": 1100,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
-    "fetched_at": "2026-07-16T07:26:34.366Z",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
+    "fetched_at": "2026-07-18T18:36:05.456Z",
     "release_date_iso": "2018-01-04T15:00:00.000Z"
   },
   {
@@ -116,7 +116,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:40:26.062Z",
+    "fetched_at": "2026-07-18T18:36:17.196Z",
     "release_date_iso": "2018-01-13T15:00:00.000Z"
   },
   {
@@ -128,7 +128,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:40:38.250Z",
+    "fetched_at": "2026-07-18T18:36:30.030Z",
     "release_date_iso": "2019-09-16T15:00:00.000Z"
   },
   {
@@ -140,7 +140,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:40:47.169Z",
+    "fetched_at": "2026-07-18T18:36:44.289Z",
     "release_date_iso": "2020-12-28T15:00:00.000Z"
   },
   {
@@ -152,7 +152,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:40:58.291Z",
+    "fetched_at": "2026-07-18T18:36:55.435Z",
     "release_date_iso": "2022-04-09T15:00:00.000Z"
   },
   {
@@ -164,7 +164,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:41:10.989Z",
+    "fetched_at": "2026-07-18T18:37:03.888Z",
     "release_date_iso": "2020-01-09T15:00:00.000Z"
   },
   {
@@ -176,7 +176,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:41:24.682Z",
+    "fetched_at": "2026-07-18T18:37:14.699Z",
     "release_date_iso": "2017-01-11T15:00:00.000Z"
   },
   {
@@ -188,19 +188,19 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:41:35.034Z",
+    "fetched_at": "2026-07-18T18:37:29.516Z",
     "release_date_iso": "2022-03-10T15:00:00.000Z"
   },
   {
     "id": "RJ285530",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ285530.html",
-    "current_price": 1210,
+    "current_price": 605,
     "original_price": 1210,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
-    "fetched_at": "2026-07-16T07:26:43.864Z",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
+    "fetched_at": "2026-07-18T18:37:43.095Z",
     "release_date_iso": "2020-05-08T15:00:00.000Z"
   },
   {
@@ -212,7 +212,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:41:55.122Z",
+    "fetched_at": "2026-07-18T18:37:56.594Z",
     "release_date_iso": "2022-08-19T15:00:00.000Z"
   },
   {
@@ -224,7 +224,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:42:04.193Z",
+    "fetched_at": "2026-07-18T18:38:06.379Z",
     "release_date_iso": "2024-01-26T15:00:00.000Z"
   },
   {
@@ -237,91 +237,91 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-23T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:42:14.658Z"
+    "fetched_at": "2026-07-18T18:38:16.390Z"
   },
   {
     "id": "RJ01244683",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01244683.html",
-    "current_price": 1650,
+    "current_price": 825,
     "original_price": 1650,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2024-12-13T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:26:56.809Z"
+    "fetched_at": "2026-07-18T18:38:26.307Z"
   },
   {
     "id": "RJ01277236",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01277236.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2024-10-27T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:27:11.368Z"
+    "fetched_at": "2026-07-18T18:38:34.738Z"
   },
   {
     "id": "RJ01339925",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01339925.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-07-26T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:27:26.921Z"
+    "fetched_at": "2026-07-18T18:38:44.597Z"
   },
   {
     "id": "RJ01308551",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01308551.html",
-    "current_price": 1320,
+    "current_price": 924,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 30,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-01-16T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:43:01.949Z"
+    "fetched_at": "2026-07-18T18:38:58.258Z"
   },
   {
     "id": "RJ378282",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ378282.html",
-    "current_price": 1100,
+    "current_price": 770,
     "original_price": 1100,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 30,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2022-03-17T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:43:14.019Z"
+    "fetched_at": "2026-07-18T18:39:12.968Z"
   },
   {
     "id": "RJ01032464",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01032464.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2023-02-27T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:27:40.384Z"
+    "fetched_at": "2026-07-18T18:39:26.135Z"
   },
   {
     "id": "RJ311813",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ311813.html",
-    "current_price": 770,
+    "current_price": 385,
     "original_price": 770,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2021-01-19T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:27:53.365Z"
+    "fetched_at": "2026-07-18T18:39:40.120Z"
   },
   {
     "id": "RJ190932",
@@ -333,7 +333,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2017-01-31T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:43:46.919Z"
+    "fetched_at": "2026-07-18T18:39:54.303Z"
   },
   {
     "id": "RJ260463",
@@ -345,19 +345,19 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2019-08-22T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:43:57.441Z"
+    "fetched_at": "2026-07-18T18:40:06.651Z"
   },
   {
     "id": "RJ01057134",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01057134.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2023-06-08T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:28:02.333Z"
+    "fetched_at": "2026-07-18T18:40:22.474Z"
   },
   {
     "id": "RJ241712",
@@ -369,31 +369,31 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2019-02-07T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:44:15.920Z"
+    "fetched_at": "2026-07-18T18:40:34.549Z"
   },
   {
     "id": "RJ01498990",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01498990.html",
-    "current_price": 1100,
+    "current_price": 990,
     "original_price": 1100,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 10,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-11-10T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:28:11.728Z"
+    "fetched_at": "2026-07-18T18:40:44.158Z"
   },
   {
     "id": "RJ01074483",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01074483.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2023-08-04T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:28:23.385Z"
+    "fetched_at": "2026-07-18T18:40:54.212Z"
   },
   {
     "id": "RJ01531480",
@@ -405,7 +405,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-30T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:28:36.536Z"
+    "fetched_at": "2026-07-18T18:41:08.270Z"
   },
   {
     "id": "RJ01606763",
@@ -417,19 +417,19 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-17T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:45:05.513Z"
+    "fetched_at": "2026-07-18T18:41:21.183Z"
   },
   {
     "id": "RJ01356621",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01356621.html",
-    "current_price": 1320,
+    "current_price": 924,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 30,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-03-19T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:28:50.704Z"
+    "fetched_at": "2026-07-18T18:41:29.915Z"
   },
   {
     "id": "RJ01617970",
@@ -441,19 +441,19 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-05-05T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:45:29.461Z"
+    "fetched_at": "2026-07-18T18:41:39.112Z"
   },
   {
     "id": "RJ299661",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ299661.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2020-10-15T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:29:04.571Z"
+    "fetched_at": "2026-07-18T18:41:47.189Z"
   },
   {
     "id": "RJ01612971",
@@ -465,19 +465,19 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-30T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:29:17.476Z"
+    "fetched_at": "2026-07-18T18:41:56.939Z"
   },
   {
     "id": "RJ327478",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ327478.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2022-03-29T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:29:31.555Z"
+    "fetched_at": "2026-07-18T18:42:12.113Z"
   },
   {
     "id": "RJ214295",
@@ -489,7 +489,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2018-01-17T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:46:14.336Z"
+    "fetched_at": "2026-07-18T18:42:25.004Z"
   },
   {
     "id": "RJ148280",
@@ -501,7 +501,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2015-01-15T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:46:28.025Z"
+    "fetched_at": "2026-07-18T18:42:39.771Z"
   },
   {
     "id": "RJ283004",
@@ -513,7 +513,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2020-04-09T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:46:41.528Z"
+    "fetched_at": "2026-07-18T18:42:49.439Z"
   },
   {
     "id": "RJ205378",
@@ -524,7 +524,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-07-11T18:46:52.616Z",
+    "fetched_at": "2026-07-18T18:42:57.653Z",
     "release_date_iso": "2017-09-14T15:00:00.000Z"
   },
   {
@@ -537,7 +537,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2024-12-27T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:47:02.592Z"
+    "fetched_at": "2026-07-18T18:43:09.764Z"
   },
   {
     "id": "RJ274843",
@@ -549,7 +549,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2020-01-24T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:47:12.888Z"
+    "fetched_at": "2026-07-18T18:43:20.690Z"
   },
   {
     "id": "RJ127012",
@@ -561,7 +561,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2014-01-14T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:47:28.389Z"
+    "fetched_at": "2026-07-18T18:43:30.981Z"
   },
   {
     "id": "RJ01129822",
@@ -573,67 +573,67 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2023-12-14T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:47:37.606Z"
+    "fetched_at": "2026-07-18T18:43:44.380Z"
   },
   {
     "id": "RJ01199189",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01199189.html",
-    "current_price": 1430,
+    "current_price": 715,
     "original_price": 1430,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2024-06-20T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:29:43.514Z"
+    "fetched_at": "2026-07-18T18:43:58.867Z"
   },
   {
     "id": "RJ232260",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ232260.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2018-09-28T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:29:56.495Z"
+    "fetched_at": "2026-07-18T18:44:08.302Z"
   },
   {
     "id": "RJ183624",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ183624.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2016-09-15T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:30:10.160Z"
+    "fetched_at": "2026-07-18T18:44:18.629Z"
   },
   {
     "id": "RJ01592680",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01592680.html",
-    "current_price": 1430,
+    "current_price": 715,
     "original_price": 1430,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2026-05-14T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:30:25.328Z"
+    "fetched_at": "2026-07-18T18:44:30.243Z"
   },
   {
     "id": "RJ189197",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ189197.html",
-    "current_price": 1100,
+    "current_price": 550,
     "original_price": 1100,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2017-01-04T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:30:37.423Z"
+    "fetched_at": "2026-07-18T18:44:39.247Z"
   },
   {
     "id": "RJ231054",
@@ -645,55 +645,55 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2018-09-14T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:48:50.568Z"
+    "fetched_at": "2026-07-18T18:44:54.412Z"
   },
   {
     "id": "RJ064616",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ064616.html",
-    "current_price": 770,
+    "current_price": 385,
     "original_price": 770,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2010-07-23T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:30:46.818Z"
+    "fetched_at": "2026-07-18T18:45:05.654Z"
   },
   {
     "id": "RJ01244786",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01244786.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2024-10-18T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:30:56.908Z"
+    "fetched_at": "2026-07-18T18:45:14.562Z"
   },
   {
     "id": "RJ370100",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ370100.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2022-02-25T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:31:09.040Z"
+    "fetched_at": "2026-07-18T18:45:28.067Z"
   },
   {
     "id": "RJ294932",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ294932.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2020-08-12T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:31:24.778Z"
+    "fetched_at": "2026-07-18T18:45:41.852Z"
   },
   {
     "id": "RJ160018",
@@ -705,91 +705,91 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2015-08-27T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:49:45.199Z"
+    "fetched_at": "2026-07-18T18:45:53.068Z"
   },
   {
     "id": "RJ01036590",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01036590.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2023-03-24T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:31:37.785Z"
+    "fetched_at": "2026-07-18T18:46:04.289Z"
   },
   {
     "id": "RJ272263",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ272263.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2020-01-02T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:31:46.992Z"
+    "fetched_at": "2026-07-18T18:46:14.570Z"
   },
   {
     "id": "RJ01475802",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01475802.html",
-    "current_price": 1430,
+    "current_price": 715,
     "original_price": 1430,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-10-24T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:32:01.035Z"
+    "fetched_at": "2026-07-18T18:46:29.389Z"
   },
   {
     "id": "RJ01401605",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01401605.html",
-    "current_price": 1430,
+    "current_price": 715,
     "original_price": 1430,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-07-18T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:32:10.322Z"
+    "fetched_at": "2026-07-18T18:46:42.602Z"
   },
   {
     "id": "RJ01323843",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01323843.html",
-    "current_price": 1430,
+    "current_price": 715,
     "original_price": 1430,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-03-07T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:32:20.330Z"
+    "fetched_at": "2026-07-18T18:46:56.284Z"
   },
   {
     "id": "RJ01366671",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01366671.html",
-    "current_price": 1430,
+    "current_price": 715,
     "original_price": 1430,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-05-16T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:32:32.377Z"
+    "fetched_at": "2026-07-18T18:47:07.257Z"
   },
   {
     "id": "RJ01607151",
     "url": "https://www.dlsite.com/home/work/=/product_id/RJ01607151.html",
-    "current_price": 1100,
+    "current_price": 990,
     "original_price": 1100,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 10,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2026-05-01T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:32:41.710Z"
+    "fetched_at": "2026-07-18T18:47:15.364Z"
   },
   {
     "id": "RJ01632189",
@@ -801,67 +801,67 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-05-31T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:51:11.102Z"
+    "fetched_at": "2026-07-18T18:47:26.396Z"
   },
   {
     "id": "RJ203898",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ203898.html",
-    "current_price": 1100,
+    "current_price": 550,
     "original_price": 1100,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2017-08-24T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:32:52.537Z"
+    "fetched_at": "2026-07-18T18:47:36.579Z"
   },
   {
     "id": "RJ308716",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ308716.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2020-12-16T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:33:06.566Z"
+    "fetched_at": "2026-07-18T18:47:46.413Z"
   },
   {
     "id": "RJ01499017",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01499017.html",
-    "current_price": 1100,
+    "current_price": 990,
     "original_price": 1100,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 10,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2026-02-21T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:33:16.176Z"
+    "fetched_at": "2026-07-18T18:47:55.848Z"
   },
   {
     "id": "RJ332312",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ332312.html",
-    "current_price": 1540,
+    "current_price": 770,
     "original_price": 1540,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2021-07-16T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:33:27.033Z"
+    "fetched_at": "2026-07-18T18:48:07.492Z"
   },
   {
     "id": "RJ01071133",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01071133.html",
-    "current_price": 1320,
+    "current_price": 660,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 50,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2024-03-28T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:33:39.539Z"
+    "fetched_at": "2026-07-18T18:48:16.989Z"
   },
   {
     "id": "RJ01636129",
@@ -873,7 +873,7 @@
     "sale_limit": "2026年06月05日 23:59",
     "sale_end_iso": "2026-06-05T23:59:00.000Z",
     "release_date_iso": "2026-06-04T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:33:47.911Z"
+    "fetched_at": "2026-07-18T18:48:28.914Z"
   },
   {
     "id": "RJ01583243",
@@ -885,19 +885,19 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-03-31T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:52:31.930Z"
+    "fetched_at": "2026-07-18T18:48:39.606Z"
   },
   {
     "id": "RJ01571353",
     "url": "https://www.dlsite.com/home/work/=/product_id/RJ01571353.html",
-    "current_price": 1320,
+    "current_price": 1056,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "2026年3月22日 23:59",
-    "sale_end_iso": "2026-03-22T23:59:00.000Z",
+    "discount_rate": 20,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2026-02-22T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:33:59.223Z"
+    "fetched_at": "2026-07-18T18:48:52.373Z"
   },
   {
     "id": "RJ01609552",
@@ -909,7 +909,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-12T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:52:50.045Z"
+    "fetched_at": "2026-07-18T18:49:01.040Z"
   },
   {
     "id": "RJ01645135",
@@ -921,7 +921,7 @@
     "sale_limit": "7月27日 00:00まで",
     "sale_end_iso": "2026-07-26T15:00:00.000Z",
     "release_date_iso": "2026-06-28T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:52:59.753Z"
+    "fetched_at": "2026-07-18T18:49:09.935Z"
   },
   {
     "id": "RJ01644019",
@@ -933,7 +933,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-04T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:53:09.483Z"
+    "fetched_at": "2026-07-18T18:49:25.135Z"
   },
   {
     "id": "RJ01644165",
@@ -945,7 +945,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-11T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:53:23.636Z"
+    "fetched_at": "2026-07-18T18:49:34.517Z"
   },
   {
     "id": "RJ01633653",
@@ -957,7 +957,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-18T15:00:00.000Z",
-    "fetched_at": "2026-07-16T16:24:06.371Z"
+    "fetched_at": "2026-07-18T18:49:43.260Z"
   },
   {
     "id": "RJ01653204",
@@ -969,7 +969,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-22T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:53:46.582Z"
+    "fetched_at": "2026-07-18T18:49:55.390Z"
   },
   {
     "id": "RJ01648679",
@@ -981,7 +981,7 @@
     "sale_limit": "8月2日 00:00まで",
     "sale_end_iso": "2026-08-01T15:00:00.000Z",
     "release_date_iso": "2026-07-04T15:00:00.000Z",
-    "fetched_at": "2026-07-11T18:53:55.491Z"
+    "fetched_at": "2026-07-18T18:50:10.338Z"
   },
   {
     "id": "RJ01593040",
@@ -993,19 +993,19 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-05T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:34:14.016Z"
+    "fetched_at": "2026-07-18T18:50:20.644Z"
   },
   {
     "id": "RJ01218021",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01218021.html",
-    "current_price": 1320,
+    "current_price": 1056,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
+    "discount_rate": 20,
+    "on_sale": true,
+    "sale_limit": "9月14日 14:00まで",
+    "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2024-07-03T15:00:00.000Z",
-    "fetched_at": "2026-07-16T07:34:25.649Z"
+    "fetched_at": "2026-07-18T18:50:31.941Z"
   },
   {
     "id": "RJ01532029",
@@ -1017,7 +1017,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2025-12-23T15:00:00.000Z",
-    "fetched_at": "2026-07-13T10:28:56.997Z"
+    "fetched_at": "2026-07-18T18:50:40.414Z"
   },
   {
     "id": "RJ01488698",
@@ -1026,9 +1026,9 @@
     "original_price": 550,
     "discount_rate": 20,
     "on_sale": true,
-    "sale_limit": "",
-    "sale_end_iso": "2026-07-31T00:00:00+09:00",
+    "sale_limit": "7月31日 00:00まで",
+    "sale_end_iso": "2026-07-30T15:00:00.000Z",
     "release_date_iso": "2026-07-02T15:00:00.000Z",
-    "fetched_at": "2026-07-14T07:37:34.651Z"
+    "fetched_at": "2026-07-18T18:50:50.743Z"
   }
 ]
