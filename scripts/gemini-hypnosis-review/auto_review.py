@@ -34,6 +34,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 from trance_scoring_guards import (  # noqa: E402
     apply_trance_scoring_guards,
     cap_pleasure_for_trance,
+    detect_score_cascade_anomaly,
 )
 from review_prose_rules import (  # noqa: E402
     load_forbidden_rules,
@@ -769,9 +770,9 @@ PLEASURE_C0: dict[str, dict[str, object]] = {
 }
 
 SATISFACTION_WEIGHTS: list[tuple[str, float]] = [
-    ("約束の着地", 0.30),
+    ("約束の着地", 0.35),
     ("解除・戻し", 0.25),
-    ("余韻・情緒", 0.25),
+    ("余韻・情緒", 0.20),
     ("尺対密度", 0.20),
 ]
 
@@ -1086,7 +1087,7 @@ def build_axis_scoring_metadata(eval_text: str, axis: str) -> dict[str, object]:
 EVAL_AXIS_LABELS = {
     "trance": "トランス度（レーン別4次元：入り・深さ・暗示の効き・維持）",
     "pleasure": "快楽度（C-0別4次元：整合・刺激・クライマックス・起伏）",
-    "satisfaction": "満足度（4次元：着地・戻し・余韻・密度）",
+    "satisfaction": "満足度（4次元：約束回収＋快感経路・解除の物語・余韻・密度）",
     "scenario": "シナリオ",
     "acoustic": "音響",
     "immersion": "没入度",
@@ -1210,9 +1211,9 @@ def build_eval_prompt(
     satisfaction_note = ""
     if axis == "satisfaction":
         satisfaction_note = (
-            "\n【必須】eval_satisfaction_rubric.md … 4次元（約束の着地・解除・戻し・"
-            "余韻・情緒・尺対密度）→ 固定重み合成。"
-            "最終満足度: x.x / 10.0 を必ず出力。"
+            "\n【必須】eval_satisfaction_rubric.md … 4次元（約束の着地＝約束回収＋快感経路の充実・"
+            "解除・戻し＝物語としての丁寧さ・余韻・情緒・尺対密度）→ 固定重み合成。"
+            "安心余韻必須ではない。最終満足度: x.x / 10.0 を必ず出力。"
         )
     prior = ""
     if axis == "pleasure" and trance_score is not None:
@@ -1223,7 +1224,8 @@ def build_eval_prompt(
     if axis == "satisfaction" and trance_score is not None and pleasure_score is not None:
         prior = (
             f"\n【前提・トランスありき】トランス {trance_score:.1f} / 快楽 {pleasure_score:.1f}。"
-            "着地・余韻・尺対密度。快楽だけ高いのに満足だけ極端に低い／高い偏りは理由を明示。"
+            "満足は体験全体（約束回収・快感経路・解除の物語・尺対密度）。"
+            "快楽だけ高いのに満足だけ極端に低い／高い偏りは理由を明示。"
         )
     return (
         f"{source_context}\n\n"
@@ -1533,6 +1535,8 @@ def run_three_axis_eval(
     print(
         f"[eval] 完了: トランス={trance_score} 快楽={pleasure_score} 満足={satisfaction_score}"
     )
+    for warn in detect_score_cascade_anomaly(trance_score, pleasure_score):
+        print(f"[警告] {warn}")
     return res_t, res_p, res_s, trance_score, pleasure_score, satisfaction_score
 
 

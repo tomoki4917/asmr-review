@@ -5,6 +5,11 @@
 入り・暗示の効き・維持を高く付け、エロ命令の刺さりを催眠暗示と混同する。
 
 要素欠如帯（eval_trance_rubric.md §要素欠如時）… 該当次元は 0.0〜1.0。
+
+再発防止（2026-07・mesugaki 耳責め催眠）:
+- 「限定的」「浅い」など**評価文の一言**だけで作品を薄い催眠と判定しない。
+- 催眠は物語の積み重ね。カウント・感覚転移・無意識誘導などが根拠にあれば、
+  後半が快楽パートでも sensory / acceptance を minimal へ潰さない。
 """
 from __future__ import annotations
 
@@ -27,25 +32,34 @@ FRAGMENT_ENTRY_MAX = 2.0
 REWARD_PRIMARY_COMPOSITE_MAX = 2.0
 REWARD_PRIMARY_COMPOSITE_MAX_STRICT = 1.5
 
+# 強い欠如シグナルのみ（「限定的」「浅い」単体は禁止・物語の注釈で誤爆する）
 REWARD_PRIMARY_DEPTH = re.compile(
-    r"報酬|RP|ロールプレイ|性的興奮|性的実行|淫語|エロ報酬|快感命令|"
-    r"本能.*主|支配.*主|限定的|浅い|多段深化.*(ない|弱|限|読み取れない)|"
-    r"往復.*(ない|弱|限)|夢混線.*(ない|弱|限)|深化.*浅|報酬側|頭側飽和|"
-    r"性的興奮.*命令|RPに割|ほぼなく|ほとんどない",
+    r"報酬.*主|RP.*主|ロールプレイ.*主|性的興奮.*主|エロ報酬|"
+    r"快感命令.*主|本能.*主|支配.*主|"
+    r"多段深化.*(ない|読み取れない|欠如)|"
+    r"往復.*(ない|読み取れない|欠如)|"
+    r"夢混線.*(ない|読み取れない|欠如)|"
+    r"変性意識.*(読み取れない|ほぼなく|ほとんどない|欠如)|"
+    r"(読み取れない|ほぼなく|ほとんどない).{0,12}(変性意識|多段深化)|"
+    r"RPに割|本編の大半が性的|エロ命令のみ|催眠体裁のみ",
     re.I,
 )
 
+# 手続きとして使われた催眠技法（肯定根拠）
 HYPNOTIC_DEPTH_TECHNIQUES = re.compile(
-    r"カウント(?:ダウン|アップ)|再深化|無意識|変性意識|半覚醒|夢混線|現実混線|"
+    r"カウント(?:ダウン|アップ)|10\s*(?:から|→|〜|～|-).{0,12}0|"
+    r"再深化|無意識|変性意識|半覚醒|夢混線|現実混線|"
     r"コンフュージョン|意識と無意識|深い催眠|もっと深く|θ帯|多段深化|"
-    r"一気に深い|さらに深い催眠|深化へと入り|催眠状態のまま",
+    r"一気に深い|さらに深い催眠|深化へと入り|催眠状態のまま|"
+    r"感覚転移|性感帯化|脱力誘導|深呼吸",
     re.I,
 )
 
-HYPNOTIC_TECHNIQUE_NEGATED = re.compile(
-    r"(変性意識|多段深化|夢混線|半覚醒|再深化|無意識).{0,24}"
-    r"(読み取れない|限定的|ほぼなく|ほとんどない|ないため|欠如|薄い)|"
-    r"(読み取れない|限定的|ほぼなく|ほとんどない).{0,24}"
+# 技法が「無い」と明示されている場合のみ（単語「限定的」は含めない）
+HYPNOTIC_TECHNIQUE_ABSENT = re.compile(
+    r"(変性意識|多段深化|夢混線|半覚醒|再深化|カウント(?:ダウン)?|無意識).{0,24}"
+    r"(読み取れない|ほぼなく|ほとんどない|ないため|欠如|無い|ない)|"
+    r"(読み取れない|ほぼなく|ほとんどない|欠如).{0,24}"
     r"(変性意識|多段深化|夢混線|半覚醒|再深化)",
     re.I,
 )
@@ -54,9 +68,14 @@ LANES_RECLASSIFY_TO_MINIMAL = frozenset({"acceptance", "deepening", "trigger", "
 
 
 def has_hypnotic_depth_techniques(eval_text: str) -> bool:
-    if not HYPNOTIC_DEPTH_TECHNIQUES.search(eval_text):
-        return False
-    if HYPNOTIC_TECHNIQUE_NEGATED.search(eval_text):
+    """
+    評価文全体で催眠技法の**肯定的な手続き根拠**があるか。
+    「深さは限定的」などの注釈があっても、カウント等の積み重ねがあれば True。
+    「変性意識は読み取れない」など欠如明示の中の語は肯定根拠に数えない。
+    """
+    # 欠如フレーズを除いたうえで肯定技法を探す（否定文中の語の誤カウント防止）
+    cleaned = HYPNOTIC_TECHNIQUE_ABSENT.sub(" ", eval_text)
+    if not HYPNOTIC_DEPTH_TECHNIQUES.search(cleaned):
         return False
     return True
 
@@ -123,16 +142,23 @@ def detect_reward_primary_thin_hypnosis(
     eval_text: str,
     dims: dict[str, float],
 ) -> bool:
+    """
+    本当に「催眠の積み重ねがなく報酬・RPだけ」かの検出。
+    評価文の「限定的」一言では True にしない。
+    """
     depth_r = extract_table_row_rationale(eval_text, "深さ")
-    if REWARD_PRIMARY_DEPTH.search(depth_r):
-        return True
-    depth = dims.get("深さ")
-    if depth is not None and depth <= 7.0:
-        if REWARD_PRIMARY_DEPTH.search(eval_text) and (
-            "限定的" in depth_r or "報酬" in depth_r or "RP" in depth_r
-        ):
-            return True
-    return False
+    if not REWARD_PRIMARY_DEPTH.search(depth_r) and not REWARD_PRIMARY_DEPTH.search(
+        eval_text
+    ):
+        return False
+
+    # 催眠技法の物語的積み重ねがあるなら、薄い催眠扱いにしない
+    if has_hypnotic_depth_techniques(eval_text):
+        return False
+
+    # 深さ点が高くても、技法欠如／RP主が明示されていれば候補のまま
+    # （点だけ高く根拠が「読み取れない」の矛盾を拾う）
+    return bool(REWARD_PRIMARY_DEPTH.search(depth_r) or REWARD_PRIMARY_DEPTH.search(eval_text))
 
 
 def _apply_absent_element_caps(
@@ -163,9 +189,9 @@ def _apply_absent_element_caps(
             out["維持"] = ABSENT_ELEMENT_MAX
             notes.append(f"維持→{ABSENT_ELEMENT_MAX}（トランス維持なし・興奮維持のみ）")
 
-    if out.get("入り", 10) > FRAGMENT_ENTRY_MAX:
-        out["入り"] = FRAGMENT_ENTRY_MAX
-        notes.append(f"入り→{FRAGMENT_ENTRY_MAX}（断片的入口のみ・深化に未接続）")
+        if out.get("入り", 10) > FRAGMENT_ENTRY_MAX:
+            out["入り"] = FRAGMENT_ENTRY_MAX
+            notes.append(f"入り→{FRAGMENT_ENTRY_MAX}（断片的入口のみ・深化に未接続）")
 
     return out
 
@@ -181,56 +207,57 @@ def apply_trance_scoring_guards(eval_text: str) -> TranceGuardResult:
         )
 
     original_lane = extract_trance_lane_id(eval_text)
-    reward_primary = detect_reward_primary_thin_hypnosis(eval_text, dims)
     has_hypno_tech = has_hypnotic_depth_techniques(eval_text)
     depth_r = extract_table_row_rationale(eval_text, "深さ")
+    reward_primary = detect_reward_primary_thin_hypnosis(eval_text, dims)
+    weights = TRANCE_LANE_WEIGHTS[original_lane]
+    base_score = compute_weighted_score(dims, weights)
 
-    if not reward_primary:
-        weights = TRANCE_LANE_WEIGHTS[original_lane]
+    # sensory / acceptance で技法の積み重ねがある作品はレーン維持（耳責め催眠の誤爆防止）
+    if has_hypno_tech and original_lane in ("sensory", "acceptance", "deepening", "trigger"):
         return TranceGuardResult(
-            score=compute_weighted_score(dims, weights),
-            lane=original_lane,
-            dimensions=dims,
-        )
-
-    # カウントダウン・呼吸・無意識等が eval 根拠にある作品は、
-    # 「快楽パートへ移行する」だけで 2.0 上限に落とさない（生放送型古典誘導の誤判定防止）。
-    if has_hypno_tech:
-        weights = TRANCE_LANE_WEIGHTS[original_lane]
-        return TranceGuardResult(
-            score=compute_weighted_score(dims, weights),
+            score=base_score,
             lane=original_lane,
             dimensions=dims,
             guard_notes=(
-                ["reward_primary 判定だが深化技法ありのため 2.0 上限ガードをスキップ"]
-                if reward_primary
+                [
+                    "催眠技法の積み重ねありのため minimal 潰しをスキップ"
+                    + ("（reward_primary 文言は注釈扱い）" if reward_primary else "")
+                ]
+                if reward_primary or "限定的" in depth_r or "浅い" in depth_r
                 else []
             ),
-            applied=reward_primary,
+            applied=bool(reward_primary or "限定的" in depth_r or "浅い" in depth_r),
         )
 
+    if not reward_primary:
+        return TranceGuardResult(
+            score=base_score,
+            lane=original_lane,
+            dimensions=dims,
+        )
+
+    # ここから先は「技法なし＋報酬主」の薄い催眠のみ
     notes: list[str] = []
     lane = "minimal"
     if original_lane != "minimal":
-        notes.append(f"レーン {original_lane}→minimal（報酬・RP主）")
+        notes.append(f"レーン {original_lane}→minimal（報酬・RP主・催眠技法なし）")
 
     new_dims = _apply_absent_element_caps(
         dims,
-        has_hypno_tech=has_hypno_tech,
+        has_hypno_tech=False,
         depth_r=depth_r,
         notes=notes,
     )
 
-    weights = TRANCE_LANE_WEIGHTS[lane]
-    score = compute_weighted_score(new_dims, weights)
+    score = compute_weighted_score(new_dims, TRANCE_LANE_WEIGHTS[lane])
 
     if score is not None:
-        cap = REWARD_PRIMARY_COMPOSITE_MAX
-        if not has_hypno_tech:
-            cap = min(cap, REWARD_PRIMARY_COMPOSITE_MAX_STRICT)
-        capped = min(score, cap)
+        capped = min(score, REWARD_PRIMARY_COMPOSITE_MAX_STRICT)
         if capped < score:
-            notes.append(f"合成 {score}→{capped}（報酬主・要素欠如帯の合成上限）")
+            notes.append(
+                f"合成 {score}→{capped}（報酬主・要素欠如帯の合成上限）"
+            )
         score = capped
 
     return TranceGuardResult(
@@ -255,3 +282,28 @@ def cap_pleasure_for_trance(pleasure: float | None, trance: float | None) -> flo
     if trance < 7.0:
         return min(pleasure, round(trance + 3.5, 1))
     return pleasure
+
+
+def detect_score_cascade_anomaly(
+    trance: float | None,
+    pleasure: float | None,
+    rating: float | None = None,
+) -> list[str]:
+    """
+    高トランスなのに快楽・星だけ極端に低い＝ガード連鎖の疑い。
+    auto_review / 人手再採点の監査用。
+    """
+    warnings: list[str] = []
+    if trance is None or pleasure is None:
+        return warnings
+    if trance >= 7.5 and pleasure <= 3.5:
+        warnings.append(
+            f"異常: トランス{trance:.1f}なのに快楽{pleasure:.1f}。"
+            " ガード誤爆またはトランスありきの過剰圧縮を疑う。"
+        )
+    if rating is not None and trance >= 7.5 and rating <= 5:
+        warnings.append(
+            f"異常: トランス{trance:.1f}なのに総合★{rating:.0f}。"
+            " 採点連鎖の再確認が必要。"
+        )
+    return warnings

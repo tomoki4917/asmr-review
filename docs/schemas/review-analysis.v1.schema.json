@@ -37,7 +37,7 @@
           "type": "number",
           "minimum": 0,
           "maximum": 10,
-          "description": "満足度（着地・約束の回収）。第三軸ラベルは thirdAxisLabel または radarAxisLabels.third。"
+          "description": "満足度（体験全体の回収：約束・快感経路・解除の物語・尺対密度）。第三軸ラベルは thirdAxisLabel または radarAxisLabels.third。"
         }
       }
     },

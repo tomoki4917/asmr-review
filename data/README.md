@@ -28,8 +28,10 @@ DLsite **ランキング順位**（トップのブログパーツと同じ `site
 | **ネットワーク** | ビルド／開発マシンから `www.dlsite.com` へ HTTPS で到達できること |
 | **依存** | リポジトリに入っている `axios`（`devDependencies`。価格取得と同じ） |
 | **レビュー側** | 対象記事のフロントマターに **`dlsiteProductId`（RJ）** があること |
-| **実行** | リポジトリルートで **`npm run update-dlsite-rankings`** |
+| **実行（強制）** | リポジトリルートで **`npm run update-dlsite-rankings`** |
+| **実行（自動）** | **`npm run dev`** 起動時に `update-dlsite-rankings:if-stale`（`fetched_at` が 24h 以内ならスキップ・失敗しても続行）／GitHub Actions **Update DLsite rankings**（週1＋手動） |
 | **任意** | `DLSITE_RANKING_SITE=maniax` … 同人専用ランキング軸に切り替え（既定は `home`＝トップ総合） |
+| **任意** | `DLSITE_RANKING_MAX_AGE_HOURS` … `--if-stale` のしきい値（既定 24） |
 
 ブラウザから DLsite API を直接叩くことは **CORS なしのため不可**。静的サイトでは **JSON をコミットまたはデプロイ前に更新**する運用になる。
 
@@ -37,7 +39,8 @@ DLsite **ランキング順位**（トップのブログパーツと同じ `site
 
 - API は **各期間あたり最大 31 位** まで（`day` / `week` / `month` / `year` / `total` をまとめて取得）
 - バッジ表示は **`week`（週間ランキング）・`month`（月間ランキング）**（該当する期間だけ **1期間＝1枚** で縦に並べる）
-- 順位は DLsite 側で変わるため、**週1回程度**または **デプロイ前**に `update-dlsite-rankings` を回すとよい
+- **本番** … `.github/workflows/update-dlsite-rankings.yml` が週1で取得→コミット（Actions から手動実行可）
+- **ローカル** … `npm run dev` / `dev:lan` が古ければ自動更新。すぐ取り直すときは `npm run update-dlsite-rankings`
 - `fetched_at` … 最終取得時刻（ISO）
 
 ## フィールド

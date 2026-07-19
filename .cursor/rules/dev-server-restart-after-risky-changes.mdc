@@ -1,5 +1,5 @@
 ---
-description: dev 再起動の前に DLsite ランキング更新、変更後は dev を再起動する
+description: リスクがある変更のあと npm run dev を再起動する（ランキングは dev 起動時に自動）
 alwaysApply: true
 ---
 
@@ -7,26 +7,22 @@ alwaysApply: true
 
 ユーザーが開発サーバー（`npm run dev`）を開いている想定で、**実行したコマンドや変更のあとにブラウザでエラーが出うる場合は、その応答のなかで毎回 `npm run dev` を再起動する**（ポート3000の待受プロセスを終了してから立ち上げ直す）。
 
-## DLsite ランキング更新（dev 再起動の前に必須）
+## DLsite ランキング更新（自動）
 
-**`npm run dev` を再起動するたび**（ユーザーが「サーバー再起動」と言ったとき・リスク変更後・エラー修正後を問わず）、**先に** 次を実行する。
-
-```bash
-npm run update-dlsite-rankings
-```
+`npm run dev` / `dev:lan` は起動時に **`update-dlsite-rankings:if-stale`** を走らせる（`fetched_at` が 24h 以内ならスキップ・API 失敗時は古い JSON のまま続行）。
 
 | 項目 | 内容 |
-|------|------|
+|---|---|
 | 更新先 | `data/dlsite-rankings.json`（一覧・詳細の週間／月間バッジ） |
 | 正本 | `scripts/fetch-dlsite-rankings.mjs` |
-| 失敗時 | ネットワーク／API エラーならログを伝える。**古い JSON のままでも dev 再起動は続行**（閲覧優先） |
+| 本番自動 | `.github/workflows/update-dlsite-rankings.yml`（週1＋手動） |
+| 強制取り直し | `npm run update-dlsite-rankings`（`--if-stale` なし） |
 
-**再起動の固定手順**
+**再起動の固定手順**（別途 `update-dlsite-rankings` を先に叩く必要はない）
 
-1. `npm run update-dlsite-rankings`
-2. ポート3000の `Listen` を `Stop-Process`
-3. リポジトリルートから `npm run dev` をバックグラウンド起動
-4. `Ready in` が出るまで確認
+1. ポート3000の `Listen` を `Stop-Process`
+2. リポジトリルートから `npm run dev` をバックグラウンド起動
+3. `Ready in` が出るまで確認（起動ログに skip / wrote / 失敗メッセージが出る）
 
 **目安（再起動を検討するトリガー）**
 
@@ -39,4 +35,4 @@ npm run update-dlsite-rankings
 
 - 純粋に `src/content/**/*.md` だけの文言修正で、ユーザーがサーバーを動かしていないとわかっているときは不要な場合がある（ユーザーが明示的に再起動を求めたら実行する）。
 
-再起動は上記 **固定手順** に従う（PowerShell でポート3000停止 → `npm run dev` バックグラウンド → `Ready in` 確認）。**手順1（ランキング更新）を省略しない。**
+再起動は上記 **固定手順** に従う（PowerShell でポート3000停止 → `npm run dev` バックグラウンド → `Ready in` 確認）。

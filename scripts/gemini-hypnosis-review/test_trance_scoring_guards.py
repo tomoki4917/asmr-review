@@ -1,4 +1,4 @@
-"""trance_scoring_guards の回帰テスト（acceptance 過大の再発防止）。"""
+"""trance_scoring_guards の回帰テスト（過大採点＋単語誤爆の再発防止）。"""
 from __future__ import annotations
 
 import unittest
@@ -7,6 +7,7 @@ from trance_scoring_guards import (
     REWARD_PRIMARY_COMPOSITE_MAX_STRICT,
     apply_trance_scoring_guards,
     cap_pleasure_for_trance,
+    detect_score_cascade_anomaly,
 )
 
 OLD_ACCEPTANCE_INFLATED = """
@@ -18,6 +19,18 @@ OLD_ACCEPTANCE_INFLATED = """
 | 暗示の効き | 9.5 | イッていいよ等の命令 |
 | 維持 | 8.5 | 二声が続く |
 ### 最終トランス度: 8.6 / 10.0
+"""
+
+MESUGAKI_SENSORY_WITH_GENTEITEKI = """
+## トランス度: 8.9
+### トランスレーン: sensory（感覚・ASMR型）
+| 次元 | スコア | 根拠（Whisper 分秒） |
+|------|--------|----------------------|
+| 入り | 9.0 | Tr.02 で膝枕、深呼吸、手足の脱力誘導。10から0のカウントダウンで意識の深い世界へ誘う。 |
+| 深さ | 7.0 | Tr.02 の10→0カウントと321で無意識寄り。Tr.03以降は感覚刺激と快楽が主となり、変性意識としての深さの作劇は限定的。 |
+| 暗示の効き | 9.5 | 耳が性感帯に作り替えられる感覚転移。行けと言ったら行く行動制御。 |
+| 維持 | 9.0 | 催眠状態のまま耳責めへ移行し、解除まで維持。 |
+### 最終トランス度: 8.9 / 10.0
 """
 
 
@@ -55,6 +68,21 @@ class TranceScoringGuardsTest(unittest.TestCase):
         assert result.score is not None
         self.assertGreaterEqual(result.score, 5.5)
         self.assertGreater(result.score, 2.0)
+
+    def test_genteiteki_word_alone_does_not_crush_sensory_story(self) -> None:
+        """『限定的』注釈だけでは耳責め感覚催眠を minimal 1.2 に潰さない。"""
+        result = apply_trance_scoring_guards(MESUGAKI_SENSORY_WITH_GENTEITEKI)
+        self.assertEqual(result.lane, "sensory")
+        self.assertIsNotNone(result.score)
+        assert result.score is not None
+        self.assertGreaterEqual(result.score, 8.0)
+        self.assertAlmostEqual(result.score, 8.9, delta=0.2)
+
+    def test_cascade_anomaly_detector(self) -> None:
+        warns = detect_score_cascade_anomaly(8.9, 2.4, 5)
+        self.assertTrue(any("快楽" in w for w in warns))
+        self.assertTrue(any("総合" in w for w in warns))
+        self.assertEqual(detect_score_cascade_anomaly(8.9, 8.4, 9), [])
 
 
 if __name__ == "__main__":
