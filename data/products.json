@@ -8,7 +8,7 @@
     "on_sale": true,
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
-    "fetched_at": "2026-08-01T18:34:31.376Z",
+    "fetched_at": "2026-08-08T18:01:28.533Z",
     "release_date_iso": "2025-06-26T15:00:00.000Z"
   },
   {
@@ -20,7 +20,7 @@
     "on_sale": true,
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
-    "fetched_at": "2026-08-01T18:34:45.650Z",
+    "fetched_at": "2026-08-08T18:01:43.402Z",
     "release_date_iso": "2025-07-13T15:00:00.000Z"
   },
   {
@@ -33,18 +33,18 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-05-29T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:34:56.593Z"
+    "fetched_at": "2026-08-08T18:01:54.165Z"
   },
   {
     "id": "RJ01517030",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01517030.html",
-    "current_price": 1320,
+    "current_price": 1056,
     "original_price": 1320,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "",
-    "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:35:12.010Z",
+    "discount_rate": 20,
+    "on_sale": true,
+    "sale_limit": "8月22日 00:00まで",
+    "sale_end_iso": "2026-08-21T15:00:00.000Z",
+    "fetched_at": "2026-08-08T18:02:07.623Z",
     "release_date_iso": "2025-12-18T15:00:00.000Z"
   },
   {
@@ -56,7 +56,7 @@
     "on_sale": true,
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
-    "fetched_at": "2026-08-01T18:35:22.138Z",
+    "fetched_at": "2026-08-08T18:02:21.671Z",
     "release_date_iso": "2026-02-27T15:00:00.000Z"
   },
   {
@@ -68,7 +68,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:35:33.575Z",
+    "fetched_at": "2026-08-08T18:02:32.581Z",
     "release_date_iso": "2026-01-16T15:00:00.000Z"
   },
   {
@@ -80,7 +80,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:35:43.664Z",
+    "fetched_at": "2026-08-08T18:02:43.220Z",
     "release_date_iso": "2026-01-22T15:00:00.000Z"
   },
   {
@@ -92,7 +92,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:35:55.065Z",
+    "fetched_at": "2026-08-08T18:02:56.389Z",
     "release_date_iso": "2026-04-17T15:00:00.000Z"
   },
   {
@@ -104,7 +104,7 @@
     "on_sale": true,
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
-    "fetched_at": "2026-08-01T18:36:10.132Z",
+    "fetched_at": "2026-08-08T18:03:10.486Z",
     "release_date_iso": "2018-01-04T15:00:00.000Z"
   },
   {
@@ -116,7 +116,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:36:23.510Z",
+    "fetched_at": "2026-08-08T18:03:24.273Z",
     "release_date_iso": "2018-01-13T15:00:00.000Z"
   },
   {
@@ -128,7 +128,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:36:37.931Z",
+    "fetched_at": "2026-08-08T18:03:34.528Z",
     "release_date_iso": "2019-09-16T15:00:00.000Z"
   },
   {
@@ -140,7 +140,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:36:51.967Z",
+    "fetched_at": "2026-08-08T18:03:49.021Z",
     "release_date_iso": "2020-12-28T15:00:00.000Z"
   },
   {
@@ -152,7 +152,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:37:06.646Z",
+    "fetched_at": "2026-08-08T18:04:02.959Z",
     "release_date_iso": "2022-04-09T15:00:00.000Z"
   },
   {
@@ -164,7 +164,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:37:17.785Z",
+    "fetched_at": "2026-08-08T18:04:12.189Z",
     "release_date_iso": "2020-01-09T15:00:00.000Z"
   },
   {
@@ -176,7 +176,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:37:33.342Z",
+    "fetched_at": "2026-08-08T18:04:24.049Z",
     "release_date_iso": "2017-01-11T15:00:00.000Z"
   },
   {
@@ -188,7 +188,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:37:48.263Z",
+    "fetched_at": "2026-08-08T18:04:36.576Z",
     "release_date_iso": "2022-03-10T15:00:00.000Z"
   },
   {
@@ -200,7 +200,7 @@
     "on_sale": true,
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
-    "fetched_at": "2026-08-01T18:37:57.440Z",
+    "fetched_at": "2026-08-08T18:04:49.221Z",
     "release_date_iso": "2020-05-08T15:00:00.000Z"
   },
   {
@@ -212,7 +212,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:38:07.801Z",
+    "fetched_at": "2026-08-08T18:04:59.645Z",
     "release_date_iso": "2022-08-19T15:00:00.000Z"
   },
   {
@@ -224,7 +224,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:38:21.834Z",
+    "fetched_at": "2026-08-08T18:05:12.945Z",
     "release_date_iso": "2024-01-26T15:00:00.000Z"
   },
   {
@@ -237,7 +237,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-23T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:38:31.457Z"
+    "fetched_at": "2026-08-08T18:05:23.952Z"
   },
   {
     "id": "RJ01244683",
@@ -249,7 +249,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2024-12-13T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:38:44.037Z"
+    "fetched_at": "2026-08-08T18:05:35.991Z"
   },
   {
     "id": "RJ01277236",
@@ -261,7 +261,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2024-10-27T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:38:57.947Z"
+    "fetched_at": "2026-08-08T18:05:50.859Z"
   },
   {
     "id": "RJ01339925",
@@ -273,7 +273,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-07-26T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:39:09.325Z"
+    "fetched_at": "2026-08-08T18:06:01.932Z"
   },
   {
     "id": "RJ01308551",
@@ -285,7 +285,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-01-16T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:39:21.454Z"
+    "fetched_at": "2026-08-08T18:06:16.572Z"
   },
   {
     "id": "RJ378282",
@@ -297,7 +297,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2022-03-17T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:39:36.107Z"
+    "fetched_at": "2026-08-08T18:06:27.298Z"
   },
   {
     "id": "RJ01032464",
@@ -309,7 +309,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2023-02-27T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:39:50.494Z"
+    "fetched_at": "2026-08-08T18:06:41.610Z"
   },
   {
     "id": "RJ311813",
@@ -321,7 +321,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2021-01-19T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:40:00.111Z"
+    "fetched_at": "2026-08-08T18:06:51.777Z"
   },
   {
     "id": "RJ190932",
@@ -333,7 +333,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2017-01-31T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:40:12.631Z"
+    "fetched_at": "2026-08-08T18:07:03.978Z"
   },
   {
     "id": "RJ260463",
@@ -345,7 +345,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2019-08-22T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:40:24.298Z"
+    "fetched_at": "2026-08-08T18:07:18.389Z"
   },
   {
     "id": "RJ01057134",
@@ -357,7 +357,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2023-06-08T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:40:35.839Z"
+    "fetched_at": "2026-08-08T18:07:27.444Z"
   },
   {
     "id": "RJ241712",
@@ -369,7 +369,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2019-02-07T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:40:49.948Z"
+    "fetched_at": "2026-08-08T18:07:41.396Z"
   },
   {
     "id": "RJ01498990",
@@ -381,7 +381,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-11-10T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:41:00.030Z"
+    "fetched_at": "2026-08-08T18:07:50.757Z"
   },
   {
     "id": "RJ01074483",
@@ -393,7 +393,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2023-08-04T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:41:15.857Z"
+    "fetched_at": "2026-08-08T18:08:02.488Z"
   },
   {
     "id": "RJ01531480",
@@ -405,7 +405,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2026-04-30T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:41:31.283Z"
+    "fetched_at": "2026-08-08T18:08:16.627Z"
   },
   {
     "id": "RJ01606763",
@@ -417,7 +417,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-17T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:41:46.554Z"
+    "fetched_at": "2026-08-08T18:08:28.637Z"
   },
   {
     "id": "RJ01356621",
@@ -429,7 +429,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-03-19T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:41:57.639Z"
+    "fetched_at": "2026-08-08T18:08:42.210Z"
   },
   {
     "id": "RJ01617970",
@@ -441,7 +441,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-05-05T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:42:12.470Z"
+    "fetched_at": "2026-08-08T18:08:51.402Z"
   },
   {
     "id": "RJ299661",
@@ -453,7 +453,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2020-10-15T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:42:25.366Z"
+    "fetched_at": "2026-08-08T18:09:05.936Z"
   },
   {
     "id": "RJ01612971",
@@ -465,7 +465,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-30T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:42:35.262Z"
+    "fetched_at": "2026-08-08T18:09:17.596Z"
   },
   {
     "id": "RJ327478",
@@ -477,7 +477,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2022-03-29T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:42:49.698Z"
+    "fetched_at": "2026-08-08T18:09:30.612Z"
   },
   {
     "id": "RJ214295",
@@ -489,7 +489,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2018-01-17T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:43:05.162Z"
+    "fetched_at": "2026-08-08T18:09:40.969Z"
   },
   {
     "id": "RJ148280",
@@ -501,7 +501,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2015-01-15T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:43:17.067Z"
+    "fetched_at": "2026-08-08T18:09:52.630Z"
   },
   {
     "id": "RJ283004",
@@ -513,7 +513,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2020-04-09T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:43:27.372Z"
+    "fetched_at": "2026-08-08T18:10:02.151Z"
   },
   {
     "id": "RJ205378",
@@ -524,7 +524,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-08-01T18:43:41.022Z",
+    "fetched_at": "2026-08-08T18:10:13.952Z",
     "release_date_iso": "2017-09-14T15:00:00.000Z"
   },
   {
@@ -537,7 +537,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2024-12-27T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:43:52.858Z"
+    "fetched_at": "2026-08-08T18:10:25.655Z"
   },
   {
     "id": "RJ274843",
@@ -549,7 +549,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2020-01-24T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:44:08.423Z"
+    "fetched_at": "2026-08-08T18:10:41.113Z"
   },
   {
     "id": "RJ127012",
@@ -561,7 +561,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2014-01-14T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:44:21.384Z"
+    "fetched_at": "2026-08-08T18:10:53.663Z"
   },
   {
     "id": "RJ01129822",
@@ -573,7 +573,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2023-12-14T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:44:30.526Z"
+    "fetched_at": "2026-08-08T18:11:03.374Z"
   },
   {
     "id": "RJ01199189",
@@ -585,7 +585,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2024-06-20T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:44:46.384Z"
+    "fetched_at": "2026-08-08T18:11:13.166Z"
   },
   {
     "id": "RJ232260",
@@ -597,7 +597,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2018-09-28T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:44:58.113Z"
+    "fetched_at": "2026-08-08T18:11:26.235Z"
   },
   {
     "id": "RJ183624",
@@ -609,7 +609,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2016-09-15T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:45:08.241Z"
+    "fetched_at": "2026-08-08T18:11:37.992Z"
   },
   {
     "id": "RJ01592680",
@@ -621,7 +621,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2026-05-14T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:45:22.410Z"
+    "fetched_at": "2026-08-08T18:11:53.529Z"
   },
   {
     "id": "RJ189197",
@@ -633,7 +633,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2017-01-04T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:45:33.719Z"
+    "fetched_at": "2026-08-08T18:12:05.804Z"
   },
   {
     "id": "RJ231054",
@@ -645,7 +645,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2018-09-14T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:45:45.725Z"
+    "fetched_at": "2026-08-08T18:12:20.385Z"
   },
   {
     "id": "RJ064616",
@@ -657,7 +657,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2010-07-23T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:45:56.787Z"
+    "fetched_at": "2026-08-08T18:12:29.472Z"
   },
   {
     "id": "RJ01244786",
@@ -669,7 +669,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2024-10-18T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:46:09.450Z"
+    "fetched_at": "2026-08-08T18:12:40.265Z"
   },
   {
     "id": "RJ370100",
@@ -681,7 +681,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2022-02-25T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:46:21.326Z"
+    "fetched_at": "2026-08-08T18:12:52.184Z"
   },
   {
     "id": "RJ294932",
@@ -693,7 +693,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2020-08-12T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:46:30.577Z"
+    "fetched_at": "2026-08-08T18:13:04.592Z"
   },
   {
     "id": "RJ160018",
@@ -705,7 +705,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2015-08-27T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:46:42.151Z"
+    "fetched_at": "2026-08-08T18:13:13.797Z"
   },
   {
     "id": "RJ01036590",
@@ -717,7 +717,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2023-03-24T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:46:50.784Z"
+    "fetched_at": "2026-08-08T18:13:25.415Z"
   },
   {
     "id": "RJ272263",
@@ -729,7 +729,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2020-01-02T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:47:05.601Z"
+    "fetched_at": "2026-08-08T18:13:34.533Z"
   },
   {
     "id": "RJ01475802",
@@ -741,7 +741,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-10-24T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:47:20.020Z"
+    "fetched_at": "2026-08-08T18:13:45.864Z"
   },
   {
     "id": "RJ01401605",
@@ -753,7 +753,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-07-18T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:47:30.974Z"
+    "fetched_at": "2026-08-08T18:14:00.771Z"
   },
   {
     "id": "RJ01323843",
@@ -765,7 +765,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-03-07T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:47:45.830Z"
+    "fetched_at": "2026-08-08T18:14:09.438Z"
   },
   {
     "id": "RJ01366671",
@@ -777,7 +777,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2025-05-16T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:47:56.659Z"
+    "fetched_at": "2026-08-08T18:14:23.116Z"
   },
   {
     "id": "RJ01607151",
@@ -789,7 +789,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2026-05-01T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:48:07.018Z"
+    "fetched_at": "2026-08-08T18:14:36.386Z"
   },
   {
     "id": "RJ01632189",
@@ -801,7 +801,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-05-31T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:48:21.137Z"
+    "fetched_at": "2026-08-08T18:14:46.340Z"
   },
   {
     "id": "RJ203898",
@@ -813,7 +813,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2017-08-24T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:48:33.472Z"
+    "fetched_at": "2026-08-08T18:14:56.352Z"
   },
   {
     "id": "RJ308716",
@@ -825,7 +825,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2020-12-16T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:48:45.103Z"
+    "fetched_at": "2026-08-08T18:15:10.587Z"
   },
   {
     "id": "RJ01499017",
@@ -837,7 +837,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2026-02-21T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:48:56.007Z"
+    "fetched_at": "2026-08-08T18:15:22.546Z"
   },
   {
     "id": "RJ332312",
@@ -849,7 +849,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2021-07-16T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:49:05.065Z"
+    "fetched_at": "2026-08-08T18:15:32.765Z"
   },
   {
     "id": "RJ01071133",
@@ -861,19 +861,19 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2024-03-28T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:49:19.719Z"
+    "fetched_at": "2026-08-08T18:15:48.597Z"
   },
   {
     "id": "RJ01636129",
     "url": "https://www.dlsite.com/home/work/=/product_id/RJ01636129.html",
-    "current_price": 1980,
+    "current_price": 1683,
     "original_price": 1980,
-    "discount_rate": 0,
-    "on_sale": false,
-    "sale_limit": "2026年06月05日 23:59",
-    "sale_end_iso": "2026-06-05T23:59:00.000Z",
+    "discount_rate": 15,
+    "on_sale": true,
+    "sale_limit": "8月31日 00:00まで",
+    "sale_end_iso": "2026-08-30T15:00:00.000Z",
     "release_date_iso": "2026-06-04T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:49:32.257Z"
+    "fetched_at": "2026-08-08T18:15:59.636Z"
   },
   {
     "id": "RJ01583243",
@@ -885,7 +885,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-03-31T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:49:44.514Z"
+    "fetched_at": "2026-08-08T18:16:14.582Z"
   },
   {
     "id": "RJ01571353",
@@ -897,7 +897,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2026-02-22T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:49:56.830Z"
+    "fetched_at": "2026-08-08T18:16:27.083Z"
   },
   {
     "id": "RJ01609552",
@@ -909,7 +909,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2026-06-12T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:50:10.066Z"
+    "fetched_at": "2026-08-08T18:16:37.019Z"
   },
   {
     "id": "RJ01645135",
@@ -921,7 +921,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-28T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:50:24.059Z"
+    "fetched_at": "2026-08-08T18:16:47.730Z"
   },
   {
     "id": "RJ01644019",
@@ -933,7 +933,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-04T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:50:32.573Z"
+    "fetched_at": "2026-08-08T18:17:02.340Z"
   },
   {
     "id": "RJ01644165",
@@ -945,7 +945,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-11T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:50:41.766Z"
+    "fetched_at": "2026-08-08T18:17:15.125Z"
   },
   {
     "id": "RJ01633653",
@@ -957,7 +957,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-18T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:50:55.678Z"
+    "fetched_at": "2026-08-08T18:17:29.097Z"
   },
   {
     "id": "RJ01653204",
@@ -969,7 +969,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-22T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:51:08.632Z"
+    "fetched_at": "2026-08-08T18:17:44.297Z"
   },
   {
     "id": "RJ01648679",
@@ -981,7 +981,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-07-04T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:51:19.510Z"
+    "fetched_at": "2026-08-08T18:17:59.793Z"
   },
   {
     "id": "RJ01593040",
@@ -993,7 +993,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-05T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:51:30.312Z"
+    "fetched_at": "2026-08-08T18:18:09.378Z"
   },
   {
     "id": "RJ01218021",
@@ -1005,7 +1005,7 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2024-07-03T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:51:44.582Z"
+    "fetched_at": "2026-08-08T18:18:23.762Z"
   },
   {
     "id": "RJ01532029",
@@ -1017,7 +1017,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2025-12-23T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:51:58.213Z"
+    "fetched_at": "2026-08-08T18:18:35.891Z"
   },
   {
     "id": "RJ01488698",
@@ -1029,7 +1029,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-07-02T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:52:09.385Z"
+    "fetched_at": "2026-08-08T18:18:44.429Z"
   },
   {
     "id": "RJ403730",
@@ -1041,6 +1041,6 @@
     "sale_limit": "9月14日 14:00まで",
     "sale_end_iso": "2026-09-14T05:00:00.000Z",
     "release_date_iso": "2022-08-01T15:00:00.000Z",
-    "fetched_at": "2026-08-01T18:52:21.435Z"
+    "fetched_at": "2026-08-08T18:18:54.016Z"
   }
 ]
