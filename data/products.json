@@ -458,14 +458,14 @@
   {
     "id": "RJ01612971",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01612971.html",
-    "current_price": 1320,
+    "current_price": 1650,
     "original_price": 1650,
-    "discount_rate": 20,
-    "on_sale": true,
-    "sale_limit": "8月27日 14:00まで",
-    "sale_end_iso": "2026-08-27T05:00:00.000Z",
+    "discount_rate": 0,
+    "on_sale": false,
+    "sale_limit": "",
+    "sale_end_iso": "",
     "release_date_iso": "2026-04-30T15:00:00.000Z",
-    "fetched_at": "2026-08-22T18:02:09.636Z"
+    "fetched_at": "2026-08-27T16:10:29.275Z"
   },
   {
     "id": "RJ327478",
@@ -914,14 +914,14 @@
   {
     "id": "RJ01645135",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01645135.html",
-    "current_price": 1408,
+    "current_price": 1760,
     "original_price": 1760,
-    "discount_rate": 20,
-    "on_sale": true,
-    "sale_limit": "8月27日 14:00まで",
-    "sale_end_iso": "2026-08-27T05:00:00.000Z",
+    "discount_rate": 0,
+    "on_sale": false,
+    "sale_limit": "",
+    "sale_end_iso": "",
     "release_date_iso": "2026-06-28T15:00:00.000Z",
-    "fetched_at": "2026-08-22T18:10:03.295Z"
+    "fetched_at": "2026-08-27T16:10:42.719Z"
   },
   {
     "id": "RJ01644019",
@@ -986,14 +986,14 @@
   {
     "id": "RJ01593040",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01593040.html",
-    "current_price": 1320,
+    "current_price": 1650,
     "original_price": 1650,
-    "discount_rate": 20,
-    "on_sale": true,
-    "sale_limit": "8月27日 14:00まで",
-    "sale_end_iso": "2026-08-27T05:00:00.000Z",
+    "discount_rate": 0,
+    "on_sale": false,
+    "sale_limit": "",
+    "sale_end_iso": "",
     "release_date_iso": "2026-04-05T15:00:00.000Z",
-    "fetched_at": "2026-08-22T18:11:12.709Z"
+    "fetched_at": "2026-08-27T16:10:53.914Z"
   },
   {
     "id": "RJ01218021",
@@ -1022,14 +1022,14 @@
   {
     "id": "RJ01488698",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01488698.html",
-    "current_price": 495,
+    "current_price": 550,
     "original_price": 550,
-    "discount_rate": 10,
-    "on_sale": true,
-    "sale_limit": "8月27日 14:00まで",
-    "sale_end_iso": "2026-08-27T05:00:00.000Z",
+    "discount_rate": 0,
+    "on_sale": false,
+    "sale_limit": "",
+    "sale_end_iso": "",
     "release_date_iso": "2026-07-02T15:00:00.000Z",
-    "fetched_at": "2026-08-22T18:11:55.704Z"
+    "fetched_at": "2026-08-27T16:11:06.762Z"
   },
   {
     "id": "RJ403730",
