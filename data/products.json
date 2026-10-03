@@ -206,13 +206,13 @@
   {
     "id": "RJ400972",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ400972.html",
-    "current_price": 968,
+    "current_price": 1210,
     "original_price": 1210,
-    "discount_rate": 20,
-    "on_sale": true,
-    "sale_limit": "10月4日 00:00まで",
-    "sale_end_iso": "2026-10-03T15:00:00.000Z",
-    "fetched_at": "2026-09-26T20:19:10.386Z",
+    "discount_rate": 0,
+    "on_sale": false,
+    "sale_limit": "",
+    "sale_end_iso": "",
+    "fetched_at": "2026-10-03T18:39:14.184Z",
     "release_date_iso": "2022-08-19T15:00:00.000Z"
   },
   {
