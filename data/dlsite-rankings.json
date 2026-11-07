@@ -1,40 +1,40 @@
 {
   "site": "home",
-  "fetched_at": "2026-10-31T21:27:21.036Z",
+  "fetched_at": "2026-11-07T21:44:46.453Z",
   "periods": {
     "day": {
       "entries": [
         {
           "rank": 1,
-          "product_id": "RJ01687946"
+          "product_id": "RJ01753547"
         },
         {
           "rank": 2,
-          "product_id": "RJ416750"
+          "product_id": "RJ01752865"
         },
         {
           "rank": 3,
-          "product_id": "RJ332920"
+          "product_id": "RJ01723044"
         },
         {
           "rank": 4,
-          "product_id": "RJ01531623"
+          "product_id": "RJ01744559"
         },
         {
           "rank": 5,
-          "product_id": "RJ01404735"
+          "product_id": "RJ01753778"
         },
         {
           "rank": 6,
-          "product_id": "RJ315642"
+          "product_id": "RJ01741555"
         },
         {
           "rank": 7,
-          "product_id": "RJ300607"
+          "product_id": "RJ01744641"
         },
         {
           "rank": 8,
-          "product_id": "RJ310954"
+          "product_id": "RJ01733280"
         },
         {
           "rank": 9,
@@ -42,91 +42,91 @@
         },
         {
           "rank": 10,
-          "product_id": "RJ01744559"
-        },
-        {
-          "rank": 11,
-          "product_id": "RJ01515566"
-        },
-        {
-          "rank": 12,
-          "product_id": "RJ01753778"
-        },
-        {
-          "rank": 13,
-          "product_id": "RJ01136905"
-        },
-        {
-          "rank": 14,
-          "product_id": "RJ370398"
-        },
-        {
-          "rank": 15,
-          "product_id": "RJ01357133"
-        },
-        {
-          "rank": 16,
-          "product_id": "RJ01741555"
-        },
-        {
-          "rank": 17,
-          "product_id": "RJ01167139"
-        },
-        {
-          "rank": 18,
-          "product_id": "RJ01027678"
-        },
-        {
-          "rank": 19,
-          "product_id": "RJ01731080"
-        },
-        {
-          "rank": 20,
-          "product_id": "RJ01126122"
-        },
-        {
-          "rank": 21,
-          "product_id": "RJ01194969"
-        },
-        {
-          "rank": 22,
-          "product_id": "RJ311239"
-        },
-        {
-          "rank": 23,
-          "product_id": "RJ01256674"
-        },
-        {
-          "rank": 24,
-          "product_id": "RJ01731456"
-        },
-        {
-          "rank": 25,
-          "product_id": "RJ01733280"
-        },
-        {
-          "rank": 26,
           "product_id": "RJ01744993"
         },
         {
-          "rank": 27,
-          "product_id": "RJ01001407"
+          "rank": 11,
+          "product_id": "RJ01716562"
         },
         {
-          "rank": 28,
-          "product_id": "RJ01734601"
-        },
-        {
-          "rank": 29,
-          "product_id": "RJ01136878"
-        },
-        {
-          "rank": 30,
+          "rank": 12,
           "product_id": "RJ01678871"
         },
         {
+          "rank": 13,
+          "product_id": "RJ01735938"
+        },
+        {
+          "rank": 14,
+          "product_id": "RJ01745850"
+        },
+        {
+          "rank": 15,
+          "product_id": "RJ01731456"
+        },
+        {
+          "rank": 16,
+          "product_id": "RJ01547274"
+        },
+        {
+          "rank": 17,
+          "product_id": "RJ01750335"
+        },
+        {
+          "rank": 18,
+          "product_id": "RJ01750752"
+        },
+        {
+          "rank": 19,
+          "product_id": "RJ01752243"
+        },
+        {
+          "rank": 20,
+          "product_id": "RJ01734601"
+        },
+        {
+          "rank": 21,
+          "product_id": "RJ01741323"
+        },
+        {
+          "rank": 22,
+          "product_id": "RJ01678178"
+        },
+        {
+          "rank": 23,
+          "product_id": "RJ01747451"
+        },
+        {
+          "rank": 24,
+          "product_id": "RJ01758178"
+        },
+        {
+          "rank": 25,
+          "product_id": "RJ01672851"
+        },
+        {
+          "rank": 26,
+          "product_id": "RJ01747557"
+        },
+        {
+          "rank": 27,
+          "product_id": "RJ01678210"
+        },
+        {
+          "rank": 28,
+          "product_id": "RJ01734619"
+        },
+        {
+          "rank": 29,
+          "product_id": "RJ01463781"
+        },
+        {
+          "rank": 30,
+          "product_id": "RJ01732183"
+        },
+        {
           "rank": 31,
-          "product_id": "RJ331940"
+          "product_id": "RJ01753783"
         }
       ]
     },
@@ -134,35 +134,35 @@
       "entries": [
         {
           "rank": 1,
-          "product_id": "RJ01687946"
+          "product_id": "RJ01753547"
         },
         {
           "rank": 2,
-          "product_id": "RJ416750"
+          "product_id": "RJ01752865"
         },
         {
           "rank": 3,
-          "product_id": "RJ332920"
+          "product_id": "RJ01723044"
         },
         {
           "rank": 4,
-          "product_id": "RJ01531623"
+          "product_id": "RJ01744559"
         },
         {
           "rank": 5,
-          "product_id": "RJ01404735"
+          "product_id": "RJ01753778"
         },
         {
           "rank": 6,
-          "product_id": "RJ315642"
+          "product_id": "RJ01741555"
         },
         {
           "rank": 7,
-          "product_id": "RJ300607"
+          "product_id": "RJ01744641"
         },
         {
           "rank": 8,
-          "product_id": "RJ310954"
+          "product_id": "RJ01733280"
         },
         {
           "rank": 9,
@@ -170,91 +170,91 @@
         },
         {
           "rank": 10,
-          "product_id": "RJ01744559"
-        },
-        {
-          "rank": 11,
-          "product_id": "RJ01515566"
-        },
-        {
-          "rank": 12,
-          "product_id": "RJ01753778"
-        },
-        {
-          "rank": 13,
-          "product_id": "RJ01136905"
-        },
-        {
-          "rank": 14,
-          "product_id": "RJ370398"
-        },
-        {
-          "rank": 15,
-          "product_id": "RJ01357133"
-        },
-        {
-          "rank": 16,
-          "product_id": "RJ01741555"
-        },
-        {
-          "rank": 17,
-          "product_id": "RJ01167139"
-        },
-        {
-          "rank": 18,
-          "product_id": "RJ01027678"
-        },
-        {
-          "rank": 19,
-          "product_id": "RJ01731080"
-        },
-        {
-          "rank": 20,
-          "product_id": "RJ01126122"
-        },
-        {
-          "rank": 21,
-          "product_id": "RJ01194969"
-        },
-        {
-          "rank": 22,
-          "product_id": "RJ311239"
-        },
-        {
-          "rank": 23,
-          "product_id": "RJ01256674"
-        },
-        {
-          "rank": 24,
-          "product_id": "RJ01731456"
-        },
-        {
-          "rank": 25,
-          "product_id": "RJ01733280"
-        },
-        {
-          "rank": 26,
           "product_id": "RJ01744993"
         },
         {
-          "rank": 27,
-          "product_id": "RJ01001407"
+          "rank": 11,
+          "product_id": "RJ01716562"
         },
         {
-          "rank": 28,
-          "product_id": "RJ01734601"
-        },
-        {
-          "rank": 29,
-          "product_id": "RJ01136878"
-        },
-        {
-          "rank": 30,
+          "rank": 12,
           "product_id": "RJ01678871"
         },
         {
+          "rank": 13,
+          "product_id": "RJ01735938"
+        },
+        {
+          "rank": 14,
+          "product_id": "RJ01745850"
+        },
+        {
+          "rank": 15,
+          "product_id": "RJ01731456"
+        },
+        {
+          "rank": 16,
+          "product_id": "RJ01547274"
+        },
+        {
+          "rank": 17,
+          "product_id": "RJ01750335"
+        },
+        {
+          "rank": 18,
+          "product_id": "RJ01750752"
+        },
+        {
+          "rank": 19,
+          "product_id": "RJ01752243"
+        },
+        {
+          "rank": 20,
+          "product_id": "RJ01734601"
+        },
+        {
+          "rank": 21,
+          "product_id": "RJ01741323"
+        },
+        {
+          "rank": 22,
+          "product_id": "RJ01678178"
+        },
+        {
+          "rank": 23,
+          "product_id": "RJ01747451"
+        },
+        {
+          "rank": 24,
+          "product_id": "RJ01758178"
+        },
+        {
+          "rank": 25,
+          "product_id": "RJ01672851"
+        },
+        {
+          "rank": 26,
+          "product_id": "RJ01747557"
+        },
+        {
+          "rank": 27,
+          "product_id": "RJ01678210"
+        },
+        {
+          "rank": 28,
+          "product_id": "RJ01734619"
+        },
+        {
+          "rank": 29,
+          "product_id": "RJ01463781"
+        },
+        {
+          "rank": 30,
+          "product_id": "RJ01732183"
+        },
+        {
           "rank": 31,
-          "product_id": "RJ331940"
+          "product_id": "RJ01753783"
         }
       ]
     },
@@ -282,75 +282,75 @@
         },
         {
           "rank": 6,
-          "product_id": "RJ416750"
-        },
-        {
-          "rank": 7,
-          "product_id": "RJ332920"
-        },
-        {
-          "rank": 8,
           "product_id": "RJ01731456"
         },
         {
+          "rank": 7,
+          "product_id": "RJ416750"
+        },
+        {
+          "rank": 8,
+          "product_id": "RJ332920"
+        },
+        {
           "rank": 9,
-          "product_id": "RJ01404735"
-        },
-        {
-          "rank": 10,
-          "product_id": "RJ01531623"
-        },
-        {
-          "rank": 11,
-          "product_id": "RJ01731080"
-        },
-        {
-          "rank": 12,
-          "product_id": "RJ315642"
-        },
-        {
-          "rank": 13,
-          "product_id": "RJ300607"
-        },
-        {
-          "rank": 14,
-          "product_id": "RJ310954"
-        },
-        {
-          "rank": 15,
-          "product_id": "RJ01728103"
-        },
-        {
-          "rank": 16,
-          "product_id": "RJ01732183"
-        },
-        {
-          "rank": 17,
           "product_id": "RJ01744559"
         },
         {
-          "rank": 18,
-          "product_id": "RJ01515566"
+          "rank": 10,
+          "product_id": "RJ01731080"
         },
         {
-          "rank": 19,
-          "product_id": "RJ01734601"
+          "rank": 11,
+          "product_id": "RJ01531623"
         },
         {
-          "rank": 20,
+          "rank": 12,
+          "product_id": "RJ01404735"
+        },
+        {
+          "rank": 13,
+          "product_id": "RJ315642"
+        },
+        {
+          "rank": 14,
+          "product_id": "RJ300607"
+        },
+        {
+          "rank": 15,
           "product_id": "RJ01753778"
         },
         {
+          "rank": 16,
+          "product_id": "RJ310954"
+        },
+        {
+          "rank": 17,
+          "product_id": "RJ01732183"
+        },
+        {
+          "rank": 18,
+          "product_id": "RJ01753547"
+        },
+        {
+          "rank": 19,
+          "product_id": "RJ01752865"
+        },
+        {
+          "rank": 20,
+          "product_id": "RJ01734601"
+        },
+        {
           "rank": 21,
-          "product_id": "RJ01732279"
+          "product_id": "RJ01515566"
         },
         {
           "rank": 22,
-          "product_id": "RJ01136905"
+          "product_id": "RJ01723044"
         },
         {
           "rank": 23,
-          "product_id": "RJ370398"
+          "product_id": "RJ01732279"
         },
         {
           "rank": 24,
@@ -358,31 +358,31 @@
         },
         {
           "rank": 25,
-          "product_id": "RJ01357133"
+          "product_id": "RJ01136905"
         },
         {
           "rank": 26,
-          "product_id": "RJ01712782"
+          "product_id": "RJ370398"
         },
         {
           "rank": 27,
-          "product_id": "RJ01734619"
+          "product_id": "RJ01728103"
         },
         {
           "rank": 28,
-          "product_id": "RJ01730995"
+          "product_id": "RJ01734619"
         },
         {
           "rank": 29,
-          "product_id": "RJ01678178"
+          "product_id": "RJ01357133"
         },
         {
           "rank": 30,
-          "product_id": "RJ01167139"
+          "product_id": "RJ01672851"
         },
         {
           "rank": 31,
-          "product_id": "RJ01672851"
+          "product_id": "RJ01678178"
         }
       ]
     },
@@ -434,11 +434,11 @@
         },
         {
           "rank": 12,
-          "product_id": "RJ01673629"
+          "product_id": "RJ01733280"
         },
         {
           "rank": 13,
-          "product_id": "RJ01733280"
+          "product_id": "RJ01673629"
         },
         {
           "rank": 14,
@@ -510,7 +510,7 @@
         },
         {
           "rank": 31,
-          "product_id": "RJ01546420"
+          "product_id": "RJ01704024"
         }
       ]
     },
@@ -518,35 +518,35 @@
       "entries": [
         {
           "rank": 1,
-          "product_id": "RJ01687946"
+          "product_id": "RJ01753547"
         },
         {
           "rank": 2,
-          "product_id": "RJ416750"
+          "product_id": "RJ01752865"
         },
         {
           "rank": 3,
-          "product_id": "RJ332920"
+          "product_id": "RJ01723044"
         },
         {
           "rank": 4,
-          "product_id": "RJ01531623"
+          "product_id": "RJ01744559"
         },
         {
           "rank": 5,
-          "product_id": "RJ01404735"
+          "product_id": "RJ01753778"
         },
         {
           "rank": 6,
-          "product_id": "RJ315642"
+          "product_id": "RJ01741555"
         },
         {
           "rank": 7,
-          "product_id": "RJ300607"
+          "product_id": "RJ01744641"
         },
         {
           "rank": 8,
-          "product_id": "RJ310954"
+          "product_id": "RJ01733280"
         },
         {
           "rank": 9,
@@ -554,91 +554,91 @@
         },
         {
           "rank": 10,
-          "product_id": "RJ01744559"
-        },
-        {
-          "rank": 11,
-          "product_id": "RJ01515566"
-        },
-        {
-          "rank": 12,
-          "product_id": "RJ01753778"
-        },
-        {
-          "rank": 13,
-          "product_id": "RJ01136905"
-        },
-        {
-          "rank": 14,
-          "product_id": "RJ370398"
-        },
-        {
-          "rank": 15,
-          "product_id": "RJ01357133"
-        },
-        {
-          "rank": 16,
-          "product_id": "RJ01741555"
-        },
-        {
-          "rank": 17,
-          "product_id": "RJ01167139"
-        },
-        {
-          "rank": 18,
-          "product_id": "RJ01027678"
-        },
-        {
-          "rank": 19,
-          "product_id": "RJ01731080"
-        },
-        {
-          "rank": 20,
-          "product_id": "RJ01126122"
-        },
-        {
-          "rank": 21,
-          "product_id": "RJ01194969"
-        },
-        {
-          "rank": 22,
-          "product_id": "RJ311239"
-        },
-        {
-          "rank": 23,
-          "product_id": "RJ01256674"
-        },
-        {
-          "rank": 24,
-          "product_id": "RJ01731456"
-        },
-        {
-          "rank": 25,
-          "product_id": "RJ01733280"
-        },
-        {
-          "rank": 26,
           "product_id": "RJ01744993"
         },
         {
-          "rank": 27,
-          "product_id": "RJ01001407"
+          "rank": 11,
+          "product_id": "RJ01716562"
         },
         {
-          "rank": 28,
-          "product_id": "RJ01734601"
-        },
-        {
-          "rank": 29,
-          "product_id": "RJ01136878"
-        },
-        {
-          "rank": 30,
+          "rank": 12,
           "product_id": "RJ01678871"
         },
         {
+          "rank": 13,
+          "product_id": "RJ01735938"
+        },
+        {
+          "rank": 14,
+          "product_id": "RJ01745850"
+        },
+        {
+          "rank": 15,
+          "product_id": "RJ01731456"
+        },
+        {
+          "rank": 16,
+          "product_id": "RJ01547274"
+        },
+        {
+          "rank": 17,
+          "product_id": "RJ01750335"
+        },
+        {
+          "rank": 18,
+          "product_id": "RJ01750752"
+        },
+        {
+          "rank": 19,
+          "product_id": "RJ01752243"
+        },
+        {
+          "rank": 20,
+          "product_id": "RJ01734601"
+        },
+        {
+          "rank": 21,
+          "product_id": "RJ01741323"
+        },
+        {
+          "rank": 22,
+          "product_id": "RJ01678178"
+        },
+        {
+          "rank": 23,
+          "product_id": "RJ01747451"
+        },
+        {
+          "rank": 24,
+          "product_id": "RJ01758178"
+        },
+        {
+          "rank": 25,
+          "product_id": "RJ01672851"
+        },
+        {
+          "rank": 26,
+          "product_id": "RJ01747557"
+        },
+        {
+          "rank": 27,
+          "product_id": "RJ01678210"
+        },
+        {
+          "rank": 28,
+          "product_id": "RJ01734619"
+        },
+        {
+          "rank": 29,
+          "product_id": "RJ01463781"
+        },
+        {
+          "rank": 30,
+          "product_id": "RJ01732183"
+        },
+        {
           "rank": 31,
-          "product_id": "RJ331940"
+          "product_id": "RJ01753783"
         }
       ]
     }
