@@ -8,7 +8,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-12T13:32:51.270Z",
+    "fetched_at": "2026-11-14T21:42:15.353Z",
     "release_date_iso": "2025-06-26T15:00:00.000Z"
   },
   {
@@ -20,7 +20,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-12T13:33:01.457Z",
+    "fetched_at": "2026-11-14T21:42:28.901Z",
     "release_date_iso": "2025-07-13T15:00:00.000Z"
   },
   {
@@ -33,7 +33,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-05-29T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:04:41.115Z"
+    "fetched_at": "2026-11-14T21:42:42.932Z"
   },
   {
     "id": "RJ01517030",
@@ -44,7 +44,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-07T21:04:50.658Z",
+    "fetched_at": "2026-11-14T21:42:53.004Z",
     "release_date_iso": "2025-12-18T15:00:00.000Z"
   },
   {
@@ -56,7 +56,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-12T13:33:17.278Z",
+    "fetched_at": "2026-11-14T21:43:03.590Z",
     "release_date_iso": "2026-02-27T15:00:00.000Z"
   },
   {
@@ -68,7 +68,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-07T21:05:13.516Z",
+    "fetched_at": "2026-11-14T21:43:14.464Z",
     "release_date_iso": "2026-01-16T15:00:00.000Z"
   },
   {
@@ -80,7 +80,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-12T13:33:32.938Z",
+    "fetched_at": "2026-11-14T21:43:26.263Z",
     "release_date_iso": "2026-01-22T15:00:00.000Z"
   },
   {
@@ -92,7 +92,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-07T21:05:35.095Z",
+    "fetched_at": "2026-11-14T21:43:36.811Z",
     "release_date_iso": "2026-04-17T15:00:00.000Z"
   },
   {
@@ -104,7 +104,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-12T13:33:42.874Z",
+    "fetched_at": "2026-11-14T21:43:48.215Z",
     "release_date_iso": "2018-01-04T15:00:00.000Z"
   },
   {
@@ -116,7 +116,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-07T21:06:00.176Z",
+    "fetched_at": "2026-11-14T21:44:04.381Z",
     "release_date_iso": "2018-01-13T15:00:00.000Z"
   },
   {
@@ -128,7 +128,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-07T21:06:15.591Z",
+    "fetched_at": "2026-11-14T21:44:14.156Z",
     "release_date_iso": "2019-09-16T15:00:00.000Z"
   },
   {
@@ -140,7 +140,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-07T21:06:28.608Z",
+    "fetched_at": "2026-11-14T21:44:26.841Z",
     "release_date_iso": "2020-12-28T15:00:00.000Z"
   },
   {
@@ -152,19 +152,19 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-07T21:06:40.894Z",
+    "fetched_at": "2026-11-14T21:44:36.164Z",
     "release_date_iso": "2022-04-09T15:00:00.000Z"
   },
   {
     "id": "RJ273500",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ273500.html",
-    "current_price": 1320,
-    "original_price": 1320,
+    "current_price": 0,
+    "original_price": 0,
     "discount_rate": 0,
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-07T21:06:53.915Z",
+    "fetched_at": "2026-11-14T21:44:48.141Z",
     "release_date_iso": "2020-01-09T15:00:00.000Z"
   },
   {
@@ -176,7 +176,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-07T21:07:07.221Z",
+    "fetched_at": "2026-11-14T21:45:01.795Z",
     "release_date_iso": "2017-01-11T15:00:00.000Z"
   },
   {
@@ -188,7 +188,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-07T21:07:21.606Z",
+    "fetched_at": "2026-11-14T21:45:12.257Z",
     "release_date_iso": "2022-03-10T15:00:00.000Z"
   },
   {
@@ -200,7 +200,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-12T13:33:55.347Z",
+    "fetched_at": "2026-11-14T21:45:26.308Z",
     "release_date_iso": "2020-05-08T15:00:00.000Z"
   },
   {
@@ -212,7 +212,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-07T21:07:52.688Z",
+    "fetched_at": "2026-11-14T21:45:35.964Z",
     "release_date_iso": "2022-08-19T15:00:00.000Z"
   },
   {
@@ -224,7 +224,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-07T21:08:06.399Z",
+    "fetched_at": "2026-11-14T21:45:48.473Z",
     "release_date_iso": "2024-01-26T15:00:00.000Z"
   },
   {
@@ -237,7 +237,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-23T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:08:19.140Z"
+    "fetched_at": "2026-11-14T21:46:02.029Z"
   },
   {
     "id": "RJ01244683",
@@ -249,7 +249,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2024-12-13T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:34:06.646Z"
+    "fetched_at": "2026-11-14T21:46:14.482Z"
   },
   {
     "id": "RJ01277236",
@@ -261,7 +261,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2024-10-27T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:34:22.756Z"
+    "fetched_at": "2026-11-14T21:46:26.397Z"
   },
   {
     "id": "RJ01339925",
@@ -273,7 +273,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2025-07-26T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:34:38.441Z"
+    "fetched_at": "2026-11-14T21:46:40.140Z"
   },
   {
     "id": "RJ01308551",
@@ -285,7 +285,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2025-01-16T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:08:58.246Z"
+    "fetched_at": "2026-11-14T21:46:55.467Z"
   },
   {
     "id": "RJ378282",
@@ -297,7 +297,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2022-03-17T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:09:08.728Z"
+    "fetched_at": "2026-11-14T21:47:10.893Z"
   },
   {
     "id": "RJ01032464",
@@ -309,7 +309,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2023-02-27T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:34:52.482Z"
+    "fetched_at": "2026-11-14T21:47:24.622Z"
   },
   {
     "id": "RJ311813",
@@ -321,7 +321,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2021-01-19T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:35:04.995Z"
+    "fetched_at": "2026-11-14T21:47:37.091Z"
   },
   {
     "id": "RJ190932",
@@ -333,7 +333,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2017-01-31T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:09:49.703Z"
+    "fetched_at": "2026-11-14T21:47:53.029Z"
   },
   {
     "id": "RJ260463",
@@ -345,7 +345,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2019-08-22T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:09:59.860Z"
+    "fetched_at": "2026-11-14T21:48:02.988Z"
   },
   {
     "id": "RJ01057134",
@@ -357,19 +357,19 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2023-06-08T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:35:15.467Z"
+    "fetched_at": "2026-11-14T21:48:14.922Z"
   },
   {
     "id": "RJ241712",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ241712.html",
-    "current_price": 1100,
-    "original_price": 1100,
+    "current_price": 0,
+    "original_price": 0,
     "discount_rate": 0,
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2019-02-07T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:10:23.252Z"
+    "fetched_at": "2026-11-14T21:48:25.593Z"
   },
   {
     "id": "RJ01498990",
@@ -381,7 +381,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2025-11-10T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:35:29.989Z"
+    "fetched_at": "2026-11-14T21:48:40.232Z"
   },
   {
     "id": "RJ01074483",
@@ -393,7 +393,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2023-08-04T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:35:43.940Z"
+    "fetched_at": "2026-11-14T21:48:55.382Z"
   },
   {
     "id": "RJ01531480",
@@ -405,7 +405,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-30T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:11:02.104Z"
+    "fetched_at": "2026-11-14T21:49:05.434Z"
   },
   {
     "id": "RJ01606763",
@@ -417,7 +417,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-17T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:11:12.499Z"
+    "fetched_at": "2026-11-14T21:49:14.441Z"
   },
   {
     "id": "RJ01356621",
@@ -429,7 +429,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2025-03-19T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:35:55.059Z"
+    "fetched_at": "2026-11-14T21:49:26.009Z"
   },
   {
     "id": "RJ01617970",
@@ -441,7 +441,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-05-05T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:11:38.476Z"
+    "fetched_at": "2026-11-14T21:49:37.135Z"
   },
   {
     "id": "RJ299661",
@@ -453,7 +453,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2020-10-15T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:36:08.172Z"
+    "fetched_at": "2026-11-14T21:49:52.760Z"
   },
   {
     "id": "RJ01612971",
@@ -465,7 +465,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-30T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:36:23.203Z"
+    "fetched_at": "2026-11-14T21:50:06.677Z"
   },
   {
     "id": "RJ327478",
@@ -477,7 +477,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2022-03-29T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:36:36.590Z"
+    "fetched_at": "2026-11-14T21:50:18.754Z"
   },
   {
     "id": "RJ214295",
@@ -489,7 +489,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2018-01-17T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:12:26.020Z"
+    "fetched_at": "2026-11-14T21:50:28.041Z"
   },
   {
     "id": "RJ148280",
@@ -501,7 +501,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2015-01-15T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:12:40.536Z"
+    "fetched_at": "2026-11-14T21:50:43.648Z"
   },
   {
     "id": "RJ283004",
@@ -513,7 +513,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2020-04-09T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:12:50.525Z"
+    "fetched_at": "2026-11-14T21:50:56.677Z"
   },
   {
     "id": "RJ205378",
@@ -524,7 +524,7 @@
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
-    "fetched_at": "2026-11-07T21:13:04.547Z",
+    "fetched_at": "2026-11-14T21:51:11.936Z",
     "release_date_iso": "2017-09-14T15:00:00.000Z"
   },
   {
@@ -537,7 +537,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2024-12-27T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:13:17.509Z"
+    "fetched_at": "2026-11-14T21:51:25.190Z"
   },
   {
     "id": "RJ274843",
@@ -549,7 +549,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2020-01-24T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:13:30.770Z"
+    "fetched_at": "2026-11-14T21:51:35.584Z"
   },
   {
     "id": "RJ127012",
@@ -561,7 +561,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2014-01-14T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:13:42.912Z"
+    "fetched_at": "2026-11-14T21:51:49.780Z"
   },
   {
     "id": "RJ01129822",
@@ -573,7 +573,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2023-12-14T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:13:56.728Z"
+    "fetched_at": "2026-11-14T21:52:00.762Z"
   },
   {
     "id": "RJ01199189",
@@ -585,7 +585,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2024-06-20T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:36:52.594Z"
+    "fetched_at": "2026-11-14T21:52:10.142Z"
   },
   {
     "id": "RJ232260",
@@ -597,7 +597,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2018-09-28T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:37:08.132Z"
+    "fetched_at": "2026-11-14T21:52:25.426Z"
   },
   {
     "id": "RJ183624",
@@ -609,7 +609,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2016-09-15T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:37:18.721Z"
+    "fetched_at": "2026-11-14T21:52:39.450Z"
   },
   {
     "id": "RJ01592680",
@@ -621,7 +621,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-05-14T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:14:49.467Z"
+    "fetched_at": "2026-11-14T21:52:51.493Z"
   },
   {
     "id": "RJ189197",
@@ -633,7 +633,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2017-01-04T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:37:34.578Z"
+    "fetched_at": "2026-11-14T21:53:03.240Z"
   },
   {
     "id": "RJ231054",
@@ -645,7 +645,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2018-09-14T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:15:16.113Z"
+    "fetched_at": "2026-11-14T21:53:18.364Z"
   },
   {
     "id": "RJ064616",
@@ -657,7 +657,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2010-07-23T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:37:45.080Z"
+    "fetched_at": "2026-11-14T21:53:29.323Z"
   },
   {
     "id": "RJ01244786",
@@ -669,7 +669,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2024-10-18T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:37:54.944Z"
+    "fetched_at": "2026-11-14T21:53:44.214Z"
   },
   {
     "id": "RJ370100",
@@ -681,7 +681,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2022-02-25T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:38:06.798Z"
+    "fetched_at": "2026-11-14T21:53:56.329Z"
   },
   {
     "id": "RJ294932",
@@ -693,7 +693,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2020-08-12T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:38:20.413Z"
+    "fetched_at": "2026-11-14T21:54:12.099Z"
   },
   {
     "id": "RJ160018",
@@ -705,7 +705,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2015-08-27T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:16:16.609Z"
+    "fetched_at": "2026-11-14T21:54:21.595Z"
   },
   {
     "id": "RJ01036590",
@@ -717,7 +717,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2023-03-24T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:38:34.876Z"
+    "fetched_at": "2026-11-14T21:54:33.643Z"
   },
   {
     "id": "RJ272263",
@@ -729,7 +729,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2020-01-02T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:38:49.213Z"
+    "fetched_at": "2026-11-14T21:54:48.014Z"
   },
   {
     "id": "RJ01475802",
@@ -741,7 +741,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2025-10-24T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:16:49.587Z"
+    "fetched_at": "2026-11-14T21:54:56.875Z"
   },
   {
     "id": "RJ01401605",
@@ -753,7 +753,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2025-07-18T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:38:58.659Z"
+    "fetched_at": "2026-11-14T21:55:07.051Z"
   },
   {
     "id": "RJ01323843",
@@ -765,7 +765,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2025-03-07T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:39:13.472Z"
+    "fetched_at": "2026-11-14T21:55:17.165Z"
   },
   {
     "id": "RJ01366671",
@@ -777,7 +777,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2025-05-16T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:39:29.419Z"
+    "fetched_at": "2026-11-14T21:55:31.071Z"
   },
   {
     "id": "RJ01607151",
@@ -789,7 +789,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-05-01T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:39:45.535Z"
+    "fetched_at": "2026-11-14T21:55:44.532Z"
   },
   {
     "id": "RJ01632189",
@@ -801,7 +801,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-05-31T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:18:05.024Z"
+    "fetched_at": "2026-11-14T21:55:57.071Z"
   },
   {
     "id": "RJ203898",
@@ -813,7 +813,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2017-08-24T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:39:55.671Z"
+    "fetched_at": "2026-11-14T21:56:06.682Z"
   },
   {
     "id": "RJ308716",
@@ -825,7 +825,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2020-12-16T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:40:07.796Z"
+    "fetched_at": "2026-11-14T21:56:18.663Z"
   },
   {
     "id": "RJ01499017",
@@ -837,7 +837,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-02-21T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:40:20.313Z"
+    "fetched_at": "2026-11-14T21:56:33.720Z"
   },
   {
     "id": "RJ332312",
@@ -849,7 +849,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2021-07-16T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:40:31.075Z"
+    "fetched_at": "2026-11-14T21:56:46.866Z"
   },
   {
     "id": "RJ01071133",
@@ -861,7 +861,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2024-03-28T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:40:41.567Z"
+    "fetched_at": "2026-11-14T21:57:01.042Z"
   },
   {
     "id": "RJ01636129",
@@ -873,7 +873,7 @@
     "sale_limit": "2026年06月05日 23:59",
     "sale_end_iso": "2026-06-05T23:59:00.000Z",
     "release_date_iso": "2026-06-04T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:40:56.004Z"
+    "fetched_at": "2026-11-14T21:57:11.506Z"
   },
   {
     "id": "RJ01583243",
@@ -885,7 +885,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-03-31T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:19:23.374Z"
+    "fetched_at": "2026-11-14T21:57:21.466Z"
   },
   {
     "id": "RJ01571353",
@@ -897,19 +897,19 @@
     "sale_limit": "2026年3月22日 23:59",
     "sale_end_iso": "2026-03-22T23:59:00.000Z",
     "release_date_iso": "2026-02-22T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:19:35.442Z"
+    "fetched_at": "2026-11-14T21:57:31.334Z"
   },
   {
     "id": "RJ01609552",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01609552.html",
-    "current_price": 1980,
-    "original_price": 1980,
+    "current_price": 0,
+    "original_price": 0,
     "discount_rate": 0,
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-12T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:19:46.027Z"
+    "fetched_at": "2026-11-14T21:57:42.467Z"
   },
   {
     "id": "RJ01645135",
@@ -921,7 +921,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-28T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:41:07.356Z"
+    "fetched_at": "2026-11-14T21:57:56.620Z"
   },
   {
     "id": "RJ01644019",
@@ -933,7 +933,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-04T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:20:12.092Z"
+    "fetched_at": "2026-11-14T21:58:07.921Z"
   },
   {
     "id": "RJ01644165",
@@ -945,7 +945,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-11T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:20:23.564Z"
+    "fetched_at": "2026-11-14T21:58:23.521Z"
   },
   {
     "id": "RJ01633653",
@@ -957,19 +957,19 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-18T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:20:35.721Z"
+    "fetched_at": "2026-11-14T21:58:35.632Z"
   },
   {
     "id": "RJ01653204",
     "url": "https://www.dlsite.com/maniax/work/=/product_id/RJ01653204.html",
-    "current_price": 1650,
-    "original_price": 1650,
+    "current_price": 0,
+    "original_price": 0,
     "discount_rate": 0,
     "on_sale": false,
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-06-22T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:20:47.545Z"
+    "fetched_at": "2026-11-14T21:58:50.676Z"
   },
   {
     "id": "RJ01648679",
@@ -981,7 +981,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-07-04T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:21:01.398Z"
+    "fetched_at": "2026-11-14T21:59:06.878Z"
   },
   {
     "id": "RJ01593040",
@@ -993,7 +993,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-04-05T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:41:21.848Z"
+    "fetched_at": "2026-11-14T21:59:20.188Z"
   },
   {
     "id": "RJ01218021",
@@ -1005,7 +1005,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2024-07-03T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:41:34.489Z"
+    "fetched_at": "2026-11-14T21:59:33.951Z"
   },
   {
     "id": "RJ01532029",
@@ -1017,7 +1017,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2025-12-23T15:00:00.000Z",
-    "fetched_at": "2026-11-07T21:21:34.247Z"
+    "fetched_at": "2026-11-14T21:59:49.593Z"
   },
   {
     "id": "RJ01488698",
@@ -1029,7 +1029,7 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2026-07-02T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:41:50.070Z"
+    "fetched_at": "2026-11-14T22:00:04.684Z"
   },
   {
     "id": "RJ403730",
@@ -1041,6 +1041,6 @@
     "sale_limit": "",
     "sale_end_iso": "",
     "release_date_iso": "2022-08-01T15:00:00.000Z",
-    "fetched_at": "2026-11-12T13:42:05.442Z"
+    "fetched_at": "2026-11-14T22:00:19.788Z"
   }
 ]
